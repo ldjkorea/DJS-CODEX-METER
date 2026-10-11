@@ -7,11 +7,11 @@ import org.json.*;
 public final class RpgCollectionFacts {
     public static final int ALL=0, EARNED=1, PROGRESS=2, LOCKED=3;
     private RpgCollectionFacts(){}
-    public static JSONObject fact(JSONObject state,RpgCatalog.Entry e){JSONObject all=state==null?null:state.optJSONObject("achievements");return all==null?null:all.optJSONObject(e.id);}
+    public static JSONObject fact(JSONObject state,RpgCatalog.Entry e){JSONObject all=state==null?null:state.optJSONObject(RpgTitleCatalog.find(e.id)==null?"achievements":"titles");return all==null?null:all.optJSONObject(e.id);}
     public static boolean earned(JSONObject s,RpgCatalog.Entry e){JSONObject f=fact(s,e);return f!=null&&f.optBoolean("unlocked");}
     public static int category(RpgCatalog.Entry e){switch(e.metric){case "tokens":return 1;case "days":case "streak":case "weeks":case "weekend":return 2;case "tier":return 3;default:return 4;}}
     public static int rarity(RpgCatalog.Entry e){switch(e.rarity){case "rare":return 1;case "epic":return 2;case "legendary":return 3;case "mythic":return 4;default:return 0;}}
-    public static int index(String id){for(int i=0;i<RpgCatalog.ALL.size();i++)if(RpgCatalog.ALL.get(i).id.equals(id))return i;return -1;}
+    public static int index(String id){for(int i=0;i<RpgCatalog.ALL.size();i++)if(RpgCatalog.ALL.get(i).id.equals(id))return i;for(int i=0;i<RpgTitleCatalog.ALL.size();i++)if(RpgTitleCatalog.ALL.get(i).display.id.equals(id))return 53+i;return -1;}
     public static boolean known(JSONObject state,RpgCatalog.Entry e){
         JSONObject f=fact(state,e);if(f==null||!f.has("progress"))return false;
         if(earned(state,e)||f.optLong("progress")>0)return true; // Previously confirmed lower bounds survive missing live data.
@@ -26,7 +26,7 @@ public final class RpgCollectionFacts {
     public static int initial(JSONObject s){for(RpgCatalog.Entry e:RpgCatalog.ALL)if(progressing(s,e))return PROGRESS;return RpgGrowthFacts.earned(s).isEmpty()?ALL:EARNED;}
     public static List<RpgCatalog.Entry> select(JSONObject s,int status,int category,int sort,String query,boolean titles,List<String> equipped){
         List<RpgCatalog.Entry> result=new ArrayList<>();String q=query==null?"":query.trim().toLowerCase(Locale.ROOT);
-        for(RpgCatalog.Entry e:RpgCatalog.ALL){boolean unlocked=earned(s,e);
+        for(RpgCatalog.Entry e:titles?RpgTitleCatalog.displayEntries():RpgCatalog.ALL){boolean unlocked=earned(s,e);
             if(status==EARNED&&!unlocked||status==LOCKED&&unlocked||status==PROGRESS&&!progressing(s,e))continue;
             if(category>0&&category(e)!=category)continue;
             if(!q.isEmpty()&&!(e.ko+" "+e.en+" "+e.title+" "+e.titleEn).toLowerCase(Locale.ROOT).contains(q))continue;
@@ -46,7 +46,8 @@ public final class RpgCollectionFacts {
         });return result;
     }
     public static boolean toggle(List<String> draft,String id,JSONObject s){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);if(e==null||!earned(s,e))return false;if(draft.contains(id)){draft.remove(id);return true;}if(draft.size()>=3)return false;draft.add(id);return true;}
-    public static String recommend(JSONObject s,Random random){List<String> ids=RpgGrowthFacts.earned(s);return ids.isEmpty()?"":ids.get(random.nextInt(ids.size()));}
-    /** Explicit catalog ordinal -> unique frame, central emblem and ornament. Stable across draws. */
-    public static int[] motif(RpgCatalog.Entry e){int i=index(e.id);if(i<0)throw new IllegalArgumentException("Unknown achievement");return new int[]{i%4,(i/4)%7,i/28};}
+    public static String recommend(JSONObject s,Random random){List<String> ids=RpgTitleCatalog.owned(s);return ids.isEmpty()?"":ids.get(random.nextInt(ids.size()));}
+    /** Frozen legacy ID table -> unique frame, central emblem and ornament. Stable across draws. */
+    private static final String[] LEGACY_MOTIF_IDS={"tokens_1000000","tokens_10000000","tokens_100000000","tokens_1000000000","tokens_10000000000","tokens_100000000000","tokens_1000000000000","days_1","days_7","days_30","days_100","days_180","days_365","days_730","streak_3","streak_7","streak_14","streak_30","weeks_1","weeks_4","weeks_12","weeks_26","weeks_52","tier_0","tier_1","tier_2","tier_3","tier_4","tier_5","tier_6","tier_7","tier_8","tier_9","value_50","value_100","value_200","plans_2","dawn_1","weekend_8","combined_1b","heritage_1","tokens_500m","tokens_5b","days_60","days_1000","streak_60","weekend_24","dawn_veteran","value_75","value_150","plans_3","weeks_8","combined_100m"};
+    public static int[] motif(RpgCatalog.Entry e){for(int i=0;i<LEGACY_MOTIF_IDS.length;i++)if(LEGACY_MOTIF_IDS[i].equals(e.id))return new int[]{i%4,(i/4)%7,i/28};for(int i=0;i<RpgTitleCatalog.ALL.size();i++)if(RpgTitleCatalog.ALL.get(i).display.id.equals(e.id))return new int[]{i%4,(i/4)%7,2};throw new IllegalArgumentException("Unknown medal ID");}
 }

@@ -88,9 +88,50 @@ final class RpgProgressStore extends SQLiteOpenHelper {
     }
     private static JSONObject display(JSONObject doc)throws JSONException {
         JSONObject result=new JSONObject().put("tier",doc.getJSONObject("tier")).put("settlements",doc.getJSONObject("settlements"));
+        result.put("billing",doc.getJSONObject("billing"));
+        if(doc.getJSONObject("future").has("showcase"))result.put("showcase",doc.getJSONObject("future").getJSONObject("showcase"));
         if(doc.getJSONObject("future").has("rpg"))result.put("rpg",RpgEngine.summary(doc));return result;
     }
     static JSONObject progress(Context c){JSONObject p=peek(c);return p==null?null:p.optJSONObject("rpg");}
+    static JSONObject archive(Context c,String expected)throws Exception {
+        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))throw new IllegalStateException("Account changed");
+            try(RpgProgressStore h=new RpgProgressStore(c);Cursor row=h.getReadableDatabase().rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){
+                if(!row.moveToFirst())throw new IllegalStateException("No achievement journal");JSONObject doc=new JSONObject(row.getString(0));
+                JSONObject show=doc.getJSONObject("future").optJSONObject("showcase");if(show==null)show=new JSONObject().put("ids",new JSONArray(RpgShowcase.selected(c,RpgEngine.state(doc)))).put("custom",c.getSharedPreferences("codex_rpg_showcase_v1",0).getBoolean(expected+":custom",false));
+                return RpgArchive.create(doc,expected,show.getJSONArray("ids"),show.getBoolean("custom"),System.currentTimeMillis());
+            }
+        }
+    }
+    // Worker-side acknowledgement is required before reporting a completed restore.
+    @android.annotation.SuppressLint("ApplySharedPref")
+    static boolean restoreArchive(Context c,String expected,JSONObject file)throws Exception {
+        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))return false;backupStep2(c);JSONObject document;
+            try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{
+                String raw="";try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(row.moveToFirst())raw=row.getString(0);}
+                document=RpgArchive.merge(raw.isEmpty()?AccountProgress.empty():new JSONObject(raw),file,expected,System.currentTimeMillis());
+                if(!document.getJSONObject("future").has("showcase")&&!c.getSharedPreferences("codex_rpg_showcase_v1",0).getBoolean(expected+":custom",false))document.getJSONObject("future").put("showcase",new JSONObject(file.getJSONObject("showcase").toString()));
+                db.execSQL("INSERT OR REPLACE INTO recovery(account,captured_at,document) VALUES(?,?,?)",new Object[]{expected,System.currentTimeMillis(),raw.isEmpty()?AccountProgress.empty().toString():raw});
+                db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{expected,document.toString()});db.setTransactionSuccessful();
+            }finally{db.endTransaction();}}
+            // Invalidate the disposable cache; a failure to cache cannot undo a committed restore.
+            c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();
+            c.getSharedPreferences("codex_rpg_showcase_v1",0).edit().putString(expected+":seen",new JSONArray(RpgGrowthFacts.earned(RpgEngine.state(document))).toString()).putString(expected+":titles_seen",new JSONArray(RpgEngine.eligibleTitles(document)).toString()).commit();
+            return true;
+        }
+    }
+    // Durable SQLite is authoritative; invalidate its derived cache before completion.
+    @android.annotation.SuppressLint("ApplySharedPref")
+    static boolean saveShowcase(Context c,String expected,List<String> ids)throws Exception {
+        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))return false;JSONObject document;
+            try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{
+                try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(!row.moveToFirst())return false;document=new JSONObject(row.getString(0));}
+                if(ids.size()>3||new HashSet<>(ids).size()!=ids.size()||!RpgGrowthFacts.earned(RpgEngine.state(document)).containsAll(ids))return false;
+                document.getJSONObject("future").put("showcase",new JSONObject().put("ids",new JSONArray(ids)).put("custom",true));
+                db.execSQL("UPDATE profiles SET document=? WHERE account=?",new Object[]{document.toString(),expected});db.setTransactionSuccessful();
+            }finally{db.endTransaction();}}
+            c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();return true;
+        }
+    }
     private static void backupStep2(Context c)throws IOException {
         File root=new File(c.getFilesDir(),"rpg-step2-recovery");if(new File(root,"complete").exists())return;
         if(!root.exists()&&!root.mkdirs())throw new IOException("Progress recovery unavailable");

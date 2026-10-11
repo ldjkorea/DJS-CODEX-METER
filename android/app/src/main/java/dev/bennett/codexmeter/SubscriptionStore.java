@@ -23,7 +23,11 @@ final class SubscriptionStore {
         String key=key(context,snapshot);if(key==null)return null;
         try{JSONObject row=new JSONObject(context.getSharedPreferences("codex_subscription_cost",0).getString(key,""));
             return new SubscriptionCost(row.getString("amount"),row.getString("currency"),LocalDate.parse(row.getString("start")),LocalDate.parse(row.getString("end")));
-        }catch(Exception ignored){return null;}
+        }catch(Exception ignored){
+            JSONObject p=RpgProgressStore.peek(context),billing=p==null?null:p.optJSONObject("billing");JSONObject best=null;long saved=-1;
+            if(billing!=null&&snapshot!=null)for(String id:AccountProgress.keys(billing)){JSONObject item=billing.optJSONObject(id),bill=item==null?null:item.optJSONObject("bill");if(bill!=null&&LedgerRecord.cleanPlan(snapshot.planType).equals(bill.optString("plan"))&&bill.optLong("saved_at")>=saved){best=bill;saved=bill.optLong("saved_at");}}
+            try{return best==null?null:new SubscriptionCost(best.getString("amount"),best.getString("currency"),LocalDate.parse(best.getString("start")),LocalDate.parse(best.getString("end")));}catch(Exception unavailable){return null;}
+        }
     }
     static boolean save(Context context,UsageSnapshot snapshot,String expectedKey,SubscriptionCost cost){
         synchronized(UsageApi.NETWORK_LOCK){

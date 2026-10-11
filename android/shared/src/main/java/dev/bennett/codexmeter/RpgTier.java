@@ -26,7 +26,8 @@ public final class RpgTier {
     }
     public static void week(JSONObject state,String policy,long end,double score,boolean eligible)throws JSONException {
         if(!eligible||end<=state.optLong("end"))return;
-        JSONObject weeks=state.getJSONObject("weeks");weeks.put(Long.toString(end),score);
+        JSONObject weeks=state.getJSONObject("weeks");if(!policy.equals(state.optString("policy"))&&!state.optString("policy").isEmpty()){weeks=new JSONObject();state.put("weeks",weeks).put("low_streak",0).put("warning",false);}
+        weeks.put(Long.toString(end),score);
         List<String> ends=AccountProgress.keys(weeks);ends.sort(Comparator.comparingLong(Long::parseLong));
         while(ends.size()>8)weeks.remove(ends.remove(0));
         double sum=0,weight=0;for(int i=0;i<ends.size();i++){double w=i>=ends.size()-4?2:1;sum+=weeks.getDouble(ends.get(i))*w;weight+=w;}double longScore=sum/weight;

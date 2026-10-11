@@ -24,11 +24,17 @@ public final class RpgTokens {
             }else if(key.equals("lifetimeTokens")&&old.has(key))saved.put(key,old.getLong(key));
         }
         JSONObject days=old.optJSONObject("days");days=days==null?new JSONObject():new JSONObject(days.toString());
-        JSONArray incoming=envelope.optJSONArray("dailyUsageBuckets");if(incoming!=null){if(incoming.length()>4000)throw new IllegalArgumentException("Token daily bound");
+        JSONObject explicitlyObserved=new JSONObject();JSONArray incoming=envelope.optJSONArray("dailyUsageBuckets");if(incoming!=null){if(incoming.length()>4000)throw new IllegalArgumentException("Token daily bound");
             for(int i=0;i<incoming.length();i++){JSONObject d=incoming.getJSONObject(i);String date=LocalDate.parse(d.getString("startDate")).toString();long value=d.getLong("tokens");
                 if(value<0||LocalDate.parse(date).isAfter(LedgerAggregation.day(now).plusDays(1)))throw new IllegalArgumentException("Invalid token day");
-                days.put(date,Math.max(value,days.optLong(date)));
+                explicitlyObserved.put(date,Math.max(value,explicitlyObserved.optLong(date)));days.put(date,Math.max(value,days.optLong(date)));
             }
+        }
+        JSONObject proof=envelope.optJSONObject("calendar_certification");if(proof!=null){
+            LocalDate from=LocalDate.parse(proof.getString("start")),until=LocalDate.parse(proof.getString("end"));
+            if(!"Asia/Seoul".equals(proof.getString("zone"))||!"account".equals(proof.getString("scope"))||!proof.getBoolean("complete")||!from.isBefore(until)||java.time.temporal.ChronoUnit.DAYS.between(from,until)>4000)throw new IllegalArgumentException("Calendar coverage");
+            for(LocalDate d=from;d.isBefore(until);d=d.plusDays(1))if(!explicitlyObserved.has(d.toString()))throw new IllegalArgumentException("Missing explicit token date");
+            saved.put("calendar_certification",new JSONObject(proof.toString())).put("certified_days",explicitlyObserved);
         }
         saved.put("days",days);state.put("official",saved);return true;
     }

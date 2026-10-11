@@ -8,6 +8,8 @@ import org.json.*;
 public final class RpgEngine {
     public static final int VERSION=1;
     public static final String MODEL="rpg-2026q2-v1";
+    public static final long[] TOKEN_MILESTONES={1_000_000L,10_000_000L,100_000_000L,1_000_000_000L,10_000_000_000L};
+    public static final long[] MILESTONE_XP={25,75,250,1000,1500};
     private RpgEngine(){}
     public static JSONObject state(JSONObject document)throws JSONException {
         JSONObject future=document.getJSONObject("future"),state=future.optJSONObject("rpg");if(state!=null){if(state.getInt("version")!=VERSION)throw new IllegalStateException("Preserve newer RPG");return state;}
@@ -27,6 +29,9 @@ public final class RpgEngine {
         JSONObject state=state(document),seen=state.getJSONObject("seen"),activity=state.getJSONObject("activity"),quota=state.getJSONObject("quota_days");
         Set<String> dirty=new HashSet<>();boolean changed=false;long floor=document.optLong("floor");
         List<LedgerRecord> rows=new ArrayList<>(records);rows.sort(Comparator.comparing((LedgerRecord r)->r.meter).thenComparingLong(r->r.at));
+        String observedPolicy="";long observedPolicyStart=0;for(LedgerRecord r:rows)if(r.meter.equals("weekly")&&r.at>floor&&r.at<=now&&!r.source.equals("legacy")){if(!r.policy().equals(observedPolicy)){observedPolicy=r.policy();observedPolicyStart=r.at;}}
+        long observed=0;for(LedgerRecord r:rows)if(r.at<=now&&r.at>floor&&r.meter.equals("weekly"))observed=Math.max(observed,r.at);state.put("quota_observed_at",observed).put("quota_fresh",fresh);
+        if(!observedPolicy.isEmpty()&&!observedPolicy.equals(state.optString("current_policy"))){state.put("current_policy",observedPolicy).put("policy_changed_at",observedPolicyStart);}
         for(LedgerRecord r:rows)if(r.at>floor&&r.at<=now&&!"legacy".equals(r.source)){String key=r.meter+"@"+r.at;if(!seen.has(key)){seen.put(key,true);dirty.add(LedgerAggregation.day(r.at).toString());}}
         // Recompute only affected days (including successor) so late historical inserts are safe.
         Set<String> originallyDirty=new HashSet<>(dirty);
@@ -52,14 +57,15 @@ public final class RpgEngine {
             }
         }
         String stamp=document.getJSONObject("settlements").toString().hashCode()+":"+document.getJSONObject("tier").optInt("highest",-1)+":"+LedgerAggregation.day(now)+":"+RpgCatalog.REVISION;
-        if(!changed&&dirty.isEmpty()&&stamp.equals(state.optString("input_stamp")))return;
+        if(!changed&&dirty.isEmpty()&&stamp.equals(state.optString("input_stamp"))){evaluateAvailableWindows(document,now,fresh);return;}
         state.put("input_stamp",stamp).put("pairs_last_update",examined).put("migration","confirmed_lower_bound_no_fabricated_days").put("demotion_status","held_until_comparable_token_calendar");
         refresh(document,now,fresh,changed);
+        evaluateAvailableWindows(document,now,fresh);
     }
     public static boolean ingestOfficial(JSONObject document,String account,JSONObject envelope,long now)throws JSONException {
         JSONObject state=state(document);if(!RpgTokens.official(state.getJSONObject("tokens"),account,envelope,now))return false;
         JSONArray rows=envelope.optJSONArray("local_rows");if(rows!=null){if(rows.length()>24)throw new IllegalArgumentException("Local token metadata bound");for(int i=0;i<rows.length();i++)RpgTokens.local(state.getJSONObject("tokens"),account,rows.getJSONObject(i),now);}
-        refresh(document,now,false,true);return true;
+        refresh(document,now,false,true);evaluateAvailableWindows(document,now,true);return true;
     }
     public static boolean ingestLocal(JSONObject document,String account,JSONObject fact,long now)throws JSONException {
         JSONObject state=state(document);if(!RpgTokens.local(state.getJSONObject("tokens"),account,fact,now))return false;
@@ -77,10 +83,26 @@ public final class RpgEngine {
         LocalDate until=LedgerAggregation.day(end),from=until.minusDays(30);long tokens=0;Set<String> days=new HashSet<>();
         for(LocalDate date=from;date.isBefore(until);date=date.plusDays(1)){Long value=seoulTokens.get(date);if(value==null||value<0)return false;tokens=Math.addExact(tokens,value);if(value>0)days.add(date.toString());}
         int active=Math.max(days.size(),inRange(new HashSet<>(AccountProgress.keys(s.getJSONObject("activity"))),from,until)),count=0;
-        for(String id:AccountProgress.keys(s.getJSONObject("weeks"))){long at=Long.parseLong(id);if(at<=end&&at>end-8*TierEvolution.WEEK)count++;}
+        for(String id:AccountProgress.keys(s.getJSONObject("weeks"))){long at=Long.parseLong(id);if(at<=end&&at>end-8*TierEvolution.WEEK&&policy.equals(s.getJSONObject("weeks").getJSONObject(id).getString("policy")))count++;}
         if(count<4)return false;
         for(String region:new String[]{"KR","WORLD"})RpgTier.week(s.getJSONObject(region),policy,end,RpgTier.score(region,active,count,tokens,week.getDouble("used"),true),true);
         s.put("demotion_status","comparable_window_evaluated");return true;
+    }
+    /** Called by production snapshot reconciliation and account token ingestion, never by UI. */
+    private static void evaluateAvailableWindows(JSONObject document,long now,boolean fresh)throws JSONException {
+        JSONObject s=state(document),official=s.getJSONObject("tokens").getJSONObject("official");String closed="";for(String k:sortedEnds(s.getJSONObject("weeks")))if(Long.parseLong(k)<=now)closed=k;boolean quotaCurrent=s.optBoolean("quota_fresh")&&s.optLong("quota_observed_at")>0&&now-s.optLong("quota_observed_at")<=900000L,tokenCurrent=official.optLong("at")>0&&now-official.optLong("at")<=86400000L;String input=official.optLong("at")+":"+s.optLong("quota_observed_at")+":"+fresh+":"+quotaCurrent+":"+tokenCurrent+":"+s.optString("current_policy")+":"+closed;if(input.equals(s.optString("demotion_input")))return;s.put("demotion_input",input).put("demotion_checked_at",now);
+        if(!fresh||!s.optBoolean("quota_fresh")||s.optLong("quota_observed_at")<=0||now-s.optLong("quota_observed_at")>900000L||official.optLong("at")<=0||now-official.optLong("at")>86400000L){s.put("demotion_status","held_stale_or_failed_observation");return;}
+        JSONObject proof=official.optJSONObject("calendar_certification");
+        if(proof==null||!"Asia/Seoul".equals(proof.optString("zone"))||!"account".equals(proof.optString("scope"))||!proof.optBoolean("complete")){s.put("demotion_status","held_unverified_timezone_or_account_coverage");return;}
+        Map<LocalDate,Long> calendar=new HashMap<>();JSONObject days=official.getJSONObject("certified_days");for(String day:AccountProgress.keys(days))calendar.put(LocalDate.parse(day),days.getLong(day));
+        boolean evaluated=false;for(String key:sortedEnds(s.getJSONObject("weeks"))){JSONObject week=s.getJSONObject("weeks").getJSONObject(key);long end=week.getLong("end");
+            // Old archives/restored years and incomplete/early windows never become current penalties.
+            if(end<=now-TierEvolution.WEEK||end>now||!week.getString("policy").equals(s.optString("current_policy"))||end<=s.optLong("policy_changed_at")+2*TierEvolution.WEEK)continue;
+            LocalDate until=LedgerAggregation.day(end),from=until.minusDays(30);
+            if(LocalDate.parse(proof.getString("start")).isAfter(from)||LocalDate.parse(proof.getString("end")).isBefore(until))continue;
+            evaluated|=evaluateCertifiedWindow(document,week.getString("policy"),end,calendar,true,true,now);
+        }
+        if(!evaluated)s.put("demotion_status","held_missing_comparable_completed_window");
     }
     private static int streak(Set<String> dates){List<String> sorted=new ArrayList<>(dates);Collections.sort(sorted);int best=0,n=0;LocalDate prior=null;for(String date:sorted){LocalDate d=LocalDate.parse(date);n=prior!=null&&prior.plusDays(1).equals(d)?n+1:1;best=Math.max(best,n);prior=d;}return best;}
     private static int inRange(Set<String> dates,LocalDate start,LocalDate end){int n=0;for(String s:dates){LocalDate d=LocalDate.parse(s);if(!d.isBefore(start)&&d.isBefore(end))n++;}return n;}
@@ -111,11 +133,13 @@ public final class RpgEngine {
         LocalDate end=LedgerAggregation.day(now).plusDays(1),start=end.minusDays(30);int recentDays=Math.max(inRange(dates,start,end),inRange(service,start,end));long monthlyTokens=0;for(String d:service)if(!LocalDate.parse(d).isBefore(start)&&LocalDate.parse(d).isBefore(end))monthlyTokens=Math.addExact(monthlyTokens,od.getLong(d));
         int recentTokenDays=0;for(String day:AccountProgress.keys(od))if(!LocalDate.parse(day).isBefore(start)&&LocalDate.parse(day).isBefore(end))recentTokenDays++;
         int recentWeeks=0;for(String key:AccountProgress.keys(s.getJSONObject("weeks")))if(Long.parseLong(key)<=now&&Long.parseLong(key)>now-8*TierEvolution.WEEK)recentWeeks++;
-        boolean known=RpgTokens.known(tokens),comparable=official.optLong("at")>0&&now-official.optLong("at")<=86400000L&&recentWeeks>=4&&recentUtil!=null;
+        boolean known=RpgTokens.known(tokens),tokenFresh=official.optLong("at")>0&&now-official.optLong("at")<=86400000L;
+        boolean comparable=recentWeeks>=4&&recentUtil!=null&&((fresh&&inRange(dates,start,end)>=7)||(tokenFresh&&recentTokenDays>=14));
+        s.put("promotion_evidence",comparable?"comparable_observed_activity_and_quota":"held_until_four_valid_weeks_and_recent_activity");
         for(String region:new String[]{"KR","WORLD"}){
             JSONObject tier=s.getJSONObject(region);double score=RpgTier.score(region,recentDays,recentWeeks,monthlyTokens,recentUtil,known&&official.has("lifetimeTokens")&&recentTokenDays>0);
             // A lifetime-only counter cannot certify current intensity or justify a high placement.
-            RpgTier.current(tier,score,now,comparable&&!service.isEmpty(),changed&&(recentDays>0));
+            RpgTier.current(tier,score,now,comparable,changed&&(recentDays>0));
 
         }
         int peak=document.getJSONObject("tier").optInt("highest",-1);for(String region:new String[]{"KR","WORLD"})peak=Math.max(peak,s.getJSONObject(region).optInt("highest",-1));
@@ -131,12 +155,14 @@ public final class RpgEngine {
         }
         s.put("activity_days",days).put("active_days_30",recentDays).put("valid_weeks",valid).put("longest_observed_streak",longest).put("token_status",known?"observed":"unknown").put("token_total",known?RpgTokens.milestoneTotal(tokens):JSONObject.NULL)
             .put("token_basis",official.has("lifetimeTokens")?"official_backend_activity":"local_processed_lower_bound").put("token_observed_at",official.optLong("at")).put("daily_basis","Seoul ledger / service dates retained separately; max, not sum").put("updated_at",now).put("level",level(s.getLong("xp")));
+        long lifetime=RpgTokens.milestoneTotal(tokens);for(int i=0;i<TOKEN_MILESTONES.length;i++)if(lifetime>=TOKEN_MILESTONES[i])award(s,"milestone-v25:tokens:"+TOKEN_MILESTONES[i],MILESTONE_XP[i]);
+        s.put("level",level(s.getLong("xp")));RpgTitleCatalog.reconcile(s,now);
         if(!s.has("recommended_title"))recommend(document,new Random());
     }
     private static List<String> sortedEnds(JSONObject weeks){List<String> keys=AccountProgress.keys(weeks);keys.sort(Comparator.comparingLong(Long::parseLong));return keys;}
-    public static List<String> eligibleTitles(JSONObject document)throws JSONException {List<String> ids=new ArrayList<>();JSONObject a=state(document).getJSONObject("achievements");for(RpgCatalog.Entry e:RpgCatalog.ALL)if(a.optJSONObject(e.id)!=null&&a.getJSONObject(e.id).optBoolean("unlocked"))ids.add(e.id);return ids;}
+    public static List<String> eligibleTitles(JSONObject document)throws JSONException {return RpgTitleCatalog.owned(state(document));}
     public static String recommend(JSONObject document,Random random)throws JSONException {List<String> eligible=eligibleTitles(document);if(eligible.isEmpty())return "";String id=eligible.get(random.nextInt(eligible.size()));state(document).put("recommended_title",id);return id;}
-    public static boolean equip(JSONObject document,String id)throws JSONException {if(id.isEmpty()){state(document).remove("equipped_title");return true;}if(!eligibleTitles(document).contains(id))return false;state(document).put("equipped_title",id);return true;}
+    public static boolean equip(JSONObject document,String id)throws JSONException {if(!id.isEmpty()&&!eligibleTitles(document).contains(id))return false;JSONObject s=state(document);s.put("title_selection_set",true);if(id.isEmpty())s.remove("equipped_title");else s.put("equipped_title",id);return true;}
     /** Merge only an account-bound trusted journal (backup/paired device), never add its XP total.
      * Step 3 may expose this through existing authenticated sync. It is not a public upload endpoint. */
     public static JSONObject export(JSONObject document,String account)throws JSONException {
@@ -156,6 +182,7 @@ public final class RpgEngine {
             else if(key.matches("token-day:\\d{4}-\\d{2}-\\d{2}")){LocalDate.parse(key.substring(10));max=75;}
             else if(key.matches("quota-day:\\d{4}-\\d{2}-\\d{2}")){LocalDate.parse(key.substring(10));max=25;}
             else if(key.matches("valid-week:\\d+"))max=50;
+            else if(key.startsWith("milestone-v25:tokens:")){max=-1;for(int i=0;i<TOKEN_MILESTONES.length;i++)if(key.equals("milestone-v25:tokens:"+TOKEN_MILESTONES[i])&&RpgTokens.milestoneTotal(imported.getJSONObject("tokens"))>=TOKEN_MILESTONES[i])max=MILESTONE_XP[i];if(max<0)throw new IllegalArgumentException("Milestone evidence");}
             else if(key.startsWith("achievement:")&&definitions.containsKey(key.substring(12)))max=definitions.get(key.substring(12)).bonus;
             else throw new IllegalArgumentException("Unrecognized RPG award");
             if(n<0||n>max)throw new IllegalArgumentException("Invalid RPG reward target");
@@ -172,11 +199,19 @@ public final class RpgEngine {
             int highest=Math.max(own.getInt("highest"),peak);if(incoming.optLong("evaluated_at")>own.optLong("evaluated_at")){JSONObject clean=RpgTier.empty(region);for(String key:new String[]{"tier","highest","protected_until","end","low_streak","score","count","warning","latest_score","provisional","evaluated_at","policy","weeks","evaluations"})if(incoming.has(key))clean.put(key,new JSONObject(incoming.toString()).get(key));s.put(region,clean);}s.getJSONObject(region).put("highest",highest);
         }
         for(String field:new String[]{"activity_days","active_days_30","valid_weeks"})s.put(field,Math.max(s.optInt(field),imported.optInt(field)));
-        String title=imported.optString("equipped_title");if(!s.has("equipped_title")&&eligibleTitles(document).contains(title))s.put("equipped_title",title);
+        JSONObject importedTitles=imported.optJSONObject("titles"),ownedTitles=s.optJSONObject("titles");if(ownedTitles==null){ownedTitles=new JSONObject();s.put("titles",ownedTitles);}if(importedTitles!=null)for(String id:AccountProgress.keys(importedTitles)){RpgTitleCatalog.Title def=RpgTitleCatalog.find(id);JSONObject fact=importedTitles.getJSONObject(id);if(def==null||fact.optBoolean("unlocked")&&def.ratio(imported)<1||fact.optBoolean("unlocked")&&(fact.getLong("first_earned_at")<=0||fact.getLong("first_earned_at")>now))throw new IllegalArgumentException("Title evidence");JSONObject own=ownedTitles.optJSONObject(id);if(own==null)ownedTitles.put(id,new JSONObject(fact.toString()));else if(fact.optBoolean("unlocked")){long first=own.optBoolean("unlocked")?Math.min(own.getLong("first_earned_at"),fact.getLong("first_earned_at")):fact.getLong("first_earned_at");ownedTitles.put(id,new JSONObject(fact.toString()).put("first_earned_at",first));}}
+        String title=imported.optString("equipped_title");if(!s.optBoolean("title_selection_set")&&!s.has("equipped_title")&&eligibleTitles(document).contains(title))s.put("equipped_title",title);
+        JSONObject ownFacts=s.getJSONObject("achievements");for(RpgCatalog.Entry e:RpgCatalog.ALL){JSONObject otherFact=other.optJSONObject(e.id),ownFact=ownFacts.optJSONObject(e.id);if(otherFact==null)continue;
+            if(ownFact==null){ownFact=new JSONObject(otherFact.toString());ownFacts.put(e.id,ownFact);}
+            for(String field:new String[]{"progress","progress_days","progress_weeks"})ownFact.put(field,Math.max(ownFact.optLong(field),otherFact.optLong(field)));
+            ownFact.put("progress_ratio",Math.max(ownFact.optDouble("progress_ratio",0),otherFact.optDouble("progress_ratio",0)));
+            if(otherFact.optBoolean("unlocked")&&ownFact.optBoolean("unlocked"))ownFact.put("first_earned_at",Math.min(ownFact.optLong("first_earned_at",Long.MAX_VALUE),otherFact.getLong("first_earned_at")));
+        }
+        s.put("dawn",s.optBoolean("dawn")||imported.optBoolean("dawn"));s.put("longest_observed_streak",Math.max(s.optInt("longest_observed_streak"),imported.optInt("longest_observed_streak")));
         if(!s.has("recommended_title")&&eligibleTitles(document).contains(imported.optString("recommended_title")))s.put("recommended_title",imported.getString("recommended_title"));
         s.put("kr_legacy_seeded",s.optBoolean("kr_legacy_seeded")||imported.optBoolean("kr_legacy_seeded"));
         s.put("level",level(s.getLong("xp"))).put("restored_at",now);refresh(document,now,false,false);
     }
-    public static JSONObject summary(JSONObject document)throws JSONException {JSONObject s=state(document),out=new JSONObject();for(String k:new String[]{"version","model","xp","level","activity_days","active_days_30","valid_weeks","token_status","token_total","token_basis","token_observed_at","daily_basis","quota_score_basis","demotion_status","updated_at","recommended_title","equipped_title"})if(s.has(k))out.put(k,s.get(k));
-        for(String region:new String[]{"KR","WORLD"}){JSONObject t=s.getJSONObject(region),v=new JSONObject();for(String k:new String[]{"tier","highest","protected_until","count","latest_score","provisional","evaluated_at","model","warning","label"})if(t.has(k))v.put(k,t.get(k));out.put(region,v);}out.put("unlocked_achievements",eligibleTitles(document).size()).put("unlocked_ids",new JSONArray(eligibleTitles(document)));return out;}
+    public static JSONObject summary(JSONObject document)throws JSONException {JSONObject s=state(document),out=new JSONObject();for(String k:new String[]{"version","model","xp","level","activity_days","active_days_30","valid_weeks","token_status","token_total","token_basis","token_observed_at","daily_basis","quota_score_basis","demotion_status","demotion_checked_at","promotion_evidence","updated_at","recommended_title","equipped_title"})if(s.has(k))out.put(k,s.get(k));
+        for(String region:new String[]{"KR","WORLD"}){JSONObject t=s.getJSONObject(region),v=new JSONObject();for(String k:new String[]{"tier","highest","protected_until","count","latest_score","provisional","evaluated_at","model","warning","label"})if(t.has(k))v.put(k,t.get(k));out.put(region,v);}out.put("unlocked_achievements",RpgGrowthFacts.earned(s).size()).put("unlocked_ids",new JSONArray(RpgGrowthFacts.earned(s))).put("unlocked_titles",new JSONArray(eligibleTitles(document)));return out;}
 }

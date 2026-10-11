@@ -10,6 +10,7 @@ public final class RpgGrowthFacts {
         for (RpgCatalog.Entry e:RpgCatalog.ALL) if(e.id.equals(id)) return e;
         return null;
     }
+    public static RpgCatalog.Entry titleEntry(String id){RpgCatalog.Entry e=entry(id);RpgTitleCatalog.Title t=RpgTitleCatalog.find(id);return e!=null?e:t==null?null:t.display;}
     public static List<String> earned(JSONObject state) {
         List<String> ids=new ArrayList<>();
         if(state==null) return ids;
@@ -41,7 +42,7 @@ public final class RpgGrowthFacts {
         long[] totals=new long[4];
         JSONObject awards=state==null?null:state.optJSONObject("awards");
         if(awards!=null) for(String id:AccountProgress.keys(awards)) {
-            int category=id.equals("activity-day-count")?0:id.startsWith("token-day:")?1:id.startsWith("quota-day:")||id.startsWith("valid-week:")?2:id.startsWith("achievement:")?3:-1;
+            int category=id.equals("activity-day-count")?0:(id.startsWith("token-day:")||id.startsWith("milestone-v25:tokens:"))?1:id.startsWith("quota-day:")||id.startsWith("valid-week:")?2:id.startsWith("achievement:")?3:-1;
             if(category>=0) totals[category]=Math.addExact(totals[category],Math.max(0,awards.optLong(id)));
         }
         return totals;
