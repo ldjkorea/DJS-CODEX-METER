@@ -1,5 +1,34 @@
 [
   {
+    "version": "2.8.22",
+    "origin": "korean",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.22",
+    "ko": {
+      "title": "눌러보는 성장 · 대표 업적과 칭호",
+      "changes": [
+        "성장 카드 4개를 균형 있는 2×2 세트로 정리했습니다. 좁은 화면과 큰 글꼴에서는 세로로 배치합니다.",
+        "대한민국·세계 휘장을 누르면 현재·최고 티어와 확인된 평가 근거, 다음 휘장 안내를 볼 수 있습니다. 게임용 추정 평가이며 실제 순위가 아닙니다.",
+        "RPG 레벨을 누르면 누적 XP, 다음 레벨까지 필요한 XP, 보상별 성장 내역을 확인합니다. 요금제 인장은 중앙에 크게 배치하고 Free·Go·Plus·Pro Lite·Pro 비교를 엽니다.",
+        "기본 화면에는 대표 업적 최대 3개만 표시합니다. 전체 업적 도감과 칭호 선택을 분리하고 장착 칭호·대표 업적을 홈에도 연결했습니다.",
+        "기존 41종의 조건과 보상을 유지하고 확인 가능한 활동·토큰·활용 조합 12종을 추가해 업적과 칭호를 각각 53종으로 확장했습니다.",
+        "업적 종류별 경량 벡터 문양과 새 획득 배너를 추가했습니다. 과거 획득은 다시 연출하지 않으며 효과 OFF·시스템 애니메이션 설정을 존중합니다.",
+        "성장 진행바·카드 강조색을 티어와 연결했습니다. 기존 로그인·원장·휘장·위젯·PC 연결과 데이터는 유지합니다."
+      ]
+    },
+    "en": {
+      "title": "Interactive growth, achievements and titles",
+      "changes": [
+        "Four growth cards form a balanced 2×2 set, with vertical layouts on narrow screens and large fonts.",
+        "Tap Korea/world crests for current and best tiers, confirmed evaluation evidence and next-crest guidance. These are game estimates, not population rankings.",
+        "Tap RPG level for total XP, remaining XP and confirmed reward categories. The centered plan seal opens Free, Go, Plus, Pro Lite and Pro comparisons.",
+        "Show up to three representative achievements by default. The full collection and title picker are separate; equipped titles and achievements also appear on Home.",
+        "Preserve the original 41 definitions and rewards, adding 12 measurable activity/token/utilization combinations for 53 achievements and 53 titles.",
+        "Distinct lightweight achievement symbols and one-time unlock banners respect disabled effects and system animation settings.",
+        "Growth progress and highlights follow tier colors. Login, ledgers, crests, widgets, PC connectivity and existing data remain intact."
+      ]
+    }
+  },
+  {
     "version": "2.8.21",
     "origin": "korean",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.21",

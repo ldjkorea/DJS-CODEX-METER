@@ -1,8 +1,8 @@
 # GPT HUD 한국어판
 
-현재 버전은 **2.8.21 / versionCode 51**입니다. 기록·홈·성장 탭, 실제 결제 기간 누적 가성비, 계정별 영구 성취와 41개 업적·칭호를 한 번의 업데이트로 통합했습니다.
+현재 버전은 **2.8.22 / versionCode 52**입니다. 성장 카드 상세보기, 대표 업적·장착 칭호와 53종 도감을 추가했습니다. 기록·홈·성장 탭, 실제 결제 기간 누적 가성비와 계정별 영구 성취를 유지합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.21/CodexMeter-2.8.21-ko.apk) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.21) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md) · [검증 결과](docs/RPG_EVOLUTION_2.8.21.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.22/CodexMeter-2.8.22-ko.apk) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.22) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md) · [검증 결과](docs/GROWTH_RELEASE_2.8.22.ko.md)
 
 기존 앱을 삭제하지 않고 업데이트하세요. 실제 갤럭시 설치·개인 DB 복구는 아직 미검증입니다. Windows 위젯은 0.1.7로 함께 업데이트합니다.
 
