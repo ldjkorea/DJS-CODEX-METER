@@ -26,7 +26,7 @@ foreach ($taskPair in @(@($taskIconManifest.path,$taskIconManifest.sha256),@($ta
 $compiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
 if (!(Test-Path $compiler)) { throw '.NET Framework 4.8 컴파일러가 필요합니다.' }
 $arguments = @('/nologo','/codepage:65001','/optimize+','/target:winexe',"/out:$output\CodexMeterWidget.exe", "/win32manifest:$root\widget.manifest", "/win32icon:$root\assets\widget.ico")
-$references = @('System','System.Core','System.Drawing','System.Windows.Forms','System.Web.Extensions','System.Security','System.Net.Http')
+$references = @('System','System.Core','System.Drawing','System.Windows.Forms','System.Web.Extensions','System.Security','System.Net.Http','System.IO.Compression','System.IO.Compression.FileSystem')
 foreach ($reference in $references) { $arguments += "/reference:$reference.dll" }
 for ($i=0; $i -lt 10; $i++) { $arguments += "/resource:$root\assets\prestige_$i.png,prestige_$i" }
 $sources = @(Get-ChildItem -LiteralPath "$root\src" -Filter '*.cs' | ForEach-Object { $_.FullName })
