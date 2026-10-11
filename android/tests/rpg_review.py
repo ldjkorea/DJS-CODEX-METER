@@ -2,6 +2,8 @@
 from pathlib import Path
 import json
 def strip_rpg(name,text):
+    from growth_review import strip_growth
+    text=strip_growth(name,text)
     from rpg3_review import strip_rpg3
     text=strip_rpg3(name,text)
     from rpg2_review import strip_rpg2

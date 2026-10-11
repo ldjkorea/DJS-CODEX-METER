@@ -12,6 +12,7 @@ public final class RpgCatalog {
         }
         public String descriptionEn(){return "Verified "+metric+" >= "+target+(days>0?"; active days >= "+days:"")+(weeks>0?"; certified weeks >= "+weeks:"")+". Unknown intervals do not count.";}
     }
+    public static final String REVISION="growth-ux-2";
     public static final List<Entry> ALL;
     static {
         List<Entry> list=new ArrayList<>();
@@ -44,6 +45,18 @@ public final class RpgCatalog {
         add(list,"weekend_8","주말의 천공","Weekend Sky","weekend",8,"주말 반납 완료","Weekend Surrendered","rare",60,0,0);
         add(list,"combined_1b","불꽃과 인내","Flame and Patience","tokens",1_000_000_000L,"불사조인 척하는 삼족오","Raven Pretending to Be Phoenix","epic",150,100,12);
         add(list,"heritage_1","잊지 않은 날개","Remembered Wings","heritage",1,"기록 복구의 생존자","History Recovery Survivor","common",30,0,0);
+        add(list,"tokens_500m","흑요석 급류","Obsidian Torrent","tokens",500_000_000L,"토큰은 거들 뿐","Tokens Are Just the Assist","rare",100,7,0);
+        add(list,"tokens_5b","별을 잇는 깃털","Starlink Feather","tokens",5_000_000_000L,"프롬프트 대서사시","Prompt Epic","epic",160,30,0);
+        add(list,"days_60","두 달의 항해","Sixty-Day Voyage","days",60,"둥지보다 IDE","IDE Before Nest","rare",70,0,0);
+        add(list,"days_1000","천일의 태양","Thousand-Day Sun","days",1000,"태양의 기록관","Solar Archivist","legendary",200,0,26);
+        add(list,"streak_60","불멸의 항로","Undying Route","streak",60,"출석 체크가 본업","Attendance Is My Day Job","epic",150,0,0);
+        add(list,"weekend_24","세 달의 주말 비행","Weekend Voyager","weekend",24,"월요일도 날 못 꺾어","Monday Cannot Ground Me","epic",90,30,0);
+        add(list,"dawn_veteran","어둠 속의 백금","Platinum After Midnight","dawn",1,"야간 관제탑","Night Control Tower","epic",100,30,4);
+        add(list,"value_75","태양의 삼사분면","Solar Third Quarter","utilization",75,"구독은 관상용 아님","Subscription Is Not Decor","rare",65,7,0);
+        add(list,"value_150","한도를 넘는 항해","Beyond the Allocation","utilization",150,"한도야 먼저 퇴근해","Quota Clocked Out First","epic",100,14,0);
+        add(list,"plans_3","세 둥지의 여행자","Three-Nest Traveller","plans",3,"플랜은 바뀌어도 나는 나","Same Raven New Plan","rare",65,14,0);
+        add(list,"weeks_8","태양의 이중 궤도","Double Solar Orbit","weeks",8,"리셋과 친해진 자","Reset Whisperer","rare",90,14,0);
+        add(list,"combined_100m","빛과 습관","Light and Habit","tokens",100_000_000L,"오늘도 빌드 중","Still Building Today","rare",100,30,4);
         ALL=Collections.unmodifiableList(list);
     }
     private static void add(List<Entry> list,String id,String ko,String en,String metric,long target,String title,String titleEn,String rarity,int bonus,int days,int weeks){list.add(new Entry(id,ko,en,metric,target,title,titleEn,rarity,bonus,days,weeks));}

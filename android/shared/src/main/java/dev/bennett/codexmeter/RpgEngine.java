@@ -51,7 +51,7 @@ public final class RpgEngine {
                 valid.put(key,new JSONObject().put("start",start).put("end",end).put("policy",policy).put("used",w.getString("used")).put("source","archived_certified_week"));changed|=award(state,"valid-week:"+key,50);
             }
         }
-        String stamp=document.getJSONObject("settlements").toString().hashCode()+":"+document.getJSONObject("tier").optInt("highest",-1)+":"+LedgerAggregation.day(now);
+        String stamp=document.getJSONObject("settlements").toString().hashCode()+":"+document.getJSONObject("tier").optInt("highest",-1)+":"+LedgerAggregation.day(now)+":"+RpgCatalog.REVISION;
         if(!changed&&dirty.isEmpty()&&stamp.equals(state.optString("input_stamp")))return;
         state.put("input_stamp",stamp).put("pairs_last_update",examined).put("migration","confirmed_lower_bound_no_fabricated_days").put("demotion_status","held_until_comparable_token_calendar");
         refresh(document,now,fresh,changed);
@@ -178,5 +178,5 @@ public final class RpgEngine {
         s.put("level",level(s.getLong("xp"))).put("restored_at",now);refresh(document,now,false,false);
     }
     public static JSONObject summary(JSONObject document)throws JSONException {JSONObject s=state(document),out=new JSONObject();for(String k:new String[]{"version","model","xp","level","activity_days","active_days_30","valid_weeks","token_status","token_total","token_basis","token_observed_at","daily_basis","quota_score_basis","demotion_status","updated_at","recommended_title","equipped_title"})if(s.has(k))out.put(k,s.get(k));
-        for(String region:new String[]{"KR","WORLD"}){JSONObject t=s.getJSONObject(region),v=new JSONObject();for(String k:new String[]{"tier","highest","protected_until","count","latest_score","provisional","evaluated_at","model","warning","label"})if(t.has(k))v.put(k,t.get(k));out.put(region,v);}out.put("unlocked_achievements",eligibleTitles(document).size());return out;}
+        for(String region:new String[]{"KR","WORLD"}){JSONObject t=s.getJSONObject(region),v=new JSONObject();for(String k:new String[]{"tier","highest","protected_until","count","latest_score","provisional","evaluated_at","model","warning","label"})if(t.has(k))v.put(k,t.get(k));out.put(region,v);}out.put("unlocked_achievements",eligibleTitles(document).size()).put("unlocked_ids",new JSONArray(eligibleTitles(document)));return out;}
 }
