@@ -1,5 +1,32 @@
 [
   {
+    "version": "2.8.23",
+    "origin": "korean",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.23",
+    "ko": {
+      "title": "메달 도감과 칭호 보관함",
+      "changes": [
+        "업적 도감을 2열 메달 그리드로 개편했습니다. 상태와 카테고리를 함께 필터링하고 달성 임박·최근 획득·희귀도순으로 탐색하세요.",
+        "메달을 누르면 조건별 진행 상태, 최초 획득일, 보상 XP와 연결 칭호를 확인합니다. 확인되지 않은 기록은 0으로 단정하지 않습니다.",
+        "대표 업적은 큰 슬롯 세 개에 직접 장착합니다. 획득한 메달만 선택하며 취소하면 기존 선택을 유지합니다.",
+        "칭호 보관함은 보유한 칭호부터 보여줍니다. 검색·미리보기·장착·해제를 지원하며 랜덤 추천은 미리보기만 제공합니다.",
+        "53개 업적을 서로 다른 경량 벡터 문양으로 구분했습니다. 큰 글꼴에서는 도감을 1열로 바꾸고 긴 칭호의 상태 표시 간격을 확보했습니다.",
+        "기존 업적 ID·달성 조건·XP·티어·대표 업적·장착 칭호·원장과 로그인 저장 구조는 유지합니다. Windows Widget 0.1.7은 변경하지 않았습니다."
+      ]
+    },
+    "en": {
+      "title": "Medal codex and title wardrobe",
+      "changes": [
+        "Browse achievements in a two-column medal codex with combined status/category filters and proximity, recent unlock and rarity sorting.",
+        "Tap medals for separate requirement progress, first unlock time, XP rewards and linked titles. Unknown observations are not treated as zero.",
+        "Equip up to three earned medals in large showcase slots. Cancel preserves your previous selection.",
+        "The title wardrobe shows owned titles first, with search, previews, explicit equip and removal. Random recommendations only preview a title.",
+        "All 53 achievements have distinct lightweight vector motifs. Large fonts use a single-column codex and clear title/status spacing.",
+        "Existing achievement IDs, requirements, XP, tiers, showcase, equipped titles, ledger and login storage remain unchanged. Windows Widget 0.1.7 is unchanged."
+      ]
+    }
+  },
+  {
     "version": "2.8.22",
     "origin": "korean",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.22",
