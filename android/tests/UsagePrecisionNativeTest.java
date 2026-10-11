@@ -19,7 +19,7 @@ public final class UsagePrecisionNativeTest extends Instrumentation {
         try{
             check(Build.MODEL.contains("sdk"),"Emulator only");
             check(LanSync.account(c).equals(hash("refinement-production-fixture-account")),"Owned synthetic account only");
-            check(c.getPackageManager().getPackageInfo(c.getPackageName(),0).versionName.equals("2.8.27"),"Final release installed");
+            check(c.getPackageManager().getPackageInfo(c.getPackageName(),0).versionName.equals("2.8.28"),"Final release installed");
             String original=AppPreferences.loadSnapshot(c).toJson().toString();
             for(int digits:new int[]{2,3}){
                 check(AppPreferences.setUsageDecimalPlaces(c,digits),"Preference commit");

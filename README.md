@@ -1,20 +1,20 @@
 # GPT HUD 한국어판
 
-현재 버전은 **2.8.27 / versionCode 57**입니다. Android 사용량 수치의 소수점 자릿수를 2자리 또는 3자리로 선택할 수 있고, Windows 바탕화면 위젯은 앱 안에서 업데이트할 수 있습니다. 성장 화면·업적 도감·칭호 보관함, 계정별 기록과 기존 사용량 기능을 유지합니다.
+현재 버전은 **2.8.28 / versionCode 58**입니다. 대표 메달의 이름과 간격, 칭호 글꼴, 업적 소개를 다듬었습니다. 대한민국·홈은 삼족오, 세계 추정 티어는 천구 문장으로 구분하고 한도 상세 사용량 바에도 티어 색상을 연결했습니다. 기존 기록·RPG 성취·소수점 설정은 유지합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-2.8.27-ko.apk) · [Windows 위젯 0.1.9](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-WindowsWidget-0.1.9.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.27) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.28/CodexMeter-2.8.28-ko.apk) · [Windows 위젯 0.1.9](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-WindowsWidget-0.1.9.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.28) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md)
 
 소수점 자릿수는 **설정 → 위젯 및 화면 → 사용량 소수점 자리수**에서 바꿉니다. 기존 사용량 기록의 원본 정밀도나 계산은 변경하지 않고 화면 표시만 조정합니다. 기존 휴대폰 앱은 삭제하지 않고 업데이트하세요. Windows 위젯 0.1.9 이상은 위젯 메뉴의 **⋯ → 업데이트 확인**으로 새 버전을 받을 수 있습니다. 최초 설치 또는 0.1.8 이하에서 업데이트할 때는 ZIP을 직접 내려받아 새 폴더에 풀어 실행하세요. 로그인·설정·Tailscale 연결을 보존하려면 기존 AppData 폴더를 삭제하지 마세요.
 
 ## 앱 화면 미리보기
 
-현재 공개 소스에 포함된 성장 화면과 업적 도감 예시입니다. 캡처는 GPT HUD 2.8.25 QA 빌드에서 생성됐으며, 이후 버전에서도 유지되는 성장·도감 UI를 보여줍니다. 최신 사용량 화면의 실시간 데이터나 실제 계정 기록을 나타내지는 않습니다.
+이번 2.8.28 코드의 Android 에뮬레이터 QA 화면입니다. 분리된 가상 계정으로 촬영했으며 실제 사용자 기록이 아닙니다. 성장·도감은 영어, 칭호 보관함은 한국어 화면입니다.
 
-| 성장 화면 | 업적 도감 |
-| --- | --- |
-| ![GPT HUD 성장 화면 미리보기](docs/refinement-2.8.25/411-1-ko-KR-growth.png) | ![GPT HUD 업적 도감 미리보기](docs/refinement-2.8.25/411-1-ko-KR-codex.png) |
+| 성장 · 대한민국/세계 문장 | 이름과 여백을 정리한 업적 도감 | 칭호 보관함 |
+| :---: | :---: | :---: |
+| <img src="docs/presentation-2.8.28/growth.png" width="280" alt="2.8.28 성장 화면"/> | <img src="docs/presentation-2.8.28/codex.png" width="280" alt="2.8.28 업적 도감"/> | <img src="docs/presentation-2.8.28/titles.png" width="280" alt="2.8.28 칭호 보관함"/> |
 
-현재 배포 앱의 티어별 휘장 자산은 아래 미리보기에서 확인할 수 있습니다.
+현재 배포 앱의 대한민국·홈 티어별 삼족오 휘장 자산은 아래 미리보기에서 확인할 수 있습니다.
 
 | Iron | Bronze | Silver | Gold | Platinum |
 | :---: | :---: | :---: | :---: | :---: |
@@ -33,6 +33,8 @@ Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Code
 [최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-WindowsWidget-0.1.9.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
 ## Android 설치
+
+이미 설치한 한국어판은 **기록 → 설정 → 앱 정보 및 라이선스 → 업데이트**에서 새 버전을 확인하세요. 자동 업데이트 확인이 켜져 있으면 기존 검사에서도 2.8.28을 안내합니다. 다운로드·검증 뒤 Android 설치 승인은 직접 눌러야 합니다. 기존 앱을 삭제할 필요는 없습니다.
 
 1. 저장소 **Releases**에서 최신 한국어판을 엽니다. `Source code.zip`은 설치 파일이 아닙니다.
 2. 스마트폰에서는 `CodexMeter-<버전>-ko.apk`를 내려받습니다. `CodexMeter-Wear-<버전>-ko.apk`는 Wear OS 시계용입니다.

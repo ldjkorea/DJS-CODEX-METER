@@ -1,5 +1,30 @@
 [
   {
+    "version": "2.8.28",
+    "origin": "korean",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.28",
+    "ko": {
+      "title": "메달·칭호 스타일 개선 · 세계 티어 문장",
+      "changes": [
+        "대표 업적 메달에 이름과 여백을 더해 홈·성장·도감에서 읽기 쉽게 정리했습니다. 칭호 글꼴과 장착 표시도 강화했습니다.",
+        "기존 53개 업적의 ID·조건·보상은 유지하고 화면에 보이는 이름·소개·조건 요약을 직관적으로 다듬었습니다.",
+        "대한민국·홈은 삼족오, 세계 추정 티어는 천구·별·월계관 문장으로 구분합니다. 한도 상세 사용량 바는 현재 티어 색상을 따르며 경고 색은 유지합니다.",
+        "Tibo 인용은 저장된 문구임을 표시하고 최신 X 글 열기 버튼을 추가했습니다. 자동으로 X 글을 수집하는 기능은 아닙니다.",
+        "로그인·SQLite 원장·XP·칭호·대표 업적·위젯·소수점 표시 설정을 유지합니다. Windows 위젯은 기존 0.1.9 그대로입니다."
+      ]
+    },
+    "en": {
+      "title": "Medal and title polish · World tier crests",
+      "changes": [
+        "Named showcase medals now have clearer spacing on Home, Growth and Collection. Equipped titles use stronger typography.",
+        "Display names, flavor text and concise condition summaries were refined while preserving all 53 achievement IDs, conditions and rewards.",
+        "Korea and Home retain the samjoko; estimated World tiers use celestial, star and laurel crests. Limit-detail bars follow the current tier accent while retaining warning colors.",
+        "Tibo quotations are labeled as saved excerpts, with a button to open recent X posts. This is not an automatic X feed.",
+        "Login, SQLite records, XP, titles, showcases, widgets and decimal preferences remain intact. Windows widget stays at 0.1.9."
+      ]
+    }
+  },
+  {
     "version": "2.8.27",
     "origin": "korean",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.27",

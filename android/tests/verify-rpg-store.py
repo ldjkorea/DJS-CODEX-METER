@@ -38,7 +38,7 @@ for name,text in fixtures.items():
 app=root/'app/src/main/java/dev/bennett/codexmeter';shared=root/'shared/src/main/java/dev/bennett/codexmeter'
 files += [str(app/(name+'.java')) for name in ['AuthTokens','SubscriptionStore','RpgProgressStore','RpgShowcase']]
 files += [str(shared/(name+'.java')) for name in ['RpgTokens','RpgTier','RpgCatalog','RpgTitleCatalog','RpgGrowthFacts','RpgArchive','RpgBackupCodec','RpgEngine','MonthlyLedger','AccountTier','AccountProgress','FunInsights','TierEvolution','SubscriptionCost','LedgerPeriods']]
-files += [str(Path(__file__).with_name(n)) for n in ['RpgStoreSelfTest.java','RpgRefinementSelfTest.java']]+[str(shared/'RpgCollectionFacts.java')]
+files += [str(Path(__file__).with_name(n)) for n in ['RpgStoreSelfTest.java','RpgRefinementSelfTest.java']]+[str(shared/'RpgDisplayCopy.java'),str(shared/'RpgCollectionFacts.java')]
 cp=os.pathsep.join(map(str,[out,root/'build/rpg-step1',root/'build/insight-verification/classes',root/'build/evolution-verification',root/'build/test-libs/json-20250517.jar']))
 jdk=Path(os.environ['JAVA_HOME'])/'bin'
 subprocess.run([str(jdk/'javac'),'-encoding','UTF-8','-cp',cp,'-d',str(out),*files],check=True)
