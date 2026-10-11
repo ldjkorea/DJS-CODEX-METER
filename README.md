@@ -1,10 +1,10 @@
 # GPT HUD 한국어판
 
-현재 버전은 **2.8.22 / versionCode 52**입니다. 성장 카드 상세보기, 대표 업적·장착 칭호와 53종 도감을 추가했습니다. 기록·홈·성장 탭, 실제 결제 기간 누적 가성비와 계정별 영구 성취를 유지합니다.
+현재 버전은 **2.8.27 / versionCode 57**입니다. Android 사용량 수치의 소수점 자릿수를 2자리 또는 3자리로 선택할 수 있고, Windows 바탕화면 위젯은 앱 안에서 업데이트할 수 있습니다. 성장 화면·업적 도감·칭호 보관함, 계정별 기록과 기존 사용량 기능을 유지합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.22/CodexMeter-2.8.22-ko.apk) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.22) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md) · [검증 결과](docs/GROWTH_RELEASE_2.8.22.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-2.8.27-ko.apk) · [Windows 위젯 0.1.9](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-WindowsWidget-0.1.9.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.27) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md)
 
-기존 앱을 삭제하지 않고 업데이트하세요. 실제 갤럭시 설치·개인 DB 복구는 아직 미검증입니다. Windows 위젯은 0.1.7로 함께 업데이트합니다.
+소수점 자릿수는 **설정 → 위젯 및 화면 → 사용량 소수점 자리수**에서 바꿉니다. 기존 사용량 기록의 원본 정밀도나 계산은 변경하지 않고 화면 표시만 조정합니다. 기존 휴대폰 앱은 삭제하지 않고 업데이트하세요. Windows 위젯 0.1.9 이상은 위젯 메뉴의 **⋯ → 업데이트 확인**으로 새 버전을 받을 수 있습니다. 최초 설치 또는 0.1.8 이하에서 업데이트할 때는 ZIP을 직접 내려받아 새 폴더에 풀어 실행하세요. 로그인·설정·Tailscale 연결을 보존하려면 기존 AppData 폴더를 삭제하지 마세요.
 
 Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Codex-Meter](https://github.com/BenItBuhner/Codex-Meter)의 MIT 라이선스와 저작권을 유지합니다. OpenAI·Samsung·원작자가 제공하거나 보증하는 공식 제품이 아닙니다. [전체 릴리스 기록](RELEASE_NOTES.ko.md)을 보존합니다.
 
@@ -20,7 +20,7 @@ Android 15 에뮬레이터의 native RemoteViews 렌더링입니다. 표시 수�
 
 ## Windows 바탕화면 위젯
 
-[Windows Widget 0.1.0 beta ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.11-beta/CodexMeter-WindowsWidget-0.1.0-beta.zip)을 압축 풀고 `CodexMeterWidget.exe`를 실행합니다. 상단을 끌어 이동하고 가장자리로 크기를 바꾸며 ⋯ 메뉴로 항상 위·투명도를 설정합니다. 별도 로그인과 PC 기록을 사용합니다. Windows 코드 서명·실계정 검증은 미완료입니다. [자세한 안내](windows-widget/README.ko.md).
+[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-WindowsWidget-0.1.9.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
 ## Android 설치
 
@@ -53,7 +53,9 @@ ChatGPT 내부 사용량 경로와 삼성 전용 메타데이터는 안정된 �
 
 ## 업데이트
 
-2.8.7 이하 사용자는 Releases에서 최신 APK를 한 번 수동 설치합니다. 2.8.8 이상은 앱의 **기록 → 설정 → 앱 정보 및 라이선스 → 업데이트**에서 확인할 수 있습니다. 베타 포함 채널과 하루 한 번 자동 확인을 기본으로 하며, 저장한 기존 채널·확인 설정은 유지합니다. 2.8.9부터 확인된 새 버전은 홈의 업데이트 카드에도 표시합니다. 알림은 사용자가 켜야 합니다. 다운로드 크기·SHA-256·패키지·한국어 인증서·증가한 versionCode를 검사한 뒤 Android 설치 확인을 요청합니다. 자동 확인은 OS의 백그라운드 정책에 따라 늦어질 수 있습니다. 다운로드 중 화면을 닫으면 작업을 취소합니다. 기기 내 설치·취소·업데이트 알림은 아직 실기기 검증 전입니다.
+2.8.7 이하 사용자는 Releases에서 최신 APK를 한 번 수동 설치합니다. 2.8.8 이상은 앱의 **기록 → 설정 → 앱 정보 및 라이선스 → 업데이트**에서 확인할 수 있습니다. 베타 포함 채널과 하루 한 번 자동 확인을 기본으로 하며, 저장한 기존 채널·확인 설정은 유지합니다. 확인된 새 버전은 홈의 업데이트 카드에도 표시합니다. 다운로드 크기·SHA-256·패키지·한국어 인증서·증가한 versionCode를 검사한 뒤 Android 설치 확인을 요청합니다. 자동 확인은 OS의 백그라운드 정책에 따라 늦어질 수 있습니다.
+
+Windows 위젯 0.1.9 이상은 **⋯ → 업데이트 확인**으로 공개 Windows 버전을 확인합니다. 사용자가 확인한 뒤 내려받고 SHA-256과 실행 파일 버전을 검증해 위젯만 교체 실행하며, 로그인·설정·Tailscale 연결 정보는 기존 저장소에서 이어집니다. Android 앱 업데이트와 Windows 위젯 업데이트는 각각 별도로 진행합니다.
 
 정식 versionCode를 증가시키며 기존 한국어 서명 키를 유지합니다. 동일 버전의 공개 APK를 조용히 교체하지 않습니다. [버전·배포 정책](docs/RELEASE_POLICY.ko.md)을 참고하세요.
 
