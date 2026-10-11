@@ -16,19 +16,17 @@
 
 현재 배포 앱의 티어별 휘장 자산은 아래 미리보기에서 확인할 수 있습니다.
 
-![GPT HUD 티어 휘장 모음](docs/precision-crests/tier-gallery.png)
+| Iron | Bronze | Silver | Gold | Platinum |
+| :---: | :---: | :---: | :---: | :---: |
+| ![Iron 삼족오](windows-widget/assets/prestige_0.png) | ![Bronze 삼족오](windows-widget/assets/prestige_1.png) | ![Silver 삼족오](windows-widget/assets/prestige_2.png) | ![Gold 삼족오](windows-widget/assets/prestige_3.png) | ![Platinum 삼족오](windows-widget/assets/prestige_4.png) |
+
+| Emerald | Diamond | Master | Grandmaster | Challenger |
+| :---: | :---: | :---: | :---: | :---: |
+| ![Emerald 삼족오](windows-widget/assets/prestige_5.png) | ![Diamond 삼족오](windows-widget/assets/prestige_6.png) | ![Master 삼족오](windows-widget/assets/prestige_7.png) | ![Grandmaster 삼족오](windows-widget/assets/prestige_8.png) | ![Challenger 삼족오](windows-widget/assets/prestige_9.png) |
+
+Windows 위젯에 포함된 실제 삼족오 PNG 자산입니다. Android는 같은 티어 순서의 WebP 자산을 사용합니다. 위 이미지는 휘장 미리보기이며 위젯 화면 캡처는 아닙니다.
 
 Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Codex-Meter](https://github.com/BenItBuhner/Codex-Meter)의 MIT 라이선스와 저작권을 유지합니다. OpenAI·Samsung·원작자가 제공하거나 보증하는 공식 제품이 아닙니다. [전체 릴리스 기록](RELEASE_NOTES.ko.md)을 보존합니다.
-
-## 이전 버전 안내와 자료
-
-## 위젯 디자인 자료
-
-아래 이미지는 2.8.13 당시의 위젯 레이아웃 렌더링 예시이며, 현재 위젯 화면 캡처가 아닙니다. 현재 Windows 위젯 업데이트는 0.1.9부터 앱 안에서 제공하며, 위젯 설치와 사용 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
-
-![과거 2.8.13 위젯 레이아웃 예시](docs/widget-tier-2.8.13/tier-5-250.png)
-
-Android 15 에뮬레이터의 native RemoteViews 렌더링이며, 수치는 합성 테스트 값입니다. 삼성 런처·실계정 검증 화면이 아닙니다. [당시 검증 보고서](docs/WIDGET_TIER_CENTER_2.8.13.ko.md).
 
 ## Windows 바탕화면 위젯
 
@@ -53,7 +51,7 @@ Android 15 에뮬레이터의 native RemoteViews 렌더링이며, 수치는 합�
 - 직접 등록한 결제금액과 기간을 기반으로 구독 활용도 참고값을 표시합니다. API 비용·절약액·생산성 측정값이 아닙니다. 코치 문구에 별도 AI 호출을 사용하지 않습니다.
 - 위젯·알림·선택적 사용량 모니터·Wear 연동을 포함합니다. 삼성 전용 화면 동작은 기기와 펌웨어에 따라 달라질 수 있습니다.
 
-티어 휘장 자산과 [2.8.9 변경·검증 보고서](docs/PRECISION_CRESTS_2.8.9_REPORT.ko.md)를 제공합니다. 휘장 모음 이미지는 배포 자산 미리보기이며 현재 앱 화면 캡처는 아닙니다. [이전 티어 평가 설계](docs/TIER_EVOLUTION_2.8.8_REPORT.ko.md)는 보존합니다.
+소수점 설정은 표시 형식을 선택합니다. 서버가 정수 사용률만 반환하면 잔여량도 `57.00%` 또는 `57.000%`처럼 표시되며, 더 세밀한 사용량을 측정한 뜻은 아닙니다. 서버가 제공하지 않은 소수점 소비량을 추정해서 만들지 않습니다.
 
 ## 로그인·개인정보·보안
 
