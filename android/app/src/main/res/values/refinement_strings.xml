@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ref_backup">Achievement backup &amp; restore</string>
+    <string name="ref_backup_note">Save XP, achievements, titles, tiers, showcase and billing recaps in an encrypted file. Restore requires the same signed-in OpenAI account. Authentication tokens are excluded.</string>
+    <string name="ref_export">Save encrypted backup</string>
+    <string name="ref_import">Import backup</string>
+    <string name="ref_backup_ready">Save a backup before moving to a new phone. Restore preserves newer achievements.</string>
+    <string name="ref_password">Backup password</string>
+    <string name="ref_password_again">Repeat password</string>
+    <string name="ref_password_note">Use a password of 10–256 characters. A forgotten password cannot be recovered. The file contains personal activity metadata.</string>
+    <string name="ref_password_error">Check password length and confirmation.</string>
+    <string name="ref_working">Processing encrypted file…</string>
+    <string name="ref_restored">Restored · newer achievements were preserved.</string>
+    <string name="ref_exported">Encrypted backup saved</string>
+    <string name="ref_backup_failed">Could not finish. Check the password, account, file and storage. A failed restore preserves existing records.</string>
+    <string name="ref_mixed_billing">This billing period contains multiple plans or quota policies. Different units are not summed; prior segments remain in billing history.</string>
+    <string name="ref_more_filters">Category &amp; sort</string>
+    <string name="ref_promotion_held">Higher promotion requires four recent complete weeks and sufficient observed activity and quota evidence. The score is provisional; your highest record is preserved.</string>
+    <string name="ref_demotion_scope">Demotion held · token timezone or account-wide coverage is unverified.</string>
+    <string name="ref_demotion_held">Demotion held · fresh observations, complete comparable weeks and the same policy are required. Missing observations are not zero activity.</string>
+    <string name="ref_demotion_checked">A comparable complete-week evaluation ran. Demotion requires three consecutive low weeks and a falling long-term score.</string>
+    <string name="ref_xp_milestone">Verified token milestones grant a one-time bonus. Daily reward caps remain; repeated refresh or restore cannot duplicate awards.</string>
+</resources>

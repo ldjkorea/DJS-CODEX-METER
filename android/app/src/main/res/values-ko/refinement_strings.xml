@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ref_backup">성취 백업·복원</string>
+    <string name="ref_backup_note">XP·업적·칭호·티어·대표 메달·결제 결산을 암호 파일로 보관합니다. 같은 OpenAI 계정으로 로그인한 기기에서만 복원할 수 있습니다. 로그인 토큰은 포함하지 않습니다.</string>
+    <string name="ref_export">암호 백업 저장</string>
+    <string name="ref_import">백업 가져오기</string>
+    <string name="ref_backup_ready">새 휴대폰으로 옮기기 전에 백업을 저장하세요. 복원은 더 최신인 성취를 보존합니다.</string>
+    <string name="ref_password">백업 암호</string>
+    <string name="ref_password_again">암호 다시 입력</string>
+    <string name="ref_password_note">10~256자 암호를 입력하세요. 암호를 잊으면 복원할 수 없습니다. 이 파일에는 개인 활동 기록이 포함됩니다.</string>
+    <string name="ref_password_error">암호 길이와 일치 여부를 확인해 주세요.</string>
+    <string name="ref_working">암호 파일을 처리하고 있습니다…</string>
+    <string name="ref_restored">복원 완료 · 기존의 최신 성취는 유지했습니다.</string>
+    <string name="ref_exported">암호 백업 저장 완료</string>
+    <string name="ref_backup_failed">처리하지 못했습니다. 암호·계정·파일·저장 공간을 확인하세요. 복원 실패 시 기존 기록은 유지됩니다.</string>
+    <string name="ref_mixed_billing">요금제·한도 정책이 바뀐 결제 기간입니다. 서로 다른 단위는 합산하지 않으며 이전 구간도 결산 기록에 남습니다.</string>
+    <string name="ref_more_filters">카테고리·정렬</string>
+    <string name="ref_promotion_held">상위 승급은 최근 완전 주간 4개와 확인 가능한 활동·한도 자료가 충분할 때 평가합니다. 현재 점수는 잠정값이며 최고 기록은 유지됩니다.</string>
+    <string name="ref_demotion_scope">강등 보류 · 토큰 날짜의 시간대 또는 계정 전체 관측 범위를 확인하지 못했습니다.</string>
+    <string name="ref_demotion_held">강등 보류 · 신선한 관측·동일 정책의 완전 주간·비교 자료가 필요합니다. 공백은 0 활동으로 계산하지 않습니다.</string>
+    <string name="ref_demotion_checked">비교 가능한 완전 주간 평가를 실행했습니다. 3주 연속 저활용과 장기 점수 하락을 함께 확인해야 강등합니다.</string>
+    <string name="ref_xp_milestone">확인된 토큰 이정표에 1회 보너스가 추가됩니다. 일일 보상 상한은 유지하며 반복 조회·복원으로 중복 지급하지 않습니다.</string>
+</resources>

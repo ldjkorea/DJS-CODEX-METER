@@ -56,6 +56,7 @@ public final class GrowthActivity extends AppCompatActivity {
     String mode(){String value=getIntent().getStringExtra("growth_mode");return "titles".equals(value)?"titles":"achievements".equals(value)||getIntent().getBooleanExtra("catalog",false)?"achievements":"overview";}
     void open(String mode){if(busy)return;if(!mode.equals("overview")){RpgCollectionActivity.open(this,mode);return;}if(detailDialog!=null)detailDialog.dismiss();getIntent().putExtra("catalog",false).putExtra("growth_mode",mode);scroll=0;android.view.View view=findViewById(R.id.dashboard_scroll);if(view!=null)view.scrollTo(0,0);load(true);}
     void detail(String kind,JSONObject state){if(isFinishing()||isDestroyed()||!loadedAccount.equals(SubscriptionStore.accountKey(this)))return;if(detailDialog!=null)detailDialog.dismiss();detailDialog=RpgDetails.show(this,kind,state,dark);}
+    void medalDetail(JSONObject state,RpgCatalog.Entry e){if(isFinishing()||isDestroyed()||!loadedAccount.equals(SubscriptionStore.accountKey(this)))return;if(detailDialog!=null)detailDialog.dismiss();detailDialog=RpgMedalUi.show(this,state,e,dark,false,null);}
     void chooseShowcase(JSONObject state){if(!busy&&loadedAccount.equals(SubscriptionStore.accountKey(this)))RpgCollectionActivity.open(this,"showcase");}
     void equip(String title){String account=SubscriptionStore.accountKey(this);if(account==null||busy)return;busy=true;
         WORKER.execute(()->{boolean saved=false;try{saved=RpgProgressStore.equip(getApplicationContext(),account,title);}catch(Exception ignored){}final boolean ok=saved;

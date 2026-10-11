@@ -1,0 +1,14 @@
+{
+  "SubscriptionStore.java": [
+    [
+      "    }catch(Exception ignored){return null;}\n    }\n    static boolean sav",
+      "    }catch(Exception ignored){\n            JSONObject p=RpgProgressStore.peek(context),billing=p==null?null:p.optJSONObject(\"billing\");JSONObject best=null;long saved=-1;\n            if(billing!=null&&snapshot!=null)for(String id:AccountProgress.keys(billing)){JSONObject item=billing.optJSONObject(id),bill=item==null?null:item.optJSONObject(\"bill\");if(bill!=null&&LedgerRecord.cleanPlan(snapshot.planType).equals(bill.optString(\"plan\"))&&bill.optLong(\"saved_at\")>=saved){best=bill;saved=bill.optLong(\"saved_at\");}}\n            try{return best==null?null:new SubscriptionCost(best.getString(\"amount\"),best.getString(\"currency\"),LocalDate.parse(best.getString(\"start\")),LocalDate.parse(best.getString(\"end\")));}catch(Exception unavailable){return null;}\n        }\n    }\n    static boolean sav"
+    ]
+  ],
+  "RecordSettings.java": [
+    [
+      "tory,()->billingHistory(a,dark));\n        action(a,account,d",
+      "tory,()->billingHistory(a,dark));\n        action(a,account,dark,R.string.ref_backup,()->a.startActivity(new Intent(a,RpgBackupActivity.class)));\n        action(a,account,d"
+    ]
+  ]
+}

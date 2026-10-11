@@ -33,6 +33,7 @@ final class RecordSettings {
         Button edit=action(a,account,dark,bill==null?R.string.ux_register:R.string.v3_payment_edit,()->SubscriptionUi.edit(a,AppPreferences.loadSnapshot(a),dark,a::recreate));
         edit.setEnabled(SubscriptionStore.key(a,snapshot)!=null);
         action(a,account,dark,R.string.ux_payment_history,()->billingHistory(a,dark));
+        action(a,account,dark,R.string.ref_backup,()->a.startActivity(new Intent(a,RpgBackupActivity.class)));
         action(a,account,dark,R.string.matte_account_manage,()->MatteNav.homeAction(a,"account"));
 
         LinearLayout display=card(a,parent,dark,R.string.ux_widget_screen);

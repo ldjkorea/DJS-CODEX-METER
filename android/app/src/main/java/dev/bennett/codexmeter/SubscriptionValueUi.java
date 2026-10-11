@@ -40,7 +40,10 @@ final class SubscriptionValueUi {
         try{UsageWindow w=snapshot.longWindow();String policy=(snapshot.weekly!=null?"weekly":"monthly")+"|"+LedgerRecord.cleanPlan(snapshot.planType)+"|"+w.windowSeconds;
             value=monthly==null?null:monthly.getJSONObject("buckets").optJSONObject(policy);
         }catch(Exception ignored){}
-        if(active&&value!=null&&!value.isNull("reference_value")){
+        if(active&&monthly!=null&&monthly.optBoolean("mixed_policies")){
+            card.addView(LedgerUi.caption(a,a.getString(R.string.ref_mixed_billing),dark));
+            JSONObject recaps=RpgProgressStore.peek(a).optJSONObject("settlements");if(recaps!=null)for(String id:AccountProgress.keys(recaps)){JSONObject recap=recaps.optJSONObject(id),b=recap.optJSONObject("bill");if(b!=null&&b.optString("start").equals(bill.start.toString())&&b.optString("end").equals(bill.end.toString())){card.addView(LedgerUi.caption(a,b.optString("plan")+" · "+b.optString("currency")+" · "+b.optString("amount"),dark));JSONObject buckets=recap.optJSONObject("buckets");for(String p:AccountProgress.keys(buckets)){JSONObject v=buckets.optJSONObject(p);card.addView(LedgerUi.caption(a,p+" · "+v.optString("percent")+"%",dark));}}}
+        }else if(active&&value!=null&&!value.isNull("reference_value")){
             BigDecimal percentValue=new BigDecimal(value.optString("percent","0"));
             LinearLayout figures=new LinearLayout(a);figures.setOrientation(LinearLayout.VERTICAL);
             figures.addView(LedgerUi.amount(a,FunActivity.money(bill.currency,new BigDecimal(value.optString("reference_value","0"))),dark,32));
@@ -53,11 +56,13 @@ final class SubscriptionValueUi {
         }else card.addView(LedgerUi.caption(a,a.getString(bill==null?R.string.v3_payment_missing:!active?R.string.ux_period_mismatch:monthly!=null&&monthly.optBoolean("mixed_policies")?R.string.rpg_mixed_policy:R.string.live_need_coverage),dark));
         if(bill==null||!active){Ui.addSpacer(card,12);android.widget.Button edit=LedgerUi.action(a,a.getString(bill==null?R.string.ux_register:R.string.v3_payment_edit),true,dark,()->SubscriptionUi.edit(a,AppPreferences.loadSnapshot(a),dark,a::recreate));edit.setEnabled(SubscriptionStore.key(a,snapshot)!=null);card.addView(edit);}
         if(bill!=null){
+            JSONObject all=RpgProgressStore.peek(a),recaps=all==null?null:all.optJSONObject("settlements");int matching=0;if(recaps!=null)for(String id:AccountProgress.keys(recaps)){JSONObject b=recaps.optJSONObject(id).optJSONObject("bill");if(b!=null&&b.optString("start").equals(bill.start.toString())&&b.optString("end").equals(bill.end.toString()))matching++;}if(matching>1)card.addView(LedgerUi.caption(a,a.getString(R.string.ref_mixed_billing),dark));
             card.addView(LedgerUi.caption(a,a.getString(R.string.rpg_billing_period,bill.start.toString(),bill.end.toString()),dark));
             card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_payment,FunActivity.money(bill.currency,bill.amount)),dark));
             long start=bill.start.atStartOfDay(LedgerAggregation.ZONE).toInstant().toEpochMilli(),end=bill.end.atStartOfDay(LedgerAggregation.ZONE).toInstant().toEpochMilli();double elapsed=100d*(System.currentTimeMillis()-start)/(end-start);
             card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_elapsed,LedgerUi.number(Math.max(0,Math.min(100,elapsed)))),dark));
         }
+        JSONObject display=RpgProgressStore.peek(a),recaps=display==null?null:display.optJSONObject("settlements");if(recaps!=null)for(String id:AccountProgress.keys(recaps)){try{JSONObject recap=recaps.getJSONObject(id),oldBill=recap.getJSONObject("bill");java.time.LocalDate today=LedgerAggregation.day(System.currentTimeMillis());if(snapshot!=null&&!oldBill.getString("plan").equals(LedgerRecord.cleanPlan(snapshot.planType))&&!today.isBefore(java.time.LocalDate.parse(oldBill.getString("start")))&&today.isBefore(java.time.LocalDate.parse(oldBill.getString("end")))){Ui.addSpacer(card,8);card.addView(LedgerUi.caption(a,oldBill.getString("plan")+" · "+oldBill.getString("start")+" ~ "+oldBill.getString("end"),dark));JSONObject buckets=recap.getJSONObject("buckets");for(String policy:AccountProgress.keys(buckets)){JSONObject v=buckets.getJSONObject(policy);String detail=policy+" · "+LedgerUi.number(v.getDouble("percent"))+"%";if(!v.isNull("reference_value"))detail+=" · "+FunActivity.money(oldBill.getString("currency"),new BigDecimal(v.getString("reference_value")));card.addView(LedgerUi.caption(a,detail,dark));}card.addView(LedgerUi.caption(a,a.getString(R.string.ref_mixed_billing),dark));}}catch(Exception ignored){card.addView(LedgerUi.caption(a,a.getString(R.string.rpg_mixed_policy),dark));}}
         Ui.addSpacer(card,10);card.addView(LedgerUi.action(a,a.getString(R.string.rpg3_billing_history),false,dark,()->a.startActivity(new android.content.Intent(a,BillingHistoryActivity.class))));
         return card;
     }

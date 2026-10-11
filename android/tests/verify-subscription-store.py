@@ -32,6 +32,8 @@ class SecureTokenStore {static AuthTokens current;static AuthTokens load(android
 class AppPreferences {static UsageSnapshot current;static UsageSnapshot loadSnapshot(android.content.Context context){return current;}}''',
 'dev/bennett/codexmeter/UsageApi.java': 'package dev.bennett.codexmeter; class UsageApi {static final Object NETWORK_LOCK=new Object();}',
 }
+fixtures['dev/bennett/codexmeter/RpgProgressStore.java']='package dev.bennett.codexmeter; class RpgProgressStore {static org.json.JSONObject peek(android.content.Context c){return null;}}'
+fixtures['dev/bennett/codexmeter/AccountProgress.java']='package dev.bennett.codexmeter; class AccountProgress {static java.util.List<String> keys(org.json.JSONObject o){return o==null?java.util.List.of():new java.util.ArrayList<>(o.keySet());}}'
 files=[]
 for name,text in fixtures.items():
     path=out/'fixtures'/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf-8');files.append(str(path))

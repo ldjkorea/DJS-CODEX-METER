@@ -40,7 +40,8 @@ final class RpgDetails {
                 line(a,body,R.string.growth_next_rank,dark,RpgGrowthUi.rank(a,Math.max(0,grade+1)));
                 double next=grade<0?0:RpgTier.BOUNDS[Math.min(8,grade)];line(a,body,R.string.growth_next_gap,dark,LedgerUi.number(Math.max(0,next-score)));
             }
-            if(rank.optBoolean("provisional"))line(a,body,R.string.fun_provisional,dark);
+            if(rank.optBoolean("provisional")){line(a,body,R.string.fun_provisional,dark);line(a,body,R.string.ref_promotion_held,dark);}
+            String status=state.optString("demotion_status");line(a,body,status.equals("comparable_window_evaluated")?R.string.ref_demotion_checked:status.equals("held_unverified_timezone_or_account_coverage")?R.string.ref_demotion_scope:R.string.ref_demotion_held,dark);
             if(rank.optLong("evaluated_at")>0)line(a,body,R.string.growth_evaluated,dark,V3Display.time(rank.optLong("evaluated_at")));
         }else line(a,body,R.string.rpg3_unknown,dark);
         line(a,body,R.string.growth_protection,dark);
@@ -50,7 +51,7 @@ final class RpgDetails {
         line(a,body,R.string.rpg3_next_xp,dark,RpgGrowthUi.number(RpgEngine.threshold(level+1)-xp),level+1);
         long[] sources=RpgGrowthFacts.xpSources(state);int[] labels={R.string.growth_xp_activity,R.string.growth_xp_tokens,R.string.growth_xp_quota,R.string.growth_xp_achievements};
         for(int i=0;i<labels.length;i++)line(a,body,labels[i],dark,RpgGrowthUi.number(sources[i]));
-        line(a,body,R.string.growth_xp_note,dark);line(a,body,R.string.growth_growth_line,dark);
+        line(a,body,R.string.ref_xp_milestone,dark);line(a,body,R.string.growth_xp_note,dark);line(a,body,R.string.growth_growth_line,dark);
         LedgerUi.section(body,a.getString(R.string.growth_recent_growth),dark);line(a,body,R.string.growth_no_level_history,dark);
         List<String> recent=RpgGrowthFacts.recentAchievements(state);JSONObject facts=state.optJSONObject("achievements");
         if(recent.isEmpty())line(a,body,R.string.rpg3_unknown,dark);

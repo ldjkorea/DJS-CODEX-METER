@@ -1,5 +1,32 @@
 [
   {
+    "version": "2.8.25",
+    "origin": "korean",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.25",
+    "ko": {
+      "title": "성취 보존과 성장 프로필",
+      "changes": [
+        "성취 백업·복원: 계정별 XP·업적·칭호·대표 메달·티어·결제 결산을 암호 파일로 저장하고 같은 계정에 복원합니다. 로그인 토큰은 포함하지 않습니다.",
+        "복원 전 형식·계정·기록을 검사하고 트랜잭션으로 병합합니다. 반복 복원은 보상을 중복 지급하지 않으며 더 최신인 성취를 보존합니다.",
+        "강등 평가를 실제 갱신 경로에 연결했습니다. 서울 시간·계정 전체 관측·동일 정책의 완전 주간을 확인하지 못하면 강등을 보류합니다.",
+        "확인된 토큰 이정표에 버전별 1회 XP 보너스를 추가하고, 기존 53개 업적과 별개로 복합 조건의 칭호 10개를 추가했습니다.",
+        "성장 카드의 고정 높이를 없애고 대표 메달은 가로 3열로 정리했습니다. 도감의 카테고리·정렬은 접어서 보여줍니다.",
+        "업적 문양을 안정적인 ID에 고정하고 일부 희귀 메달의 날개·일식 문양을 개선했습니다. 기존 기록·위젯·Wear·Windows 연결과 서명은 보존합니다."
+      ]
+    },
+    "en": {
+      "title": "Achievement preservation and growth profile",
+      "changes": [
+        "Export and restore account XP, achievements, titles, ordered showcase, tiers and billing recaps in a password-encrypted file. Login tokens are excluded.",
+        "Validate format, account and records before a transactional merge. Repeated restore cannot duplicate rewards and newer achievements remain.",
+        "Certified demotion evaluation is connected to operational refresh. Unverified timezone, account-wide coverage or comparable complete weeks safely hold demotion.",
+        "Verified token milestones gain versioned one-time XP bonuses. Ten independent compound-condition titles complement all 53 unchanged achievements.",
+        "Growth cards use natural heights and a horizontal three-medal showcase. Category and sort controls collapse into a secondary area.",
+        "Medal motifs are pinned to stable IDs; selected rare wing and eclipse motifs are improved. Existing records, widgets, Wear, Windows links and signing identity remain."
+      ]
+    }
+  },
+  {
     "version": "2.8.23",
     "origin": "korean",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.23",
