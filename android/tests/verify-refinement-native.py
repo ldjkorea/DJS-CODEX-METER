@@ -23,6 +23,7 @@ run([jdk/'javac.exe','-proc:none','@'+str(args)]);run([bt/'aapt2.exe','link','-I
 run([bt/'d8.bat','--lib',jar,'--min-api','26','--output',dex,*classes.rglob('*.class')])
 with ZipFile(out/'base.apk','a') as z:z.write(dex/'classes.dex','classes.dex')
 signing=root/'.local-signing';run([bt/'apksigner.bat','sign','--ks',signing/'codex-meter-local.p12','--ks-key-alias','codexmeter','--ks-pass','file:'+str(signing/'password'),'--out',out/'tests.apk',out/'base.apk'])
+if '--compile-only' in sys.argv:sys.exit(0)
 installed=shell('pm','list','packages',package).splitlines()
 if '--reuse-owned-production-fixture' not in sys.argv:
     assert 'package:'+package not in installed,'Never overwrite an unknown production installation'
