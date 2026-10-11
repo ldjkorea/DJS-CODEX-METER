@@ -53,13 +53,8 @@ final class RpgGrowthUi {
     static void render(GrowthActivity a,LinearLayout parent,JSONObject journal,boolean dark,String mode){
         JSONObject state=journal==null?null:journal.optJSONObject("rpg");JSONObject facts=state==null?null:state.optJSONObject("achievements");if(facts==null)facts=new JSONObject();
         if(!mode.equals("overview")){parent.addView(LedgerUi.action(a,a.getString(R.string.growth_overview),false,dark,()->a.open("overview")));}
-        if(mode.equals("titles")){titles(a,parent,state,facts,dark);return;}
-        if(mode.equals("achievements")){
-            LedgerUi.section(parent,a.getString(R.string.rpg3_achievements),dark);
-            parent.addView(LedgerUi.caption(a,a.getString(R.string.growth_earned_count,RpgGrowthFacts.earned(state).size(),RpgCatalog.ALL.size()),dark));
-            parent.addView(LedgerUi.action(a,a.getString(R.string.growth_showcase_edit),false,dark,()->a.chooseShowcase(state)));
-            for(RpgCatalog.Entry e:RpgCatalog.ALL){parent.addView(achievement(a,e,facts.optJSONObject(e.id),dark));Ui.addSpacer(parent,8);}return;
-        }
+        if(mode.equals("titles")){parent.addView(LedgerUi.action(a,a.getString(R.string.medal_titles),false,dark,()->a.open("titles")));return;}
+        if(mode.equals("achievements")){parent.addView(LedgerUi.action(a,a.getString(R.string.medal_codex),false,dark,()->a.open("achievements")));return;}
         String equipped=state==null?"":state.optString("equipped_title");
         TextView header=LedgerUi.badge(a,equipped.isEmpty()?a.getString(R.string.rpg3_not_equipped):title(a,equipped),dark,false);
         header.setGravity(Gravity.END);header.setMinHeight(Ui.dp(a,48));header.setOnClickListener(v->a.open("titles"));header.setContentDescription(a.getString(R.string.growth_title_pick)+" · "+header.getText());
@@ -73,7 +68,7 @@ final class RpgGrowthUi {
         List<String> selected=RpgShowcase.selected(a,state);
         if(selected.isEmpty())parent.addView(LedgerUi.caption(a,a.getString(R.string.growth_showcase_empty),dark));
         for(String id:selected){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout badge=compact(a,e,dark);badge.setTag("growth:representative");badge.setContentDescription(a.getString(R.string.growth_representative)+" · "+name(a,e));badge.setOnClickListener(v->a.open("achievements"));badge.setFocusable(true);parent.addView(badge);Ui.addSpacer(parent,8);}
-        parent.addView(LedgerUi.action(a,a.getString(R.string.rpg3_all),false,dark,()->a.open("achievements")));
+        parent.addView(LedgerUi.action(a,a.getString(R.string.medal_codex),false,dark,()->a.open("achievements")));
         parent.addView(LedgerUi.action(a,a.getString(R.string.growth_showcase_edit),false,dark,()->a.chooseShowcase(state)));
         LedgerUi.section(parent,a.getString(R.string.rpg3_titles),dark);
         parent.addView(LedgerUi.action(a,equipped.isEmpty()?a.getString(R.string.growth_title_pick):title(a,equipped),false,dark,()->a.open("titles")));
@@ -83,19 +78,6 @@ final class RpgGrowthUi {
         LinearLayout row=Ui.card(c,dark);row.setOrientation(LinearLayout.HORIZONTAL);row.setGravity(Gravity.CENTER_VERTICAL);row.setMinimumHeight(Ui.dp(c,56));
         ImageView mark=new ImageView(c);mark.setImageDrawable(new RpgAchievementMark(e,dark));mark.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);row.addView(mark,new LinearLayout.LayoutParams(Ui.dp(c,42),Ui.dp(c,42)));
         TextView label=LedgerUi.caption(c,name(c,e),dark);LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,-2,1);lp.setMarginStart(Ui.dp(c,10));row.addView(label,lp);return row;
-    }
-    private static void titles(GrowthActivity a,LinearLayout parent,JSONObject state,JSONObject facts,boolean dark){
-        LedgerUi.section(parent,a.getString(R.string.growth_title_pick),dark);parent.addView(LedgerUi.caption(a,a.getString(R.string.growth_title_note),dark));
-        String equipped=state==null?"":state.optString("equipped_title"),recommend=state==null?"":state.optString("recommended_title");
-        parent.addView(LedgerUi.heading(a,equipped.isEmpty()?a.getString(R.string.rpg3_not_equipped):a.getString(R.string.rpg3_equipped,title(a,equipped)),dark));
-        if(!equipped.isEmpty())parent.addView(LedgerUi.action(a,a.getString(R.string.rpg3_unequip),false,dark,()->a.equip("")));
-        if(!recommend.isEmpty()&&RpgGrowthFacts.earned(state).contains(recommend)){parent.addView(LedgerUi.action(a,a.getString(R.string.rpg3_recommend)+" · "+title(a,recommend),false,dark,()->a.equip(recommend)));}
-        Button random=LedgerUi.action(a,a.getString(R.string.rpg3_recommend),false,dark,a::recommend);random.setEnabled(!RpgGrowthFacts.earned(state).isEmpty());parent.addView(random);
-        if(RpgGrowthFacts.earned(state).isEmpty())parent.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_no_achievements),dark));
-        for(RpgCatalog.Entry e:RpgCatalog.ALL){JSONObject fact=facts.optJSONObject(e.id);boolean earned=fact!=null&&fact.optBoolean("unlocked");
-            LinearLayout row=Ui.card(a,dark);row.addView(LedgerUi.heading(a,title(a,e.id),dark));row.addView(LedgerUi.caption(a,name(a,e)+" · "+(korean(a)?e.descriptionKo():e.descriptionEn()),dark));
-            Button button=LedgerUi.action(a,earned?(e.id.equals(equipped)?a.getString(R.string.rpg3_equipped,title(a,e.id)):a.getString(R.string.rpg3_choose)):a.getString(R.string.rpg3_locked),e.id.equals(equipped),dark,()->a.equip(e.id));button.setEnabled(earned&&!e.id.equals(equipped));button.setTag("growth:title:"+e.id);row.addView(button);parent.addView(row);Ui.addSpacer(parent,8);
-        }
     }
     private static LinearLayout level(GrowthActivity a,JSONObject state,boolean dark){
         LinearLayout card=tile(a,dark);TierTheme.frame(card,TierTheme.tier(a),dark);
@@ -112,17 +94,6 @@ final class RpgGrowthUi {
         ImageView seal=new ImageView(a);seal.setImageResource(RpgPlanSeals.image(plan));seal.setScaleType(ImageView.ScaleType.FIT_CENTER);seal.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);card.addView(seal,new LinearLayout.LayoutParams(-1,Ui.dp(a,124)));
         TextView name=LedgerUi.heading(a,PlanArtwork.label(plan),dark);center(name);card.addView(name,new LinearLayout.LayoutParams(-1,-2));TextView concept=LedgerUi.caption(a,RpgPlanSeals.concept(plan),dark);center(concept);Ui.addSpacer(card,8);card.addView(concept);
         tap(a,card,"plan",a.getString(R.string.rpg3_plan),()->a.detail("plan",state),dark);return card;
-    }
-    private static LinearLayout achievement(GrowthActivity a,RpgCatalog.Entry e,JSONObject fact,boolean dark){
-        boolean unlocked=fact!=null&&fact.optBoolean("unlocked");LinearLayout card=Ui.card(a,dark);
-        LinearLayout row=new LinearLayout(a);row.setGravity(Gravity.CENTER_VERTICAL);ImageView mark=new ImageView(a);mark.setImageDrawable(new RpgAchievementMark(e,dark));mark.setAlpha(unlocked?1:.35f);mark.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);row.addView(mark,new LinearLayout.LayoutParams(Ui.dp(a,52),Ui.dp(a,52)));
-        TextView name=LedgerUi.heading(a,name(a,e),dark);LinearLayout.LayoutParams title=new LinearLayout.LayoutParams(0,-2,1);title.setMarginStart(Ui.dp(a,10));row.addView(name,title);card.addView(row);
-        int rarity=e.rarity.equals("mythic")?R.string.rpg3_rarity_mythic:e.rarity.equals("epic")?R.string.rpg3_rarity_epic:e.rarity.equals("rare")?R.string.rpg3_rarity_rare:e.rarity.equals("legendary")?R.string.rpg3_rarity_legendary:R.string.rpg3_rarity_common;
-        card.addView(LedgerUi.caption(a,a.getString(rarity)+" · +"+e.bonus+" XP",dark));card.addView(LedgerUi.caption(a,korean(a)?e.descriptionKo():e.descriptionEn(),dark));
-        long progress=fact==null?0:fact.optLong("progress");card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_progress,number(progress),number(e.target)),dark));
-        if(e.days>0||e.weeks>0)card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_days_weeks,fact==null?0:fact.optInt("progress_days"),e.days,fact==null?0:fact.optInt("progress_weeks"),e.weeks),dark));
-        ProgressBar bar=Ui.progress(a,dark);bar.setMax(1000);bar.setProgress(unlocked?1000:(int)(1000*Math.min(1,fact==null?0:fact.optDouble("progress_ratio",0))));bar.setContentDescription(a.getString(R.string.rpg3_progress,number(progress),number(e.target)));Ui.addSpacer(card,8);card.addView(bar);
-        card.addView(LedgerUi.caption(a,unlocked?a.getString(R.string.rpg3_earned,V3Display.time(fact.optLong("first_earned_at"))):a.getString(R.string.rpg3_locked),dark));return card;
     }
     private static void tokens(GrowthActivity a,LinearLayout parent,JSONObject state,boolean dark){LinearLayout card=Ui.card(a,dark);card.addView(LedgerUi.heading(a,a.getString(R.string.rpg3_tokens),dark));JSONObject tokens=state==null?null:state.optJSONObject("tokens");boolean known=false;long total=0,at=0;
         try{known=tokens!=null&&RpgTokens.known(tokens);if(known){total=RpgTokens.milestoneTotal(tokens);at=tokens.getJSONObject("official").optLong("at");}}catch(Exception ignored){}

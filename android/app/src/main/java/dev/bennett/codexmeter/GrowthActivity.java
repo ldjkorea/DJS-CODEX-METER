@@ -17,9 +17,10 @@ public final class GrowthActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle state){Ui.applySelectedTheme(this);super.onCreate(state);dark=Ui.isDark(this);
         content=Ui.installPage(this,getString(R.string.rpg3_growth),false).content;MatteNav.install(this,3);
         if(state!=null){scroll=state.getInt("growth_scroll");getIntent().putExtra("catalog",false).putExtra("growth_mode",state.getString("growth_mode","overview"));}
+        String destination=mode();if(!destination.equals("overview")){getIntent().putExtra("catalog",false).putExtra("growth_mode","overview");content.post(()->RpgCollectionActivity.open(this,destination));}
         getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){public void handleOnBackPressed(){if(!mode().equals("overview")){open("overview");}else MatteNav.open(GrowthActivity.this,1);}});
     }
-    @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);signature="";load(true);}
+    @Override protected void onNewIntent(Intent intent){super.onNewIntent(intent);setIntent(intent);String destination=mode();getIntent().putExtra("catalog",false).putExtra("growth_mode","overview");if(!destination.equals("overview"))RpgCollectionActivity.open(this,destination);signature="";load(true);}
     @Override protected void onResume(){super.onResume();
         if(!receiverRegistered){androidx.core.content.ContextCompat.registerReceiver(this,updates,new IntentFilter(AppConstants.ACTION_USAGE_UPDATED),androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);receiverRegistered=true;}load(false);
     }
@@ -53,20 +54,9 @@ public final class GrowthActivity extends AppCompatActivity {
         });
     }
     String mode(){String value=getIntent().getStringExtra("growth_mode");return "titles".equals(value)?"titles":"achievements".equals(value)||getIntent().getBooleanExtra("catalog",false)?"achievements":"overview";}
-    void open(String mode){if(busy)return;if(detailDialog!=null)detailDialog.dismiss();getIntent().putExtra("catalog",false).putExtra("growth_mode",mode);scroll=0;android.view.View view=findViewById(R.id.dashboard_scroll);if(view!=null)view.scrollTo(0,0);load(true);}
+    void open(String mode){if(busy)return;if(!mode.equals("overview")){RpgCollectionActivity.open(this,mode);return;}if(detailDialog!=null)detailDialog.dismiss();getIntent().putExtra("catalog",false).putExtra("growth_mode",mode);scroll=0;android.view.View view=findViewById(R.id.dashboard_scroll);if(view!=null)view.scrollTo(0,0);load(true);}
     void detail(String kind,JSONObject state){if(isFinishing()||isDestroyed()||!loadedAccount.equals(SubscriptionStore.accountKey(this)))return;if(detailDialog!=null)detailDialog.dismiss();detailDialog=RpgDetails.show(this,kind,state,dark);}
-    void chooseShowcase(JSONObject state){
-        String account=SubscriptionStore.accountKey(this);if(account==null||busy||!account.equals(loadedAccount))return;
-        java.util.List<String> eligible=RpgGrowthFacts.earned(state),chosen=new java.util.ArrayList<>(RpgShowcase.selected(this,state));
-        if(eligible.isEmpty()){android.widget.Toast.makeText(this,R.string.growth_showcase_empty,android.widget.Toast.LENGTH_SHORT).show();return;}
-        String[] labels=new String[eligible.size()];boolean[] checked=new boolean[eligible.size()];for(int i=0;i<labels.length;i++){labels[i]=RpgGrowthUi.name(this,RpgGrowthFacts.entry(eligible.get(i)));checked[i]=chosen.contains(eligible.get(i));}
-        if(detailDialog!=null)detailDialog.dismiss();detailDialog=new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(R.string.growth_showcase_edit).setMultiChoiceItems(labels,checked,(dialog,index,on)->{
-            String id=eligible.get(index);if(on&&chosen.size()>=3){((androidx.appcompat.app.AlertDialog)dialog).getListView().setItemChecked(index,false);checked[index]=false;android.widget.Toast.makeText(this,R.string.growth_showcase_limit,android.widget.Toast.LENGTH_SHORT).show();}else if(on)chosen.add(id);else chosen.remove(id);
-        }).setNegativeButton(android.R.string.cancel,null).setPositiveButton(R.string.growth_save,(dialog,which)->{
-            if(!account.equals(SubscriptionStore.accountKey(this))||busy)return;busy=true;
-            WORKER.execute(()->{boolean result=false;try{result=RpgShowcase.save(getApplicationContext(),account,chosen,state);}catch(Exception ignored){}final boolean saved=result;runOnUiThread(()->{busy=false;if(!isDestroyed()&&account.equals(SubscriptionStore.accountKey(this))){if(!saved)android.widget.Toast.makeText(this,R.string.rpg3_failed,android.widget.Toast.LENGTH_SHORT).show();load(true);}});});
-        }).create();detailDialog.show();
-    }
+    void chooseShowcase(JSONObject state){if(!busy&&loadedAccount.equals(SubscriptionStore.accountKey(this)))RpgCollectionActivity.open(this,"showcase");}
     void equip(String title){String account=SubscriptionStore.accountKey(this);if(account==null||busy)return;busy=true;
         WORKER.execute(()->{boolean saved=false;try{saved=RpgProgressStore.equip(getApplicationContext(),account,title);}catch(Exception ignored){}final boolean ok=saved;
             runOnUiThread(()->{busy=false;if(!isDestroyed()&&account.equals(SubscriptionStore.accountKey(this))){android.widget.Toast.makeText(this,ok?R.string.rpg3_saved:R.string.rpg3_failed,android.widget.Toast.LENGTH_SHORT).show();load(true);}});

@@ -2,6 +2,11 @@
 from pathlib import Path
 import json
 def strip_rpg(name,text):
+    # Additive private collection activity; no existing exported/auth activity changes.
+    if Path(name).name=="AndroidManifest.xml" and "wear" not in Path(name).parts:
+        hook='        <activity android:name="dev.bennett.codexmeter.RpgCollectionActivity" android:exported="false"/>\n'
+        assert text.count(hook)==1
+        text=text.replace(hook,"")
     from growth_review import strip_growth
     text=strip_growth(name,text)
     from rpg3_review import strip_rpg3

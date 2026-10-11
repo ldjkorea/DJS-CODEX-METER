@@ -3,26 +3,34 @@ package dev.bennett.codexmeter;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 
-/** Small original vector motifs, one paint/path and no bitmap allocations per badge. */
+/** Original deterministic metal medals. Catalog IDs select geometry, never random colors. */
 final class RpgAchievementMark extends Drawable {
-    private final RpgCatalog.Entry entry;private final Paint p=new Paint(3);private final Path path=new Path();private final boolean dark;
-    RpgAchievementMark(RpgCatalog.Entry e,boolean dark){entry=e;this.dark=dark;}
-    public void draw(Canvas c){Rect b=getBounds();c.save();c.translate(b.left,b.top);c.scale(b.width()/64f,b.height()/64f);
-        int color=entry.rarity.equals("mythic")?0xfff1a0ac:entry.rarity.equals("legendary")?0xffe8ce91:entry.rarity.equals("epic")?0xffc7a7f4:entry.rarity.equals("rare")?0xffaee4ee:0xffb7c4ce;
-        if(!dark){float[] hsv=new float[3];Color.colorToHSV(color,hsv);hsv[2]=.38f;color=Color.HSVToColor(hsv);}
-        p.setColor(color);p.setStrokeWidth(2.4f);p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);
-        path.reset();path.moveTo(32,3);path.lineTo(57,17);path.lineTo(57,45);path.lineTo(32,61);path.lineTo(7,45);path.lineTo(7,17);path.close();c.drawPath(path,p);
-        String kind=entry.metric;
-        if(entry.days>0&&kind.equals("tokens")){path.reset();path.moveTo(14,24);path.lineTo(27,31);path.lineTo(32,20);path.lineTo(37,31);path.lineTo(50,24);path.lineTo(43,40);path.lineTo(35,37);path.lineTo(32,48);path.lineTo(29,37);path.lineTo(21,40);path.close();c.drawPath(path,p);}
-        else if(kind.equals("tokens")){path.reset();path.moveTo(32,17);path.lineTo(44,30);path.lineTo(32,48);path.lineTo(20,30);path.close();c.drawPath(path,p);c.drawLine(20,30,44,30,p);c.drawLine(32,17,32,48,p);}
-        else if(kind.equals("streak")){c.drawRoundRect(17,22,34,37,7,7,p);c.drawRoundRect(30,29,47,44,7,7,p);}
-        else if(kind.equals("tier")){path.reset();path.moveTo(17,26);path.lineTo(22,39);path.lineTo(42,39);path.lineTo(47,26);path.lineTo(38,31);path.lineTo(32,19);path.lineTo(26,31);path.close();c.drawPath(path,p);c.drawLine(22,45,42,45,p);}
-        else if(kind.equals("dawn")){c.drawArc(18,18,47,47,65,280,false,p);c.drawCircle(42,21,3,p);c.drawLine(23,44,43,44,p);}
-        else if(kind.equals("weeks")||kind.equals("plans")){c.drawCircle(32,32,11,p);c.save();c.rotate(-30,32,32);c.drawOval(13,26,51,38,p);c.restore();c.drawCircle(46,21,3,p);}
-        else if(kind.equals("utilization")){c.drawArc(17,20,47,50,180,180,false,p);c.drawLine(32,35,42,25,p);c.drawCircle(32,35,3,p);c.drawLine(19,43,45,43,p);}
-        else if(kind.equals("heritage")){path.reset();path.moveTo(21,47);path.cubicTo(49,31,46,15,38,17);path.cubicTo(20,18,19,31,21,47);c.drawPath(path,p);c.drawLine(21,47,38,23,p);c.drawLine(26,37,37,37,p);}
-        else{c.drawCircle(32,32,9,p);for(int i=0;i<8;i++){double angle=i*Math.PI/4;c.drawLine(32+(float)Math.cos(angle)*14,32+(float)Math.sin(angle)*14,32+(float)Math.cos(angle)*18,32+(float)Math.sin(angle)*18,p);}if(kind.equals("weekend"))c.drawLine(18,48,46,48,p);}
+    private final RpgCatalog.Entry entry; private final Paint p=new Paint(3); private final Path path=new Path(); private final boolean dark; private int alpha=255; private final int[] motif; private final int color;
+    RpgAchievementMark(RpgCatalog.Entry e,boolean dark){entry=e;this.dark=dark;motif=RpgCollectionFacts.motif(e);
+        int tint=entry.rarity.equals("mythic")?0xffe9b7c1:entry.rarity.equals("legendary")?0xffddc79f:entry.rarity.equals("epic")?0xffc7b6e4:entry.rarity.equals("rare")?0xffb2d7df:0xffbdc7d0;
+        if(!dark){float[] hsv=new float[3];Color.colorToHSV(tint,hsv);hsv[2]=.38f;tint=Color.HSVToColor(hsv);}
+        color=tint;
+    }
+    public void draw(Canvas c){Rect b=getBounds();if(b.isEmpty())return;int frame=motif[0],symbol=motif[1],ornament=motif[2];
+        c.save();c.translate(b.left,b.top);c.scale(b.width()/64f,b.height()/64f);
+        p.setColor(color);p.setAlpha(alpha);p.setStrokeWidth(2.2f);p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);
+        if(frame==0)c.drawCircle(32,32,28,p);
+        else if(frame==1){path.reset();path.moveTo(32,3);path.lineTo(58,18);path.lineTo(54,46);path.lineTo(32,61);path.lineTo(10,46);path.lineTo(6,18);path.close();c.drawPath(path,p);}
+        else if(frame==2){path.reset();path.moveTo(32,3);path.lineTo(60,32);path.lineTo(32,61);path.lineTo(4,32);path.close();c.drawPath(path,p);}
+        else{c.drawRoundRect(8,6,56,58,12,12,p);c.drawLine(20,3,44,3,p);c.drawLine(20,61,44,61,p);}
+        // Distinct central motifs: crystal, sun, flame, crown, moon, orbit and three-legged raven.
+        if(symbol==0){path.reset();path.moveTo(32,15);path.lineTo(43,29);path.lineTo(32,47);path.lineTo(21,29);path.close();c.drawPath(path,p);c.drawLine(21,29,43,29,p);c.drawLine(32,15,32,47,p);}
+        else if(symbol==1){c.drawCircle(32,32,9,p);for(int i=0;i<8;i++){double angle=i*Math.PI/4;c.drawLine(32+(float)Math.cos(angle)*13,32+(float)Math.sin(angle)*13,32+(float)Math.cos(angle)*18,32+(float)Math.sin(angle)*18,p);}}
+        else if(symbol==2){path.reset();path.moveTo(32,15);path.cubicTo(30,27,18,28,23,40);path.cubicTo(25,49,41,49,42,36);path.cubicTo(41,28,36,26,36,21);path.lineTo(32,32);path.close();c.drawPath(path,p);c.drawLine(31,37,33,44,p);}
+        else if(symbol==3){path.reset();path.moveTo(17,25);path.lineTo(22,40);path.lineTo(42,40);path.lineTo(47,25);path.lineTo(38,31);path.lineTo(32,18);path.lineTo(26,31);path.close();c.drawPath(path,p);c.drawLine(22,46,42,46,p);c.drawCircle(32,29,2,p);}
+        else if(symbol==4){c.drawArc(18,17,46,46,65,280,false,p);c.drawCircle(42,21,3,p);c.drawLine(20,48,44,48,p);}
+        else if(symbol==5){c.drawCircle(32,32,10,p);c.save();c.rotate(-30,32,32);c.drawOval(12,26,52,38,p);c.restore();c.drawCircle(46,20,3,p);}
+        else{path.reset();path.moveTo(32,24);path.lineTo(17,18);path.lineTo(20,34);path.lineTo(29,36);path.lineTo(35,36);path.lineTo(44,34);path.lineTo(47,18);path.lineTo(32,24);c.drawPath(path,p);c.drawCircle(32,25,4,p);for(int x=26;x<=38;x+=6){c.drawLine(32,34,x,44,p);c.drawLine(x,44,x+3,46,p);}}
+        // Frame-specific runes alter the center and side ornament, not just the hue.
+        for(int i=0;i<=frame;i++){float x=24+i*5;c.drawLine(x,52,x+2,54,p);}
+        if(ornament==0){c.drawLine(9,31,13,31,p);c.drawLine(51,31,55,31,p);}
+        else{c.drawCircle(12,31,2,p);c.drawCircle(52,31,2,p);c.drawLine(28,10,36,10,p);}
         c.restore();
     }
-    public void setAlpha(int value){p.setAlpha(value);invalidateSelf();}public void setColorFilter(ColorFilter f){p.setColorFilter(f);}public int getOpacity(){return PixelFormat.TRANSLUCENT;}
+    public void setAlpha(int value){alpha=value;invalidateSelf();}public void setColorFilter(ColorFilter f){p.setColorFilter(f);invalidateSelf();}public int getOpacity(){return PixelFormat.TRANSLUCENT;}
 }
