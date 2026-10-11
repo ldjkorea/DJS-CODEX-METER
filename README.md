@@ -6,17 +6,29 @@
 
 소수점 자릿수는 **설정 → 위젯 및 화면 → 사용량 소수점 자리수**에서 바꿉니다. 기존 사용량 기록의 원본 정밀도나 계산은 변경하지 않고 화면 표시만 조정합니다. 기존 휴대폰 앱은 삭제하지 않고 업데이트하세요. Windows 위젯 0.1.9 이상은 위젯 메뉴의 **⋯ → 업데이트 확인**으로 새 버전을 받을 수 있습니다. 최초 설치 또는 0.1.8 이하에서 업데이트할 때는 ZIP을 직접 내려받아 새 폴더에 풀어 실행하세요. 로그인·설정·Tailscale 연결을 보존하려면 기존 AppData 폴더를 삭제하지 마세요.
 
+## 앱 화면 미리보기
+
+현재 공개 소스에 포함된 성장 화면과 업적 도감 예시입니다. 캡처는 GPT HUD 2.8.25 QA 빌드에서 생성됐으며, 이후 버전에서도 유지되는 성장·도감 UI를 보여줍니다. 최신 사용량 화면의 실시간 데이터나 실제 계정 기록을 나타내지는 않습니다.
+
+| 성장 화면 | 업적 도감 |
+| --- | --- |
+| ![GPT HUD 성장 화면 미리보기](docs/refinement-2.8.25/411-1-ko-KR-growth.png) | ![GPT HUD 업적 도감 미리보기](docs/refinement-2.8.25/411-1-ko-KR-codex.png) |
+
+현재 배포 앱의 티어별 휘장 자산은 아래 미리보기에서 확인할 수 있습니다.
+
+![GPT HUD 티어 휘장 모음](docs/precision-crests/tier-gallery.png)
+
 Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Codex-Meter](https://github.com/BenItBuhner/Codex-Meter)의 MIT 라이선스와 저작권을 유지합니다. OpenAI·Samsung·원작자가 제공하거나 보증하는 공식 제품이 아닙니다. [전체 릴리스 기록](RELEASE_NOTES.ko.md)을 보존합니다.
 
 ## 이전 버전 안내와 자료
 
-## 중앙 휘장·티어 배경
+## 위젯 디자인 자료
 
-두 게이지 사이에 큰 휘장을 표시하고, 현재 티어에 맞는 어두운 배경과 테두리를 적용합니다. 휘장 OFF는 기존 테마로 돌아가고 배경 OFF는 투명입니다. 기존 순서·색상·5시간 숨김 설정을 보존합니다.
+아래 이미지는 2.8.13 당시의 위젯 레이아웃 렌더링 예시이며, 현재 위젯 화면 캡처가 아닙니다. 현재 Windows 위젯 업데이트는 0.1.9부터 앱 안에서 제공하며, 위젯 설치와 사용 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
-![에메랄드 위젯 렌더링](docs/widget-tier-2.8.13/tier-5-250.png)
+![과거 2.8.13 위젯 레이아웃 예시](docs/widget-tier-2.8.13/tier-5-250.png)
 
-Android 15 에뮬레이터의 native RemoteViews 렌더링입니다. 표시 수치는 합성 테스트 값이며 삼성 런처·실계정 검증 화면이 아닙니다. [검증 보고서](docs/WIDGET_TIER_CENTER_2.8.13.ko.md).
+Android 15 에뮬레이터의 native RemoteViews 렌더링이며, 수치는 합성 테스트 값입니다. 삼성 런처·실계정 검증 화면이 아닙니다. [당시 검증 보고서](docs/WIDGET_TIER_CENTER_2.8.13.ko.md).
 
 ## Windows 바탕화면 위젯
 
@@ -41,7 +53,7 @@ Android 15 에뮬레이터의 native RemoteViews 렌더링입니다. 표시 수�
 - 직접 등록한 결제금액과 기간을 기반으로 구독 활용도 참고값을 표시합니다. API 비용·절약액·생산성 측정값이 아닙니다. 코치 문구에 별도 AI 호출을 사용하지 않습니다.
 - 위젯·알림·선택적 사용량 모니터·Wear 연동을 포함합니다. 삼성 전용 화면 동작은 기기와 펌웨어에 따라 달라질 수 있습니다.
 
-새 [Precision Crests 티어 디자인](docs/precision-crests/tier-gallery.png)과 [2.8.9 변경·검증 보고서](docs/PRECISION_CRESTS_2.8.9_REPORT.ko.md)를 제공합니다. 입체 금속·연산 코어 엠블럼 10종을 홈·분석·진화형 위젯에 공통 적용합니다. 미리보기는 실제 배포 자산을 렌더링한 것으로 Android 화면 캡처는 아닙니다. [이전 티어 평가 설계](docs/TIER_EVOLUTION_2.8.8_REPORT.ko.md)는 보존합니다.
+티어 휘장 자산과 [2.8.9 변경·검증 보고서](docs/PRECISION_CRESTS_2.8.9_REPORT.ko.md)를 제공합니다. 휘장 모음 이미지는 배포 자산 미리보기이며 현재 앱 화면 캡처는 아닙니다. [이전 티어 평가 설계](docs/TIER_EVOLUTION_2.8.8_REPORT.ko.md)는 보존합니다.
 
 ## 로그인·개인정보·보안
 
