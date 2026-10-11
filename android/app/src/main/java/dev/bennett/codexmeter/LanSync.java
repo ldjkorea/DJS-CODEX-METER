@@ -60,7 +60,7 @@ final class LanSync {
             JSONObject payload;
             synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a)))return;
                 UsageLedgerDatabase.mergeLan(app,rows,floor);UsageSnapshot snapshot=AppPreferences.loadSnapshot(app);UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);
-                LiveUsageStore.invalidate();LiveUtilization.Result live=LiveUsageStore.calculate(app,snapshot,data);payload=payload(data,snapshot,live,floor);}
+                LiveUsageStore.invalidate();LiveUtilization.Result live=LiveUsageStore.calculate(app,snapshot,data);payload=payload(data,snapshot,live,floor,TierTheme.tier(app));}
             JSONObject ack=LanSyncWire.exchange(target,a,payload);if(!ack.getBoolean("ok"))throw new IllegalStateException("Not saved");
             synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a))||floor!=UsageLedgerDatabase.lanFloor(app))return;
                 if(TaskStatusStore.enabled(app,a))try{TaskStatusStore.save(app,a,reply.optJSONObject("tasks"));}catch(Exception ignored){}
@@ -77,14 +77,14 @@ final class LanSync {
             synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a))||!TaskStatusStore.enabled(app,a))return;TaskStatusStore.save(app,a,response.optJSONObject("tasks"));ok=true;}
         }catch(Exception ignored){}finally{BUSY.set(false);if(done!=null)done.finish(ok);}});
     }
-    private static JSONObject payload(UsageLedgerDatabase.Data data,UsageSnapshot snapshot,LiveUtilization.Result live,long floor)throws Exception{
+    private static JSONObject payload(UsageLedgerDatabase.Data data,UsageSnapshot snapshot,LiveUtilization.Result live,long floor,int tier)throws Exception{
         JSONArray rows=new JSONArray(),days=new JSONArray(),events=new JSONArray();for(LedgerRecord r:data.records)if(r.at>floor)rows.put(new JSONObject().put("At",r.at).put("Reset",r.reset).put("Seconds",r.seconds).put("Meter",r.meter).put("Plan",r.plan).put("Used",r.used).put("Decimal",r.decimal).put("Source",r.source).put("Manual",r.manual));
         for(LedgerAggregation.Day d:data.days)days.put(new JSONObject().put("policy",d.policy).put("day",d.date).put("points",d.points).put("observations",d.count).put("first",d.first).put("last",d.last).put("covered_ms",d.coveredMillis).put("uncertain",d.uncertain).put("boundaries",d.boundaries).put("legacy",d.legacy));
         for(UsageLedgerDatabase.Event e:data.events)events.put(new JSONObject().put("type",e.type).put("at",e.at).put("meter",e.meter).put("origin",e.origin));
         UsageWindow main=snapshot==null?null:snapshot.longWindow();boolean fresh=snapshot!=null&&snapshot.fetchedAtMillis<=System.currentTimeMillis()&&System.currentTimeMillis()-snapshot.fetchedAtMillis<=15*60000&&main!=null&&main.effectiveResetAtMillis(snapshot.fetchedAtMillis)>System.currentTimeMillis();
         String policy=main==null?"":(snapshot.weekly!=null?"weekly":"monthly")+"|"+LedgerRecord.cleanPlan(snapshot.planType)+"|"+main.windowSeconds;
         Object today=JSONObject.NULL;for(LedgerAggregation.Day d:data.days)if(d.policy.equals(policy)&&d.date.equals(LedgerAggregation.day(System.currentTimeMillis()).toString())&&LedgerPresentation.measured(d))today=d.points;
-        return new JSONObject().put("op","push").put("floor",floor).put("rows",rows).put("days",days).put("events",events).put("policy",policy).put("today",today).put("tier",fresh?live.tier:-1).put("percent",live.percent)
+        return new JSONObject().put("op","push").put("floor",floor).put("rows",rows).put("days",days).put("events",events).put("policy",policy).put("today",today).put("tier",tier).put("percent",live.percent)
             .put("observed",snapshot==null?0:snapshot.fetchedAtMillis).put("reset",main==null?0:main.effectiveResetAtMillis(snapshot.fetchedAtMillis)).put("cycle_start",live.start).put("cycle_end",live.end);
     }
 }

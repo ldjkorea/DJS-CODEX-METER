@@ -61,12 +61,13 @@ final class LiveUsageStore {
         String identity=app.getSharedPreferences("secure_auth_v1",0).getString("blob","");
         if(s==null||identity.isEmpty()){cache=null;REVISION.incrementAndGet();return;}
         String stamp=signature(app,s);
+        String account=SubscriptionStore.accountKey(app);
         synchronized(LiveUsageStore.class){if(stamp.equals(requested))return;requested=stamp;}
         WORKER.execute(()->{try{
-            UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);LiveUtilization.Result result=calculate(app,s,data);
+            RpgProgressStore.backup(app);UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);LiveUtilization.Result result=calculate(app,s,data);
             synchronized(UsageApi.NETWORK_LOCK){
                 if(!stamp.equals(signature(app,AppPreferences.loadSnapshot(app))))return;
-                publish(app,s,result);
+                RpgProgressStore.reconcile(app,s,data,account);publish(app,s,result);
             }
             EvolutionWidget.updateAll(app);
         }catch(Exception e){synchronized(LiveUsageStore.class){if(stamp.equals(requested))requested="";}DiagnosticLog.error(app,"tier","live_utilization_deferred",e);}});

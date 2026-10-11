@@ -30,6 +30,7 @@ import dev.bennett.codexmeter.*;
 public class Context {
  public static final int MODE_PRIVATE = 0;
  public Context getApplicationContext() { return this; }
+ public java.io.File getDatabasePath(String name) { return new java.io.File(System.getProperty("ledger.dbdir","."),name); }
  public boolean failCommit;
  public boolean failAccess;
  public final Map<String,UsageHistory> histories = new HashMap<>();

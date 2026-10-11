@@ -50,7 +50,7 @@ final class TierStore {
         for(int i=0;i<list.length();i++)if(list.getJSONObject(i).getLong("end")==e.end)return;
         list.put(new JSONObject().put("end",e.end).put("used",e.used).put("observations",e.observations));
     }
-    static TierEvolution.State read(Context c,String policy){try{String key=SubscriptionStore.key(c,AppPreferences.loadSnapshot(c));if(key==null)return TierEvolution.State.empty();
+    static TierEvolution.State read(Context c,String policy){try{JSONObject progress=RpgProgressStore.peek(c);if(progress!=null){JSONObject t=progress.getJSONObject("tier");return new TierEvolution.State(t.getInt("tier"),t.getInt("tier"),t.optInt("count"),Math.min(1,t.optInt("low_streak")),t.optLong("end"),t.optDouble("score"));}String key=SubscriptionStore.key(c,AppPreferences.loadSnapshot(c));if(key==null)return TierEvolution.State.empty();
         JSONObject j=load(c,key).getJSONObject("policies").optJSONObject(policy);return state(j==null?null:j.optJSONObject("state"));}catch(Exception ignored){return TierEvolution.State.empty();}}
     static String policy(Context c){UsageSnapshot s=AppPreferences.loadSnapshot(c);return s==null||s.weekly==null?"": "weekly|"+LedgerRecord.cleanPlan(s.planType)+"|"+s.weekly.windowSeconds;}
     static FunInsights.Rating rating(Context c,String policy){TierEvolution.State s=read(c,policy);return new FunInsights.Rating(s.tier,s.count,s.score,s.provisional());}

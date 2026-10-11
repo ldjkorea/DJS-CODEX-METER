@@ -1,3 +1,4 @@
+from rpg_review import strip_rpg
 """Production Wi-Fi scheduler, plan aliases and offline catalog on JVM platform fixtures.
 
 These fixtures verify decisions, not Android connectivity dispatch or Samsung UI.
@@ -55,7 +56,7 @@ assert 'LanWifiScheduler.install(a)' in (app/'LanSyncUi.java').read_text()
 job=(app/'LanWifiJobService.java').read_text();assert 'if (active == params)' in job and 'active = null' in job
 prefix='android/app/src/main/java/dev/bennett/codexmeter/'
 for n in ['UsageApi','UsageParser','UsageLedgerDatabase','AppPreferences','SecureTokenStore','AccountSession','SubscriptionStore','FunStore','TierStore','WidgetOptions','WidgetRenderer','ResetCreditActivity']:
- assert (app/(n+'.java')).read_bytes().replace(b'\r\n',b'\n')==subprocess.check_output(['git','show','e36b8e5:'+prefix+n+'.java'],cwd=repo).replace(b'\r\n',b'\n'),n
+ assert strip_rpg(n+'.java',(app/(n+'.java')).read_text(encoding='utf-8')).encode()==subprocess.check_output(['git','show','e36b8e5:'+prefix+n+'.java'],cwd=repo).replace(b'\r\n',b'\n'),n
 for folder in ['values','values-ko']:
  strings={x.get('name'):x.text for x in ET.parse(root/f'app/src/main/res/{folder}/polish_strings.xml').getroot()}
  assert strings['polish_tibo_quote'] and '2026.04.18' in strings['polish_tibo_source']

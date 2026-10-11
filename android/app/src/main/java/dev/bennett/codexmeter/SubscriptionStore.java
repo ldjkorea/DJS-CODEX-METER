@@ -10,11 +10,12 @@ import org.json.JSONObject;
 /** Billing preference only: isolated by account/plan, no auth bytes or ledger mutation. */
 final class SubscriptionStore {
     private SubscriptionStore(){}
-    static String key(Context context,UsageSnapshot snapshot){
-        AuthTokens tokens=SecureTokenStore.load(context);
-        if(tokens==null||tokens.accountId.isEmpty()||snapshot==null)return null;
-        try{byte[] hash=java.security.MessageDigest.getInstance("SHA-256").digest(
-                (tokens.accountId+"|"+LedgerRecord.cleanPlan(snapshot.planType)).getBytes(StandardCharsets.UTF_8));
+    static String key(Context context,UsageSnapshot snapshot){return snapshot==null?null:planKey(context,snapshot.planType);}
+    static String accountKey(Context context){return hashed(context,"");}
+    static String planKey(Context context,String plan){return hashed(context,"|"+LedgerRecord.cleanPlan(plan));}
+    private static String hashed(Context context,String suffix){
+        AuthTokens tokens=SecureTokenStore.load(context);if(tokens==null||tokens.accountId.isEmpty())return null;
+        try{byte[] hash=java.security.MessageDigest.getInstance("SHA-256").digest((tokens.accountId+suffix).getBytes(StandardCharsets.UTF_8));
             StringBuilder key=new StringBuilder();for(byte value:hash)key.append(String.format(Locale.ROOT,"%02x",value&255));return key.toString();
         }catch(Exception ignored){return null;}
     }

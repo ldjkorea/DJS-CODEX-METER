@@ -1,0 +1,7 @@
+<resources>
+ <string name="rpg_billing_period">Billing period · %1$s – %2$s</string>
+ <string name="rpg_reference">A reference allocation of your entered subscription fee, based on observed quota use. Not API cost or savings. Different quota policies stay separate.</string>
+ <string name="rpg_partial">Confirmed lower bound · unobserved intervals excluded</string>
+ <string name="rpg_last_settlement">Last confirmed settlement retained · refresh needed</string>
+ <string name="rpg_mixed_policy">Plan and quota records are preserved. A combined amount is unavailable because comparable allocations are unconfirmed.</string>
+</resources>

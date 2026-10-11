@@ -35,6 +35,16 @@ public final class UsageLedgerDatabase extends SQLiteOpenHelper {
         if (instance == null) instance = new UsageLedgerDatabase(context.getApplicationContext());
         return instance;
     }
+    /** Step 1 recovery copy under the same lock as every ledger writer. Never replayed automatically. */
+    static void recoveryCopy(Context context, java.io.File folder) throws Exception {
+        synchronized (LOCK) {
+            java.io.File source=context.getDatabasePath(NAME);
+            for(String suffix:new String[]{"","-wal","-shm"}) {
+                java.io.File original=new java.io.File(source.getPath()+suffix),copy=new java.io.File(folder,source.getName()+suffix);
+                if(original.exists()&&!copy.exists())java.nio.file.Files.copy(original.toPath(),copy.toPath());
+            }
+        }
+    }
     @Override public void onCreate(SQLiteDatabase db) {
         for (String sql : new String[] {CREATE_OBSERVATIONS, CREATE_DAYS, CREATE_INTERVALS,
                 CREATE_EVENTS, CREATE_REQUESTS, CREATE_META, CREATE_INDEX}) db.execSQL(sql);

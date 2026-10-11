@@ -27,9 +27,10 @@ final class FunHome {
         FunHome home=new FunHome(activity,target,dark,finished,crestTarget);target.addView(LedgerUi.caption(activity,activity.getString(R.string.next_loading),dark));
         UsageSnapshot snapshot=AppPreferences.loadSnapshot(activity);String key=SubscriptionStore.key(activity,snapshot);
         String stamp=LiveUsageStore.signature(activity,snapshot);
+        String account=SubscriptionStore.accountKey(activity);
         if(key==null){target.removeAllViews();target.addView(LedgerUi.caption(activity,activity.getString(R.string.fun_placing),dark));return;}
         WORKER.execute(()->{try{
-            UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(activity.getApplicationContext());UsageWindow window=snapshot.longWindow();
+            RpgProgressStore.backup(activity.getApplicationContext());UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(activity.getApplicationContext());UsageWindow window=snapshot.longWindow();
             String policy=(snapshot.weekly!=null?"weekly":"monthly")+"|"+LedgerRecord.cleanPlan(snapshot.planType)+"|"+(window==null?0:window.windowSeconds);
             List<FunInsights.Window> completed=FunInsights.completed(data.records,policy,System.currentTimeMillis());
             if(!key.equals(SubscriptionStore.key(activity.getApplicationContext(),AppPreferences.loadSnapshot(activity.getApplicationContext()))))return;
@@ -40,6 +41,7 @@ final class FunHome {
             double daily=LiveCards.daily(data,policy,System.currentTimeMillis());
             long quoteAt=System.currentTimeMillis();boolean quoteFresh=window!=null&&quoteAt<window.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageInsights.freshness(snapshot.fetchedAtMillis,quoteAt,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageInsights.Freshness.FRESH;
             if(!stamp.equals(LiveUsageStore.signature(activity.getApplicationContext(),AppPreferences.loadSnapshot(activity.getApplicationContext()))))return;
+            RpgProgressStore.reconcile(activity.getApplicationContext(),snapshot,data,account);
             String quote=SpicyQuotes.select(activity.getApplicationContext(),key,snapshot,quoteFresh,live.bonus,daily,quoteAt);
             activity.runOnUiThread(()->{if(activity.isDestroyed()||activity.isFinishing()||!target.isAttachedToWindow()||!key.equals(SubscriptionStore.key(activity,AppPreferences.loadSnapshot(activity)))||!stamp.equals(LiveUsageStore.signature(activity,AppPreferences.loadSnapshot(activity))))return;
                 try{home.render(snapshot,window,policy,data.records,completed,doc,live,daily,quote);}catch(Exception ignored){home.error();}});

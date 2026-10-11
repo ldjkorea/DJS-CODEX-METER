@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 final class LiveCards {
     private LiveCards() {}
     static LinearLayout crest(AppCompatActivity a,boolean dark,LiveUtilization.Result live,boolean fresh){
-        int rank=live.valid&&fresh?live.tier:-1;
+        int rank=TierTheme.tier(a);
         LinearLayout card=Ui.card(a,dark);TierTheme.frame(card,rank,dark);
         card.setGravity(Gravity.CENTER_HORIZONTAL);
         card.setPadding(Ui.dp(a,16),Ui.dp(a,10),Ui.dp(a,16),Ui.dp(a,10));

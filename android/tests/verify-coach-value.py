@@ -1,3 +1,4 @@
+from rpg_review import strip_rpg
 from lan_review import strip_lan
 from publication_review import reviewed_widget_reset, reviewed_evolution
 """Production money/coach tests with only resource/context fixtures, plus navigation safety checks."""
@@ -45,5 +46,5 @@ for n in ['SubscriptionStore','TestNotesStore','FunStore','MeterVisibility','Wid
  relative='android/app/src/main/java/dev/bennett/codexmeter/'+n+'.java'
  baseline=subprocess.check_output(['git','show','9de3b6c:'+relative],cwd=root.parent).replace(b'\r\n',b'\n')
  baseline=reviewed_evolution(relative,reviewed_widget_reset(relative,baseline))
- assert (root.parent/relative).read_bytes().replace(b'\r\n',b'\n')==baseline,n
+ assert strip_rpg(relative,(root.parent/relative).read_text(encoding='utf-8')).encode()==baseline,n
 print('Settings/records/data wiring, removal of test entry points and byte-preserved account/payment/note stores passed (source checks).')

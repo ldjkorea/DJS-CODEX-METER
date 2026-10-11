@@ -4,6 +4,7 @@ import os,subprocess,json,xml.etree.ElementTree as ET
 root=Path(__file__).resolve().parents[1];repo=root.parent
 out=root/'build/evolution-verification';out.mkdir(parents=True,exist_ok=True)
 shared=root/'shared/src/main/java/dev/bennett/codexmeter';app=root/'app/src/main/java/dev/bennett/codexmeter'
+rpg=out/'fixtures/dev/bennett/codexmeter/RpgProgressStore.java';rpg.parent.mkdir(parents=True,exist_ok=True);rpg.write_text('package dev.bennett.codexmeter;class RpgProgressStore {static org.json.JSONObject peek(android.content.Context c){return null;}}',encoding='utf-8')
 files=[shared/(n+'.java') for n in ['TierEvolution','EvolutionElements','KoreanUpdateTrust']]+[Path(__file__).with_name('TierEvolutionSelfTest.java')]
 jdk=Path(os.environ['JAVA_HOME'])/'bin'
 subprocess.run([str(jdk/'javac'),'-encoding','UTF-8','-d',str(out),*map(str,files)],check=True)
@@ -11,7 +12,7 @@ subprocess.run([str(jdk/'java'),'-ea','-cp',str(out),'dev.bennett.codexmeter.Tie
 fixture=out/'fixtures/dev/bennett/codexmeter/EvolutionWidget.java';fixture.parent.mkdir(parents=True,exist_ok=True)
 fixture.write_text('package dev.bennett.codexmeter; class EvolutionWidget {static void updateAll(android.content.Context c){}}',encoding='utf-8')
 cp=os.pathsep.join(map(str,[out,root/'build/subscription-store-verification/classes',root/'build/insight-verification/classes',root/'build/test-libs/json-20250517.jar']))
-subprocess.run([str(jdk/'javac'),'-encoding','UTF-8','-cp',cp,'-d',str(out),str(fixture),str(app/'TierStore.java'),str(Path(__file__).with_name('TierPersistenceSelfTest.java'))],check=True)
+subprocess.run([str(jdk/'javac'),'-encoding','UTF-8','-cp',cp,'-d',str(out),str(fixture),str(rpg),str(app/'TierStore.java'),str(Path(__file__).with_name('TierPersistenceSelfTest.java'))],check=True)
 subprocess.run([str(jdk/'java'),'-ea','-cp',cp,'dev.bennett.codexmeter.TierPersistenceSelfTest'],check=True)
 # New vector geometry and bilingual strings; no old fixture source is regenerated.
 ns='{http://schemas.android.com/apk/res/android}';geometry=[]

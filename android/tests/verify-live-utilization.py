@@ -23,7 +23,9 @@ assert 'R.string.ux_value_method' not in settings and 'PlanArtwork.image(' in se
 assert 'day.coveredMillis>0||day.points>0' in cards and 'Double.NaN' in cards
 assert 'LiveUsageStore.invalidate();WidgetRenderer.updateAll' in (app/'LedgerAnalyticsActivity.java').read_text(encoding='utf-8')
 assert 'LiveUsageStore.schedule(context)' in (app/'WidgetRenderer.java').read_text(encoding='utf-8')
-assert 'LiveUsageStore.current(c)' in (app/'TierTheme.java').read_text(encoding='utf-8')
+assert 'RpgProgressStore.tier(c)' in (app/'TierTheme.java').read_text(encoding='utf-8')
+assert 'int rank=TierTheme.tier(a)' in cards, 'Home crest must use the same durable tier as widgets/theme'
+assert 'floor,TierTheme.tier(app)' in (app/'LanSync.java').read_text(encoding='utf-8'), 'Existing LAN metadata must use the common account result'
 assets=json.loads((repo/'docs/plan-artwork/ASSETS.json').read_text(encoding='utf-8'))['assets']
 assert len(assets)==5 and len({a['sha256'] for a in assets})==5
 for a in assets:

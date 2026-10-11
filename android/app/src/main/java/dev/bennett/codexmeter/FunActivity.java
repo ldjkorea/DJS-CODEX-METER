@@ -39,9 +39,10 @@ public final class FunActivity extends AppCompatActivity {
     private void reload(){
         long request=++generation;UsageSnapshot snapshot=AppPreferences.loadSnapshot(this);String key=SubscriptionStore.key(this,snapshot);
         String stamp=LiveUsageStore.signature(this,snapshot);
+        String account=SubscriptionStore.accountKey(this);
         if(key==null){content.removeAllViews();content.addView(LedgerUi.tile(this,getString(R.string.fun_placing),"—",getString(R.string.v3_signin_note),dark));return;}
         WORKER.execute(()->{try{
-            UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(getApplicationContext());
+            RpgProgressStore.backup(getApplicationContext());UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(getApplicationContext());
             UsageWindow window=snapshot.weekly!=null?snapshot.weekly:snapshot.monthly;
             String meter=snapshot.weekly!=null?"weekly":"monthly";
             String policy=window==null?"":meter+"|"+LedgerRecord.cleanPlan(snapshot.planType)+"|"+window.windowSeconds;
@@ -51,6 +52,7 @@ public final class FunActivity extends AppCompatActivity {
             JSONObject doc=FunStore.load(getApplicationContext(),key);
             LiveUtilization.Result live=LiveUsageStore.calculate(getApplicationContext(),snapshot,data);
             double daily=LiveCards.daily(data,policy,System.currentTimeMillis());
+            RpgProgressStore.reconcile(getApplicationContext(),snapshot,data,account);
             runOnUiThread(()->{if(isDestroyed()||isFinishing()||request!=generation)return;if(!key.equals(SubscriptionStore.key(this,AppPreferences.loadSnapshot(this)))||!stamp.equals(LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this)))){reload();return;}
                 try{render(snapshot,window,policy,data.records,completed,doc,live,daily);}catch(Exception ignored){error();}});
         }catch(Exception ignored){runOnUiThread(()->{if(!isDestroyed()&&request==generation)error();});}});

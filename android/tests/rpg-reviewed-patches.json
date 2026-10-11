@@ -1,0 +1,110 @@
+{
+  "SubscriptionStore.java": [
+    [
+      "    static String key(Context context,UsageSnapshot snapshot){\n        AuthTokens tokens=SecureTokenStore.load(context);\n        if(tokens==null||tokens.accountId.isEmpty()||snapshot==null)return null;\n        try{byte[] hash=java.security.MessageDigest.getInstance(\"SHA-256\").digest(\n                (tokens.accountId+\"|\"+LedgerRecord.cleanPlan(snapshot.planType)).getBytes(StandardCharsets.UTF_8));\n            StringBuilder key=new StringBuilder();for(byte value:hash)key.append(String.format(Locale.ROOT,\"%02x\",value&255));return key.toString();\n        }catch(Exception ignored){return null;}\n    }\n",
+      "    static String key(Context context,UsageSnapshot snapshot){return snapshot==null?null:planKey(context,snapshot.planType);}\n    static String accountKey(Context context){return hashed(context,\"\");}\n    static String planKey(Context context,String plan){return hashed(context,\"|\"+LedgerRecord.cleanPlan(plan));}\n    private static String hashed(Context context,String suffix){\n        AuthTokens tokens=SecureTokenStore.load(context);if(tokens==null||tokens.accountId.isEmpty())return null;\n        try{byte[] hash=java.security.MessageDigest.getInstance(\"SHA-256\").digest((tokens.accountId+suffix).getBytes(StandardCharsets.UTF_8));\n            StringBuilder key=new StringBuilder();for(byte value:hash)key.append(String.format(Locale.ROOT,\"%02x\",value&255));return key.toString();\n        }catch(Exception ignored){return null;}\n    }\n"
+    ]
+  ],
+  "UsageLedgerDatabase.java": [
+    [
+      "",
+      "    /** Step 1 recovery copy under the same lock as every ledger writer. Never replayed automatically. */\n    static void recoveryCopy(Context context, java.io.File folder) throws Exception {\n        synchronized (LOCK) {\n            java.io.File source=context.getDatabasePath(NAME);\n            for(String suffix:new String[]{\"\",\"-wal\",\"-shm\"}) {\n                java.io.File original=new java.io.File(source.getPath()+suffix),copy=new java.io.File(folder,source.getName()+suffix);\n                if(original.exists()&&!copy.exists())java.nio.file.Files.copy(original.toPath(),copy.toPath());\n            }\n        }\n    }\n"
+    ]
+  ],
+  "TierStore.java": [
+    [
+      "    }\n    static TierEvolution.State read(Context c,String policy){try{String key=SubscriptionStore.key(c,AppPreferences.loadSnapshot(c));if(key==null)return TierEvolution.State.empty();\n        JSONObject j=load(c,key).getJSONObject(\"policies\").optJSONObject(policy);return state(j==null?null:j.optJSONObject(\"state\"));}catch(Exception ignored){return TierEvolution.State.empty();}}\n",
+      "    }\n    static TierEvolution.State read(Context c,String policy){try{JSONObject progress=RpgProgressStore.peek(c);if(progress!=null){JSONObject t=progress.getJSONObject(\"tier\");return new TierEvolution.State(t.getInt(\"tier\"),t.getInt(\"tier\"),t.optInt(\"count\"),Math.min(1,t.optInt(\"low_streak\")),t.optLong(\"end\"),t.optDouble(\"score\"));}String key=SubscriptionStore.key(c,AppPreferences.loadSnapshot(c));if(key==null)return TierEvolution.State.empty();\n        JSONObject j=load(c,key).getJSONObject(\"policies\").optJSONObject(policy);return state(j==null?null:j.optJSONObject(\"state\"));}catch(Exception ignored){return TierEvolution.State.empty();}}\n"
+    ]
+  ],
+  "LanSync.java": [
+    [
+      "                UsageLedgerDatabase.mergeLan(app,rows,floor);UsageSnapshot snapshot=AppPreferences.loadSnapshot(app);UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);\n                LiveUsageStore.invalidate();LiveUtilization.Result live=LiveUsageStore.calculate(app,snapshot,data);payload=payload(data,snapshot,live,floor);}\n            JSONObject ack=LanSyncWire.exchange(target,a,payload);if(!ack.getBoolean(\"ok\"))throw new IllegalStateException(\"Not saved\");\n",
+      "                UsageLedgerDatabase.mergeLan(app,rows,floor);UsageSnapshot snapshot=AppPreferences.loadSnapshot(app);UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);\n                LiveUsageStore.invalidate();LiveUtilization.Result live=LiveUsageStore.calculate(app,snapshot,data);payload=payload(data,snapshot,live,floor,TierTheme.tier(app));}\n            JSONObject ack=LanSyncWire.exchange(target,a,payload);if(!ack.getBoolean(\"ok\"))throw new IllegalStateException(\"Not saved\");\n"
+    ],
+    [
+      "    }\n    private static JSONObject payload(UsageLedgerDatabase.Data data,UsageSnapshot snapshot,LiveUtilization.Result live,long floor)throws Exception{\n        JSONArray rows=new JSONArray(),days=new JSONArray(),events=new JSONArray();for(LedgerRecord r:data.records)if(r.at>floor)rows.put(new JSONObject().put(\"At\",r.at).put(\"Reset\",r.reset).put(\"Seconds\",r.seconds).put(\"Meter\",r.meter).put(\"Plan\",r.plan).put(\"Used\",r.used).put(\"Decimal\",r.decimal).put(\"Source\",r.source).put(\"Manual\",r.manual));\n",
+      "    }\n    private static JSONObject payload(UsageLedgerDatabase.Data data,UsageSnapshot snapshot,LiveUtilization.Result live,long floor,int tier)throws Exception{\n        JSONArray rows=new JSONArray(),days=new JSONArray(),events=new JSONArray();for(LedgerRecord r:data.records)if(r.at>floor)rows.put(new JSONObject().put(\"At\",r.at).put(\"Reset\",r.reset).put(\"Seconds\",r.seconds).put(\"Meter\",r.meter).put(\"Plan\",r.plan).put(\"Used\",r.used).put(\"Decimal\",r.decimal).put(\"Source\",r.source).put(\"Manual\",r.manual));\n"
+    ],
+    [
+      "        Object today=JSONObject.NULL;for(LedgerAggregation.Day d:data.days)if(d.policy.equals(policy)&&d.date.equals(LedgerAggregation.day(System.currentTimeMillis()).toString())&&LedgerPresentation.measured(d))today=d.points;\n        return new JSONObject().put(\"op\",\"push\").put(\"floor\",floor).put(\"rows\",rows).put(\"days\",days).put(\"events\",events).put(\"policy\",policy).put(\"today\",today).put(\"tier\",fresh?live.tier:-1).put(\"percent\",live.percent)\n            .put(\"observed\",snapshot==null?0:snapshot.fetchedAtMillis).put(\"reset\",main==null?0:main.effectiveResetAtMillis(snapshot.fetchedAtMillis)).put(\"cycle_start\",live.start).put(\"cycle_end\",live.end);\n",
+      "        Object today=JSONObject.NULL;for(LedgerAggregation.Day d:data.days)if(d.policy.equals(policy)&&d.date.equals(LedgerAggregation.day(System.currentTimeMillis()).toString())&&LedgerPresentation.measured(d))today=d.points;\n        return new JSONObject().put(\"op\",\"push\").put(\"floor\",floor).put(\"rows\",rows).put(\"days\",days).put(\"events\",events).put(\"policy\",policy).put(\"today\",today).put(\"tier\",tier).put(\"percent\",live.percent)\n            .put(\"observed\",snapshot==null?0:snapshot.fetchedAtMillis).put(\"reset\",main==null?0:main.effectiveResetAtMillis(snapshot.fetchedAtMillis)).put(\"cycle_start\",live.start).put(\"cycle_end\",live.end);\n"
+    ]
+  ],
+  "LiveUsageStore.java": [
+    [
+      "        String stamp=signature(app,s);\n        synchronized(LiveUsageStore.class){if(stamp.equals(requested))return;requested=stamp;}\n",
+      "        String stamp=signature(app,s);\n        String account=SubscriptionStore.accountKey(app);\n        synchronized(LiveUsageStore.class){if(stamp.equals(requested))return;requested=stamp;}\n"
+    ],
+    [
+      "        WORKER.execute(()->{try{\n            UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);LiveUtilization.Result result=calculate(app,s,data);\n            synchronized(UsageApi.NETWORK_LOCK){\n",
+      "        WORKER.execute(()->{try{\n            RpgProgressStore.backup(app);UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);LiveUtilization.Result result=calculate(app,s,data);\n            synchronized(UsageApi.NETWORK_LOCK){\n"
+    ],
+    [
+      "                if(!stamp.equals(signature(app,AppPreferences.loadSnapshot(app))))return;\n                publish(app,s,result);\n            }\n",
+      "                if(!stamp.equals(signature(app,AppPreferences.loadSnapshot(app))))return;\n                RpgProgressStore.reconcile(app,s,data,account);publish(app,s,result);\n            }\n"
+    ]
+  ],
+  "TierTheme.java": [
+    [
+      "        boolean fresh=snapshot!=null&&snapshot.longWindow()!=null&&now<snapshot.longWindow().effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageInsights.freshness(snapshot.fetchedAtMillis,now,RefreshScheduler.effectiveRefreshMinutes(c))==UsageInsights.Freshness.FRESH;\n        String policy=TierStore.policy(c),revision=c.getSharedPreferences(\"codex_tier_evolution_v2\",0).getString(\"revision\",\"\")+\":\"+LiveUsageStore.revision()+\":\"+LiveUsageStore.signature(c,snapshot)+\":\"+fresh;\n        if(!blob.equals(cachedBlob)||!policy.equals(cachedPolicy)||!revision.equals(cachedRevision)){\n",
+      "        boolean fresh=snapshot!=null&&snapshot.longWindow()!=null&&now<snapshot.longWindow().effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageInsights.freshness(snapshot.fetchedAtMillis,now,RefreshScheduler.effectiveRefreshMinutes(c))==UsageInsights.Freshness.FRESH;\n        String policy=TierStore.policy(c),revision=c.getSharedPreferences(\"codex_tier_evolution_v2\",0).getString(\"revision\",\"\")+\":\"+LiveUsageStore.revision()+\":\"+LiveUsageStore.signature(c,snapshot)+\":\"+fresh+\":\"+c.getSharedPreferences(\"codex_rpg_display_v1\",0).getAll().hashCode();\n        if(!blob.equals(cachedBlob)||!policy.equals(cachedPolicy)||!revision.equals(cachedRevision)){\n"
+    ],
+    [
+      "        if(!blob.equals(cachedBlob)||!policy.equals(cachedPolicy)||!revision.equals(cachedRevision)){\n            LiveUtilization.Result live=LiveUsageStore.current(c);\n            int tier=blob.isEmpty()||!fresh?-1:live.tier;\n            if(!blob.equals(c.getSharedPreferences(\"secure_auth_v1\",0).getString(\"blob\",\"\")))return -1;\n",
+      "        if(!blob.equals(cachedBlob)||!policy.equals(cachedPolicy)||!revision.equals(cachedRevision)){\n            int tier=blob.isEmpty()?-1:RpgProgressStore.tier(c);\n            if(tier<0&&!blob.isEmpty())tier=TierStore.read(c,policy).tier;\n            if(!blob.equals(c.getSharedPreferences(\"secure_auth_v1\",0).getString(\"blob\",\"\")))return -1;\n"
+    ]
+  ],
+  "LiveCards.java": [
+    [
+      "    static LinearLayout crest(AppCompatActivity a,boolean dark,LiveUtilization.Result live,boolean fresh){\n        int rank=live.valid&&fresh?live.tier:-1;\n        LinearLayout card=Ui.card(a,dark);TierTheme.frame(card,rank,dark);\n",
+      "    static LinearLayout crest(AppCompatActivity a,boolean dark,LiveUtilization.Result live,boolean fresh){\n        int rank=TierTheme.tier(a);\n        LinearLayout card=Ui.card(a,dark);TierTheme.frame(card,rank,dark);\n"
+    ]
+  ],
+  "SubscriptionValueUi.java": [
+    [
+      "import java.math.BigDecimal;\n\n",
+      "import java.math.BigDecimal;\nimport org.json.JSONObject;\n\n"
+    ],
+    [
+      "        boolean active=bill!=null&&bill.active(LedgerAggregation.day(System.currentTimeMillis()));\n        if(active&&live.valid&&fresh){\n            LinearLayout figures=new LinearLayout(a);figures.setOrientation(LinearLayout.VERTICAL);\n",
+      "        boolean active=bill!=null&&bill.active(LedgerAggregation.day(System.currentTimeMillis()));\n        JSONObject monthly=RpgProgressStore.monthly(a,snapshot);JSONObject value=null;\n        try{UsageWindow w=snapshot.longWindow();String policy=(snapshot.weekly!=null?\"weekly\":\"monthly\")+\"|\"+LedgerRecord.cleanPlan(snapshot.planType)+\"|\"+w.windowSeconds;\n            value=monthly==null?null:monthly.getJSONObject(\"buckets\").optJSONObject(policy);\n        }catch(Exception ignored){}\n        if(active&&value!=null&&!value.isNull(\"reference_value\")){\n            BigDecimal percentValue=new BigDecimal(value.optString(\"percent\",\"0\"));\n            LinearLayout figures=new LinearLayout(a);figures.setOrientation(LinearLayout.VERTICAL);\n"
+    ],
+    [
+      "            LinearLayout figures=new LinearLayout(a);figures.setOrientation(LinearLayout.VERTICAL);\n            figures.addView(LedgerUi.amount(a,FunActivity.money(bill.currency,live.amount(bill.amount)),dark,32));\n            figures.addView(LedgerUi.caption(a,\"/ \"+FunActivity.money(bill.currency,bill.amount),dark));card.addView(figures);\n",
+      "            LinearLayout figures=new LinearLayout(a);figures.setOrientation(LinearLayout.VERTICAL);\n            figures.addView(LedgerUi.amount(a,FunActivity.money(bill.currency,new BigDecimal(value.optString(\"reference_value\",\"0\"))),dark,32));\n            figures.addView(LedgerUi.caption(a,\"/ \"+FunActivity.money(bill.currency,bill.amount),dark));card.addView(figures);\n"
+    ],
+    [
+      "            figures.addView(LedgerUi.caption(a,\"/ \"+FunActivity.money(bill.currency,bill.amount),dark));card.addView(figures);\n            card.addView(LedgerUi.caption(a,a.getString(R.string.live_value_ratio,LedgerUi.number(live.percent)),dark));\n            android.widget.ProgressBar progress=Ui.progress(a,dark);progress.setProgress((int)Math.max(0,Math.min(100,live.percent)));progress.setContentDescription(a.getString(R.string.live_utilization,LedgerUi.number(live.percent)));Ui.addSpacer(card,12);card.addView(progress);\n            card.addView(LedgerUi.caption(a,a.getString(R.string.live_value_reference),dark));\n            if(live.partial)card.addView(LedgerUi.caption(a,a.getString(R.string.live_partial),dark));\n        }else card.addView(LedgerUi.caption(a,a.getString(bill==null?R.string.v3_payment_missing:!active?R.string.ux_period_mismatch:fresh?R.string.live_need_coverage:R.string.ui_ledger_refresh),dark));\n        if(bill==null||!active){Ui.addSpacer(card,12);android.widget.Button edit=LedgerUi.action(a,a.getString(bill==null?R.string.ux_register:R.string.v3_payment_edit),true,dark,()->SubscriptionUi.edit(a,AppPreferences.loadSnapshot(a),dark,a::recreate));edit.setEnabled(SubscriptionStore.key(a,snapshot)!=null);card.addView(edit);}\n",
+      "            figures.addView(LedgerUi.caption(a,\"/ \"+FunActivity.money(bill.currency,bill.amount),dark));card.addView(figures);\n            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg_billing_period,bill.start.toString(),bill.end.toString()),dark));\n            card.addView(LedgerUi.caption(a,a.getString(R.string.live_value_ratio,LedgerUi.number(percentValue.doubleValue())),dark));\n            android.widget.ProgressBar progress=Ui.progress(a,dark);progress.setProgress((int)Math.max(0,Math.min(100,percentValue.doubleValue())));Ui.addSpacer(card,12);card.addView(progress);\n            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg_reference),dark));\n            card.addView(LedgerUi.caption(a,a.getString(fresh?R.string.rpg_partial:R.string.rpg_last_settlement),dark));\n        }else card.addView(LedgerUi.caption(a,a.getString(bill==null?R.string.v3_payment_missing:!active?R.string.ux_period_mismatch:monthly!=null&&monthly.optBoolean(\"mixed_policies\")?R.string.rpg_mixed_policy:R.string.live_need_coverage),dark));\n        if(bill==null||!active){Ui.addSpacer(card,12);android.widget.Button edit=LedgerUi.action(a,a.getString(bill==null?R.string.ux_register:R.string.v3_payment_edit),true,dark,()->SubscriptionUi.edit(a,AppPreferences.loadSnapshot(a),dark,a::recreate));edit.setEnabled(SubscriptionStore.key(a,snapshot)!=null);card.addView(edit);}\n"
+    ]
+  ],
+  "FunHome.java": [
+    [
+      "        String stamp=LiveUsageStore.signature(activity,snapshot);\n        if(key==null){target.removeAllViews();target.addView(LedgerUi.caption(activity,activity.getString(R.string.fun_placing),dark));return;}\n",
+      "        String stamp=LiveUsageStore.signature(activity,snapshot);\n        String account=SubscriptionStore.accountKey(activity);\n        if(key==null){target.removeAllViews();target.addView(LedgerUi.caption(activity,activity.getString(R.string.fun_placing),dark));return;}\n"
+    ],
+    [
+      "        WORKER.execute(()->{try{\n            UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(activity.getApplicationContext());UsageWindow window=snapshot.longWindow();\n            String policy=(snapshot.weekly!=null?\"weekly\":\"monthly\")+\"|\"+LedgerRecord.cleanPlan(snapshot.planType)+\"|\"+(window==null?0:window.windowSeconds);\n",
+      "        WORKER.execute(()->{try{\n            RpgProgressStore.backup(activity.getApplicationContext());UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(activity.getApplicationContext());UsageWindow window=snapshot.longWindow();\n            String policy=(snapshot.weekly!=null?\"weekly\":\"monthly\")+\"|\"+LedgerRecord.cleanPlan(snapshot.planType)+\"|\"+(window==null?0:window.windowSeconds);\n"
+    ],
+    [
+      "            if(!stamp.equals(LiveUsageStore.signature(activity.getApplicationContext(),AppPreferences.loadSnapshot(activity.getApplicationContext()))))return;\n            String quote=SpicyQuotes.select(activity.getApplicationContext(),key,snapshot,quoteFresh,live.bonus,daily,quoteAt);\n",
+      "            if(!stamp.equals(LiveUsageStore.signature(activity.getApplicationContext(),AppPreferences.loadSnapshot(activity.getApplicationContext()))))return;\n            RpgProgressStore.reconcile(activity.getApplicationContext(),snapshot,data,account);\n            String quote=SpicyQuotes.select(activity.getApplicationContext(),key,snapshot,quoteFresh,live.bonus,daily,quoteAt);\n"
+    ]
+  ],
+  "FunActivity.java": [
+    [
+      "        String stamp=LiveUsageStore.signature(this,snapshot);\n        if(key==null){content.removeAllViews();content.addView(LedgerUi.tile(this,getString(R.string.fun_placing),\"—\",getString(R.string.v3_signin_note),dark));return;}\n",
+      "        String stamp=LiveUsageStore.signature(this,snapshot);\n        String account=SubscriptionStore.accountKey(this);\n        if(key==null){content.removeAllViews();content.addView(LedgerUi.tile(this,getString(R.string.fun_placing),\"—\",getString(R.string.v3_signin_note),dark));return;}\n"
+    ],
+    [
+      "        WORKER.execute(()->{try{\n            UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(getApplicationContext());\n            UsageWindow window=snapshot.weekly!=null?snapshot.weekly:snapshot.monthly;\n",
+      "        WORKER.execute(()->{try{\n            RpgProgressStore.backup(getApplicationContext());UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(getApplicationContext());\n            UsageWindow window=snapshot.weekly!=null?snapshot.weekly:snapshot.monthly;\n"
+    ],
+    [
+      "            double daily=LiveCards.daily(data,policy,System.currentTimeMillis());\n            runOnUiThread(()->{if(isDestroyed()||isFinishing()||request!=generation)return;if(!key.equals(SubscriptionStore.key(this,AppPreferences.loadSnapshot(this)))||!stamp.equals(LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this)))){reload();return;}\n",
+      "            double daily=LiveCards.daily(data,policy,System.currentTimeMillis());\n            RpgProgressStore.reconcile(getApplicationContext(),snapshot,data,account);\n            runOnUiThread(()->{if(isDestroyed()||isFinishing()||request!=generation)return;if(!key.equals(SubscriptionStore.key(this,AppPreferences.loadSnapshot(this)))||!stamp.equals(LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this)))){reload();return;}\n"
+    ]
+  ]
+}
