@@ -1,0 +1,41 @@
+{
+  "model": "rpg-2026q2-v1",
+  "verified_at": "2026-10-11",
+  "claim": "game estimate; not population ranking or token percentile",
+  "weights": {"activity_continuity": 0.40, "token_intensity": 0.35, "quota_utilization": 0.25},
+  "adoption": {
+    "publisher": "Microsoft AI Economy Institute",
+    "title": "Global AI Diffusion Q2 2026",
+    "published_at": "2026-09-28",
+    "period": "2026-Q2",
+    "population": "working-age population 15-64; adjusted anonymized telemetry",
+    "south_korea": 0.406,
+    "world": 0.188,
+    "url": "https://news.microsoft.com/source/asia/2026/09/28/마이크로소프트-2026년-2분기-글로벌-ai-확산-보고서-발표/?lang=ko"
+  },
+  "frequency_context_only": {
+    "publisher": "Gallup",
+    "published_at": "2026-01-25",
+    "period": "2025-Q4",
+    "population": "U.S. employees; NOT South Korea or global population",
+    "daily": 0.12,
+    "few_times_week_or_more": 0.26,
+    "used_as": "context for simulation; not substituted into national or global token distribution",
+    "url": "https://www.gallup.com/workplace/701195/frequent-workplace-continued-rise.aspx"
+  },
+  "game_assumptions": {
+    "activity_target_days": "12 + round(30 * adoption)",
+    "korea_monthly_token_cap": 3000000000,
+    "world_monthly_token_cap": 2000000000,
+    "log_unit": 1000000,
+    "intensity": "min(1, ln(1 + tokens/1M) / ln(1 + cap/1M))",
+    "warning": "These are game benchmarks, not observed individual token distributions. Price is not an input."
+  },
+  "protocol": {
+    "url": "https://learn.chatgpt.com/docs/app-server",
+    "method_observed": "account/usage/read",
+    "installed_cli": "0.156.1",
+    "account_summary_semantics": "backend token activity; not converted to raw token breakdown, billable tokens or subscription quota",
+    "daily_time_zone": "unverified; no automatic demotion based on these dates"
+  }
+}

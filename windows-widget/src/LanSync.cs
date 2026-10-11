@@ -25,6 +25,7 @@ namespace CodexMeterWidget {
     }
     public sealed partial class LocalStore {
         public Func<Dictionary<string,object>> TaskStatus;
+        public Func<string,Dictionary<string,object>> RpgTokens;
         public PhoneMirror LoadMirror(string account) { lock(gate){string p=Path.Combine(DirectoryPath,"accounts",AccountKey(account),"phone-mirror.json");return File.Exists(p)?LanSync.JsonCodec.Deserialize<PhoneMirror>(File.ReadAllText(p)):null;} }
         public Dictionary<string,object> Exchange(Dictionary<string,object> request,string secret) { lock(gate){
             var tokens=LoadTokens();string id=Json.Text(request,"id");
@@ -34,10 +35,10 @@ namespace CodexMeterWidget {
             string dir=Path.Combine(DirectoryPath,"accounts",AccountKey(tokens.Account));var prior=LoadMirror(tokens.Account);
             long floor=Math.Max(prior==null?0:prior.Floor,Json.Integer(request,"floor"));if(floor<0||floor>Clock.Now+300000)throw new InvalidDataException("Invalid history boundary");
             var observer=TaskStatus;string op=Json.Text(request,"op");
-            if(op=="task-status")return new Dictionary<string,object>{{"v",1},{"id",id},{"account",AccountKey(tokens.Account)},{"tasks",observer==null?null:observer()}};
+            if(op=="task-status")return new Dictionary<string,object>{{"v",1},{"id",id},{"account",AccountKey(tokens.Account)},{"tasks",observer==null?null:observer()},{"rpg_tokens",RpgTokens==null?null:RpgTokens(tokens.Account)}};
             if(op=="pull") {
                 var rows=LoadRows(tokens.Account).Where(x=>x.At>floor).ToArray();
-                return new Dictionary<string,object>{{"v",1},{"id",id},{"account",AccountKey(tokens.Account)},{"rows",rows},{"floor",floor},{"tasks",Json.Text(request,"task_status")=="True"&&observer!=null?observer():null}};
+                return new Dictionary<string,object>{{"v",1},{"id",id},{"account",AccountKey(tokens.Account)},{"rows",rows},{"floor",floor},{"rpg_tokens",RpgTokens==null?null:RpgTokens(tokens.Account)},{"tasks",Json.Text(request,"task_status")=="True"&&observer!=null?observer():null}};
             }
             if(op!="push")throw new InvalidDataException("Invalid operation");
             var rowsIn=LanSync.JsonCodec.Deserialize<Observation[]>(LanSync.JsonCodec.Serialize(request["rows"]));

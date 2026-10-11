@@ -59,6 +59,7 @@ final class LanSync {
                 rows.add(new LedgerRecord(r.getString("Meter"),r.getString("Plan"),r.getLong("At"),used,decimal,r.getLong("Reset"),r.getLong("Seconds"),source,r.optBoolean("Manual",false)));}
             JSONObject payload;
             synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a)))return;
+                try{RpgProgressStore.tokens(app,a,reply.optJSONObject("rpg_tokens"));}catch(Exception deferred){DiagnosticLog.warn(app,"history","rpg_token_import_deferred");}
                 UsageLedgerDatabase.mergeLan(app,rows,floor);UsageSnapshot snapshot=AppPreferences.loadSnapshot(app);UsageLedgerDatabase.Data data=UsageLedgerDatabase.load(app);
                 LiveUsageStore.invalidate();LiveUtilization.Result live=LiveUsageStore.calculate(app,snapshot,data);payload=payload(data,snapshot,live,floor,TierTheme.tier(app));}
             JSONObject ack=LanSyncWire.exchange(target,a,payload);if(!ack.getBoolean("ok"))throw new IllegalStateException("Not saved");
@@ -74,7 +75,7 @@ final class LanSync {
             LanSyncWire.Pair target=new LanSyncWire.Pair(paired);
             if(nc==null||!target.taskNetworkAllowed(nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI),nc.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET),nc.hasTransport(NetworkCapabilities.TRANSPORT_VPN)))return;
             JSONObject response=LanSyncWire.exchange(target,a,new JSONObject().put("op","task-status"));
-            synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a))||!TaskStatusStore.enabled(app,a))return;TaskStatusStore.save(app,a,response.optJSONObject("tasks"));ok=true;}
+            synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a))||!TaskStatusStore.enabled(app,a))return;try{RpgProgressStore.tokens(app,a,response.optJSONObject("rpg_tokens"));}catch(Exception deferred){DiagnosticLog.warn(app,"history","rpg_token_import_deferred");}TaskStatusStore.save(app,a,response.optJSONObject("tasks"));ok=true;}
         }catch(Exception ignored){}finally{BUSY.set(false);if(done!=null)done.finish(ok);}});
     }
     private static JSONObject payload(UsageLedgerDatabase.Data data,UsageSnapshot snapshot,LiveUtilization.Result live,long floor,int tier)throws Exception{

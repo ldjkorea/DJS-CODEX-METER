@@ -124,6 +124,7 @@ public final class AccountProgress {
         for(String id:keys(settlements)){JSONObject s=settlements.getJSONObject(id),b=s.getJSONObject("bill");if(now<millis(LocalDate.parse(b.getString("start")))||now>=millis(LocalDate.parse(b.getString("end"))))continue;
             JSONObject buckets=s.getJSONObject("buckets");for(String policy:keys(buckets)){JSONObject value=buckets.getJSONObject(policy);double percent=new BigDecimal(value.getString("percent")).doubleValue();JSONObject inputs=doc.optJSONObject("promotion_inputs");if(inputs==null){inputs=new JSONObject();doc.put("promotion_inputs",inputs);}String input=id+"|"+policy;double points=new BigDecimal(value.getString("points")).doubleValue();if(points>inputs.optDouble(input,0)){if(!s.optBoolean("mixed_policies"))AccountTier.promote(doc.getJSONObject("tier"),AccountTier.rank(percent),now);inputs.put(input,points);}}
         }
+        RpgEngine.reconcile(doc,rows,fallback,new ArrayList<>(creditSet),windows,now,evaluateWeeks);
     }
     public static List<String> keys(JSONObject object){List<String> result=new ArrayList<>();Iterator<String> it=object.keys();while(it.hasNext())result.add(it.next());return result;}
     public static String periodId(JSONObject bill) throws JSONException{return bill.getString("plan")+":"+bill.getString("start")+":"+bill.getString("end");}

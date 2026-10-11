@@ -3,6 +3,7 @@ No user's database, key, session or network is accessed.
 """
 from pathlib import Path
 import os, subprocess, sys
+os.environ['PYTHONUTF8']='1' # Java bridge sends UTF-8 Korean catalog metadata on Windows.
 
 root=Path(__file__).resolve().parents[1];out=root/'build/rpg-store';out.mkdir(parents=True,exist_ok=True)
 source=root/'build/subscription-store-verification/fixtures'
@@ -33,7 +34,7 @@ for name,text in fixtures.items():
     path=out/'fixtures'/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf-8');files.append(str(path))
 app=root/'app/src/main/java/dev/bennett/codexmeter';shared=root/'shared/src/main/java/dev/bennett/codexmeter'
 files += [str(app/(name+'.java')) for name in ['AuthTokens','SubscriptionStore','RpgProgressStore']]
-files += [str(shared/(name+'.java')) for name in ['MonthlyLedger','AccountTier','AccountProgress','FunInsights','TierEvolution','SubscriptionCost','LedgerPeriods']]
+files += [str(shared/(name+'.java')) for name in ['RpgTokens','RpgTier','RpgCatalog','RpgEngine','MonthlyLedger','AccountTier','AccountProgress','FunInsights','TierEvolution','SubscriptionCost','LedgerPeriods']]
 files += [str(Path(__file__).with_name('RpgStoreSelfTest.java'))]
 cp=os.pathsep.join(map(str,[out,root/'build/rpg-step1',root/'build/insight-verification/classes',root/'build/evolution-verification',root/'build/test-libs/json-20250517.jar']))
 jdk=Path(os.environ['JAVA_HOME'])/'bin'

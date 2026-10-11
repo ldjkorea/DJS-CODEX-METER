@@ -1,0 +1,42 @@
+{
+  "AccountProgress.java": [
+    [
+      "    }\n    public static List<String> keys(",
+      "        RpgEngine.reconcile(doc,rows,fallback,new ArrayList<>(creditSet),windows,now,evaluateWeeks);\n    }\n    public static List<String> keys("
+    ]
+  ],
+  "LanSync.cs": [
+    [
+      "{\"rows\",rows},{\"floor\",floor},{\"tasks\",",
+      "{\"rows\",rows},{\"floor\",floor},{\"rpg_tokens\",RpgTokens==null?null:RpgTokens(tokens.Account)},{\"tasks\","
+    ],
+    [
+      "{\"tasks\",observer==null?null:observer()}",
+      "{\"tasks\",observer==null?null:observer()},{\"rpg_tokens\",RpgTokens==null?null:RpgTokens(tokens.Account)}"
+    ],
+    [
+      "public Func<Dictionary<string,object>> TaskStatus;",
+      "public Func<Dictionary<string,object>> TaskStatus;\n        public Func<string,Dictionary<string,object>> RpgTokens;"
+    ]
+  ],
+  "LanSync.java": [
+    [
+      "                UsageLedgerDatabase.mergeLan(app,rows,floor);",
+      "                try{RpgProgressStore.tokens(app,a,reply.optJSONObject(\"rpg_tokens\"));}catch(Exception deferred){DiagnosticLog.warn(app,\"history\",\"rpg_token_import_deferred\");}\n                UsageLedgerDatabase.mergeLan(app,rows,floor);"
+    ],
+    [
+      "TaskStatusStore.save(app,a,response.optJSONObject(\"tasks\"));ok=true;",
+      "try{RpgProgressStore.tokens(app,a,response.optJSONObject(\"rpg_tokens\"));}catch(Exception deferred){DiagnosticLog.warn(app,\"history\",\"rpg_token_import_deferred\");}TaskStatusStore.save(app,a,response.optJSONObject(\"tasks\"));ok=true;"
+    ]
+  ],
+  "Widget.cs": [
+    [
+      "lan=new LanSync(store);ConfigureObserver();",
+      "store.RpgTokens=a=>RpgTokenReader.Snapshot(a,store.DirectoryPath);lan=new LanSync(store);ConfigureObserver();"
+    ],
+    [
+      "private void StopLan(){store.TaskStatus=null;",
+      "private void StopLan(){store.RpgTokens=null;store.TaskStatus=null;"
+    ]
+  ]
+}

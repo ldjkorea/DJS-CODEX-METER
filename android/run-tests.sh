@@ -879,3 +879,7 @@ echo "Parser, updater, OAuth, onboarding, reset-credit, alert, widget, and Wear 
 "$PYTHON" "$ROOT/tests/verify-rpg-step1.py"
 
 "$PYTHON" "$ROOT/tests/verify-rpg-store.py"
+
+"$PYTHON" "$ROOT/tests/verify-rpg-step2.py"
+
+"$PYTHON" "$ROOT/tests/verify-rpg-windows.py"

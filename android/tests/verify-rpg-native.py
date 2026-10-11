@@ -18,8 +18,8 @@ manifest=out/'AndroidManifest.xml';manifest.write_text(f'<manifest xmlns:android
 fixtures=root/'build/rpg-store/fixtures';files=[fixtures/'dev/bennett/codexmeter'/name for name in ['SecureTokenStore.java','AppPreferences.java','UsageApi.java','UsageLedgerDatabase.java']]
 app=root/'app/src/main/java/dev/bennett/codexmeter';shared=root/'shared/src/main/java/dev/bennett/codexmeter'
 files += [app/(n+'.java') for n in ['AuthTokens','SubscriptionStore','RpgProgressStore']]
-files += [shared/(n+'.java') for n in ['MonthlyLedger','AccountTier','AccountProgress','FunInsights','TierEvolution','SubscriptionCost','SubscriptionValue','LedgerPeriods','LedgerAggregation','LedgerRecord','UsageWindow','UsageSnapshot','UsageLimit','UsageCredits','UsageSample','UsageInsights','UsageHistory']]
-files += [Path(__file__).with_name(n) for n in ['RpgNativeTest.java','RpgStep1SelfTest.java']]
+files += [shared/(n+'.java') for n in ['RpgTokens','RpgTier','RpgCatalog','RpgEngine','MonthlyLedger','AccountTier','AccountProgress','FunInsights','TierEvolution','SubscriptionCost','SubscriptionValue','LedgerPeriods','LedgerAggregation','LedgerRecord','UsageWindow','UsageSnapshot','UsageLimit','UsageCredits','UsageSample','UsageInsights','UsageHistory']]
+files += [Path(__file__).with_name(n) for n in ['RpgNativeTest.java','RpgStep1SelfTest.java','RpgStep2SelfTest.java']]
 classes=out/'classes';classes.mkdir(exist_ok=True);run([jdk/'javac.exe','-encoding','UTF-8','-source','17','-target','17','-cp',jar,'-d',classes,*files])
 run([bt/'aapt2.exe','link','-I',jar,'--manifest',manifest,'-o',out/'base.apk'])
 with ZipFile(out/'compiled.jar','w') as z:

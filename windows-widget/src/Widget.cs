@@ -60,9 +60,9 @@ namespace CodexMeterWidget {
             Add("로그아웃",()=>SignOut(),tokens!=null);Add("종료",()=>{SavePrefs();exiting=true;Close();});tray.ContextMenuStrip=menu;if(show)menu.Show(this,at);
         }
         private ToolStripMenuItem Add(string name,Action action,bool enabled=true){var item=new ToolStripMenuItem(name,null,(s,e)=>action()){Enabled=enabled};menu.Items.Add(item);return item;}
-        private void StartLan(){if(lan!=null||tokens==null||!prefs.LanEnabled||preview)return;try{lan=new LanSync(store);ConfigureObserver();}catch{status="휴대폰 공유 시작 실패. 연결 코드를 다시 열어 주세요.";}}
+        private void StartLan(){if(lan!=null||tokens==null||!prefs.LanEnabled||preview)return;try{store.RpgTokens=a=>RpgTokenReader.Snapshot(a,store.DirectoryPath);lan=new LanSync(store);ConfigureObserver();}catch{status="휴대폰 공유 시작 실패. 연결 코드를 다시 열어 주세요.";}}
         private void ConfigureObserver(){store.TaskStatus=null;if(observer!=null){observer.Dispose();observer=null;}if(!preview&&tokens!=null&&prefs.LanEnabled&&prefs.TaskObserveEnabled){observer=new TaskObserve(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".codex","sessions"));store.TaskStatus=observer.Snapshot;}}
-        private void StopLan(){store.TaskStatus=null;if(observer!=null){observer.Dispose();observer=null;}if(lan!=null){lan.Dispose();lan=null;}mirrorReceived=0;}
+        private void StopLan(){store.RpgTokens=null;store.TaskStatus=null;if(observer!=null){observer.Dispose();observer=null;}if(lan!=null){lan.Dispose();lan=null;}mirrorReceived=0;}
         private void PairPhone(){try{prefs.LanEnabled=true;StartLan();if(lan==null)throw new IOException();SavePrefs();
             var addresses=System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().Where(n=>n.OperationalStatus==System.Net.NetworkInformation.OperationalStatus.Up)
                 .SelectMany(n=>n.GetIPProperties().UnicastAddresses).Select(n=>n.Address).Where(a=>LanSync.Private(a)&&!System.Net.IPAddress.IsLoopback(a)).Select(a=>a.ToString()).Distinct().ToArray();
