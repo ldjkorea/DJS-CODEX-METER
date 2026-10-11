@@ -35,17 +35,25 @@ public final class TaskStatusWidget extends AppWidgetProvider {
         views.setViewVisibility(R.id.task_status_connection,width<240?View.GONE:View.VISIBLE);
         views.setTextViewText(R.id.task_status_copy,received>0?c.getString(R.string.task_trial_last,time(c,received)):c.getString(R.string.task_trial_unverified));
         JSONArray rows=data==null?null:data.optJSONArray("rows");float font=Math.max(1,c.getResources().getConfiguration().fontScale);
-        int maximum=width<240?1:Math.max(1,Math.min(3,(int)((height-132)/(86*font))));
+        int columns=TaskStatusData.widgetColumns(width),maximum=TaskStatusData.widgetCapacity(width,height,font);
         int count=enabled&&rows!=null?Math.min(maximum,rows.length()):0;
-        if(count==0){RemoteViews item=new RemoteViews(c.getPackageName(),R.layout.task_status_item);item.setTextViewText(R.id.task_status_name,c.getString(enabled?R.string.task_named_empty:R.string.task_trial_off));item.setViewVisibility(R.id.task_status_state,View.GONE);views.addView(R.id.task_status_tasks,item);}
-        for(int i=0;i<count;i++){JSONObject row=rows.optJSONObject(i);if(row==null)continue;RemoteViews item=new RemoteViews(c.getPackageName(),R.layout.task_status_item);
-            String name=TaskStatusStore.title(row),state=TaskStatusStore.state(c,row.optString("state")),issue=TaskStatusStore.issue(c,row);
-            String detail=(connected?"":c.getString(R.string.task_trial_last_state)+" ")+state+" · "+time(c,row.optLong("at"));if(!issue.isEmpty())detail+="\n"+issue;
-            item.setTextViewText(R.id.task_status_name,name);item.setInt(R.id.task_status_name,"setMaxLines",height<220*font?1:2);
-            item.setTextViewText(R.id.task_status_state,detail);item.setInt(R.id.task_status_state,"setMaxLines",height<220*font?2:3);
-            item.setTextColor(R.id.task_status_state,!issue.isEmpty()?0xfff1c57a:connected&&row.optString("state").equals("running")?0xff86dfb6:0xffd5d8de);
-            item.setContentDescription(R.id.task_status_name,name+" · "+detail);views.addView(R.id.task_status_tasks,item);
-        }return views;
+        boolean current=connected&&data!=null&&data.optBoolean("verified");
+        RemoteViews line=null;
+        for(int i=0;i<Math.max(1,count);i++){
+            if(i%columns==0)line=new RemoteViews(c.getPackageName(),R.layout.task_status_row);
+            RemoteViews item=new RemoteViews(c.getPackageName(),R.layout.task_status_item);
+            if(count==0){item.setTextViewText(R.id.task_status_name,c.getString(enabled?R.string.task_named_empty:R.string.task_trial_off));item.setViewVisibility(R.id.task_status_state,View.GONE);item.setViewVisibility(R.id.task_status_dot,View.GONE);}
+            else {JSONObject row=rows.optJSONObject(i);if(row==null)continue;
+                String name=TaskStatusStore.title(row),state=current?TaskStatusStore.state(c,row.optString("state")):c.getString(connected?R.string.task_trial_unverified:R.string.task_trial_disconnected);
+                int color=TaskStatusData.widgetColor(current,row.optString("state"));
+                item.setTextViewText(R.id.task_status_name,name);item.setTextViewText(R.id.task_status_state,state);
+                item.setTextColor(R.id.task_status_dot,color);item.setTextColor(R.id.task_status_state,color);
+                item.setContentDescription(R.id.task_status_name,name+" · "+state+" · "+time(c,row.optLong("at"))+" · "+TaskStatusStore.issue(c,row));
+            }
+            line.addView(R.id.task_status_row_items,item);
+            if(i%columns==columns-1||i==Math.max(1,count)-1)views.addView(R.id.task_status_tasks,line);
+        }
+        return views;
     }
     private static String time(Context c,long at){return android.text.format.DateFormat.getTimeFormat(c).format(new java.util.Date(at));}
     private static Bitmap background(int width,int height,int tier){int w=Math.min(360,width),h=Math.min(480,height);Bitmap bitmap=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);bitmap.setDensity(160);Canvas canvas=new Canvas(bitmap);Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);

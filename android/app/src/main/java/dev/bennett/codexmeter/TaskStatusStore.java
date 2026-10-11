@@ -11,9 +11,9 @@ final class TaskStatusStore {
     static void save(Context c,String a,JSONObject incoming)throws Exception{
         if(!enabled(c,a))return;JSONObject clean=TaskStatusData.clean(incoming,System.currentTimeMillis());
         JSONObject prior=read(c,a);if(!TaskStatusData.newer(prior,clean))return;
-        String previous=widgetText(c,3);
+        String previous=widgetText(c,TaskStatusData.MAX_TASKS);
         c.getSharedPreferences(PREFS,0).edit().putString(a,clean.toString()).putLong(a+"_received",System.currentTimeMillis()).apply();
-        if(!previous.equals(widgetText(c,3)))TaskStatusWidget.update(c);
+        if(!previous.equals(widgetText(c,TaskStatusData.MAX_TASKS)))TaskStatusWidget.update(c);
     }
     private static JSONObject read(Context c,String a){try{return new JSONObject(c.getSharedPreferences(PREFS,0).getString(a,""));}catch(Exception ignored){return null;}}
     static String widgetText(Context c,int maximum){return text(c,maximum);}

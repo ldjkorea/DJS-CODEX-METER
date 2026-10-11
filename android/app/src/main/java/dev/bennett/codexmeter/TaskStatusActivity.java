@@ -27,7 +27,7 @@ public final class TaskStatusActivity extends AppCompatActivity {
         Ui.addSpacer(content,8);content.addView(LedgerUi.action(this,getString(R.string.hud_add_task_widget),false,dark,this::pinWidget));
         Ui.addSpacer(content,16);content.addView(LedgerUi.action(this,getString(R.string.hud_status_help),false,dark,()->new android.app.AlertDialog.Builder(this).setTitle(R.string.hud_status_help).setMessage(R.string.task_named_limits).setPositiveButton(R.string.ui_done_e9b450,null).show()));render();
     }
-    private void render(){if(status!=null){String text=TaskStatusStore.text(this,3);if(!text.contentEquals(status.getText()))status.setText(text);}if(refresh!=null)refresh.setEnabled(!busy&&TaskStatusStore.enabled(this));}
+    private void render(){if(status!=null){String text=TaskStatusStore.text(this,TaskStatusData.MAX_TASKS);if(!text.contentEquals(status.getText()))status.setText(text);}if(refresh!=null)refresh.setEnabled(!busy&&TaskStatusStore.enabled(this));}
     private void check(){render();if(busy||!TaskStatusStore.enabled(this))return;busy=true;refresh.setEnabled(false);feedback.setText(R.string.task_trial_connecting);
         LanSync.taskStatus(this,ok->runOnUiThread(()->{busy=false;if(isDestroyed()||isFinishing())return;refresh.setEnabled(TaskStatusStore.enabled(this));feedback.setText(ok?R.string.hud_status_checked:R.string.task_trial_remote_wait);if(visible)render();}));}
     private void pinWidget(){android.appwidget.AppWidgetManager manager=android.appwidget.AppWidgetManager.getInstance(this);if(manager.isRequestPinAppWidgetSupported())manager.requestPinAppWidget(new android.content.ComponentName(this,TaskStatusWidget.class),null,null);else Toast.makeText(this,R.string.hud_add_task_widget_help,Toast.LENGTH_LONG).show();}

@@ -58,7 +58,7 @@ namespace CodexMeterWidget {
             task.IssueAt=at;if(task.Issue==issue)return;task.Issue=issue;task.Seen=Clock.Now;task.Sequence=++sequence;
         }}
         private static bool Valid(string id){return id!=null&&Regex.IsMatch(id,@"^[a-f0-9-]{16,40}$");}
-        public Dictionary<string,object> Snapshot(){lock(gate){return new Dictionary<string,object>{{"epoch",epoch},{"device",Environment.MachineName.Length==0?"pc":LocalStore.AccountKey(Environment.MachineName)},{"checked",checkedAt},{"verified",verified},{"source","local_log_trial"},{"rows",tasks.Values.OrderByDescending(t=>t.Sequence).Take(3).ToArray()}};}}
+        public Dictionary<string,object> Snapshot(){lock(gate){return new Dictionary<string,object>{{"epoch",epoch},{"device",Environment.MachineName.Length==0?"pc":LocalStore.AccountKey(Environment.MachineName)},{"checked",checkedAt},{"verified",verified},{"source","local_log_trial"},{"rows",tasks.Values.OrderByDescending(t=>t.Sequence).Take(6).ToArray()}};}}
         public void Dispose(){lock(gate){stopped=true;if(timer!=null){timer.Dispose();timer=null;}tasks.Clear();positions.Clear();}}
     }
 }

@@ -5,13 +5,17 @@ import org.json.JSONObject;
 
 /** Strict metadata allow-list, not a transcript or an inferred project outcome. */
 public final class TaskStatusData {
+    public static final int MAX_TASKS=6;
     private TaskStatusData() {}
+    public static int widgetColumns(int width){return width>=280?2:1;}
+    public static int widgetCapacity(int width,int height,float font){return widgetColumns(width)*Math.max(1,Math.min(3,(int)((height-94)/(40*Math.max(1,font)))));}
+    public static int widgetColor(boolean current,String state){return !current?0xffa7adb5:state.equals("running")?0xff86dfb6:state.equals("completed")||state.equals("interrupted")?0xfff28b82:0xffa7adb5;}
     public static JSONObject clean(JSONObject data,long now)throws Exception {
         if(data==null)return new JSONObject().put("verified",false).put("rows",new JSONArray()).put("checked",0);
         String epoch=data.getString("epoch"),device=data.getString("device");
         if(!epoch.matches("[a-f0-9]{32}")||!device.matches("[a-f0-9]{64}")||!data.getString("source").equals("local_log_trial"))throw new IllegalArgumentException("Invalid observer");
         long checked=data.getLong("checked");if(checked<0||checked>now+300000)throw new IllegalArgumentException("Invalid check time");
-        JSONArray input=data.getJSONArray("rows"),rows=new JSONArray();if(input.length()>3)throw new IllegalArgumentException("Too many tasks");
+        JSONArray input=data.getJSONArray("rows"),rows=new JSONArray();if(input.length()>MAX_TASKS)throw new IllegalArgumentException("Too many tasks");
         long previous=Long.MAX_VALUE;
         for(int i=0;i<input.length();i++){JSONObject r=input.getJSONObject(i);String thread=r.getString("Thread"),turn=r.getString("Turn"),state=r.getString("State");
             long at=r.getLong("At"),seen=r.getLong("Seen"),seq=r.getLong("Sequence");
