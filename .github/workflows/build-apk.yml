@@ -70,4 +70,7 @@ jobs:
       - name: Compile portable widget and run isolated fixtures
         shell: pwsh
         run: ./windows-widget/build.ps1 -Test
+      - name: Verify RPG token metadata and widget regression
+        shell: pwsh
+        run: python android/tests/verify-rpg-windows.py
       # No live login, signing secrets, registry changes or public artifacts.

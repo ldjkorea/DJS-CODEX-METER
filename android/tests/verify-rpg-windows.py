@@ -1,5 +1,8 @@
 from pathlib import Path
 import os,subprocess
+if os.name!='nt':
+ print('Windows RPG metadata/render tests require Windows; executed by the separate Windows CI job.')
+ raise SystemExit(0)
 root=Path(__file__).resolve().parents[1];repo=root.parent;out=root/'build/rpg2-windows';out.mkdir(parents=True,exist_ok=True)
 compiler=Path(os.environ['WINDIR'])/'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
 sources=list((repo/'windows-widget/src').glob('*.cs'))
