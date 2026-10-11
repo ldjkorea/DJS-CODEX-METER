@@ -1,3 +1,11 @@
+# GPT HUD Windows Widget 0.1.8
+
+CODEX 작업 현황 전송 상한을 최신 작업 6개로 확대했습니다. 휴대폰 GPT HUD 2.8.26과 함께 업데이트하세요. Windows 위젯 화면과 LAN/Tailscale 인증 형식은 유지합니다.
+
+기존 위젯의 **⋯ → 종료**를 누르고 새 ZIP을 별도 폴더에 풀어 `CodexMeterWidget.exe`를 실행하세요. 기존 AppData 폴더를 삭제하지 마세요. 로그인·기록·Tailscale 연결·화면 설정은 기존 저장소에서 이어집니다. Windows 시작 시 실행을 쓴다면 새 폴더에서 껐다 켜 실행 경로를 갱신하세요.
+
+## 이전 버전 안내
+
 # GPT HUD Windows Widget 0.1.7
 
 기존 위젯의 **⋯ → 종료** 후 새 ZIP을 별도 폴더에 풀어 `CodexMeterWidget.exe`를 실행하세요. 기존 AppData의 로그인·기록·Tailscale 연결·화면 설정을 이어 사용합니다. Codex 앱은 재시작할 필요 없습니다. 휴대폰은 GPT HUD 2.8.21로 업데이트합니다.

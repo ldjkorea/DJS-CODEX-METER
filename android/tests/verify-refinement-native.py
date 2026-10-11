@@ -49,5 +49,5 @@ for width in [320,360,411,700]:
             result=shell('am','instrument','-r','-w','-e','mode','matrix','-e','label',label,test_package+'/dev.bennett.codexmeter.RpgRefinementNativeTest');(out/(label+'.txt')).write_text(result,encoding='utf-8');print(label,result.strip(),flush=True);assert 'checks passed' in result and 'INSTRUMENTATION_CODE: -1' in result
             results.append(label)
 run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/refinement-captures',out/'captures'])
-(out/'MATRIX.json').write_text(json.dumps(dict(configurations=results,package=package,production_upgrade='2.8.23/code53 -> 2.8.25/code55',synthetic=True,physical_phone=False),indent=2),encoding='utf-8')
+(out/'MATRIX.json').write_text(json.dumps(dict(configurations=results,package=package,production_upgrade='2.8.23/code53 -> 2.8.26/code56',synthetic=True,physical_phone=False),indent=2),encoding='utf-8')
 print('Production package non-destructive update and 16 real Android window configurations passed.')
