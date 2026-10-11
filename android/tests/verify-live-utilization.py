@@ -19,7 +19,7 @@ assert 'LiveUtilization.Result live' in home and 'LiveCards.crest(' in home
 assert 'LiveUsageStore.calculate(' in home and 'LiveCards.daily(' in home
 for s in [home,(app/'FunActivity.java').read_text(encoding='utf-8'),settings]:
  assert 'R.string.fun_why' not in s and 'R.string.fun_tone' not in s and 'R.string.fun_tier)' not in s
-assert 'R.string.ux_value_method' not in settings and 'PlanArtwork.image(' in settings
+assert 'R.string.ux_value_method' not in settings and 'RpgPlanSeals.image(' in settings
 assert 'day.coveredMillis>0||day.points>0' in cards and 'Double.NaN' in cards
 assert 'LiveUsageStore.invalidate();WidgetRenderer.updateAll' in (app/'LedgerAnalyticsActivity.java').read_text(encoding='utf-8')
 assert 'LiveUsageStore.schedule(context)' in (app/'WidgetRenderer.java').read_text(encoding='utf-8')

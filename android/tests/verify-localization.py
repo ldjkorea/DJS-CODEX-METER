@@ -102,7 +102,7 @@ protected = [
 ]
 paths = ["android/app/src/main/java/dev/bennett/codexmeter/" + name for name in protected]
 paths += [str(p.relative_to(REPO)).replace("\\", "/") for p in (ROOT / "shared/src").rglob("*.java")
-          if p.name not in ("UsagePrecision.java", "UsageInsights.java", "UsageEventDetector.java", "UsageLedger.java", "UsageLedgerInsights.java", "LedgerRecord.java", "LedgerAggregation.java", "LedgerForecast.java", "LedgerExport.java", "LedgerPresentation.java", "LedgerCalendar.java", "FunInsights.java", "TestNote.java", "LedgerPeriods.java", "SubscriptionCost.java", "SubscriptionValue.java", "CoachMoment.java", "WidgetVisibility.java", "WearUsageState.java", "TierEvolution.java", "EvolutionElements.java", "KoreanUpdateTrust.java", "LiveUtilization.java", "SpicyAi.java", "SpicyRotation.java", "TaskStatusData.java", "WidgetTierPalette.java", "LanSyncWire.java")]
+          if p.name not in ("UsagePrecision.java", "UsageInsights.java", "UsageEventDetector.java", "UsageLedger.java", "UsageLedgerInsights.java", "LedgerRecord.java", "LedgerAggregation.java", "LedgerForecast.java", "LedgerExport.java", "LedgerPresentation.java", "LedgerCalendar.java", "FunInsights.java", "TestNote.java", "LedgerPeriods.java", "SubscriptionCost.java", "SubscriptionValue.java", "CoachMoment.java", "WidgetVisibility.java", "WearUsageState.java", "TierEvolution.java", "EvolutionElements.java", "KoreanUpdateTrust.java", "LiveUtilization.java", "SpicyAi.java", "SpicyRotation.java", "TaskStatusData.java", "WidgetTierPalette.java", "LanSyncWire.java", "MonthlyLedger.java", "AccountTier.java", "AccountProgress.java", "RpgTokens.java", "RpgTier.java", "RpgCatalog.java", "RpgEngine.java")]
 paths += ["android/settings.gradle.kts",
           "android/wear/src/main/AndroidManifest.xml"]
 for path in paths:
@@ -141,10 +141,12 @@ reviewed_change(APP_JAVA + "AppPreferences.java", lambda s: s.replace(
     "            return prefs(context).edit().putString(KEY_RESET_CREDITS, resetCreditsSnapshot.toJson().toString()).remove(KEY_RESET_ERROR).remove(KEY_RESET_ERROR_AT).commit();",
     "            boolean saved = prefs(context).edit().putString(KEY_RESET_CREDITS, resetCreditsSnapshot.toJson().toString()).remove(KEY_RESET_ERROR).remove(KEY_RESET_ERROR_AT).commit();\n            if (saved) UsageEventStore.recordCredits(context, resetCreditsSnapshot);\n            return saved;").replace(
     "        UsageEventStore.clear(context);\n", "        UsageEventStore.clear(context);\n        UsageLedgerStore.clear(context);\n        UsageLedgerDatabase.clear(context);\n"))
-version_change = lambda s: s.replace("2.8.0", "2.8.20").replace("versionCode = 30", "versionCode = 50").replace("VERSION_CODE = 30", "VERSION_CODE = 50")
+version_change = lambda s: s.replace("2.8.0", "2.8.21").replace("versionCode = 30", "versionCode = 51").replace("VERSION_CODE = 30", "VERSION_CODE = 51")
 reviewed_change(APP_JAVA + "AppConstants.java", version_change)
 reviewed_change("android/wear/build.gradle.kts", version_change)
-reviewed_change("android/app/build.gradle.kts", lambda s: version_change(s).replace(
+def reviewed_qa(s):
+    return s.replace('        applicationId = "dev.bennett.codexmeter"', '        applicationId = "dev.bennett.codexmeter"\n        // Isolated emulator QA only; the release command does not set this property.\n        if (providers.gradleProperty("rpgIsolatedQa").orNull == "true") {\n            applicationId = "dev.bennett.codexmeter.rpg3qa"\n        }')
+reviewed_change("android/app/build.gradle.kts", lambda s: reviewed_qa(version_change(s)).replace(
     "    buildFeatures {", '    defaultConfig {\n        buildConfigField("boolean", "KOREAN_UPDATES_ENABLED", "false")\n    }\n\n    buildFeatures {'))
 reviewed_change(APP_JAVA + "UsageApi.java", lambda s: s.replace(
     "    public static UsageSnapshot refreshAndCache(Context context) throws Exception {\n",

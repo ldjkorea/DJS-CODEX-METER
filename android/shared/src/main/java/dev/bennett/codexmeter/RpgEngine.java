@@ -86,7 +86,9 @@ public final class RpgEngine {
     private static int inRange(Set<String> dates,LocalDate start,LocalDate end){int n=0;for(String s:dates){LocalDate d=LocalDate.parse(s);if(!d.isBefore(start)&&d.isBefore(end))n++;}return n;}
     private static Set<String> tokenDates(JSONObject days)throws JSONException {Set<String> set=new HashSet<>();for(String day:AccountProgress.keys(days))if(days.getLong(day)>0)set.add(day);return set;}
     private static void refresh(JSONObject document,long now,boolean fresh,boolean changed)throws JSONException {
-        JSONObject s=state(document),tokens=s.getJSONObject("tokens"),official=tokens.getJSONObject("official"),od=official.optJSONObject("days");if(od==null)od=new JSONObject();
+        JSONObject s=state(document);JSONObject inherited=document.getJSONObject("tier");
+        if(!s.optBoolean("kr_legacy_seeded")&&inherited.optInt("tier",-1)>=0){AccountTier.promote(s.getJSONObject("KR"),inherited.getInt("tier"),now);s.getJSONObject("KR").put("highest",Math.max(s.getJSONObject("KR").getInt("highest"),inherited.optInt("highest",-1)));s.put("kr_legacy_seeded",true);}
+        JSONObject tokens=s.getJSONObject("tokens"),official=tokens.getJSONObject("official"),od=official.optJSONObject("days");if(od==null)od=new JSONObject();
         Set<String> dates=new HashSet<>(AccountProgress.keys(s.getJSONObject("activity"))),service=tokenDates(od);
         // Unknown service timezone: keep the populations separate; max is a conservative bound, never union them.
         int days=Math.max(s.optInt("activity_days"),Math.max(dates.size(),service.size())),longest=Math.max(s.optInt("longest_observed_streak"),Math.max(streak(dates),streak(service)));
@@ -134,7 +136,7 @@ public final class RpgEngine {
     private static List<String> sortedEnds(JSONObject weeks){List<String> keys=AccountProgress.keys(weeks);keys.sort(Comparator.comparingLong(Long::parseLong));return keys;}
     public static List<String> eligibleTitles(JSONObject document)throws JSONException {List<String> ids=new ArrayList<>();JSONObject a=state(document).getJSONObject("achievements");for(RpgCatalog.Entry e:RpgCatalog.ALL)if(a.optJSONObject(e.id)!=null&&a.getJSONObject(e.id).optBoolean("unlocked"))ids.add(e.id);return ids;}
     public static String recommend(JSONObject document,Random random)throws JSONException {List<String> eligible=eligibleTitles(document);if(eligible.isEmpty())return "";String id=eligible.get(random.nextInt(eligible.size()));state(document).put("recommended_title",id);return id;}
-    public static boolean equip(JSONObject document,String id)throws JSONException {if(!eligibleTitles(document).contains(id))return false;state(document).put("equipped_title",id);return true;}
+    public static boolean equip(JSONObject document,String id)throws JSONException {if(id.isEmpty()){state(document).remove("equipped_title");return true;}if(!eligibleTitles(document).contains(id))return false;state(document).put("equipped_title",id);return true;}
     /** Merge only an account-bound trusted journal (backup/paired device), never add its XP total.
      * Step 3 may expose this through existing authenticated sync. It is not a public upload endpoint. */
     public static JSONObject export(JSONObject document,String account)throws JSONException {
@@ -172,6 +174,7 @@ public final class RpgEngine {
         for(String field:new String[]{"activity_days","active_days_30","valid_weeks"})s.put(field,Math.max(s.optInt(field),imported.optInt(field)));
         String title=imported.optString("equipped_title");if(!s.has("equipped_title")&&eligibleTitles(document).contains(title))s.put("equipped_title",title);
         if(!s.has("recommended_title")&&eligibleTitles(document).contains(imported.optString("recommended_title")))s.put("recommended_title",imported.getString("recommended_title"));
+        s.put("kr_legacy_seeded",s.optBoolean("kr_legacy_seeded")||imported.optBoolean("kr_legacy_seeded"));
         s.put("level",level(s.getLong("xp"))).put("restored_at",now);refresh(document,now,false,false);
     }
     public static JSONObject summary(JSONObject document)throws JSONException {JSONObject s=state(document),out=new JSONObject();for(String k:new String[]{"version","model","xp","level","activity_days","active_days_30","valid_weeks","token_status","token_total","token_basis","token_observed_at","daily_basis","quota_score_basis","demotion_status","updated_at","recommended_title","equipped_title"})if(s.has(k))out.put(k,s.get(k));

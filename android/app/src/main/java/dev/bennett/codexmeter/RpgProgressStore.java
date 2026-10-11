@@ -52,7 +52,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
             }
         }return null;}
     }catch(Exception ignored){return null;}}
-    static int tier(Context c){JSONObject p=peek(c),t=p==null?null:p.optJSONObject("tier");int tier=t==null?-1:t.optInt("tier",-1);return tier>=0&&tier<=9?tier:-1;}
+    static int tier(Context c){JSONObject p=peek(c),r=p==null?null:p.optJSONObject("rpg"),t=r==null?null:r.optJSONObject("KR");if(t==null||t.optInt("tier",-1)<0)t=p==null?null:p.optJSONObject("tier");int tier=t==null?-1:t.optInt("tier",-1);return tier>=0&&tier<=9?tier:-1;}
     static void reconcile(Context c,UsageSnapshot captured,UsageLedgerDatabase.Data data) throws Exception {
         reconcile(c,captured,data,SubscriptionStore.accountKey(c));
     }
@@ -100,6 +100,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
     }
     static void tokens(Context c,String expected,JSONObject envelope)throws Exception {mutate(c,expected,envelope,null,null);}
     static boolean equip(Context c,String expected,String title)throws Exception {return mutate(c,expected,null,title,null);}
+    static boolean recommend(Context c,String expected)throws Exception {return mutate(c,expected,null,"@recommend",null);}
     static boolean restore(Context c,String expected,JSONObject journal)throws Exception {return mutate(c,expected,null,null,journal);}
     static JSONObject export(Context c,String expected)throws Exception {
         synchronized(UsageApi.NETWORK_LOCK){String account=SubscriptionStore.accountKey(c);if(account==null||!account.equals(expected)||!c.getDatabasePath(NAME).exists())return null;
@@ -116,7 +117,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
             try(RpgProgressStore helper=new RpgProgressStore(c)){SQLiteDatabase db=helper.getWritableDatabase();db.beginTransaction();
                 try{String raw="";try(Cursor cursor=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){if(cursor.moveToFirst())raw=cursor.getString(0);}
                     document=raw.isEmpty()?AccountProgress.empty():new JSONObject(raw);
-                    boolean changed=journal!=null?RpgEngine.merge(document,account,journal,System.currentTimeMillis()):envelope!=null?RpgEngine.ingestOfficial(document,account,envelope,System.currentTimeMillis()):RpgEngine.equip(document,title);
+                    boolean changed=journal!=null?RpgEngine.merge(document,account,journal,System.currentTimeMillis()):envelope!=null?RpgEngine.ingestOfficial(document,account,envelope,System.currentTimeMillis()):title.equals("@recommend")?!RpgEngine.recommend(document,new Random()).isEmpty():RpgEngine.equip(document,title);
                     if(!changed)return false;
                     db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{account,document.toString()});db.setTransactionSuccessful();
                 }finally{db.endTransaction();}

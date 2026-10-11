@@ -45,13 +45,20 @@ final class SubscriptionValueUi {
             LinearLayout figures=new LinearLayout(a);figures.setOrientation(LinearLayout.VERTICAL);
             figures.addView(LedgerUi.amount(a,FunActivity.money(bill.currency,new BigDecimal(value.optString("reference_value","0"))),dark,32));
             figures.addView(LedgerUi.caption(a,"/ "+FunActivity.money(bill.currency,bill.amount),dark));card.addView(figures);
-            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg_billing_period,bill.start.toString(),bill.end.toString()),dark));
-            card.addView(LedgerUi.caption(a,a.getString(R.string.live_value_ratio,LedgerUi.number(percentValue.doubleValue())),dark));
+            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_billing_usage,LedgerUi.number(percentValue.doubleValue())),dark));
+            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_billing_value),dark));
             android.widget.ProgressBar progress=Ui.progress(a,dark);progress.setProgress((int)Math.max(0,Math.min(100,percentValue.doubleValue())));Ui.addSpacer(card,12);card.addView(progress);
             card.addView(LedgerUi.caption(a,a.getString(R.string.rpg_reference),dark));
             card.addView(LedgerUi.caption(a,a.getString(fresh?R.string.rpg_partial:R.string.rpg_last_settlement),dark));
         }else card.addView(LedgerUi.caption(a,a.getString(bill==null?R.string.v3_payment_missing:!active?R.string.ux_period_mismatch:monthly!=null&&monthly.optBoolean("mixed_policies")?R.string.rpg_mixed_policy:R.string.live_need_coverage),dark));
         if(bill==null||!active){Ui.addSpacer(card,12);android.widget.Button edit=LedgerUi.action(a,a.getString(bill==null?R.string.ux_register:R.string.v3_payment_edit),true,dark,()->SubscriptionUi.edit(a,AppPreferences.loadSnapshot(a),dark,a::recreate));edit.setEnabled(SubscriptionStore.key(a,snapshot)!=null);card.addView(edit);}
+        if(bill!=null){
+            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg_billing_period,bill.start.toString(),bill.end.toString()),dark));
+            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_payment,FunActivity.money(bill.currency,bill.amount)),dark));
+            long start=bill.start.atStartOfDay(LedgerAggregation.ZONE).toInstant().toEpochMilli(),end=bill.end.atStartOfDay(LedgerAggregation.ZONE).toInstant().toEpochMilli();double elapsed=100d*(System.currentTimeMillis()-start)/(end-start);
+            card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_elapsed,LedgerUi.number(Math.max(0,Math.min(100,elapsed)))),dark));
+        }
+        Ui.addSpacer(card,10);card.addView(LedgerUi.action(a,a.getString(R.string.rpg3_billing_history),false,dark,()->a.startActivity(new android.content.Intent(a,BillingHistoryActivity.class))));
         return card;
     }
 }

@@ -38,6 +38,8 @@ final class LedgerDashboard {
     }
 
     static final class State {
+        private static String todayStamp="";
+        private static LedgerAggregation.Day cachedToday;
         final LinearLayout card;
         private final AppCompatActivity activity;
         private final ExecutorService worker;
@@ -124,6 +126,8 @@ final class LedgerDashboard {
         private void loadToday() {
             day=LedgerAggregation.day(System.currentTimeMillis()).toString();
             final String requestedDay=day;
+            final String stamp=LiveUsageStore.signature(activity,snapshot)+":"+LiveUsageStore.revision()+":"+policy+":"+day;
+            if(stamp.equals(todayStamp)){showToday(cachedToday,false);return;}
             worker.execute(()->{
                 LedgerAggregation.Day today=null; boolean failed=false;
                 try { today=LedgerPresentation.find(UsageLedgerDatabase.load(activity.getApplicationContext()).days,
@@ -132,6 +136,12 @@ final class LedgerDashboard {
                 final LedgerAggregation.Day result=today; final boolean error=failed;
                 activity.runOnUiThread(()->{
                     if(activity.isDestroyed()||activity.isFinishing()||!requestedDay.equals(day))return;
+                    if(!error&&stamp.equals(LiveUsageStore.signature(activity,AppPreferences.loadSnapshot(activity))+":"+LiveUsageStore.revision()+":"+policy+":"+day)){todayStamp=stamp;cachedToday=result;}
+                    showToday(result,error);
+                });
+            });
+        }
+        private void showToday(LedgerAggregation.Day result,boolean error){
                     todayAmount.setText(LedgerPresentation.measured(result)
                             ?activity.getString(R.string.ui_ledger_points,LedgerUi.number(result.points)):"—");
                     todayNote.setText(error?activity.getString(R.string.next_failed):result==null
@@ -140,8 +150,6 @@ final class LedgerDashboard {
                             +" · "+activity.getString(result.uncertain>0?R.string.next_gap:R.string.next_partial)
                             +(result.legacy?" · "+activity.getString(R.string.next_legacy_tag):""));
                     todayNote.append(" · "+activity.getString(R.string.hud_limit_basis,activity.getString(labelForPolicy())));
-                });
-            });
         }
     }
 }

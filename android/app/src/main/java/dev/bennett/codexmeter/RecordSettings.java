@@ -27,8 +27,8 @@ final class RecordSettings {
         copy.addView(LedgerUi.amount(a,bill==null?"—":FunActivity.money(bill.currency,bill.amount),dark,27));
         copy.addView(LedgerUi.caption(a,bill==null?a.getString(R.string.ux_tax_amount):a.getString(R.string.ux_bill_dates,bill.start.toString(),bill.end.toString()),dark));
         row.addView(copy,new LinearLayout.LayoutParams(0,-2,1));
-        android.widget.ImageView artwork=new android.widget.ImageView(a);artwork.setImageResource(PlanArtwork.image(snapshot==null?null:snapshot.planType));artwork.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);artwork.setImportantForAccessibility(android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        if(PlanArtwork.image(snapshot==null?null:snapshot.planType)==0)artwork.setVisibility(android.view.View.GONE);
+        android.widget.ImageView artwork=new android.widget.ImageView(a);artwork.setImageResource(RpgPlanSeals.image(snapshot==null?null:snapshot.planType));artwork.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);artwork.setImportantForAccessibility(android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        // Unknown products retain an explicitly neutral seal; no price is inferred.
         int size=Ui.dp(a,LedgerUi.stacked(a)?72:96);row.addView(artwork,new LinearLayout.LayoutParams(size,size));account.addView(row);
         Button edit=action(a,account,dark,bill==null?R.string.ux_register:R.string.v3_payment_edit,()->SubscriptionUi.edit(a,AppPreferences.loadSnapshot(a),dark,a::recreate));
         edit.setEnabled(SubscriptionStore.key(a,snapshot)!=null);

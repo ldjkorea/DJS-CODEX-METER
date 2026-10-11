@@ -1,0 +1,47 @@
+{
+  "assets": [
+    {
+      "path": "android/app/src/main/res/drawable/rpg_seal_free.xml",
+      "author": "GPT HUD project",
+      "license": "MIT",
+      "origin": "original geometric local vector; no external artwork",
+      "sha256": "bd02dc486d7e7b6eb1f808fb82a892df3295fb5685f36855d66296a01c9b9682"
+    },
+    {
+      "path": "android/app/src/main/res/drawable/rpg_seal_go.xml",
+      "author": "GPT HUD project",
+      "license": "MIT",
+      "origin": "original geometric local vector; no external artwork",
+      "sha256": "34c93c15834bf8ec0401c5ead499ff9da4d156aebea60685f4a949fc403d1800"
+    },
+    {
+      "path": "android/app/src/main/res/drawable/rpg_seal_plus.xml",
+      "author": "GPT HUD project",
+      "license": "MIT",
+      "origin": "original geometric local vector; no external artwork",
+      "sha256": "46f6daababeab2140054eacbc30c47f98c01a23dd292d0f375649a32eb84264d"
+    },
+    {
+      "path": "android/app/src/main/res/drawable/rpg_seal_prolite.xml",
+      "author": "GPT HUD project",
+      "license": "MIT",
+      "origin": "original geometric local vector; no external artwork",
+      "sha256": "b7756a4097452de5cc84dbd98865acaf23636444fec76f169c353bb2afecba06"
+    },
+    {
+      "path": "android/app/src/main/res/drawable/rpg_seal_pro.xml",
+      "author": "GPT HUD project",
+      "license": "MIT",
+      "origin": "original geometric local vector; no external artwork",
+      "sha256": "3a48e7e5b7560a7c93d6497756991e29de7e13825cc16715c52e2907a1734ff4"
+    },
+    {
+      "path": "android/app/src/main/res/drawable/rpg_seal_neutral.xml",
+      "author": "GPT HUD project",
+      "license": "MIT",
+      "origin": "original geometric local vector; no external artwork",
+      "sha256": "e1d55476df3f41f4ddf2ea2c2a48fc55c4abc29e748889140bb08790386292a1"
+    }
+  ],
+  "notes": "Existing artwork and licenses are preserved. No price is inferred from plan IDs."
+}

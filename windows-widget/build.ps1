@@ -1,7 +1,7 @@
-param([switch]$Test)
+param([switch]$Test, [string]$OutputDirectory)
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
-$output = Join-Path $root 'build'
+$output = if ($OutputDirectory) { [IO.Path]::GetFullPath($OutputDirectory) } else { Join-Path $root 'build' }
 New-Item -ItemType Directory -Force -Path $output | Out-Null
 $manifest = Get-Content -LiteralPath "$root\assets\PROVENANCE.json" -Raw | ConvertFrom-Json
 if ($manifest.assets.Count -ne 10) { throw '10개 휘장의 출처 기록이 필요합니다.' }

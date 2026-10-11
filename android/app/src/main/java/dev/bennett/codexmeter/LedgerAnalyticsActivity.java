@@ -169,7 +169,7 @@ public class LedgerAnalyticsActivity extends AppCompatActivity {
         if(body==null||data==null)return;body.removeAllViews();
         LocalDate today=LedgerAggregation.day(System.currentTimeMillis());
         getIntent().putExtra("selected_date",selectedDate.toString());
-        if(screen==0)addOverview(today);else addTrends(today);
+        if(recordsRoot()&&screen==0){addTrends(today);Ui.addSpacer(body,12);}else if(screen==0)addOverview(today);else addTrends(today);
         addRecords(today);RecordSettings.add(this,body,dark);
         restorePosition();
     }

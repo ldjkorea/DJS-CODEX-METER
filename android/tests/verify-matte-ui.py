@@ -14,7 +14,7 @@ activities={item.get(a+'name'):item for item in manifest.find('application').fin
 for target in ['MainActivity','LedgerAnalyticsActivity','RecordsActivity','DashboardReorderActivity','SettingsActivity','FunSettingsActivity','FunActivity','TestNotesActivity','MeterSettingsActivity','AboutActivity']:
     assert 'dev.bennett.codexmeter.'+target in activities,('Navigation target is not registered',target)
 assert activities['dev.bennett.codexmeter.RecordsActivity'].get(a+'exported')=='false'
-assert 'R.string.matte_analysis' not in nav and nav.index('R.string.matte_home')<nav.index('R.string.matte_records')
+assert 'R.string.matte_analysis' not in nav and nav.index('R.string.matte_records')<nav.index('R.string.matte_home')<nav.index('R.string.rpg3_growth')
 assert 'MatteNav.install(this,1)' in main
 assert 'FLAG_ACTIVITY_REORDER_TO_FRONT|Intent.FLAG_ACTIVITY_SINGLE_TOP' in nav
 assert 'moveTaskToBack(true)' in nav and 'else open(activity,1)' in nav
