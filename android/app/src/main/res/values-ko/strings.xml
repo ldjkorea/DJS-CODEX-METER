@@ -852,4 +852,8 @@
     <string name="lan_sync_done">기록과 티어를 공유했습니다.</string>
     <string name="lan_sync_wait">아직 연결하지 못했습니다. PC 실행·같은 Wi-Fi·방화벽을 확인해 주세요. 기록은 유지됩니다.</string>
     <string name="lan_sync_last">마지막 공유 · %1$s</string>
+    <string name="usage_decimal_places">사용량 소수점 자리수</string>
+    <string name="usage_decimal_current">사용량 소수점 자리수 · %1$d자리</string>
+    <string name="usage_decimal_two">소수점 2자리 · 86.57%</string>
+    <string name="usage_decimal_three">소수점 3자리 · 86.573%</string>
 </resources>

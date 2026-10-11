@@ -1,5 +1,26 @@
 [
   {
+    "version": "2.8.27",
+    "origin": "korean",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.27",
+    "ko": {
+      "title": "소수점 자리수 선택 · PC 위젯 업데이트",
+      "changes": [
+        "설정 → 위젯·화면에서 사용량 소수점을 2자리 또는 3자리로 선택합니다. 홈의 잔여량·한도 상세·사용량 위젯에 반영하고 원본 기록과 계산값은 그대로 유지합니다.",
+        "Windows 0.1.9의 ⋯ → 업데이트 확인에서 다운로드·체크섬 검증·재시작까지 진행합니다. 기존 로그인·설정·Tailscale 연결 정보를 유지합니다.",
+        "Android 버전 검사와 Windows 표시 버전 불일치를 수정했습니다. 기존 5×3 작업현황 위젯과 6개 작업 전송을 유지합니다."
+      ]
+    },
+    "en": {
+      "title": "Decimal precision selection · Windows widget updates",
+      "changes": [
+        "Choose two or three usage decimal places in Settings → Widgets & display. Home, limit details and usage widgets follow the selection without changing stored observations or calculations.",
+        "Windows 0.1.9 adds Check for updates to download, verify checksums and restart while retaining login, settings and phone/Tailscale pairing.",
+        "Fixed Android release-version checks and the Windows displayed-version mismatch. The 5×3 task widget and six-task transmission remain available."
+      ]
+    }
+  },
+  {
     "version": "2.8.26",
     "origin": "korean",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.26",

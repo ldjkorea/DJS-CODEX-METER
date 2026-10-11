@@ -29,6 +29,15 @@ public final class HudSelfTest {
         check(UsagePrecision.used(old).equals("13%")&&!old.toJson().has("used_percent_precise"),"No invented legacy decimals");
         check(UsageWindow.fromJson(new JSONObject().put("used_percent",13).put("used_percent_precise",99.999).put("limit_window_seconds",604800)).preciseUsedPercent==13,"Conflicting precision cannot override legacy value");
         check(UsagePrecision.number(Double.NaN).equals("—"),"Unknown is not zero");
+        check(UsagePrecision.number(86.57264,2).equals("86.57"),"Selected two decimals");
+        check(UsagePrecision.number(86.57264,3).equals("86.573"),"Selected three decimals");
+        check(UsagePrecision.number(99.9996,2).equals("100.00"),"Two-place carry rounding");
+        check(UsagePrecision.number(0,3).equals("0.000"),"Explicit three-place display");
+        check(UsagePrecision.number(Double.NaN,2).equals("—"),"Missing selected value is not zero");
+        check(UsagePrecision.remaining(new UsageWindow(64.995,604800,0,0),2).equals("35.01%"),"Decimal complement does not lose half-up boundary to binary subtraction");
+        Locale.setDefault(Locale.GERMAN);
+        check(UsagePrecision.number(12.345,2).equals("12,35"),"Localized two-place separator");
+        Locale.setDefault(Locale.KOREAN);
         long now=System.currentTimeMillis();JSONObject snapshot=new JSONObject().put("epoch","a".repeat(32)).put("device","b".repeat(64)).put("source","local_log_trial").put("verified",true).put("checked",now).put("rows",new JSONArray().put(row("running",2,now)));
         JSONObject clean=TaskStatusData.clean(snapshot,now);
         JSONObject named=row("running",2,now).put("Name","GPT HUD\n위젯 개선").put("Issue","command_error").put("IssueAt",now).put("prompt","PRIVATE_PROMPT").put("command","PRIVATE_COMMAND");

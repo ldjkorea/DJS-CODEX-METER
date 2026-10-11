@@ -692,15 +692,15 @@ public final class WidgetRenderer {
             WidgetOptions options, int resetCount) {
         boolean used = WidgetOptions.DISPLAY_USED.equals(options.displayMode);
         if (WidgetMeters.FIVE_HOUR.equals(key)) {
+            String text=preciseSlotText(context,snapshot==null?null:MeterVisibility.five(context,snapshot),used,options.showPercentSymbol);
             return usageSlot(key, context.getString(R.string.ui_5h_798876), R.drawable.ic_oui_time, state.primaryValue,
-                    dialValue(state.primaryValue, options.showPercentSymbol),
-                    state.primaryShort);
+                    text, text);
         }
         if (WidgetMeters.WEEKLY.equals(key)) {
+            String text=preciseSlotText(context,snapshot==null?null:MeterVisibility.longWindow(context,snapshot),used,options.showPercentSymbol);
             return usageSlot(key, DisplayLabels.meter(context, key, snapshot, true),
                     R.drawable.ic_oui_calendar_week, state.secondaryValue,
-                    dialValue(state.secondaryValue, options.showPercentSymbol),
-                    state.secondaryShort);
+                    text, text);
         }
         if (WidgetMeters.NEXT_RESET.equals(key)) {
             return new MeterSlot(key, context.getString(R.string.ui_reset_44c57a), R.drawable.ic_oui_alarm, state.nextResetProgress,
@@ -719,10 +719,14 @@ public final class WidgetRenderer {
             String label = DisplayLabels.meter(context, key, snapshot, true);
             int icon = WidgetMeters.isLimitPrimary(key)
                     ? R.drawable.ic_oui_time : R.drawable.ic_oui_calendar_week;
-            String text = dialValue(value, options.showPercentSymbol);
+            String text = preciseSlotText(context,window,used,options.showPercentSymbol);
             return usageSlot(key, label, icon, value, text, text);
         }
         return null;
+    }
+
+    private static String preciseSlotText(Context context,UsageWindow window,boolean used,boolean symbol) {
+        return UsagePrecision.percent(window,used,AppPreferences.usageDecimalPlaces(context),symbol);
     }
 
     private static MeterSlot usageSlot(String key, String label, int icon, int progress,

@@ -6,7 +6,7 @@ if os.name!='nt':
 root=Path(__file__).resolve().parents[1];repo=root.parent;out=root/'build/rpg2-windows';out.mkdir(parents=True,exist_ok=True)
 compiler=Path(os.environ['WINDIR'])/'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
 sources=list((repo/'windows-widget/src').glob('*.cs'))
-refs=['/reference:'+r+'.dll' for r in ['System','System.Core','System.Drawing','System.Windows.Forms','System.Web.Extensions','System.Security','System.Net.Http']]
+refs=['/reference:'+r+'.dll' for r in ['System','System.Core','System.Drawing','System.Windows.Forms','System.Web.Extensions','System.Security','System.Net.Http','System.IO.Compression','System.IO.Compression.FileSystem']]
 resources=['/resource:'+str(repo/f'windows-widget/assets/prestige_{i}.png')+f',prestige_{i}' for i in range(10)]
 for name,main in [('RpgTests','CodexMeterWidget.RpgTests'),('Tests','CodexMeterWidget.Tests')]:
  exe=out/(name+'.exe');subprocess.run([str(compiler),'/nologo','/codepage:65001','/target:exe','/main:'+main,'/out:'+str(exe),*refs,*resources,*map(str,sources),str(repo/f'windows-widget/tests/{name}.cs')],check=True)

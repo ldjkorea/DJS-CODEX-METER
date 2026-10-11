@@ -37,6 +37,16 @@ final class RecordSettings {
         action(a,account,dark,R.string.matte_account_manage,()->MatteNav.homeAction(a,"account"));
 
         LinearLayout display=card(a,parent,dark,R.string.ux_widget_screen);
+        Button decimals=action(a,display,dark,R.string.usage_decimal_places,()->{
+            String[] choices={a.getString(R.string.usage_decimal_two),a.getString(R.string.usage_decimal_three)};
+            new AlertDialog.Builder(a).setTitle(R.string.usage_decimal_places)
+                    .setSingleChoiceItems(choices,AppPreferences.usageDecimalPlaces(a)==2?0:1,(dialog,which)->{
+                        if(AppPreferences.setUsageDecimalPlaces(a,which==0?2:3)){
+                            WidgetRenderer.updateAll(a);dialog.dismiss();a.recreate();
+                        }else Toast.makeText(a,R.string.fun_load_failed,Toast.LENGTH_LONG).show();
+                    }).setNegativeButton(android.R.string.cancel,null).show();
+        });
+        decimals.setText(a.getString(R.string.usage_decimal_current,AppPreferences.usageDecimalPlaces(a)));
         toggle(a,display,dark,R.string.matte_five_hour,AppPreferences.showDashboardFiveHour(a),on->AppPreferences.setShowDashboardFiveHour(a,on));
         toggle(a,display,dark,R.string.ux_weekly,AppPreferences.showDashboardWeekly(a),on->AppPreferences.setShowDashboardWeekly(a,on));
         toggle(a,display,dark,R.string.ui_ledger_home,AppPreferences.showUsageOverview(a),on->AppPreferences.setShowUsageOverview(a,on));

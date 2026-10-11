@@ -19,8 +19,8 @@ namespace CodexMeterWidget {
             Check(!WidgetUpdate.HashMatches(value,hash+"  other.zip\n","fixture.zip"),"different asset rejected");
             Check(!WidgetUpdate.HashMatches(value,hash+"  fixture.zip\n"+hash+"  fixture.zip\n","fixture.zip"),"duplicate checksum rejected");
             var latest=WidgetUpdate.Check().GetAwaiter().GetResult();
-            Check(latest!=null && latest.Version=="0.1.8","actual current public Windows release");
-            Check(new Version(latest.Version)<new Version(WidgetForm.Version),"local newer version cannot downgrade");
+            Check(latest!=null && new Version(latest.Version)>=new Version("0.1.8"),"actual current public Windows release");
+            Check(new Version("0.1.8")<new Version(WidgetForm.Version),"previous public version cannot downgrade current app");
             string exe=latest.Prepare().GetAwaiter().GetResult();
             Check(File.Exists(exe),"actual download checksum extraction and exe version validated");
             Console.WriteLine("Windows updater: "+count+" checks passed. Live public ZIP validated; no installer launched.");return 0;

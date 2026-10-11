@@ -49,6 +49,15 @@ public final class AppPreferences {
         return context.getSharedPreferences(PREFS, 0);
     }
 
+    public static int usageDecimalPlaces(Context context) {
+        return prefs(context).getInt("usage_decimal_places", 3) == 2 ? 2 : 3;
+    }
+
+    public static boolean setUsageDecimalPlaces(Context context, int digits) {
+        if (digits != 2 && digits != 3) return false;
+        return prefs(context).edit().putInt("usage_decimal_places", digits).commit();
+    }
+
     public static boolean saveSnapshot(Context context, UsageSnapshot usageSnapshot) {
         if (usageSnapshot == null) {
             return false;

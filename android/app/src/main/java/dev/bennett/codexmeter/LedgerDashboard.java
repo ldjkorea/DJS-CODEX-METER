@@ -67,8 +67,8 @@ final class LedgerDashboard {
             Ui.addSpacer(card,8);
             card.addView(LedgerUi.caption(activity,activity.getString(R.string.ui_ledger_remaining,
                     activity.getString(label)),dark));
-            card.addView(LedgerUi.amount(activity,UsagePrecision.remaining(window),dark,36));
-            card.addView(LedgerUi.caption(activity,activity.getString(R.string.hud_used,UsagePrecision.used(window)),dark));
+            card.addView(LedgerUi.amount(activity,UsagePrecision.remaining(window,AppPreferences.usageDecimalPlaces(activity)),dark,36));
+            card.addView(LedgerUi.caption(activity,activity.getString(R.string.hud_used,UsagePrecision.used(window,AppPreferences.usageDecimalPlaces(activity))),dark));
             ProgressBar progress=new ProgressBar(activity,null,android.R.attr.progressBarStyleHorizontal);
             progress.setMax(100000);progress.setProgress((int)Math.round((100-window.preciseUsedPercent)*1000));
             progress.setProgressTintList(ColorStateList.valueOf(Ui.accent(activity,dark)));

@@ -535,7 +535,7 @@ public final class MainActivity extends AppCompatActivity {
                         ? R.drawable.ic_oui_calendar_week : R.drawable.ic_oui_time,
                 invertedWave, pace.accelerated);
         card.addView(wave, new LinearLayout.LayoutParams(-1, Ui.dp(this, 103.0f)));
-        TextView precision=LedgerUi.caption(this,getString(R.string.hud_used_remaining,UsagePrecision.used(window),UsagePrecision.remaining(window)),dark);
+        TextView precision=LedgerUi.caption(this,getString(R.string.hud_used_remaining,UsagePrecision.used(window,AppPreferences.usageDecimalPlaces(this)),UsagePrecision.remaining(window,AppPreferences.usageDecimalPlaces(this))),dark);
         precision.setPadding(Ui.dp(this,16),Ui.dp(this,4),Ui.dp(this,16),Ui.dp(this,8));card.addView(precision);
         if (window == snapshot.fiveHour) {
             TextView countdown=LedgerUi.caption(this,"",dark);

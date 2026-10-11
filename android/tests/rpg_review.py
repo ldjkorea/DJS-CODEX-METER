@@ -2,6 +2,8 @@
 from pathlib import Path
 import json
 def strip_rpg(name,text):
+    from precision_review import strip_precision
+    text=strip_precision(name,text)
     from refinement_review import strip_refinement
     text=strip_refinement(name,text)
     # Additive private collection activity; no existing exported/auth activity changes.
