@@ -30,7 +30,8 @@ public final class RpgBackupCodec {
     public static JSONObject decrypt(byte[] bytes,char[] password)throws Exception {
         if(bytes==null||bytes.length>MAX_BYTES*3/2)throw new IllegalArgumentException("Backup size");
         JSONObject file=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
-        if(!FORMAT.equals(file.getString("format"))||file.getInt("version")!=1||file.getInt("iterations")!=ITERATIONS||file.length()!=6)throw new IllegalArgumentException("Backup format");
+        // JSONObject.getInt truncates fractional values; reject altered protocol parameters.
+        if(!FORMAT.equals(file.getString("format"))||!Integer.valueOf(1).equals(file.get("version"))||!Integer.valueOf(ITERATIONS).equals(file.get("iterations"))||file.length()!=6)throw new IllegalArgumentException("Backup format");
         byte[] salt=Base64.getDecoder().decode(file.getString("salt")),nonce=Base64.getDecoder().decode(file.getString("nonce")),data=Base64.getDecoder().decode(file.getString("data"));
         if(salt.length!=16||nonce.length!=12||data.length<16||data.length>MAX_BYTES+16)throw new IllegalArgumentException("Backup parameters");
         Cipher cipher=Cipher.getInstance("AES/GCM/NoPadding");cipher.init(Cipher.DECRYPT_MODE,key(password,salt),new GCMParameterSpec(128,nonce));cipher.updateAAD(AAD.getBytes(StandardCharsets.UTF_8));

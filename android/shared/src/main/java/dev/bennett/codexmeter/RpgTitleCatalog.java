@@ -23,7 +23,7 @@ public final class RpgTitleCatalog {
         new Title("title_v25_sky_archivist","천공의 기록관","Celestial Archivist","legendary",180,26,"days_180","weeks_26"),
         new Title("title_v25_third_eye","삼족오의 세 번째 눈","The Raven's Third Eye","epic",30,4,"tier_4","tokens_100000000"),
         new Title("title_v25_demolition_chief","한도 철거반 총책임자","Quota Demolition Chief","legendary",100,12,"value_200","weeks_12"),
-        new Title("title_v25_false_phoenix","불사조인 척하는 삼족오","A Raven Playing Phoenix","epic",100,12,"plans_2","days_100"),
+        new Title("title_v25_false_phoenix","불사조인 척하는 삼족오","A Raven Playing Phoenix","epic",100,12,"streak_7","days_100"),
         new Title("title_v25_prompt_sovereign","프롬프트의 지배자","Sovereign of Prompts","legendary",180,26,"tokens_1000000000","tier_6"),
         new Title("title_v25_daily_sun","매일 태양을 깨우는 자 II","Daily Sun Waker II","epic",100,12,"streak_30","days_100"),
         new Title("title_v25_orbit_guard","태양 궤도의 수호자","Guardian of the Solar Orbit","mythic",365,52,"weeks_52","tier_7")
