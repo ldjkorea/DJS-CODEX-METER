@@ -889,3 +889,5 @@ echo "Parser, updater, OAuth, onboarding, reset-credit, alert, widget, and Wear 
 "$PYTHON" "$ROOT/tests/verify-growth-ux.py"
 
 "$PYTHON" "$ROOT/tests/verify-medal-collection.py"
+
+"$PYTHON" "$ROOT/tests/verify-achievement-journey.py"

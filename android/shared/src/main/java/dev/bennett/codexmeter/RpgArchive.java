@@ -71,6 +71,9 @@ public final class RpgArchive {
     }
     public static JSONObject merge(JSONObject current,JSONObject file,String account,long now)throws Exception {
         validate(file,account,now);JSONObject result=new JSONObject(current.toString()),incoming=file.getJSONObject("document");
+        JSONObject baseState=RpgEngine.state(result),ownJourney=AchievementJourney.journey(baseState),importedJourney=AchievementJourney.journey(RpgEngine.state(incoming));
+        // Explicit, validated backup restore may recover a started collection onto a not-started device.
+        if(ownJourney!=null&&ownJourney.optLong("first_started_at")==0&&importedJourney!=null&&importedJourney.optLong("first_started_at")>0){result.getJSONObject("future").put("achievement_before_restore",new JSONObject(ownJourney.toString()));baseState.remove(AchievementJourney.KEY);}
         RpgEngine.merge(result,account,RpgEngine.export(incoming,account),now);
         long floor=Math.max(result.getLong("floor"),incoming.getLong("floor"));result.put("floor",floor);
         JSONObject raw=result.getJSONObject("evidence");for(String k:AccountProgress.keys(incoming.getJSONObject("evidence"))){JSONObject row=incoming.getJSONObject("evidence").getJSONObject(k);if(row.getLong("at")<=floor)continue;

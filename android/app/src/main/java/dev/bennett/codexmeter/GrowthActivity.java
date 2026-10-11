@@ -47,12 +47,20 @@ public final class GrowthActivity extends AppCompatActivity {
                         android.widget.TextView banner=LedgerUi.badge(this,getString(R.string.growth_new_unlock,earned.size()),dark,false);banner.setAccessibilityLiveRegion(android.view.View.ACCESSIBILITY_LIVE_REGION_POLITE);banner.setOnClickListener(v->open("achievements"));content.addView(banner);Ui.addSpacer(content,12);
                         if(android.provider.Settings.Global.getFloat(getContentResolver(),android.provider.Settings.Global.ANIMATOR_DURATION_SCALE,1)>0){banner.setAlpha(.4f);banner.animate().alpha(1).setDuration(450).start();}
                     }
+                    achievementSwitch(result);
                     RpgGrowthUi.render(this,content,result,dark,mode());
                 }
                 if(view!=null)view.post(()->view.scrollTo(0,scroll));
             });
         });
     }
+    private void achievementSwitch(JSONObject journal){
+        JSONObject s=journal==null?null:journal.optJSONObject("rpg"),j=AchievementJourney.journey(s);boolean enabled=AchievementJourney.enabled(s);long started=j==null?0:j.optLong("first_started_at");String expectedAccount=loadedAccount;
+        androidx.appcompat.widget.SwitchCompat toggle=new androidx.appcompat.widget.SwitchCompat(this);toggle.setText(R.string.journey_switch);toggle.setTextColor(Ui.mainText(dark));toggle.setTextSize(17);toggle.setMinHeight(Ui.dp(this,48));toggle.setChecked(enabled);toggle.setTag("journey:switch");content.addView(toggle);
+        content.addView(LedgerUi.caption(this,getString(enabled?R.string.journey_active:started==0?R.string.journey_not_started:R.string.journey_paused),dark));Ui.addSpacer(content,12);
+        toggle.setOnCheckedChangeListener((button,on)->{button.setOnCheckedChangeListener(null);button.setChecked(enabled);if(on){detailDialog=new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(started==0?R.string.journey_start_question:R.string.journey_resume_question).setMessage(started==0?R.string.journey_start_note:R.string.journey_resume_note).setNegativeButton(android.R.string.cancel,(d,w)->load(true)).setPositiveButton(R.string.journey_confirm,(d,w)->setAchievementEnabled(true,expectedAccount)).setOnCancelListener(d->load(true)).create();detailDialog.show();}else setAchievementEnabled(false,expectedAccount);});
+    }
+    private void setAchievementEnabled(boolean enabled,String account){if(busy||account.isEmpty()||!account.equals(SubscriptionStore.accountKey(this)))return;busy=true;WORKER.execute(()->{boolean ok=false;try{ok=RpgProgressStore.setAchievementsEnabled(getApplicationContext(),account,enabled);}catch(Exception ignored){}final boolean saved=ok;runOnUiThread(()->{busy=false;if(isDestroyed()||!account.equals(SubscriptionStore.accountKey(this)))return;if(saved)sendBroadcast(new Intent(AppConstants.ACTION_USAGE_UPDATED).setPackage(getPackageName()));else android.widget.Toast.makeText(this,R.string.rpg3_failed,android.widget.Toast.LENGTH_SHORT).show();signature="";load(true);});});}
     String mode(){String value=getIntent().getStringExtra("growth_mode");return "titles".equals(value)?"titles":"achievements".equals(value)||getIntent().getBooleanExtra("catalog",false)?"achievements":"overview";}
     void open(String mode){if(busy)return;if(!mode.equals("overview")){RpgCollectionActivity.open(this,mode);return;}if(detailDialog!=null)detailDialog.dismiss();getIntent().putExtra("catalog",false).putExtra("growth_mode",mode);scroll=0;android.view.View view=findViewById(R.id.dashboard_scroll);if(view!=null)view.scrollTo(0,0);load(true);}
     void detail(String kind,JSONObject state){if(isFinishing()||isDestroyed()||!loadedAccount.equals(SubscriptionStore.accountKey(this)))return;if(detailDialog!=null)detailDialog.dismiss();detailDialog=RpgDetails.show(this,kind,state,dark);}

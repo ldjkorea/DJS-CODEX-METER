@@ -36,15 +36,15 @@ final class RpgProgressStore extends SQLiteOpenHelper {
     }
     static JSONObject peek(Context c){try{String account=SubscriptionStore.accountKey(c);if(account==null)return null;
         String raw=c.getSharedPreferences("codex_rpg_display_v1",0).getString(account,"");
-        if(!raw.isEmpty()){try{JSONObject cached=new JSONObject(raw);if(cached.has("tier")&&cached.has("settlements"))return cached;}catch(JSONException invalid){/* Recover from durable journal below. */}}
+        if(!raw.isEmpty()){try{JSONObject cached=new JSONObject(raw);if(cached.has("tier")&&cached.has("settlements"))return safeDisplay(cached);}catch(JSONException invalid){/* Recover from durable journal below. */}}
         synchronized(UsageApi.NETWORK_LOCK){
         if(!account.equals(SubscriptionStore.accountKey(c)))return null;
         raw=c.getSharedPreferences("codex_rpg_display_v1",0).getString(account,"");
-        if(!raw.isEmpty()){try{JSONObject cached=new JSONObject(raw);if(cached.has("tier")&&cached.has("settlements"))return cached;}catch(JSONException invalid){/* Recover below. */}}
+        if(!raw.isEmpty()){try{JSONObject cached=new JSONObject(raw);if(cached.has("tier")&&cached.has("settlements"))return safeDisplay(cached);}catch(JSONException invalid){/* Recover below. */}}
         if(!c.getDatabasePath(NAME).exists())return null;
         try(RpgProgressStore helper=new RpgProgressStore(c);Cursor cursor=helper.getReadableDatabase().rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){
             if(cursor.moveToFirst()){
-                JSONObject restored=display(new JSONObject(cursor.getString(0)));
+                JSONObject restored=safeDisplay(display(new JSONObject(cursor.getString(0))));
                 // Rebuild only the small display cache after restart/cache loss.
                 if(!account.equals(SubscriptionStore.accountKey(c)))return null;
                 c.getSharedPreferences("codex_rpg_display_v1",0).edit().putString(account,restored.toString()).commit();
@@ -66,6 +66,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
                 try{
                     String old="";try(Cursor cursor=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){if(cursor.moveToFirst())old=cursor.getString(0);}
                     doc=old.isEmpty()?AccountProgress.empty():new JSONObject(old);
+                    AchievementJourney.prepare(doc,System.currentTimeMillis());
                     db.execSQL("INSERT OR IGNORE INTO recovery(account,captured_at,document) VALUES(?,?,?)",new Object[]{account,System.currentTimeMillis(),old.isEmpty()?doc.toString():old});
                     Set<String> plans=new LinkedHashSet<>(Arrays.asList("free","go","plus","pro","prolite","pro_lite","pro_light","pro_100","team","business","enterprise"));plans.add(LedgerRecord.cleanPlan(current.planType));
                     for(LedgerRecord r:data.records)plans.add(r.plan);
@@ -94,7 +95,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
     }
     static JSONObject progress(Context c){JSONObject p=peek(c);return p==null?null:p.optJSONObject("rpg");}
     static JSONObject archive(Context c,String expected)throws Exception {
-        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))throw new IllegalStateException("Account changed");
+        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))throw new IllegalStateException("Account changed");ensureJourney(c,expected);
             try(RpgProgressStore h=new RpgProgressStore(c);Cursor row=h.getReadableDatabase().rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){
                 if(!row.moveToFirst())throw new IllegalStateException("No achievement journal");JSONObject doc=new JSONObject(row.getString(0));
                 JSONObject show=doc.getJSONObject("future").optJSONObject("showcase");if(show==null)show=new JSONObject().put("ids",new JSONArray(RpgShowcase.selected(c,RpgEngine.state(doc)))).put("custom",c.getSharedPreferences("codex_rpg_showcase_v1",0).getBoolean(expected+":custom",false));
@@ -109,20 +110,25 @@ final class RpgProgressStore extends SQLiteOpenHelper {
             try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{
                 String raw="";try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(row.moveToFirst())raw=row.getString(0);}
                 document=RpgArchive.merge(raw.isEmpty()?AccountProgress.empty():new JSONObject(raw),file,expected,System.currentTimeMillis());
-                if(!document.getJSONObject("future").has("showcase")&&!c.getSharedPreferences("codex_rpg_showcase_v1",0).getBoolean(expected+":custom",false))document.getJSONObject("future").put("showcase",new JSONObject(file.getJSONObject("showcase").toString()));
+                AchievementJourney.prepare(document,System.currentTimeMillis());
+                JSONObject ownShow=document.getJSONObject("future").optJSONObject("showcase"),fileShow=file.getJSONObject("showcase");
+                if((ownShow==null||!ownShow.optBoolean("custom"))&&!c.getSharedPreferences("codex_rpg_showcase_v1",0).getBoolean(expected+":custom",false)){
+                    JSONArray ids=fileShow.getJSONArray("ids"),kept=new JSONArray();List<String> eligible=RpgGrowthFacts.earned(RpgEngine.state(document));for(int i=0;i<ids.length();i++)if(eligible.contains(ids.getString(i)))kept.put(ids.getString(i));
+                    if(kept.length()>0||ids.length()==0)document.getJSONObject("future").put("showcase",new JSONObject(fileShow.toString()).put("ids",kept));
+                }
                 db.execSQL("INSERT OR REPLACE INTO recovery(account,captured_at,document) VALUES(?,?,?)",new Object[]{expected,System.currentTimeMillis(),raw.isEmpty()?AccountProgress.empty().toString():raw});
                 db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{expected,document.toString()});db.setTransactionSuccessful();
             }finally{db.endTransaction();}}
             // Invalidate the disposable cache; a failure to cache cannot undo a committed restore.
             c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();
-            c.getSharedPreferences("codex_rpg_showcase_v1",0).edit().putString(expected+":seen",new JSONArray(RpgGrowthFacts.earned(RpgEngine.state(document))).toString()).putString(expected+":titles_seen",new JSONArray(RpgEngine.eligibleTitles(document)).toString()).commit();
+            c.getSharedPreferences("codex_rpg_showcase_v1",0).edit().putString(RpgShowcase.seenKey(expected,RpgEngine.state(document)),new JSONArray(RpgGrowthFacts.earned(RpgEngine.state(document))).toString()).putString(expected+":titles_seen",new JSONArray(RpgEngine.eligibleTitles(document)).toString()).commit();
             return true;
         }
     }
     // Durable SQLite is authoritative; invalidate its derived cache before completion.
     @android.annotation.SuppressLint("ApplySharedPref")
     static boolean saveShowcase(Context c,String expected,List<String> ids)throws Exception {
-        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))return false;JSONObject document;
+        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))return false;ensureJourney(c,expected);JSONObject document;
             try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{
                 try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(!row.moveToFirst())return false;document=new JSONObject(row.getString(0));}
                 if(ids.size()>3||new HashSet<>(ids).size()!=ids.size()||!RpgGrowthFacts.earned(RpgEngine.state(document)).containsAll(ids))return false;
@@ -144,7 +150,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
     static boolean recommend(Context c,String expected)throws Exception {return mutate(c,expected,null,"@recommend",null);}
     static boolean restore(Context c,String expected,JSONObject journal)throws Exception {return mutate(c,expected,null,null,journal);}
     static JSONObject export(Context c,String expected)throws Exception {
-        synchronized(UsageApi.NETWORK_LOCK){String account=SubscriptionStore.accountKey(c);if(account==null||!account.equals(expected)||!c.getDatabasePath(NAME).exists())return null;
+        synchronized(UsageApi.NETWORK_LOCK){String account=SubscriptionStore.accountKey(c);if(account==null||!account.equals(expected)||!c.getDatabasePath(NAME).exists())return null;ensureJourney(c,expected);
             try(RpgProgressStore helper=new RpgProgressStore(c);Cursor cursor=helper.getReadableDatabase().rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){
                 return cursor.moveToFirst()?RpgEngine.export(new JSONObject(cursor.getString(0)),account):null;
             }
@@ -158,12 +164,26 @@ final class RpgProgressStore extends SQLiteOpenHelper {
             try(RpgProgressStore helper=new RpgProgressStore(c)){SQLiteDatabase db=helper.getWritableDatabase();db.beginTransaction();
                 try{String raw="";try(Cursor cursor=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){if(cursor.moveToFirst())raw=cursor.getString(0);}
                     document=raw.isEmpty()?AccountProgress.empty():new JSONObject(raw);
+                    AchievementJourney.prepare(document,System.currentTimeMillis());
                     boolean changed=journal!=null?RpgEngine.merge(document,account,journal,System.currentTimeMillis()):envelope!=null?RpgEngine.ingestOfficial(document,account,envelope,System.currentTimeMillis()):title.equals("@recommend")?!RpgEngine.recommend(document,new Random()).isEmpty():RpgEngine.equip(document,title);
                     if(!changed)return false;
                     db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{account,document.toString()});db.setTransactionSuccessful();
                 }finally{db.endTransaction();}
             }
             if(!c.getSharedPreferences("codex_rpg_display_v1",0).edit().putString(account,display(document).toString()).commit())throw new IllegalStateException("RPG display failed; journal preserved");return true;
+        }
+    }
+    private static JSONObject safeDisplay(JSONObject p)throws JSONException {
+        JSONObject s=p.optJSONObject("rpg");if(s!=null&&!s.has("achievement_enabled")){s.put("unlocked_achievements",0).put("unlocked_ids",new JSONArray());JSONArray old=s.optJSONArray("unlocked_titles"),keep=new JSONArray();if(old!=null)for(int i=0;i<old.length();i++)if(RpgGrowthFacts.entry(old.optString(i))==null)keep.put(old.optString(i));s.put("unlocked_titles",keep);if(RpgGrowthFacts.entry(s.optString("equipped_title"))!=null)s.remove("equipped_title");p.put("showcase",new JSONObject().put("ids",new JSONArray()).put("custom",true));}return p;
+    }
+    private static void ensureJourney(Context c,String expected)throws Exception {
+        try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{JSONObject doc;try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(!row.moveToFirst())return;doc=new JSONObject(row.getString(0));}if(AchievementJourney.prepare(doc,System.currentTimeMillis())){db.execSQL("UPDATE profiles SET document=? WHERE account=?",new Object[]{doc.toString(),expected});c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();}db.setTransactionSuccessful();}finally{db.endTransaction();}}
+    }
+    static boolean setAchievementsEnabled(Context c,String expected,boolean enabled)throws Exception {
+        synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))return false;JSONObject doc;
+            try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{String raw="";try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(row.moveToFirst())raw=row.getString(0);}doc=raw.isEmpty()?AccountProgress.empty():new JSONObject(raw);AchievementJourney.prepare(doc,System.currentTimeMillis());AchievementJourney.setEnabled(doc,enabled,System.currentTimeMillis());db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{expected,doc.toString()});db.setTransactionSuccessful();}finally{db.endTransaction();}}
+            c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();
+            if(enabled)c.getSharedPreferences("codex_rpg_showcase_v1",0).edit().putString(RpgShowcase.seenKey(expected,RpgEngine.state(doc)),new JSONArray(RpgGrowthFacts.earned(RpgEngine.state(doc))).toString()).commit();return true;
         }
     }
     private static JSONObject legacy(Context c,String name,String key) throws JSONException {String raw=c.getSharedPreferences(name,0).getString(key,"");return raw.isEmpty()?null:new JSONObject(raw);}

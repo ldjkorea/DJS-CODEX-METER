@@ -19,13 +19,14 @@ final class RpgShowcase {
         try{if(!RpgProgressStore.saveShowcase(c,account,ids))return false;}catch(Exception e){return false;}
         prefs(c).edit().putString(account+":selection",new JSONArray(ids).toString()).putBoolean(account+":custom",true).commit();return true;
     }
+    static String seenKey(String account,JSONObject s){JSONObject j=AchievementJourney.journey(s);return j==null?account+":seen":account+":journey:"+j.optString("id","not-started")+":seen";}
     // First view establishes a baseline. Historical unlocks are never replayed as new rewards.
     // Commit on the worker prevents replaying the same acquisition notification.
     @android.annotation.SuppressLint("ApplySharedPref")
     static List<String> observe(Context c,String account,JSONObject state){
         if(state==null||account==null||!account.equals(SubscriptionStore.accountKey(c)))return Collections.emptyList();
         List<String> earned=RpgGrowthFacts.earned(state),fresh=new ArrayList<>();SharedPreferences p=prefs(c);
-        String key=account+":seen";boolean initialized=p.contains(key);
+        String key=seenKey(account,state);boolean initialized=p.contains(key);
         try{JSONArray seen=new JSONArray(p.getString(key,"[]"));Set<String> old=new HashSet<>();for(int i=0;i<seen.length();i++)old.add(seen.getString(i));
             if(initialized)for(String id:earned)if(!old.contains(id))fresh.add(id);
             old.addAll(earned);
