@@ -11,6 +11,7 @@ final class TiboQuote {
     static void add(AppCompatActivity a,LinearLayout parent,boolean dark){
         LinearLayout quote=new LinearLayout(a);quote.setOrientation(LinearLayout.VERTICAL);
         quote.setPadding(Ui.dp(a,12),Ui.dp(a,18),Ui.dp(a,12),Ui.dp(a,18));
+        quote.addView(LedgerUi.caption(a,a.getString(R.string.tibo_saved_excerpt),dark));Ui.addSpacer(quote,10);
         android.widget.TextView text=LedgerUi.heading(a,"“"+a.getString(R.string.polish_tibo_quote)+"”",dark);
         text.setTextSize(18);text.setLineSpacing(Ui.dp(a,3),1.08f);quote.addView(text);Ui.addSpacer(quote,8);
         android.widget.Button source=LedgerUi.action(a,a.getString(R.string.polish_tibo_source),false,dark,()->{
@@ -18,6 +19,11 @@ final class TiboQuote {
             catch(RuntimeException ignored){android.widget.Toast.makeText(a,R.string.polish_open_source_failed,android.widget.Toast.LENGTH_SHORT).show();}
         });
         source.setGravity(android.view.Gravity.START|android.view.Gravity.CENTER_VERTICAL);source.setTextSize(12);
-        quote.addView(source);parent.addView(quote);
+        quote.addView(source);
+        quote.addView(LedgerUi.action(a,a.getString(R.string.tibo_latest_posts),false,dark,()->{
+            try{a.startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://x.com/thsottiaux")));}
+            catch(RuntimeException ignored){android.widget.Toast.makeText(a,R.string.polish_open_source_failed,android.widget.Toast.LENGTH_SHORT).show();}
+        }));
+        parent.addView(quote);
     }
 }

@@ -527,6 +527,7 @@ public final class MainActivity extends AppCompatActivity {
                 snapshot.fetchedAtMillis,now,WidgetOptions.RESET_RELATIVE,true);
         UsagePace.Assessment pace = UsagePacePreferences.assess(this, snapshot, window, now);
         UsageWaveView wave = new UsageWaveView(this);
+        wave.setTierAccent(TierTheme.accent(this,dark));
         // Weekly forecast is shown below from recent history; retain the original 5-hour estimate.
         wave.setUsage(label, reset, window == snapshot.weekly ? ""
                 : UsageFormat.estimatedRemaining(MainActivity.this, pace),

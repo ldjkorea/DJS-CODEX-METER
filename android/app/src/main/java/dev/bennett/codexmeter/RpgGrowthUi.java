@@ -14,7 +14,7 @@ final class RpgGrowthUi {
     static boolean korean(android.content.Context c){return c.getResources().getConfiguration().getLocales().get(0).getLanguage().equals("ko");}
     static String rank(android.content.Context c,int rank){return rank<0?c.getString(R.string.fun_placing):TierPresentation.ENGLISH[Math.min(9,rank)];}
     static String title(android.content.Context c,String id){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);if(e==null){RpgTitleCatalog.Title t=RpgTitleCatalog.find(id);if(t!=null)e=t.display;}return e==null?"—":korean(c)?e.title:e.titleEn;}
-    static String name(android.content.Context c,RpgCatalog.Entry e){return korean(c)?e.ko:e.en;}
+    static String name(android.content.Context c,RpgCatalog.Entry e){return RpgDisplayCopy.name(e,korean(c));}
     static int rankAccent(int grade,boolean dark){int color=grade<0?0xffc2c9d0:TierTheme.COLORS[Math.min(9,grade)];if(!dark){float[] hsv=new float[3];android.graphics.Color.colorToHSV(color,hsv);hsv[1]=Math.max(.3f,hsv[1]);hsv[2]=.38f;color=android.graphics.Color.HSVToColor(hsv);}return color;}
     static void center(TextView text){text.setGravity(Gravity.CENTER);}
     static LinearLayout tile(GrowthActivity a,boolean dark){
@@ -33,7 +33,7 @@ final class RpgGrowthUi {
         int grade=state==null?-1:state.optInt("tier",-1),highest=state==null?-1:state.optInt("highest",-1);
         LinearLayout card=tile(a,dark);TierTheme.frame(card,grade,dark);
         TextView label=LedgerUi.caption(a,a.getString(region.equals("KR")?R.string.rpg3_korea:R.string.rpg3_world),dark);center(label);card.addView(label);Ui.addSpacer(card,8);
-        ImageView crest=new ImageView(a);crest.setImageResource(TierTheme.EMBLEMS[Math.max(0,grade)]);crest.setScaleType(ImageView.ScaleType.FIT_CENTER);crest.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);if(grade<0)crest.setAlpha(.35f);
+        ImageView crest=new ImageView(a);if(region.equals("WORLD"))crest.setImageDrawable(new WorldTierMark(grade,dark));else crest.setImageResource(TierTheme.EMBLEMS[Math.max(0,grade)]);crest.setScaleType(ImageView.ScaleType.FIT_CENTER);crest.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);if(grade<0)crest.setAlpha(.35f);
         card.addView(crest,new LinearLayout.LayoutParams(-1,Ui.dp(a,96)));
         TextView name=LedgerUi.amount(a,rank(a,grade),dark,18);name.setTextColor(rankAccent(grade,dark));center(name);card.addView(name,new LinearLayout.LayoutParams(-1,-2));
         TextView best=LedgerUi.caption(a,a.getString(R.string.rpg3_highest,rank(a,highest)),dark);center(best);Ui.addSpacer(card,8);card.addView(best);
@@ -65,11 +65,11 @@ final class RpgGrowthUi {
         List<String> selected=RpgShowcase.selected(a,state);
         if(selected.isEmpty())parent.addView(LedgerUi.caption(a,a.getString(R.string.growth_showcase_empty),dark));
         LinearLayout medals=new LinearLayout(a);medals.setOrientation(LinearLayout.HORIZONTAL);
-        for(String id:selected){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout badge=Ui.card(a,dark);badge.setGravity(Gravity.CENTER);badge.setPadding(Ui.dp(a,4),Ui.dp(a,10),Ui.dp(a,4),Ui.dp(a,10));badge.setOrientation(LinearLayout.VERTICAL);badge.addView(RpgMedalUi.icon(a,e,dark,48));TextView shortName=LedgerUi.caption(a,name(a,e),dark);shortName.setTextSize(12);shortName.setGravity(Gravity.CENTER);shortName.setMaxLines(2);shortName.setEllipsize(android.text.TextUtils.TruncateAt.END);badge.addView(shortName);badge.setTag("growth:representative");badge.setContentDescription(a.getString(R.string.growth_representative)+" · "+name(a,e));badge.setOnClickListener(v->a.medalDetail(state,e));badge.setFocusable(true);LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,-2,1);if(medals.getChildCount()>0)lp.setMarginStart(Ui.dp(a,6));medals.addView(badge,lp);}parent.addView(medals);Ui.addSpacer(parent,8);
+        for(String id:selected){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout badge=RpgDisplayStyle.medal(a,e,dark);badge.setTag("growth:representative");badge.setOnClickListener(v->a.medalDetail(state,e));RpgDisplayStyle.addMedal(medals,badge);}parent.addView(medals);Ui.addSpacer(parent,12);
         parent.addView(LedgerUi.action(a,a.getString(R.string.medal_codex),false,dark,()->a.open("achievements")));
         parent.addView(LedgerUi.action(a,a.getString(R.string.growth_showcase_edit),false,dark,()->a.chooseShowcase(state)));
         LedgerUi.section(parent,a.getString(R.string.rpg3_titles),dark);
-        parent.addView(LedgerUi.action(a,equipped.isEmpty()?a.getString(R.string.growth_title_pick):title(a,equipped),false,dark,()->a.open("titles")));
+        Button titleButton=LedgerUi.action(a,equipped.isEmpty()?a.getString(R.string.growth_title_pick):title(a,equipped),false,dark,()->a.open("titles"));RpgDisplayStyle.title(titleButton,dark,20);parent.addView(titleButton);
         tokens(a,parent,state,dark);
     }
     static LinearLayout compact(android.content.Context c,RpgCatalog.Entry e,boolean dark){

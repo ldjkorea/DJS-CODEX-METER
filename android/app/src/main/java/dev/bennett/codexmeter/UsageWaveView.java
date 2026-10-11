@@ -31,6 +31,8 @@ public final class UsageWaveView extends View {
     private String pace = "";
     private int percent;
     private boolean warning;
+    private Integer tierAccent;
+    public void setTierAccent(int color){tierAccent=color;invalidate();}
     private float phase;
     private float phaseOffset;
 
@@ -127,7 +129,8 @@ public final class UsageWaveView extends View {
         fillPath.lineTo(0, getHeight());
         fillPath.close();
         fillPaint.setColor(warning ? Ui.warning(dark)
-                : Ui.desaturatedAccent(getContext(), dark));
+                : tierAccent == null ? Ui.desaturatedAccent(getContext(), dark)
+                : androidx.core.graphics.ColorUtils.blendARGB(Ui.cardColor(getContext(),dark),tierAccent,dark?.32f:.18f));
         canvas.drawPath(fillPath, fillPaint);
 
         int foreground = warning ? (dark ? 0xFFFFFFFF : 0xFF000000) : Ui.mainText(dark);

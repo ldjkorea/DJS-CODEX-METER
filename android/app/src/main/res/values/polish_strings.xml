@@ -7,6 +7,8 @@
     <string name="polish_history_korean">Korean edition update</string>
     <string name="polish_expand">Expand changes</string>
     <string name="polish_collapse">Collapse changes</string>
+    <string name="tibo_saved_excerpt">Tibo · Saved quote · Not a live feed</string>
+    <string name="tibo_latest_posts">View latest posts on X ↗</string>
     <string name="polish_tibo_quote">We are barely getting started with Codex.</string>
     <string name="polish_tibo_source">Tibo · 2026.04.18 · X excerpt ↗</string>
     <string name="polish_open_source_failed">Cannot open the original post on this device.</string>

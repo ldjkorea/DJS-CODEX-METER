@@ -23,11 +23,11 @@ final class LiveCards {
         if(rank<0){TextView note=LedgerUi.caption(a,a.getString(fresh?R.string.live_need_coverage:R.string.ui_ledger_refresh),dark);note.setGravity(Gravity.CENTER);card.addView(note);}
         org.json.JSONObject growth=RpgProgressStore.progress(a);
         String equipped=growth==null?"":growth.optString("equipped_title");
-        if(!equipped.isEmpty()){TextView alias=LedgerUi.badge(a,RpgGrowthUi.title(a,equipped),dark,false);alias.setMinHeight(Ui.dp(a,48));alias.setOnClickListener(v->a.startActivity(new android.content.Intent(a,GrowthActivity.class).putExtra("growth_mode","titles")));card.addView(alias);}
+        if(!equipped.isEmpty()){TextView alias=LedgerUi.badge(a,RpgGrowthUi.title(a,equipped),dark,false);RpgDisplayStyle.title(alias,dark,19);alias.setMinHeight(Ui.dp(a,48));alias.setOnClickListener(v->a.startActivity(new android.content.Intent(a,GrowthActivity.class).putExtra("growth_mode","titles")));card.addView(alias);}
         java.util.List<String> representatives=RpgShowcase.selected(a,growth);
         if(!representatives.isEmpty()){
-            LinearLayout row=new LinearLayout(a);row.setGravity(Gravity.CENTER);Ui.addSpacer(card,6);
-            for(String id:representatives){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);android.widget.ImageView mark=new android.widget.ImageView(a);mark.setImageDrawable(new RpgAchievementMark(e,dark));mark.setPadding(Ui.dp(a,6),Ui.dp(a,6),Ui.dp(a,6),Ui.dp(a,6));mark.setContentDescription(RpgGrowthUi.name(a,e));mark.setOnClickListener(v->a.startActivity(new android.content.Intent(a,GrowthActivity.class).putExtra("growth_mode","achievements")));row.addView(mark,new LinearLayout.LayoutParams(Ui.dp(a,48),Ui.dp(a,48)));}card.addView(row);
+            LinearLayout row=new LinearLayout(a);row.setGravity(Gravity.CENTER);Ui.addSpacer(card,14);
+            for(String id:representatives){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout medal=RpgDisplayStyle.medal(a,e,dark);medal.setOnClickListener(v->RpgMedalUi.show(a,growth,e,dark,false,null));RpgDisplayStyle.addMedal(row,medal);}card.addView(row,new LinearLayout.LayoutParams(-1,-2));
         }
         return card;
     }

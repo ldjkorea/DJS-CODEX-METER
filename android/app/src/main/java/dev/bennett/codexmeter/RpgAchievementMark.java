@@ -5,14 +5,15 @@ import android.graphics.drawable.Drawable;
 
 /** Original deterministic metal medals. Catalog IDs select geometry, never random colors. */
 final class RpgAchievementMark extends Drawable {
-    private final RpgCatalog.Entry entry; private final Paint p=new Paint(3); private final Path path=new Path(); private final boolean dark; private int alpha=255; private final int[] motif; private final int color;
+    private final RpgCatalog.Entry entry; private final Paint p=new Paint(3); private final Path path=new Path(); private final boolean dark; private int alpha=255; private final int[] motif; private final int color; private final Shader metal;
     RpgAchievementMark(RpgCatalog.Entry e,boolean dark){entry=e;this.dark=dark;motif=RpgCollectionFacts.motif(e);
         int tint=entry.rarity.equals("mythic")?0xffe9b7c1:entry.rarity.equals("legendary")?0xffddc79f:entry.rarity.equals("epic")?0xffc7b6e4:entry.rarity.equals("rare")?0xffb2d7df:0xffbdc7d0;
         if(!dark){float[] hsv=new float[3];Color.colorToHSV(tint,hsv);hsv[2]=.38f;tint=Color.HSVToColor(hsv);}
-        color=tint;
+        color=tint;metal=new LinearGradient(8,4,56,60,new int[]{dark?0xff30363e:0xffe4e9ed,dark?0xff111519:0xfffafcfd,dark?0xff232b32:0xffd4dde3},null,Shader.TileMode.CLAMP);
     }
     public void draw(Canvas c){Rect b=getBounds();if(b.isEmpty())return;int frame=motif[0],symbol=motif[1],ornament=motif[2];
         c.save();c.translate(b.left,b.top);c.scale(b.width()/64f,b.height()/64f);
+        p.setStyle(Paint.Style.FILL);p.setShader(metal);p.setAlpha(alpha/2);c.drawCircle(32,32,25,p);p.setShader(null);p.setColor(color);p.setAlpha(alpha/3);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(.8f);c.drawCircle(32,32,24,p);
         p.setColor(color);p.setAlpha(alpha);p.setStrokeWidth(2.2f);p.setStyle(Paint.Style.STROKE);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);
         if(frame==0)c.drawCircle(32,32,28,p);
         else if(frame==1){path.reset();path.moveTo(32,3);path.lineTo(58,18);path.lineTo(54,46);path.lineTo(32,61);path.lineTo(10,46);path.lineTo(6,18);path.close();c.drawPath(path,p);}

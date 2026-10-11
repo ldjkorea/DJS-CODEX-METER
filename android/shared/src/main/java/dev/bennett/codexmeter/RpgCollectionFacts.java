@@ -29,7 +29,7 @@ public final class RpgCollectionFacts {
         for(RpgCatalog.Entry e:titles?RpgTitleCatalog.displayEntries():RpgCatalog.ALL){boolean unlocked=earned(s,e);
             if(status==EARNED&&!unlocked||status==LOCKED&&unlocked||status==PROGRESS&&!progressing(s,e))continue;
             if(category>0&&category(e)!=category)continue;
-            if(!q.isEmpty()&&!(e.ko+" "+e.en+" "+e.title+" "+e.titleEn).toLowerCase(Locale.ROOT).contains(q))continue;
+            if(!q.isEmpty()&&!(e.ko+" "+e.en+" "+(titles?"":RpgDisplayCopy.name(e,true)+" "+RpgDisplayCopy.name(e,false))+" "+e.title+" "+e.titleEn).toLowerCase(Locale.ROOT).contains(q))continue;
             result.add(e);
         }
         result.sort((a,b)->{

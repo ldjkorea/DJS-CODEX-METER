@@ -5,10 +5,13 @@ import os,subprocess,sys
 root=Path(__file__).resolve().parents[1];serial=sys.argv[1];assert serial.startswith('emulator-')
 sdk=Path(os.environ['ANDROID_HOME']);jdk=Path(os.environ['JAVA_HOME'])/'bin';bt=sdk/'build-tools/36.0.0';adb=sdk/'platform-tools/adb.exe';jar=sdk/'platforms/android-36/android.jar';growth='--growth-ux' in sys.argv;regression='--collection-regression' in sys.argv;medals='--medals' in sys.argv or regression;test_class='RpgCollectionNativeTest' if medals and not regression else 'RpgGrowthNativeTest';out=root/('build/medal-growth-regression' if regression else 'build/medal-native' if medals else 'build/growth-ux-native' if growth else 'build/rpg3-native');out.mkdir(parents=True,exist_ok=True)
 run=lambda args:subprocess.run(list(map(str,args)),check=True)
+if '--presentation' in sys.argv:
+    assert medals and not regression
+    out=root/'build/presentation-native';out.mkdir(parents=True,exist_ok=True)
 shell=lambda *args:subprocess.check_output([str(adb),'-s',serial,'shell',*args],text=True,encoding='utf-8')
 assert shell('getprop','ro.kernel.qemu').strip()=='1'
 package='dev.bennett.codexmeter.rpg3qa';test_package='dev.bennett.codexmeter.rpg3test'
-apk=root/('build/medal-qa/qa.apk' if medals else 'build/growth-ux-qa/qa.apk' if growth else 'build/rpg3-qa/qa.apk');badging=subprocess.check_output([str(bt/'aapt2.exe'),'dump','badging',str(apk)],text=True,encoding='utf-8');assert "name='"+package+"'" in badging
+apk=root/('build/presentation-native/qa.apk' if '--presentation' in sys.argv else 'build/medal-qa/qa.apk' if medals else 'build/growth-ux-qa/qa.apk' if growth else 'build/rpg3-qa/qa.apk');badging=subprocess.check_output([str(bt/'aapt2.exe'),'dump','badging',str(apk)],text=True,encoding='utf-8');assert "name='"+package+"'" in badging
 installed=shell('pm','list','packages',package).splitlines();reuse='--reuse-owned-fixture' in sys.argv
 if reuse:assert 'package:'+test_package in shell('pm','list','packages',test_package).splitlines()
 else:assert 'package:'+package not in installed and 'package:'+test_package not in shell('pm','list','packages',test_package).splitlines(),'Preserve existing fixture'
