@@ -70,13 +70,13 @@ final class LanSync {
         finally{BUSY.set(false);if(done!=null)done.finish(success);}});
     }
     static void taskStatus(Context c,Done done){Context app=c.getApplicationContext();if(!TaskStatusStore.enabled(app)||!BUSY.compareAndSet(false,true)){if(done!=null)done.finish(false);return;}
-        WORKER.execute(()->{boolean ok=false;try{ConnectivityManager cm=(ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);NetworkCapabilities nc=cm==null?null:cm.getNetworkCapabilities(cm.getActiveNetwork());
-            String a,paired;synchronized(UsageApi.NETWORK_LOCK){a=account(app);if(!TaskStatusStore.enabled(app,a))return;paired=code(app,a);if(paired==null)return;}
+        WORKER.execute(()->{boolean ok=false;String attempted=null;try{ConnectivityManager cm=(ConnectivityManager)app.getSystemService(Context.CONNECTIVITY_SERVICE);NetworkCapabilities nc=cm==null?null:cm.getNetworkCapabilities(cm.getActiveNetwork());
+            String a,paired;synchronized(UsageApi.NETWORK_LOCK){a=account(app);if(!TaskStatusStore.enabled(app,a))return;paired=code(app,a);if(paired==null)return;attempted=a;}
             LanSyncWire.Pair target=new LanSyncWire.Pair(paired);
             if(nc==null||!target.taskNetworkAllowed(nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI),nc.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET),nc.hasTransport(NetworkCapabilities.TRANSPORT_VPN)))return;
             JSONObject response=LanSyncWire.exchange(target,a,new JSONObject().put("op","task-status"));
             synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a))||!TaskStatusStore.enabled(app,a))return;try{RpgProgressStore.tokens(app,a,response.optJSONObject("rpg_tokens"));}catch(Exception deferred){DiagnosticLog.warn(app,"history","rpg_token_import_deferred");}TaskStatusStore.save(app,a,response.optJSONObject("tasks"));ok=true;}
-        }catch(Exception ignored){}finally{BUSY.set(false);if(done!=null)done.finish(ok);}});
+        }catch(Exception ignored){}finally{if(!ok&&attempted!=null){synchronized(UsageApi.NETWORK_LOCK){try{if(attempted.equals(account(app)))TaskStatusStore.failed(app,attempted);}catch(Exception ignored){}}}BUSY.set(false);if(done!=null)done.finish(ok);}});
     }
     private static JSONObject payload(UsageLedgerDatabase.Data data,UsageSnapshot snapshot,LiveUtilization.Result live,long floor,int tier)throws Exception{
         JSONArray rows=new JSONArray(),days=new JSONArray(),events=new JSONArray();for(LedgerRecord r:data.records)if(r.at>floor)rows.put(new JSONObject().put("At",r.at).put("Reset",r.reset).put("Seconds",r.seconds).put("Meter",r.meter).put("Plan",r.plan).put("Used",r.used).put("Decimal",r.decimal).put("Source",r.source).put("Manual",r.manual));

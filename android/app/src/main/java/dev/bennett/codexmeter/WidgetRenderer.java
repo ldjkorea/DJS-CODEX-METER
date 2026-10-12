@@ -199,7 +199,12 @@ public final class WidgetRenderer {
         applyResetCreditRow(context, remoteViews, i, widgetOptions, zChooseDark, str);
         UsageSnapshot observed=AppPreferences.loadSnapshot(context);
         boolean stale=observed!=null&&UsageInsights.freshness(observed.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(context))!=UsageInsights.Freshness.FRESH;
-        if(stale){remoteViews.setTextViewText(R.id.updated_label,context.getString(R.string.ui_ledger_refresh)+" · "+widgetStateFrom.updated);remoteViews.setViewVisibility(R.id.updated_label,View.VISIBLE);}
+        boolean failed=!AppPreferences.getLastError(context).isEmpty();
+        if(stale||failed){remoteViews.setTextViewText(R.id.updated_label,context.getString(failed?R.string.ws_error:R.string.ws_cached,widgetStateFrom.updated));remoteViews.setViewVisibility(R.id.updated_label,View.VISIBLE);}
+        if(WidgetOptions.STYLE_RINGS.equals(renderedStyle)||STYLE_FOUR_DIALS.equals(renderedStyle)||STYLE_BATTERY_LIST.equals(renderedStyle)){
+            int side=STYLE_BATTERY_LIST.equals(renderedStyle)?16:7;
+            boolean footer=stale||failed||widgetOptions.showUpdated;remoteViews.setViewPadding(R.id.widget_meter_content,Ui.dp(context,side),0,Ui.dp(context,side),footer?Ui.dp(context,12):0);
+        }
         if(slots.isEmpty()){remoteViews.setTextViewText(R.id.widget_title,context.getString(R.string.v3_hidden));remoteViews.setViewVisibility(R.id.widget_title,View.VISIBLE);}
         WidgetCrest.bind(context,remoteViews,crest);
         return remoteViews;

@@ -7,6 +7,22 @@ import org.json.JSONObject;
 public final class TaskStatusData {
     public static final int MAX_TASKS=6;
     private TaskStatusData() {}
+    /** Presentation order only. Keep the received sequence ordering for replay validation. */
+    public static JSONArray displayRows(JSONObject data){
+        JSONArray result=new JSONArray(),input=data==null?null:data.optJSONArray("rows");
+        java.util.List<JSONObject> rows=new java.util.ArrayList<>();
+        if(input!=null)for(int i=0;i<input.length();i++)if(input.optJSONObject(i)!=null)rows.add(input.optJSONObject(i));
+        rows.sort((a,b)->Integer.compare(priority(a),priority(b)));
+        for(JSONObject row:rows)result.put(row);return result;
+    }
+    private static int priority(JSONObject row){
+        if("running".equals(row.optString("state")))return 0;
+        if(!row.optString("issue").isEmpty()||"interrupted".equals(row.optString("state")))return 1;
+        return 2;
+    }
+    public static String widgetFingerprint(JSONObject data,long received,long failed,long now,boolean enabled){
+        return enabled+"|"+(failed<=received&&connected(data,received,now))+"|"+(data!=null&&data.optBoolean("verified"))+"|"+(received/60000)+"|"+displayRows(data).toString();
+    }
     public static int widgetColumns(int width){return width>=280?2:1;}
     public static int widgetCapacity(int width,int height,float font){return widgetColumns(width)*Math.max(1,Math.min(3,(int)((height-94)/(40*Math.max(1,font)))));}
     public static int widgetColor(boolean current,String state){return !current?0xffa7adb5:state.equals("running")?0xff86dfb6:state.equals("completed")||state.equals("interrupted")?0xfff28b82:0xffa7adb5;}

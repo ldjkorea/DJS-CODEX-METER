@@ -50,7 +50,7 @@ final class RecordSettings {
         toggle(a,display,dark,R.string.matte_five_hour,AppPreferences.showDashboardFiveHour(a),on->AppPreferences.setShowDashboardFiveHour(a,on));
         toggle(a,display,dark,R.string.ux_weekly,AppPreferences.showDashboardWeekly(a),on->AppPreferences.setShowDashboardWeekly(a,on));
         toggle(a,display,dark,R.string.ui_ledger_home,AppPreferences.showUsageOverview(a),on->AppPreferences.setShowUsageOverview(a,on));
-        action(a,display,dark,R.string.matte_widgets,()->MatteNav.homeAction(a,"widgets"));
+        action(a,display,dark,R.string.ws_guide,()->a.startActivity(new Intent(a,WidgetGuideActivity.class)));
         page(a,display,dark,R.string.ui_appearance_41def7,"appearance");
         action(a,display,dark,R.string.matte_limits,()->a.startActivity(new Intent(a,DashboardReorderActivity.class)));
         LinearLayout fun=display;

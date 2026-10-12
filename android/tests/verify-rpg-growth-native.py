@@ -8,6 +8,10 @@ if '--achievement-journey' in sys.argv:
     test_class='AchievementJourneyNativeTest';out=root/'build/achievement-native';out.mkdir(parents=True,exist_ok=True)
 if '--reborn' in sys.argv:
     test_class='GrowthRebornNativeTest';out=root/'build/reborn-native';out.mkdir(parents=True,exist_ok=True)
+if '--reborn30' in sys.argv:
+    test_class='GrowthRebornNativeTest';out=root/'build/reborn30-native';out.mkdir(parents=True,exist_ok=True)
+if '--widget30' in sys.argv:
+    test_class='WidgetSimplificationNativeTest';out=root/'build/widget30-native';out.mkdir(parents=True,exist_ok=True)
 run=lambda args:subprocess.run(list(map(str,args)),check=True)
 if '--presentation' in sys.argv:
     assert medals and not regression
@@ -15,7 +19,7 @@ if '--presentation' in sys.argv:
 shell=lambda *args:subprocess.check_output([str(adb),'-s',serial,'shell',*args],text=True,encoding='utf-8')
 assert shell('getprop','ro.kernel.qemu').strip()=='1'
 package='dev.bennett.codexmeter.rpg3qa';test_package='dev.bennett.codexmeter.rpg3test'
-apk=root/('build/reborn-qa/qa.apk' if '--reborn' in sys.argv else 'build/achievement-qa/qa.apk' if '--achievement-journey' in sys.argv else 'build/presentation-native/qa.apk' if '--presentation' in sys.argv else 'build/medal-qa/qa.apk' if medals else 'build/growth-ux-qa/qa.apk' if growth else 'build/rpg3-qa/qa.apk');badging=subprocess.check_output([str(bt/'aapt2.exe'),'dump','badging',str(apk)],text=True,encoding='utf-8');assert "name='"+package+"'" in badging
+apk=root/('build/widget30-qa/qa.apk' if '--widget30' in sys.argv or '--reborn30' in sys.argv else 'build/reborn-qa/qa.apk' if '--reborn' in sys.argv else 'build/achievement-qa/qa.apk' if '--achievement-journey' in sys.argv else 'build/presentation-native/qa.apk' if '--presentation' in sys.argv else 'build/medal-qa/qa.apk' if medals else 'build/growth-ux-qa/qa.apk' if growth else 'build/rpg3-qa/qa.apk');badging=subprocess.check_output([str(bt/'aapt2.exe'),'dump','badging',str(apk)],text=True,encoding='utf-8');assert "name='"+package+"'" in badging
 installed=shell('pm','list','packages',package).splitlines();reuse='--reuse-owned-fixture' in sys.argv
 if reuse:assert 'package:'+test_package in shell('pm','list','packages',test_package).splitlines()
 else:assert 'package:'+package not in installed and 'package:'+test_package not in shell('pm','list','packages',test_package).splitlines(),'Preserve existing fixture'
@@ -35,6 +39,15 @@ run([jdk/'javac.exe','-proc:none','@'+str(args)]);run([bt/'aapt2.exe','link','-I
 run([bt/'d8.bat','--lib',jar,'--min-api','26','--output',dex,*classes.rglob('*.class')])
 with ZipFile(out/'base.apk','a') as z:z.write(dex/'classes.dex','classes.dex')
 signing=root/'.local-signing';run([bt/'apksigner.bat','sign','--ks',signing/'codex-meter-local.p12','--ks-key-alias','codexmeter','--ks-pass','file:'+str(signing/'password'),'--out',out/'tests.apk',out/'base.apk'])
+if '--widget30' in sys.argv:
+    assert reuse,'Widget update fixture requires the existing isolated QA app'
+    run([adb,'-s',serial,'install','-r',out/'tests.apk'])
+    shell('appwidget','grantbind','--package',package,'--user','0')
+    seed=shell('am','instrument','-r','-w','-e','phase','seed',test_package+'/dev.bennett.codexmeter.'+test_class);(out/'SEED.txt').write_text(seed,encoding='utf-8');print(seed)
+    assert 'INSTRUMENTATION_CODE: -1' in seed and 'checks passed' in seed
 run([adb,'-s',serial,'install',*(['-r'] if reuse else []),apk]);run([adb,'-s',serial,'install',*(['-r'] if reuse else []),out/'tests.apk'])
-result=shell('am','instrument','-r','-w',test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
-run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/reborn-fixtures' if '--reborn' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
+try:
+    result=shell('am','instrument','-r','-w',test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
+finally:
+    if '--widget30' in sys.argv:shell('appwidget','revokebind','--package',package,'--user','0')
+run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])

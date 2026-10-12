@@ -46,7 +46,8 @@ for name in layouts:
     text=(repo/path).read_text(encoding='utf-8');xml=ET.fromstring(text)
     emblems=[x for x in xml.iter() if x.get(ns+'id')=='@+id/widget_tier_emblem'];assert len(emblems)==1
     assert emblems[0].get(ns+'scaleType')=='fitCenter' and emblems[0].get(ns+'visibility')=='gone'
-    stripped=re.sub(r'<ImageView android:id="@\+id/widget_tier_emblem"[^>]+/>\n    ','',text)
+    from widget_review import strip_widget
+    stripped=re.sub(r'<ImageView android:id="@\+id/widget_tier_emblem"[^>]+/>\n    ','',strip_widget(path,text))
     original=subprocess.check_output(['git','show','d10688f:'+path],cwd=repo).decode('utf-8').replace('\r\n','\n')
     assert stripped==original,(name,'Existing layout changed beyond the additive crest')
 renderer=(app/'WidgetRenderer.java').read_text(encoding='utf-8');config=(app/'WidgetConfigActivity.java').read_text(encoding='utf-8')

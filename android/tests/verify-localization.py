@@ -117,7 +117,7 @@ def reviewed_change(relative, transform):
     if relative=="android/app/build.gradle.kts": expected=reviewed_evolution(relative,expected.encode()).decode()
     actual = strip_lan(relative, (REPO / relative).read_text(encoding="utf-8"))
     if relative.endswith("AndroidManifest.xml"):
-        current=strip_evolution_manifest(strip_lan(relative,(REPO / relative).read_text(encoding="utf-8")))
+        current=strip_evolution_manifest(strip_lan(relative,(REPO / relative).read_text(encoding="utf-8"))).replace('    <activity android:name="dev.bennett.codexmeter.WidgetGuideActivity" android:exported="false"/>\n','')
         for activity in ["FunActivity","FunSettingsActivity","TestNotesActivity","RecordsActivity","MeterSettingsActivity"]:
             current=current.replace(f'        <activity android:name="dev.bennett.codexmeter.{activity}" android:exported="false"/>\n',"")
         assert current==expected,relative
@@ -142,7 +142,7 @@ reviewed_change(APP_JAVA + "AppPreferences.java", lambda s: s.replace(
     "            return prefs(context).edit().putString(KEY_RESET_CREDITS, resetCreditsSnapshot.toJson().toString()).remove(KEY_RESET_ERROR).remove(KEY_RESET_ERROR_AT).commit();",
     "            boolean saved = prefs(context).edit().putString(KEY_RESET_CREDITS, resetCreditsSnapshot.toJson().toString()).remove(KEY_RESET_ERROR).remove(KEY_RESET_ERROR_AT).commit();\n            if (saved) UsageEventStore.recordCredits(context, resetCreditsSnapshot);\n            return saved;").replace(
     "        UsageEventStore.clear(context);\n", "        UsageEventStore.clear(context);\n        UsageLedgerStore.clear(context);\n        UsageLedgerDatabase.clear(context);\n"))
-version_change = lambda s: s.replace("2.8.0", "2.8.29").replace("versionCode = 30", "versionCode = 59").replace("VERSION_CODE = 30", "VERSION_CODE = 59")
+version_change = lambda s: s.replace("2.8.0", "2.8.30").replace("versionCode = 30", "versionCode = 60").replace("VERSION_CODE = 30", "VERSION_CODE = 60")
 reviewed_change(APP_JAVA + "AppConstants.java", version_change)
 reviewed_change("android/wear/build.gradle.kts", version_change)
 def reviewed_qa(s):
@@ -155,7 +155,7 @@ reviewed_change(APP_JAVA + "UsageApi.java", lambda s: s.replace(
     "                UsageHistoryRecorder.record(context, usageSnapshot);\n",
     "                UsageHistoryRecorder.record(context, usageSnapshot);\n                UsageLedgerDatabase.record(context, usageSnapshot, responseRequestUsage.body, manualRecord);\n"))
 # Three private presentation activities are reviewed against the 2.8.3 manifest below.
-fun_manifest=strip_evolution_manifest(strip_lan("AndroidManifest.xml",(REPO / "android/app/src/main/AndroidManifest.xml").read_text(encoding="utf-8")))
+fun_manifest=strip_evolution_manifest(strip_lan("AndroidManifest.xml",(REPO / "android/app/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))).replace('    <activity android:name="dev.bennett.codexmeter.WidgetGuideActivity" android:exported="false"/>\n','')
 old_manifest=subprocess.check_output(["git","-C",str(REPO),"show","e775fd91654a091b68b176a929ff399de2d1cf64:android/app/src/main/AndroidManifest.xml"]).decode("utf-8").replace("\r\n","\n")
 for activity in ["FunActivity","FunSettingsActivity","TestNotesActivity","RecordsActivity","MeterSettingsActivity"]:
     fun_manifest=fun_manifest.replace(f'        <activity android:name="dev.bennett.codexmeter.{activity}" android:exported="false"/>\n',"")

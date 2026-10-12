@@ -7,7 +7,7 @@ public final class GrowthRebornNativeTest extends Instrumentation {
  void check(boolean b,String why){checks++;if(!b)throw new AssertionError(why);}
  void main(Runnable r){runOnMainSync(()->{try{r.run();}catch(Throwable e){error=e;}});if(error!=null)throw new AssertionError(error);waitForIdleSync();}
  JSONObject state()throws Exception{return RpgProgressStore.export(c,account).getJSONObject("rpg");}
- void ready()throws Exception{for(int i=0;i<100;i++){Thread.sleep(60);boolean[] ok={false};main(()->ok[0]=a.findViewById(R.id.dashboard_scroll).findViewWithTag("journey:switch")!=null);if(ok[0])return;}throw new AssertionError("Growth timeout");}
+ void ready()throws Exception{for(int i=0;i<100;i++){Thread.sleep(60);boolean[] ok={false};main(()->{try{java.lang.reflect.Field busy=GrowthActivity.class.getDeclaredField("busy");busy.setAccessible(true);ok[0]=!busy.getBoolean(a)&&a.findViewById(R.id.dashboard_scroll).findViewWithTag("journey:switch")!=null;}catch(Exception e){throw new RuntimeException(e);}});if(ok[0])return;}throw new AssertionError("Growth timeout");}
  androidx.appcompat.widget.SwitchCompat toggle(boolean titles){return a.findViewById(R.id.dashboard_scroll).findViewWithTag(titles?"titles:switch":"journey:switch");}
  void token(long n)throws Exception{long now=System.currentTimeMillis();RpgProgressStore.tokens(c,account,new JSONObject().put("account",account).put("source","codex_account_usage_v1").put("at",now).put("summary",new JSONObject().put("lifetimeTokens",n)));}
  @Override public void onCreate(Bundle b){super.onCreate(b);start();}

@@ -1,22 +1,24 @@
 # GPT HUD 한국어판
 
-현재 버전은 **2.8.28 / versionCode 58**입니다. 대표 메달의 이름과 간격, 칭호 글꼴, 업적 소개를 다듬었습니다. 대한민국·홈은 삼족오, 세계 추정 티어는 천구 문장으로 구분하고 한도 상세 사용량 바에도 티어 색상을 연결했습니다. 기존 기록·RPG 성취·소수점 설정은 유지합니다.
+현재 버전은 **2.8.30 / versionCode 60**입니다. 자주 쓰는 **사용량 2×1 · Codex 작업현황 5×3**를 먼저 안내하고 작은 위젯의 숫자·저장값 상태를 개선했습니다. 미배포 2.8.29의 간결한 성장 프로필과 업적·칭호의 독립 시작도 통합했습니다. 기존 XP·티어·칭호·구독 결산·소수점·개별 위젯 설정은 유지합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.28/CodexMeter-2.8.28-ko.apk) · [Windows 위젯 0.1.9](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-WindowsWidget-0.1.9.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.28) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.30/CodexMeter-2.8.30-ko.apk) · [Windows 위젯 0.1.9](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.30/CodexMeter-WindowsWidget-0.1.9.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.30) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md) · [위젯 감사 보고](docs/WIDGET_SIMPLIFICATION_2.8.30.ko.md)
 
 소수점 자릿수는 **설정 → 위젯 및 화면 → 사용량 소수점 자리수**에서 바꿉니다. 기존 사용량 기록의 원본 정밀도나 계산은 변경하지 않고 화면 표시만 조정합니다. 기존 휴대폰 앱은 삭제하지 않고 업데이트하세요. Windows 위젯 0.1.9 이상은 위젯 메뉴의 **⋯ → 업데이트 확인**으로 새 버전을 받을 수 있습니다. 최초 설치 또는 0.1.8 이하에서 업데이트할 때는 ZIP을 직접 내려받아 새 폴더에 풀어 실행하세요. 로그인·설정·Tailscale 연결을 보존하려면 기존 AppData 폴더를 삭제하지 마세요.
 
-## 내부 개발: v2.8.29 GROWTH REBORN
+## 성장 새 출발과 위젯
 
-공개 버전은 위의 **v2.8.28** 그대로입니다. v2.8.29는 업적·칭호의 독립 시작과 간결한 성장 프로필을 로컬에서 개발·검증하는 내부 버전입니다. 개별 공개 배포는 하지 않습니다. [변경 및 데이터 보존 정책](docs/GROWTH_REBORN_2.8.29.ko.md)을 참고하세요. 다음 정식 배포는 위젯 변경까지 통합 검증한 v2.8.30이며, v2.8.31~49도 내부 개발 후 v2.8.50에서 한 번 통합 배포합니다.
+v2.8.29는 개별 공개하지 않고 이번 버전에 통합했습니다. 업적과 칭호는 각각 확인 후 새 활동부터 수집합니다. 이전 자동 메달은 읽기 전용 보관함에 남고 XP·티어·기존 칭호는 유지됩니다. [변경 및 데이터 보존 정책](docs/GROWTH_REBORN_2.8.29.ko.md)을 참고하세요. v2.8.31~49는 내부 개발 후 v2.8.50에서 한 번 통합 배포합니다.
+
+**기록 → 설정 → 위젯 및 화면 → 위젯 선택**에서 권장 위젯을 추가하거나 기존 위젯 설정을 엽니다. 진화형과 삼성 잠금화면 Provider는 제거하지 않았습니다. Windows 위젯 0.1.9 사용자는 이번 업데이트 때문에 PC를 재설치할 필요가 없습니다.
 
 ## 앱 화면 미리보기
 
-이번 2.8.28 코드의 Android 에뮬레이터 QA 화면입니다. 분리된 가상 계정으로 촬영했으며 실제 사용자 기록이 아닙니다. 성장·도감은 영어, 칭호 보관함은 한국어 화면입니다.
+이번 2.8.30 코드의 분리된 Android QA 에뮬레이터 렌더링입니다. 합성 계정/작업 기록이며 실제 삼성 런처나 사용자 PC 연결 화면이 아닙니다. 큰 글꼴/좁은 크기에서는 표시 항목을 줄이고 전체 작업은 상세 화면에서 확인합니다.
 
-| 성장 · 대한민국/세계 문장 | 이름과 여백을 정리한 업적 도감 | 칭호 보관함 |
+| 위젯 선택 | Codex 작업현황 · 320×180dp | 성장 프로필 |
 | :---: | :---: | :---: |
-| <img src="docs/presentation-2.8.28/growth.png" width="280" alt="2.8.28 성장 화면"/> | <img src="docs/presentation-2.8.28/codex.png" width="280" alt="2.8.28 업적 도감"/> | <img src="docs/presentation-2.8.28/titles.png" width="280" alt="2.8.28 칭호 보관함"/> |
+| <img src="docs/widget-simplification-2.8.30/widget-guide.png" width="280" alt="2.8.30 위젯 선택, 테스트값 미리보기"/> | <img src="docs/widget-simplification-2.8.30/tasks-1.0.png" width="320" alt="2.8.30 작업현황 4개 합성 렌더"/> | <img src="docs/widget-simplification-2.8.30/growth.png" width="280" alt="2.8.30 성장 프로필, 분리된 QA 계정"/> |
 
 현재 배포 앱의 대한민국·홈 티어별 삼족오 휘장 자산은 아래 미리보기에서 확인할 수 있습니다.
 

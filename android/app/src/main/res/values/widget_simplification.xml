@@ -1,0 +1,18 @@
+<resources>
+ <string name="ws_guide">Choose a widget</string>
+ <string name="ws_usage">Usage widget · 2×1</string>
+ <string name="ws_usage_note">Check your selected quota at a glance. Saved order, decimal precision, opacity and tap action are retained.</string>
+ <string name="ws_tasks">Codex tasks · 5×3</string>
+ <string name="ws_tasks_note">Up to four tasks at the recommended size, or six with more height. Running tasks come first. Requires your paired PC.</string>
+ <string name="ws_sample">Preview · synthetic sample values</string>
+ <string name="ws_add_usage">Add usage widget</string>
+ <string name="ws_edit">Edit existing widget %1$d</string>
+ <string name="ws_advanced">Advanced widgets</string>
+ <string name="ws_advanced_note">Custom dashboards and existing lock screen layouts. Your installed widgets stay available.</string>
+ <string name="ws_advanced_show">Show advanced options</string>
+ <string name="ws_lock_note">Simple quota: single dial or numbers. Comparison: rings or bars. Lock screen and AOD support depends on the Samsung device and host.</string>
+ <string name="ws_running">CODEX · %1$d running</string>
+ <string name="ws_cached">Saved · %1$s</string>
+ <string name="ws_error">Refresh failed · %1$s</string>
+ <string name="ws_paused">These are last confirmed states, not live task results. A command error does not mean the whole task failed. Approval/input waiting is not currently reported by the PC observer.</string>
+</resources>

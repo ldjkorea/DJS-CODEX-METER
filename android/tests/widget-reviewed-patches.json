@@ -1,0 +1,58 @@
+{
+  "WidgetRenderer.java": [
+    [
+      "        applyResetCreditRow(context, remoteViews, i, widgetOptions, zChooseDark, str);\n        UsageSnapshot observed=AppPreferences.loadSnapshot(context);\n        boolean stale=observed!=null&&UsageInsights.freshness(observed.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(context))!=UsageInsights.Freshness.FRESH;\n        if(stale){remoteViews.setTextViewText(R.id.updated_label,context.getString(R.string.ui_ledger_refresh)+\" · \"+widgetStateFrom.updated);remoteViews.setViewVisibility(R.id.updated_label,View.VISIBLE);}\n        if(slots.isEmpty()){remoteViews.setTextViewText(R.id.widget_title,context.getString(R.string.v3_hidden));remoteViews.setViewVisibility(R.id.widget_title,View.VISIBLE);}\n        WidgetCrest.bind(context,remoteViews,crest);\n        return remoteViews;\n",
+      "        applyResetCreditRow(context, remoteViews, i, widgetOptions, zChooseDark, str);\n        UsageSnapshot observed=AppPreferences.loadSnapshot(context);\n        boolean stale=observed!=null&&UsageInsights.freshness(observed.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(context))!=UsageInsights.Freshness.FRESH;\n        boolean failed=!AppPreferences.getLastError(context).isEmpty();\n        if(stale||failed){remoteViews.setTextViewText(R.id.updated_label,context.getString(failed?R.string.ws_error:R.string.ws_cached,widgetStateFrom.updated));remoteViews.setViewVisibility(R.id.updated_label,View.VISIBLE);}\n        if(WidgetOptions.STYLE_RINGS.equals(renderedStyle)||STYLE_FOUR_DIALS.equals(renderedStyle)||STYLE_BATTERY_LIST.equals(renderedStyle)){\n            int side=STYLE_BATTERY_LIST.equals(renderedStyle)?16:7;\n            boolean footer=stale||failed||widgetOptions.showUpdated;remoteViews.setViewPadding(R.id.widget_meter_content,Ui.dp(context,side),0,Ui.dp(context,side),footer?Ui.dp(context,12):0);\n        }\n        if(slots.isEmpty()){remoteViews.setTextViewText(R.id.widget_title,context.getString(R.string.v3_hidden));remoteViews.setViewVisibility(R.id.widget_title,View.VISIBLE);}\n        WidgetCrest.bind(context,remoteViews,crest);\n        return remoteViews;\n"
+    ]
+  ],
+  "AndroidManifest.xml": [
+    [
+      "                    android:pathPrefix=\"/codex/msg\"/>\n            </intent-filter>\n        </service>\n    <activity android:name=\"dev.bennett.codexmeter.EvolutionWidgetConfigActivity\" android:exported=\"true\">\n            <intent-filter><action android:name=\"android.appwidget.action.APPWIDGET_CONFIGURE\"/></intent-filter>\n        </activity>\n",
+      "                    android:pathPrefix=\"/codex/msg\"/>\n            </intent-filter>\n        </service>\n    <activity android:name=\"dev.bennett.codexmeter.WidgetGuideActivity\" android:exported=\"false\"/>\n    <activity android:name=\"dev.bennett.codexmeter.EvolutionWidgetConfigActivity\" android:exported=\"true\">\n            <intent-filter><action android:name=\"android.appwidget.action.APPWIDGET_CONFIGURE\"/></intent-filter>\n        </activity>\n"
+    ]
+  ],
+  "widget_rings.xml": [
+    [
+      "    android:background=\"@drawable/widget_bg_dark_88\">\n\n    <!-- One UI Home expands Samsung's 46dp template arc to ~54dp in a 2x1 host. -->\n    <LinearLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:gravity=\"center\"\n",
+      "    android:background=\"@drawable/widget_bg_dark_88\">\n\n    <!-- One UI Home expands Samsung's 46dp template arc to ~54dp in a 2x1 host. -->\n    <LinearLayout android:id=\"@+id/widget_meter_content\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:gravity=\"center\"\n"
+    ],
+    [
+      "                android:text=\"@string/widget_sample_primary_value\"\n                android:textColor=\"#ff111315\"\n                android:textStyle=\"bold\"\n                android:textSize=\"14.5sp\" />\n            <TextView android:id=\"@+id/primary_label\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n            <TextView android:id=\"@+id/primary_reset\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n",
+      "                android:text=\"@string/widget_sample_primary_value\"\n                android:textColor=\"#ff111315\"\n                android:textStyle=\"bold\"\n                android:textSize=\"14.5sp\"  android:maxLines=\"1\" android:autoSizeTextType=\"uniform\" android:autoSizeMinTextSize=\"9sp\" android:autoSizeMaxTextSize=\"14.5sp\"/>\n            <TextView android:id=\"@+id/primary_label\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n            <TextView android:id=\"@+id/primary_reset\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n"
+    ],
+    [
+      "                android:text=\"@string/widget_sample_secondary_value\"\n                android:textColor=\"#ff111315\"\n                android:textStyle=\"bold\"\n                android:textSize=\"14.5sp\" />\n            <TextView android:id=\"@+id/secondary_label\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n            <TextView android:id=\"@+id/secondary_reset\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n",
+      "                android:text=\"@string/widget_sample_secondary_value\"\n                android:textColor=\"#ff111315\"\n                android:textStyle=\"bold\"\n                android:textSize=\"14.5sp\"  android:maxLines=\"1\" android:autoSizeTextType=\"uniform\" android:autoSizeMinTextSize=\"9sp\" android:autoSizeMaxTextSize=\"14.5sp\"/>\n            <TextView android:id=\"@+id/secondary_label\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n            <TextView android:id=\"@+id/secondary_reset\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n"
+    ],
+    [
+      "        <TextView android:id=\"@+id/reset_credit_button\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n    </LinearLayout>\n    <TextView android:id=\"@+id/updated_label\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n</FrameLayout>\n",
+      "        <TextView android:id=\"@+id/reset_credit_button\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n    </LinearLayout>\n    <TextView android:id=\"@+id/updated_label\" android:visibility=\"gone\" android:layout_width=\"match_parent\" android:layout_height=\"12dp\" android:layout_gravity=\"bottom\" android:gravity=\"center\" android:includeFontPadding=\"false\" android:textSize=\"9sp\" android:maxLines=\"1\" android:ellipsize=\"end\" android:autoSizeTextType=\"uniform\" android:autoSizeMinTextSize=\"7sp\" android:autoSizeMaxTextSize=\"9sp\" android:fontFamily=\"@font/pretendard_family\"/>\n</FrameLayout>\n"
+    ]
+  ],
+  "widget_rings_four.xml": [
+    [
+      "    android:layout_height=\"match_parent\"\n    android:background=\"@drawable/widget_bg_light_88\">\n\n    <LinearLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:baselineAligned=\"false\"\n",
+      "    android:layout_height=\"match_parent\"\n    android:background=\"@drawable/widget_bg_light_88\">\n\n    <LinearLayout android:id=\"@+id/widget_meter_content\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:baselineAligned=\"false\"\n"
+    ],
+    [
+      "        <TextView android:id=\"@+id/reset_credit_button\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n    </LinearLayout>\n    <TextView android:id=\"@+id/updated_label\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n</FrameLayout>\n",
+      "        <TextView android:id=\"@+id/reset_credit_button\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n    </LinearLayout>\n    <TextView android:id=\"@+id/updated_label\" android:visibility=\"gone\" android:layout_width=\"match_parent\" android:layout_height=\"12dp\" android:layout_gravity=\"bottom\" android:gravity=\"center\" android:includeFontPadding=\"false\" android:textSize=\"9sp\" android:maxLines=\"1\" android:ellipsize=\"end\" android:autoSizeTextType=\"uniform\" android:autoSizeMinTextSize=\"7sp\" android:autoSizeMaxTextSize=\"9sp\" android:fontFamily=\"@font/pretendard_family\"/>\n</FrameLayout>\n"
+    ]
+  ],
+  "widget_battery_list.xml": [
+    [
+      "    android:layout_height=\"match_parent\"\n    android:background=\"@drawable/widget_bg_dark_88\">\n\n    <LinearLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:gravity=\"center\"\n",
+      "    android:layout_height=\"match_parent\"\n    android:background=\"@drawable/widget_bg_dark_88\">\n\n    <LinearLayout android:id=\"@+id/widget_meter_content\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:gravity=\"center\"\n"
+    ],
+    [
+      "        <TextView android:id=\"@+id/reset_credit_button\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n    </LinearLayout>\n    <TextView android:id=\"@+id/updated_label\" android:visibility=\"gone\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n</FrameLayout>\n",
+      "        <TextView android:id=\"@+id/reset_credit_button\" android:layout_width=\"0dp\" android:layout_height=\"0dp\" \n        android:fontFamily=\"@font/pretendard_family\"/>\n    </LinearLayout>\n    <TextView android:id=\"@+id/updated_label\" android:visibility=\"gone\" android:layout_width=\"match_parent\" android:layout_height=\"12dp\" android:layout_gravity=\"bottom\" android:gravity=\"center\" android:includeFontPadding=\"false\" android:textSize=\"9sp\" android:maxLines=\"1\" android:ellipsize=\"end\" android:autoSizeTextType=\"uniform\" android:autoSizeMinTextSize=\"7sp\" android:autoSizeMaxTextSize=\"9sp\" android:fontFamily=\"@font/pretendard_family\"/>\n</FrameLayout>\n"
+    ]
+  ],
+  "widget_micro.xml": [
+    [
+      "    <TextView\n        android:id=\"@+id/updated_label\"\n        android:visibility=\"gone\"\n        android:layout_width=\"0dp\"\n        android:layout_height=\"0dp\"\n        android:fontFamily=\"@font/pretendard_family\"/>\n</LinearLayout>\n",
+      "    <TextView\n        android:id=\"@+id/updated_label\"\n        android:visibility=\"gone\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"12dp\"\n        android:textSize=\"8sp\"\n        android:maxLines=\"1\"\n        android:ellipsize=\"end\"\n        android:fontFamily=\"@font/pretendard_family\"/>\n</LinearLayout>\n"
+    ]
+  ]
+}

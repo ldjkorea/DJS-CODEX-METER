@@ -337,6 +337,7 @@
                     android:pathPrefix="/codex/msg"/>
             </intent-filter>
         </service>
+    <activity android:name="dev.bennett.codexmeter.WidgetGuideActivity" android:exported="false"/>
     <activity android:name="dev.bennett.codexmeter.EvolutionWidgetConfigActivity" android:exported="true">
             <intent-filter><action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/></intent-filter>
         </activity>

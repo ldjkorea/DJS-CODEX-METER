@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/widget_bg_dark_88">
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/widget_meter_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -193,6 +193,5 @@
         <TextView android:id="@+id/reset_credit_button" android:layout_width="0dp" android:layout_height="0dp" 
         android:fontFamily="@font/pretendard_family"/>
     </LinearLayout>
-    <TextView android:id="@+id/updated_label" android:visibility="gone" android:layout_width="0dp" android:layout_height="0dp" 
-        android:fontFamily="@font/pretendard_family"/>
+    <TextView android:id="@+id/updated_label" android:visibility="gone" android:layout_width="match_parent" android:layout_height="12dp" android:layout_gravity="bottom" android:gravity="center" android:includeFontPadding="false" android:textSize="9sp" android:maxLines="1" android:ellipsize="end" android:autoSizeTextType="uniform" android:autoSizeMinTextSize="7sp" android:autoSizeMaxTextSize="9sp" android:fontFamily="@font/pretendard_family"/>
 </FrameLayout>

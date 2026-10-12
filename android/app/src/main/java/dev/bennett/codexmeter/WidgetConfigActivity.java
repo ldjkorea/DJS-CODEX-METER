@@ -50,6 +50,8 @@ public final class WidgetConfigActivity extends AppCompatActivity {
     private SwitchCompat percentSymbolSwitch;
     private SwitchCompat crestSwitch;
     private Boolean crestDraft;
+    private WidgetOptions baseOptions;
+    private Bundle draft;
     private View opacityControl;
     private View backgroundRow;
     private FrameLayout previewContainer;
@@ -62,6 +64,7 @@ public final class WidgetConfigActivity extends AppCompatActivity {
     private final List<String> meterOrder = new ArrayList<>();
     private final LinkedHashSet<String> selectedMeters = new LinkedHashSet<>();
     private String tapAction = WidgetOptions.TAP_OPEN_APP;
+    private RadioItemViewGroup tapGroup;
     private final int tapOpenId = View.generateViewId();
     private final int tapRefreshId = View.generateViewId();
     private final int tapResetId = View.generateViewId();
@@ -88,11 +91,16 @@ public final class WidgetConfigActivity extends AppCompatActivity {
         } catch (RuntimeException ignored) {
         }
         crestDraft=state!=null&&state.containsKey("crestDraft")?state.getBoolean("crestDraft"):null;
+        draft=state;
         build();
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
         if(crestSwitch!=null)state.putBoolean("crestDraft",crestSwitch.isChecked());
+        if(styleSpinner!=null){state.putInt("style",styleSpinner.getSelectedItemPosition());state.putInt("theme",themeSpinner.getSelectedItemPosition());
+            state.putInt("accent",accentSpinner.getSelectedItemPosition());state.putInt("display",displaySpinner.getSelectedItemPosition());
+            state.putInt("opacity",opacitySlider.getProgress());state.putBoolean("background",backgroundSwitch.isChecked());state.putBoolean("symbol",percentSymbolSwitch.isChecked());
+            state.putString("tap",tapAction);state.putStringArrayList("order",new ArrayList<>(meterOrder));state.putStringArrayList("selected",new ArrayList<>(selectedMeters));}
         super.onSaveInstanceState(state);
     }
 
@@ -108,6 +116,7 @@ public final class WidgetConfigActivity extends AppCompatActivity {
         this.previewContainer = page.preview;
 
         WidgetOptions saved = AppPreferences.loadWidgetOptions(this, this.appWidgetId);
+        baseOptions=saved;
         this.tapAction = AppPreferences.getWidgetTapAction(this, this.appWidgetId);
         UsageSnapshot snapshot = AppPreferences.loadSnapshot(this);
         loadMeterSelection(saved, snapshot);
@@ -198,7 +207,18 @@ public final class WidgetConfigActivity extends AppCompatActivity {
         content.addView(contentCard);
 
         content.addView(Ui.separator(this, WidgetConfigActivity.this.getString(R.string.ui_widget_tap_action_aa8750)));
-        content.addView(buildTapActionCard());
+        RoundedLinearLayout tapCard=buildTapActionCard();
+        content.addView(tapCard);
+        // Rearrange existing views, preserving every control and its stored key.
+        content.removeAllViews();
+        content.addView(Ui.separator(this,getString(R.string.ui_meters_6ad427)));content.addView(metersCard);
+        content.addView(Ui.separator(this,getString(R.string.ui_content_4f9be0)));content.addView(contentCard);
+        content.addView(Ui.separator(this,getString(R.string.ui_appearance_41def7)));content.addView(appearanceCard);
+        content.addView(Ui.separator(this,getString(R.string.ui_widget_tap_action_aa8750)));content.addView(tapCard);
+        styleRow.setVisibility(View.GONE);themeRow.setVisibility(View.GONE);
+        content.addView(LedgerUi.action(this,getString(R.string.ws_advanced_show),false,dark,()->{
+            int visibility=styleRow.getVisibility()==View.GONE?View.VISIBLE:View.GONE;styleRow.setVisibility(visibility);themeRow.setVisibility(visibility);
+        }));
 
         AdapterView.OnItemSelectedListener selectionListener = new AdapterView.OnItemSelectedListener() {
             @Override
@@ -242,12 +262,21 @@ public final class WidgetConfigActivity extends AppCompatActivity {
         updateSliderVisuals();
         updateRowSummaries();
         updateMetersHint();
+        if(draft!=null&&draft.containsKey("style")){
+            styleSpinner.setSelection(draft.getInt("style"));themeSpinner.setSelection(draft.getInt("theme"));accentSpinner.setSelection(draft.getInt("accent"));displaySpinner.setSelection(draft.getInt("display"));
+            opacitySlider.setProgress(draft.getInt("opacity"));backgroundSwitch.setChecked(draft.getBoolean("background"));percentSymbolSwitch.setChecked(draft.getBoolean("symbol"));tapAction=draft.getString("tap",tapAction);
+            tapGroup.check(tapActionId(tapAction));
+            ArrayList<String> order=draft.getStringArrayList("order"),selected=draft.getStringArrayList("selected");
+            if(order!=null&&selected!=null){meterOrder.clear();meterOrder.addAll(order);selectedMeters.clear();selectedMeters.addAll(selected);meterAdapter.notifyDataSetChanged();}
+            draft=null;updateRowSummaries();updateMetersHint();
+        }
         renderPreview();
     }
 
     private RoundedLinearLayout buildTapActionCard() {
         RoundedLinearLayout card = Ui.seslRowCard(this, this.dark);
         RadioItemViewGroup group = new RadioItemViewGroup(this);
+        tapGroup=group;
         group.setOrientation(LinearLayout.VERTICAL);
         group.addView(radioRow(this.tapOpenId, WidgetConfigActivity.this.getString(R.string.ui_open_codex_meter_a55de8), false));
         group.addView(radioRow(this.tapRefreshId, WidgetConfigActivity.this.getString(R.string.ui_refresh_usage_a4a94d), true));
@@ -351,15 +380,16 @@ public final class WidgetConfigActivity extends AppCompatActivity {
         String layout = WidgetOptionCatalog.STYLE_VALUES[
                 Math.max(0, this.styleSpinner.getSelectedItemPosition())];
         return new WidgetOptions(layout,
-                WidgetOptions.DENSITY_AUTO,
-                WidgetOptions.SURFACE_ONE_UI, WidgetOptions.GRAPHIC_AUTO,
+                baseOptions.density,
+                baseOptions.surfaceStyle, baseOptions.graphicScale,
                 WidgetOptionCatalog.THEME_VALUES[this.themeSpinner.getSelectedItemPosition()],
                 WidgetOptionCatalog.ACCENT_VALUES[this.accentSpinner.getSelectedItemPosition()],
                 opacity,
-                WidgetOptions.RESET_HIDDEN,
+                baseOptions.resetMode,
                 WidgetOptionCatalog.DISPLAY_VALUES[this.displaySpinner.getSelectedItemPosition()],
-                WidgetOptions.METRIC_BOTH,
-                false, false, false, false, false, false)
+                baseOptions.metricMode,
+                baseOptions.showTitle, baseOptions.showPlan, baseOptions.showUpdated,
+                baseOptions.showRefresh, baseOptions.showResetCredits, baseOptions.showResetAction)
                 .withPercentSymbol(this.percentSymbolSwitch == null
                         || this.percentSymbolSwitch.isChecked())
                 .withVisibleMeters(orderedSelectedMeters().isEmpty()?WidgetVisibility.NONE:WidgetMeters.serialize(orderedSelectedMeters()));

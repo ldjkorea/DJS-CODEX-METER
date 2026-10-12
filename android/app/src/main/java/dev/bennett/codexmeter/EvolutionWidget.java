@@ -13,6 +13,21 @@ import java.util.List;
 public final class EvolutionWidget extends AppWidgetProvider {
     static android.content.SharedPreferences prefs(Context c){return c.getSharedPreferences("codex_evolution_widgets",0);}
     static String selected(Context c,int id){return prefs(c).getString(id+".elements",EvolutionElements.DEFAULT);}
+    public void onRestored(Context c,int[] oldIds,int[] newIds){
+        android.content.SharedPreferences p=prefs(c);android.content.SharedPreferences.Editor edit=p.edit();
+        if(oldIds!=null&&newIds!=null)for(int i=0;i<Math.min(oldIds.length,newIds.length);i++){
+            int old=oldIds[i],next=newIds[i];if(old==next)continue;
+            for(String suffix:new String[]{".elements",".theme",".opacity"})if(p.contains(old+suffix)&&!p.contains(next+suffix)){
+                if(suffix.equals(".elements"))edit.putString(next+suffix,p.getString(old+suffix,EvolutionElements.DEFAULT));
+                else if(suffix.equals(".theme"))edit.putBoolean(next+suffix,p.getBoolean(old+suffix,true));
+                else edit.putInt(next+suffix,p.getInt(old+suffix,88));
+            }
+        }edit.apply();updateAll(c);
+    }
+    public void onDisabled(Context c){
+        android.app.AlarmManager alarms=(android.app.AlarmManager)c.getSystemService(Context.ALARM_SERVICE);
+        if(alarms!=null)alarms.cancel(PendingIntent.getBroadcast(c,0,new Intent(c,EvolutionWidget.class).setAction("dev.bennett.codexmeter.EVOLUTION_TICK"),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
+    }
     public void onUpdate(Context c,AppWidgetManager m,int[] ids){for(int id:ids)m.updateAppWidget(id,render(c,id,m.getAppWidgetOptions(id)));schedule(c);}
     public void onAppWidgetOptionsChanged(Context c,AppWidgetManager m,int id,Bundle options){m.updateAppWidget(id,render(c,id,options));schedule(c);}
     public void onReceive(Context c,Intent i){super.onReceive(c,i);if("dev.bennett.codexmeter.EVOLUTION_TICK".equals(i.getAction()))updateAll(c);}
@@ -65,7 +80,7 @@ public final class EvolutionWidget extends AppWidgetProvider {
                 item.setTextViewText(R.id.evolution_label,c.getString(isFive?R.string.matte_five_hour:R.string.ux_weekly)+(reset?" · "+c.getString(R.string.evo_reset):""));
                 if(reset&&fresh&&at>now){item.setViewVisibility(R.id.evolution_value,View.GONE);item.setViewVisibility(R.id.evolution_clock,View.VISIBLE);
                     item.setChronometerCountDown(R.id.evolution_clock,true);item.setChronometer(R.id.evolution_clock,SystemClock.elapsedRealtime()+at-now,"%s",true);
-                }else item.setTextViewText(R.id.evolution_value,!fresh?c.getString(AppPreferences.getLastError(c).isEmpty()?R.string.evo_stale:R.string.pub_five_error_short):reset?c.getString(at<=0?R.string.evo_unknown_reset:R.string.evo_refresh_needed):Integer.toString(100-w.usedPercent)+"%");
+                }else item.setTextViewText(R.id.evolution_value,!fresh?c.getString(AppPreferences.getLastError(c).isEmpty()?R.string.evo_stale:R.string.pub_five_error_short):reset?c.getString(at<=0?R.string.evo_unknown_reset:R.string.evo_refresh_needed):UsagePrecision.percent(w,false,AppPreferences.usageDecimalPlaces(c),true));
             }
             row.addView(R.id.evolution_columns,item);
             if(i%columns==columns-1||i==elements.size()-1)root.addView(R.id.evolution_rows,row);

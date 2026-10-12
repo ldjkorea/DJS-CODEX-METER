@@ -1,0 +1,18 @@
+<resources>
+ <string name="ws_guide">위젯 선택</string>
+ <string name="ws_usage">사용량 위젯 · 2×1</string>
+ <string name="ws_usage_note">선택한 한도를 한눈에 확인합니다. 표시 순서·소수점·투명도·탭 동작은 그대로 유지됩니다.</string>
+ <string name="ws_tasks">Codex 작업현황 · 5×3</string>
+ <string name="ws_tasks_note">권장 크기에서 작업 4개, 높이를 늘리면 최대 6개를 표시합니다. 진행 중인 작업부터 보여주며 연결한 PC가 필요합니다.</string>
+ <string name="ws_sample">미리보기 · 테스트값</string>
+ <string name="ws_add_usage">사용량 위젯 추가</string>
+ <string name="ws_edit">기존 위젯 %1$d 설정</string>
+ <string name="ws_advanced">고급 위젯</string>
+ <string name="ws_advanced_note">사용자 지정 대시보드와 기존 잠금화면 레이아웃입니다. 설치한 위젯은 계속 사용할 수 있습니다.</string>
+ <string name="ws_advanced_show">고급 선택지 펼치기</string>
+ <string name="ws_lock_note">간편 확인은 단일 다이얼·숫자, 한도 비교는 링·막대를 권장합니다. 잠금화면·AOD 지원은 삼성 기기와 호스트에 따라 다릅니다.</string>
+ <string name="ws_running">CODEX · 작업 중 %1$d개</string>
+ <string name="ws_cached">저장값 · %1$s</string>
+ <string name="ws_error">조회 실패 · %1$s</string>
+ <string name="ws_paused">마지막 확인 상태이며 실시간 결과를 보장하지 않습니다. 명령 오류가 전체 작업 실패를 뜻하지는 않습니다. 승인·입력 대기는 현재 PC 수집기에 전달되지 않습니다.</string>
+</resources>
