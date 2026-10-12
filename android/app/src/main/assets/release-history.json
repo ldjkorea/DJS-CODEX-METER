@@ -1,5 +1,31 @@
 [
   {
+    "version": "2.9.1",
+    "date": "2026-10-13",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.9.1",
+    "origin": "korean",
+    "ko": {
+      "title": "안전한 성장 · 내 프로필 이미지 공유",
+      "changes": [
+        "성장 화면에서 티어·레벨·대표 메달·장착 칭호를 프로필 이미지로 미리 보고 저장하거나 Android 공유 메뉴로 보냅니다.",
+        "닉네임은 선택 입력이며 기본은 익명, 생성 날짜는 기본 숨김입니다. 이메일·계정 ID·결제·대화·PC 연결정보는 카드에 넣지 않습니다.",
+        "계정 변경 중 이전 성장 화면과 늦게 도착한 조회 결과가 새 계정에 표시되는 문제를 차단했습니다.",
+        "기존 XP·티어·업적·칭호·대표 메달·사용량 원장·결제 결산·로그인·위젯 설정을 유지합니다. 수집을 다시 초기화하지 않습니다.",
+        "기존 앱 업데이트 경로와 서명을 유지하고 Windows 0.1.10과 호환됩니다. v2.9.0 안정화 작업을 이번 정식 버전에 통합했습니다."
+      ]
+    },
+    "en": {
+      "title": "Safer growth · share your profile image",
+      "changes": [
+        "Preview, save or explicitly share a profile image with your tier, level, equipped medals and title from Growth.",
+        "Anonymous by default with an optional nickname and date hidden by default. Cards exclude email, account IDs, billing, conversations and PC pairing information.",
+        "Prevent previous-account growth views and delayed worker results from appearing after an account switch.",
+        "Keep XP, tiers, achievements, titles, equipped medals, usage ledgers, billing, login and widget settings. Collections are not restarted again.",
+        "Keep the existing signed update path and Windows 0.1.10 compatibility. Integrate the v2.9.0 stability work into this release."
+      ]
+    }
+  },
+  {
     "version": "2.8.51",
     "date": "2026-10-12",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.51",

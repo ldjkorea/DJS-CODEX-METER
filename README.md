@@ -1,8 +1,8 @@
 # GPT HUD 한국어판
 
-최신 버전은 **2.8.51 / versionCode 81 · Windows 0.1.10**입니다. 업적·칭호를 직접 시작하는 수집으로 정리하고, 주간 사용량과 PC 작업현황을 함께 보는 통합 위젯을 추가했습니다. **이번 업데이트에서 모든 계정의 업적·칭호 수집을 한 번만 OFF·0으로 전환합니다. 직접 ON으로 켠 뒤 확인된 활동부터 집계합니다.** 기존 수집은 보관하고 XP·레벨·티어·구독 결산·로그인은 유지합니다. [검증 보고서](docs/GPT_HUD_2.8.51_REPORT.ko.md)에 실제 검증과 미검증 범위를 구분합니다.
+최신 버전은 **2.9.1 / versionCode 82 · Windows 0.1.10**입니다. 성장 화면의 **프로필 공유**에서 내 티어·레벨·대표 메달·칭호를 이미지로 미리 보고 저장하거나 공유합니다. 익명이 기본이며 계정·결제·대화·연결정보는 포함하지 않습니다. 계정 전환 보호와 기존 기록 보존도 검증했습니다. **기존 수집 ON/OFF·XP·장착 상태를 유지하며 다시 초기화하지 않습니다.** [검증 보고서](docs/GPT_HUD_2.9.1_REPORT.ko.md)에 자동 검증과 실기기 미검증 범위를 구분합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.51/CodexMeter-2.8.51-ko.apk) · [Windows 위젯 0.1.10](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.51/CodexMeter-WindowsWidget-0.1.10.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.51) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.9.1/CodexMeter-2.9.1-ko.apk) · [Windows 위젯 0.1.10](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.9.1/CodexMeter-WindowsWidget-0.1.10.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.9.1) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md)
 
 사용량 표시는 정수로 통일하고 소수점 선택 메뉴를 제거했습니다. 서버 원본 정밀도와 계산은 보존합니다. **기록 → 설정 → 업적·칭호**에서 업적·칭호를 각각 초기화할 수 있고, **위젯 선택 → 사용량 + 작업현황**에서 새 통합 위젯을 추가합니다. 대표 메달은 **성장 → 업적 도감 → 대표 업적 편집**, 칭호는 **성장 → 칭호 보관함**에서 직접 선택합니다. 기존 앱을 삭제하지 않고 업데이트하세요. Windows 0.1.10은 변경 없이 호환되며 이미 사용 중이라면 다시 설치할 필요가 없습니다. 로그인·설정·Tailscale 정보를 보존하려면 AppData 폴더를 삭제하지 마세요.
 
@@ -14,7 +14,11 @@ v2.8.29는 v2.8.30에, 내부 v2.8.31~49는 v2.8.50에 통합했습니다. v2.8.
 
 ## 앱 화면 미리보기
 
-이번 2.8.51 코드의 분리된 Android QA Activity 렌더링입니다. 한국어·다크 테마의 합성 계정/기록이며 실제 삼성 런처나 사용자 PC 연결 화면이 아닙니다. 큰 글꼴에서는 카드가 1열로 바뀌고 목록을 스크롤해 세부 정보를 확인합니다.
+2.9.1 프로필 카드의 실제 렌더 예시입니다. Diamond 등급과 닉네임은 디자인 검증용 합성 데이터이며 실제 사용자 성취가 아닙니다.
+
+<img src="docs/qa/profile-share/tier-example.png" width="320" alt="2.9.1 프로필 공유 카드, 합성 Diamond 등급과 장착 메달"/>
+
+기존 2.8.51 코드의 분리된 Android QA Activity 렌더링입니다. 한국어·다크 테마의 합성 계정/기록이며 실제 삼성 런처나 사용자 PC 연결 화면이 아닙니다. 큰 글꼴에서는 카드가 1열로 바뀌고 목록을 스크롤해 세부 정보를 확인합니다.
 
 | 홈 · 주간 사용량 | 기록 · 날짜 선택 | 성장 프로필 |
 | :---: | :---: | :---: |
@@ -44,7 +48,7 @@ Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Code
 
 ## Windows 바탕화면 위젯
 
-[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.51/CodexMeter-WindowsWidget-0.1.10.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
+[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.9.1/CodexMeter-WindowsWidget-0.1.10.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
 ## Android 설치
 
