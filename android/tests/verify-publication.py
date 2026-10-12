@@ -55,7 +55,14 @@ for arg in sys.argv[1:]:
         assert sha(z.read('assets/licenses/PRETENDARD_OFL.txt')) == manifest['license']['sha256']
         assert z.read('assets/licenses/CODEX-METER-MIT.txt') == (root/'LICENSE').read_bytes()
         packed_fonts={sha(z.read(n)) for n in z.namelist() if n.lower().endswith(('.ttf','.otf'))}
-        if 'Wear' not in path.name:
+        # Classify by the manifest feature, never by a user-controlled APK filename.
+        import os, subprocess
+        sdk=Path(os.environ.get('ANDROID_HOME') or os.environ.get('ANDROID_SDK_ROOT') or '')
+        aapt=sdk/'build-tools/36.0.0'/('aapt2.exe' if os.name=='nt' else 'aapt2')
+        assert aapt.is_file(), 'Set ANDROID_HOME for APK manifest validation'
+        badging=subprocess.check_output([str(aapt),'dump','badging',str(path)],text=True,encoding='utf-8')
+        wear=any(line.strip()=="uses-feature: name='android.hardware.type.watch'" for line in badging.splitlines())
+        if not wear:
             assert {font['sha256'] for font in manifest['fonts']} <= packed_fonts
         assert not packed_fonts.intersection(forbidden)
 print(json.dumps({'official_font_hashes':'passed','weight_family':'400/500/600/700',

@@ -9,7 +9,10 @@ public final class LedgerLanMergeSelfTest {
     static void check(boolean value,String note){checks++;if(!value)throw new AssertionError(note);}
     static void restart()throws Exception{Field field=UsageLedgerDatabase.class.getDeclaredField("instance");field.setAccessible(true);UsageLedgerDatabase owner=(UsageLedgerDatabase)field.get(null);owner.close();field.set(null,null);}
     public static void main(String[] args)throws Exception{
-        Context c=new Context();long now=System.currentTimeMillis(),hour=3600000L,end=now+3*86400000L;
+        Context c=new Context();long now=System.currentTimeMillis();
+        long midnight=java.time.Instant.ofEpochMilli(now).atZone(LedgerAggregation.ZONE).toLocalDate().atStartOfDay(LedgerAggregation.ZONE).toInstant().toEpochMilli();
+        // This fixture tests same-day merge; boundary attribution is tested separately.
+        long hour=Math.max(1,Math.min(3600000L,(now-midnight)/2)),end=now+3*86400000L;
         UsageSnapshot snapshot=new UsageSnapshot("pro",true,false,null,new UsageWindow(20,604800,0,end/1000),now);
         check(UsageLedgerDatabase.record(c,snapshot,null,false),"initial mobile observation");long floor=UsageLedgerDatabase.lanFloor(c);check(floor==0,"fresh ledger has no deletion floor");
         LedgerRecord pc=new LedgerRecord("weekly","pro",now-hour,15.125,"15.125",end/1000*1000,604800,"api_precise",false);

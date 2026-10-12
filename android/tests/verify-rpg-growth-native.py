@@ -37,6 +37,8 @@ if phase_e:
     test_class='PhaseEUiNativeTest' if '--phase-e-ui' in sys.argv or '--collection-ui' in sys.argv else 'PhaseEUpgradeNativeTest';out=root/('build/collection-restart-ui' if '--collection-ui' in sys.argv else 'build/phase-e-ui' if '--phase-e-ui' in sys.argv else 'build/phase-e-upgrade-'+phase);out.mkdir(parents=True,exist_ok=True)
 if '--collection-restart' in sys.argv:
     test_class='CollectionRestartNativeTest';out=root/'build/collection-restart-native';out.mkdir(parents=True,exist_ok=True)
+if '--stability' in sys.argv:
+    test_class='StabilityNativeTest';out=root/'build/stability-native';out.mkdir(parents=True,exist_ok=True)
 run=lambda args:subprocess.run(list(map(str,args)),check=True)
 if '--presentation' in sys.argv:
     assert medals and not regression
@@ -51,6 +53,7 @@ if any(flag in sys.argv for flag in ['--phase-d','--phase-d-growth','--phase-d-t
 if phase_e:apk=root/('build/phase-e-qa/'+{'legacy':'v28','checkpoint':'v30','verify':'v50'}[phase]+'.apk');package='dev.bennett.codexmeter.phaseeqa';test_package='dev.bennett.codexmeter.phaseetest'
 if '--collection-ui' in sys.argv:apk=root/'build/collection-restart-ui-qa/qa.apk'
 if '--collection-restart' in sys.argv:apk=root/'build/collection-restart-qa/qa.apk'
+if '--stability' in sys.argv:apk=root/'build/stability-qa/qa.apk'
 if '--phase-e-regression' in sys.argv:
     assert not phase_e
     apk=root/'build/phase-e-regression-qa/qa.apk';out=root/'build/phase-e-regression'/test_class;out.mkdir(parents=True,exist_ok=True)

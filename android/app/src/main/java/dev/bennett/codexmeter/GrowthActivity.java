@@ -10,7 +10,7 @@ import org.json.JSONObject;
 /** Retained growth root. Full journals are read on a worker only. */
 public final class GrowthActivity extends AppCompatActivity {
     private static final ExecutorService WORKER=Executors.newSingleThreadExecutor();
-    private LinearLayout content; private boolean busy,dark; private String signature="",loadedAccount="";
+    private LinearLayout content; private boolean busy,dark; private String signature="",loadedAccount="",requestedAccount;
     androidx.appcompat.app.AlertDialog detailDialog;
     private int scroll; private long generation; private boolean receiverRegistered;
     private final BroadcastReceiver updates=new BroadcastReceiver(){public void onReceive(Context c,Intent i){load(false);}};
@@ -28,7 +28,13 @@ public final class GrowthActivity extends AppCompatActivity {
     @Override protected void onDestroy(){generation++;if(detailDialog!=null)detailDialog.dismiss();super.onDestroy();}
     @Override protected void onSaveInstanceState(Bundle state){super.onSaveInstanceState(state);android.view.View view=findViewById(R.id.dashboard_scroll);state.putInt("growth_scroll",view==null?scroll:view.getScrollY());state.putString("growth_mode",mode());}
     void load(boolean force){
-        if(busy||content==null)return;String account=SubscriptionStore.accountKey(this);
+        if(content==null)return;String account=SubscriptionStore.accountKey(this);
+        // Clear the old profile immediately, even while its worker is still running.
+        if(!java.util.Objects.equals(account,requestedAccount)){
+            generation++;busy=false;signature="";loadedAccount="";requestedAccount=account;scroll=0;
+            if(detailDialog!=null)detailDialog.dismiss();content.removeAllViews();
+        }
+        if(busy)return;
         String next=account+":"+mode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this));
         if(!force&&next.equals(signature)&&content.getChildCount()>0)return;
         if(account==null){if(detailDialog!=null)detailDialog.dismiss();loadedAccount="";generation++;signature=next;content.removeAllViews();content.addView(LedgerUi.caption(this,getString(R.string.rpg3_no_account),dark));return;}
@@ -37,7 +43,7 @@ public final class GrowthActivity extends AppCompatActivity {
         WORKER.execute(()->{JSONObject journal=null;java.util.List<String> unlocks=java.util.Collections.emptyList();boolean failed=false;
             try{journal=RpgProgressStore.export(getApplicationContext(),account);unlocks=RpgShowcase.observe(getApplicationContext(),account,journal==null?null:journal.optJSONObject("rpg"));}catch(Exception e){failed=true;}
             final JSONObject result=journal;final boolean error=failed;final java.util.List<String> earned=unlocks;
-            runOnUiThread(()->{busy=false;if(isDestroyed()||isFinishing()||ticket!=generation)return;
+            runOnUiThread(()->{if(isDestroyed()||isFinishing()||ticket!=generation)return;busy=false;
                 if(!account.equals(SubscriptionStore.accountKey(this))){if(detailDialog!=null)detailDialog.dismiss();signature="";load(true);return;}
                 android.view.View view=findViewById(R.id.dashboard_scroll);if(content.getChildCount()>1&&view!=null)scroll=view.getScrollY();
                 loadedAccount=account;signature=next;content.removeAllViews();
