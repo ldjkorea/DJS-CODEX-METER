@@ -13,6 +13,24 @@ public final class GrowthRebornSelfTest {
    if(title){String id=TitleJourney.journey(s).getString("id");TitleJourney.setEnabled(d,true,t+60);token(d,2_001_000_000,t+70);check(TitleJourney.journey(s).getLong("tokens")==2_000_000,"Resume excludes paused delta and uses fresh baseline");check(id.equals(TitleJourney.journey(s).getString("id")),"Title journey survives toggles");}
   }
   JSONObject d=AccountProgress.empty();token(d,99_000_000,t-600000);AchievementJourney.prepare(d,t);TitleJourney.prepare(d,t);TitleJourney.setEnabled(d,true,t);check(!TitleJourney.journey(RpgEngine.state(d)).optBoolean("official_armed"),"Stale baseline held");token(d,100_000_000,t+1);check(TitleJourney.journey(RpgEngine.state(d)).getLong("tokens")==0,"First verified baseline never credits gap");
+  JSONObject paused=AccountProgress.empty();AchievementJourney.prepare(paused,t);TitleJourney.prepare(paused,t);AchievementJourney.setEnabled(paused,true,t+1);TitleJourney.setEnabled(paused,true,t+1);JSONObject ps=RpgEngine.state(paused),pj=TitleJourney.journey(ps);
+  for(int i=1;i<=30;i++)pj.getJSONObject("activity").put(java.time.LocalDate.of(2026,10,1).plusDays(i).toString(),t+i+1);
+  for(int i=1;i<=4;i++)pj.getJSONObject("weeks").put(Long.toString(t+i+1),true);
+  ps.getJSONObject("achievements").put("days_30",new JSONObject().put("unlocked",true).put("first_earned_at",t+40));
+  TitleJourney.reconcile(ps,t+41);TitleJourney.setEnabled(paused,false,t+50);
+  ps.getJSONObject("achievements").put("weeks_4",new JSONObject().put("unlocked",true).put("first_earned_at",t+60));
+  TitleJourney.setEnabled(paused,true,t+70);TitleJourney.reconcile(ps,t+80);
+  check(!pj.getJSONObject("facts").getJSONObject("title_v25_log_keeper").optBoolean("unlocked"),"Paused medal cannot unlock compound title on resume");
+  check(pj.getJSONObject("linked_medals").has("days_30"),"Prior enabled medal retained on resume");
+  ps.getJSONObject("achievements").getJSONObject("weeks_4").put("first_earned_at",t+81);TitleJourney.reconcile(ps,t+82);
+  check(pj.getJSONObject("facts").getJSONObject("title_v25_log_keeper").optBoolean("unlocked"),"Verified resumed medal unlocks compound title");
+  JSONObject titleBackup=RpgEngine.export(paused,ACCOUNT),titleRestored=AccountProgress.empty();
+  check(RpgEngine.merge(titleRestored,ACCOUNT,titleBackup,t+100),"Compound evidence backup restores");
+  long savedXp=RpgEngine.state(titleRestored).getLong("xp");RpgEngine.merge(titleRestored,ACCOUNT,titleBackup,t+100);
+  check(RpgEngine.state(titleRestored).getLong("xp")==savedXp,"Repeated compound restore awards no XP");
+  JSONObject broken=new JSONObject(titleBackup.toString());broken.getJSONObject("rpg").getJSONObject("title_journey").getJSONObject("linked_medals").put("days_30",t+1000);
+  String restoredBefore=titleRestored.toString();boolean badTitle=false;try{RpgEngine.merge(titleRestored,ACCOUNT,broken,t+100);}catch(IllegalArgumentException expected){badTitle=true;}
+  check(badTitle&&titleRestored.toString().equals(restoredBefore),"Invalid linked medal restore rejects atomically");
   System.out.println("Growth Reborn: "+n+" checks passed; synthetic opt-in/restore evidence only.");
  }
 }

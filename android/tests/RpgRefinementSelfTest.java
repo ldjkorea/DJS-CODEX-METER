@@ -57,6 +57,15 @@ public final class RpgRefinementSelfTest {
         JSONObject cachedCalendar=RpgTokens.empty();RpgTokens.official(cachedCalendar,ACCOUNT,official(NOW,1,35,0),NOW);JSONObject absent=official(NOW+1,1,0,0).put("calendar_certification",new JSONObject().put("zone","Asia/Seoul").put("scope","account").put("complete",true).put("start",LedgerAggregation.day(NOW).minusDays(30).toString()).put("end",LedgerAggregation.day(NOW).toString()));rejects(()->RpgTokens.official(cachedCalendar,ACCOUNT,absent,NOW+1),"Cached unknown-zone dates cannot certify a new incomplete calendar");
         RpgEngine.ingestOfficial(tier,ACCOUNT,official(S+4*W,0,35,0),S+4*W);check(t.optString("demotion_status").startsWith("held_"),"Unverified/stale operational inputs hold demotion");
         for(int days:new int[]{1,30,90,365}){long daily=days*120L,bonus=1350;int level=RpgEngine.level(daily+bonus);check(level>=RpgEngine.level(daily)&&level<40,"Bounded balance simulation "+days+" days");System.out.println("Synthetic balance "+days+" active days: "+(daily+bonus)+" XP / level "+level);}
+        String[] kinds={"new","30-day","90-day","365-day","intensive","returning"};int[] counts={1,30,90,365,30,30};long[] volume={100000,100000,100000,100000,100000000,100000};
+        for(int i=0;i<kinds.length;i++){JSONObject sample=AccountProgress.empty();AchievementJourney.prepare(sample,NOW);TitleJourney.prepare(sample,NOW);JSONObject observed=official(NOW,counts[i]*volume[i],counts[i],volume[i]);
+            RpgEngine.ingestOfficial(sample,ACCOUNT,observed,NOW);JSONObject game=RpgEngine.state(sample);long earnedXp=game.getLong("xp");int earnedLevel=game.getInt("level");
+            check(earnedXp>0&&earnedLevel==RpgEngine.level(earnedXp),"Actual engine monotone XP/level "+kinds[i]);
+            RpgEngine.ingestOfficial(sample,ACCOUNT,observed,NOW);check(game.getLong("xp")==earnedXp,"Actual duplicate reward blocked "+kinds[i]);
+            if(kinds[i].equals("returning")){RpgEngine.reconcile(sample,List.of(),List.of(),List.of(),List.of(),NOW+90*D,false);check(game.getLong("xp")==earnedXp,"Ninety-day break cannot erase XP");}
+            check(RpgGrowthFacts.earned(game).isEmpty()&&TitleJourney.owned(game).isEmpty(),"OFF collections remain off for "+kinds[i]);
+            System.out.println("Phase B observed-token simulation "+kinds[i]+": "+earnedXp+" XP / level "+earnedLevel);
+        }
         Arrays.fill(pass,'\0');System.out.println("RPG v25 refinement: "+checks+" assertions passed (synthetic histories, no user recovery claim).");
     }
 }
