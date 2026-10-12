@@ -32,6 +32,10 @@ def reviewed_evolution(path,raw):
 
 def strip_evolution_manifest(text):
     import re
+    # Additive local-only profile preview and a single explicitly granted cache root.
+    profile='        <activity android:name="dev.bennett.codexmeter.ProfileShareActivity" android:exported="false"/>\n        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.profile.files" android:exported="false" android:grantUriPermissions="true">\n            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/profile_paths"/>\n        </provider>\n'
+    assert text.count(profile)==1,'Profile preview/provider must remain private and narrowly scoped'
+    text=text.replace(profile,'')
     trial='        <activity android:name="dev.bennett.codexmeter.TaskStatusActivity" android:exported="false"/>\n        <receiver android:name="dev.bennett.codexmeter.TaskStatusWidget" android:exported="false" android:label="@string/task_trial_widget">\n            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE"/></intent-filter>\n            <meta-data android:name="android.appwidget.provider" android:resource="@xml/task_status_widget_info"/>\n        </receiver>\n'
     assert text.count(trial)==1,'Trial activity/widget remain private, independent and read-only'
     text=text.replace(trial,'')

@@ -74,6 +74,7 @@ final class RpgGrowthUi {
         Button titleButton=LedgerUi.action(a,equipped.isEmpty()?a.getString(R.string.growth_title_pick):title(a,equipped),false,dark,()->a.open("titles"));RpgDisplayStyle.title(titleButton,dark,20);parent.addView(titleButton);
         }
         parent.addView(LedgerUi.action(a,a.getString(R.string.rpg3_tokens),false,dark,()->a.detail("tokens",state)));
+        parent.addView(LedgerUi.action(a,a.getString(R.string.profile_share),false,dark,()->Ui.startSecondaryActivity(a,ProfileShareActivity.class)));
     }
     static LinearLayout compact(android.content.Context c,RpgCatalog.Entry e,boolean dark){
         LinearLayout row=Ui.card(c,dark);row.setOrientation(LinearLayout.HORIZONTAL);row.setGravity(Gravity.CENTER_VERTICAL);row.setMinimumHeight(Ui.dp(c,56));

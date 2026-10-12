@@ -15,6 +15,18 @@ public final class PhaseEUpgradeNativeTest extends Instrumentation {
     SharedPreferences saved(){return c.getSharedPreferences("phase_e_checkpoint",0);}
     String account(){return SubscriptionStore.accountKey(c);}
     JSONObject state()throws Exception{return RpgProgressStore.export(c,account()).getJSONObject("rpg");}
+    void retainedSettlements(JSONObject actual)throws Exception{
+        JSONObject expected=new JSONObject(saved().getString("settlements","{}"));
+        check(actual.length()==expected.length(),"Settlement periods retained");
+        for(Iterator<String> ids=expected.keys();ids.hasNext();){String id=ids.next();
+            JSONObject before=new JSONObject(expected.getJSONObject(id).toString()),after=new JSONObject(actual.getJSONObject(id).toString());
+            JSONArray oldLog=before.getJSONArray("calculations"),newLog=after.getJSONArray("calculations");
+            check(newLog.length()>=oldLog.length(),"Prior calculation evidence retained");
+            for(int i=0;i<oldLog.length();i++)check(oldLog.getJSONObject(i).toString().equals(newLog.getJSONObject(i).toString()),"Existing calculation evidence unchanged");
+            before.remove("calculations");after.remove("calculations");
+            check(before.toString().equals(after.toString()),"Amounts, quotas, payment and settlement status unchanged");
+        }
+    }
     void sign(String id)throws Exception{SecureTokenStore.save(c,new AuthTokens("SYNTHETIC_E_ACCESS","SYNTHETIC_E_REFRESH","",System.currentTimeMillis()+86400000,id,""));}
     void tokens(long n)throws Exception{RpgProgressStore.tokens(c,account(),new JSONObject().put("account",account()).put("source","codex_account_usage_v1").put("at",System.currentTimeMillis()).put("summary",new JSONObject().put("lifetimeTokens",n)));}
     @Override public void onCreate(Bundle b){args=b;super.onCreate(b);start();}
@@ -83,7 +95,9 @@ public final class PhaseEUpgradeNativeTest extends Instrumentation {
         check(s.optString("equipped_title").equals(saved().getString("title","")),"Equipped title preserved");
         JSONObject archive=RpgProgressStore.archive(c,account());
         check(archive.getJSONObject("document").getJSONObject("billing").toString().equals(saved().getString("billing","")),"Payment history retained");
-        check(archive.getJSONObject("document").getJSONObject("settlements").toString().equals(saved().getString("settlements","")),"Past settlements retained");
+        // v50 introduced a richer fingerprint and legitimately appends an audit entry.
+        // Require every original entry and all accounting values, rather than rejecting additive evidence.
+        retainedSettlements(archive.getJSONObject("document").getJSONObject("settlements"));
         check(UsageLedgerDatabase.load(c).records.size()==saved().getInt("rows",-1),"SQLite observations retained");
         int widget=saved().getInt("widget",-1);check(AppWidgetManager.getInstance(c).getAppWidgetInfo(widget)!=null,"Original widget binding retained");
         check(AppPreferences.loadWidgetOptions(c,widget).visibleMeters.equals("weekly,next_reset"),"Per-widget settings retained");

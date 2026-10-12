@@ -1,0 +1,16 @@
+<resources>
+    <string name="profile_share">프로필 공유</string>
+    <string name="profile_privacy">기기에 저장된 게임형 프로필을 미리 봅니다. 계정·결제·프로젝트·원본 활동 기록은 포함하지 않습니다.</string>
+    <string name="profile_nickname">닉네임 (선택)</string>
+    <string name="profile_anonymous">익명의 탐험가</string>
+    <string name="profile_date">생성 날짜 넣기</string>
+    <string name="profile_preview">프로필 이미지 미리보기</string>
+    <string name="profile_disclaimer">개인 기록 기반 게임형 프로필입니다. OpenAI 공식 등급이나 사용자 순위가 아닙니다.</string>
+    <string name="profile_save">이미지 저장</string>
+    <string name="profile_share_button">이미지 공유</string>
+    <string name="profile_ready">준비 완료 · 직접 선택할 때만 공유합니다</string>
+    <string name="profile_failed">이미지를 만들거나 저장하지 못했습니다. 기존 기록은 그대로입니다.</string>
+    <string name="profile_saved">이미지 저장 완료</string>
+    <string name="profile_cancelled">저장을 취소했습니다</string>
+    <string name="profile_share_opened">공유 메뉴를 열었습니다 · 보낼 곳을 선택하거나 취소하세요</string>
+</resources>

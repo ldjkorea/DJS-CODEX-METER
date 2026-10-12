@@ -39,6 +39,10 @@ if '--collection-restart' in sys.argv:
     test_class='CollectionRestartNativeTest';out=root/'build/collection-restart-native';out.mkdir(parents=True,exist_ok=True)
 if '--stability' in sys.argv:
     test_class='StabilityNativeTest';out=root/'build/stability-native';out.mkdir(parents=True,exist_ok=True)
+if '--profile-share' in sys.argv:
+    test_class='ProfileShareNativeTest';out=root/'build/profile-native';out.mkdir(parents=True,exist_ok=True)
+if '--upgrade-continuity' in sys.argv:
+    test_class='UpgradeContinuityNativeTest';out=root/'build/upgrade-continuity';out.mkdir(parents=True,exist_ok=True)
 run=lambda args:subprocess.run(list(map(str,args)),check=True)
 if '--presentation' in sys.argv:
     assert medals and not regression
@@ -54,6 +58,14 @@ if phase_e:apk=root/('build/phase-e-qa/'+{'legacy':'v28','checkpoint':'v30','ver
 if '--collection-ui' in sys.argv:apk=root/'build/collection-restart-ui-qa/qa.apk'
 if '--collection-restart' in sys.argv:apk=root/'build/collection-restart-qa/qa.apk'
 if '--stability' in sys.argv:apk=root/'build/stability-qa/qa.apk'
+if '--profile-share' in sys.argv:apk=root/'build/profile-qa/qa.apk'
+if '--upgrade-continuity' in sys.argv:
+    package='dev.bennett.codexmeter.phaseeqa';test_package='dev.bennett.codexmeter.phaseetest'
+    apk=root/'build/phase-e-qa/v50.apk'
+    continuity=next((a.split('=',1)[1] for a in sys.argv if a.startswith('--continuity=')),'probe')
+    assert continuity in ['probe','baseline','candidate']
+    if continuity=='baseline':apk=root/'build/collection-restart-ui-qa/qa.apk'
+    if continuity=='candidate':apk=root/'build/stability-upgrade-candidate.apk'
 if '--phase-e-regression' in sys.argv:
     assert not phase_e
     apk=root/'build/phase-e-regression-qa/qa.apk';out=root/'build/phase-e-regression'/test_class;out.mkdir(parents=True,exist_ok=True)
@@ -89,10 +101,12 @@ if '--widget30' in sys.argv:
 run([adb,'-s',serial,'install',*(['-r'] if reuse else []),apk]);run([adb,'-s',serial,'install',*(['-r'] if reuse else []),out/'tests.apk'])
 if phase_e and phase=='checkpoint':shell('appwidget','grantbind','--package',package,'--user','0')
 try:
-    result=shell('am','instrument','-r','-w',*(['-e','optimized','true'] if '--phase-d' in sys.argv else []),*(['-e','phase',phase] if phase_e else []),*(['-e','resume','true'] if '--resume-checkpoint' in sys.argv else []),test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
+    result=shell('am','instrument','-r','-w',*(['-e','optimized','true'] if '--phase-d' in sys.argv else []),*(['-e','phase',phase] if phase_e else []),*(['-e','continuity',continuity] if '--upgrade-continuity' in sys.argv else []),*(['-e','resume','true'] if '--resume-checkpoint' in sys.argv else []),test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
 finally:
     if '--widget30' in sys.argv:shell('appwidget','revokebind','--package',package,'--user','0')
     if phase_e and phase=='checkpoint':shell('appwidget','revokebind','--package',package,'--user','0')
-if not phase_e:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/collection-restart-fixtures' if '--collection-restart' in sys.argv else '/files/phase-d-fixtures' if '--phase-d' in sys.argv or '--phase-d-baseline' in sys.argv else '/files/phase-c-fixtures' if '--phase-c' in sys.argv or '--phase-d-platform' in sys.argv else '/files/phase-b-fixtures' if '--phase-b' in sys.argv or '--phase-c-tasks' in sys.argv or '--phase-d-tasks' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv or '--phase-c-growth' in sys.argv or '--phase-d-growth' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
+if not phase_e and "--upgrade-continuity" not in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/collection-restart-fixtures' if '--collection-restart' in sys.argv else '/files/phase-d-fixtures' if '--phase-d' in sys.argv or '--phase-d-baseline' in sys.argv else '/files/phase-c-fixtures' if '--phase-c' in sys.argv or '--phase-d-platform' in sys.argv else '/files/phase-b-fixtures' if '--phase-b' in sys.argv or '--phase-c-tasks' in sys.argv or '--phase-d-tasks' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv or '--phase-c-growth' in sys.argv or '--phase-d-growth' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
 
 if '--phase-e-ui' in sys.argv or '--collection-ui' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/phase-e-ui',out/'captures'])
+if '--profile-share' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/profile-fixtures',out/'captures'])
+if '--upgrade-continuity' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/upgrade-continuity',out/'captures'])

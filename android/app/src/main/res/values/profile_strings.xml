@@ -1,0 +1,16 @@
+<resources>
+    <string name="profile_share">Share profile</string>
+    <string name="profile_privacy">Preview a local game profile. No account, payment, project or raw activity details are included.</string>
+    <string name="profile_nickname">Nickname (optional)</string>
+    <string name="profile_anonymous">Anonymous explorer</string>
+    <string name="profile_date">Include creation date</string>
+    <string name="profile_preview">Profile image preview</string>
+    <string name="profile_disclaimer">Game profile based on personal records. Not an official OpenAI rank or a ranking of users.</string>
+    <string name="profile_save">Save image</string>
+    <string name="profile_share_button">Share image</string>
+    <string name="profile_ready">Ready · only shared when you choose</string>
+    <string name="profile_failed">Image could not be prepared or saved. Your records are unchanged.</string>
+    <string name="profile_saved">Image saved</string>
+    <string name="profile_cancelled">Save cancelled</string>
+    <string name="profile_share_opened">Share menu opened · choose a destination or cancel</string>
+</resources>
