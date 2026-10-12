@@ -7,6 +7,10 @@ import org.json.JSONObject;
 public final class TaskStatusData {
     public static final int MAX_TASKS=6;
     private TaskStatusData() {}
+    private static long integer(JSONObject value,String key)throws Exception {
+        Object raw=value.get(key);if(!(raw instanceof Number))throw new IllegalArgumentException("Invalid numeric task metadata");
+        try{return new java.math.BigDecimal(raw.toString()).longValueExact();}catch(ArithmeticException ex){throw new IllegalArgumentException("Invalid integer task metadata",ex);}
+    }
     /** Presentation order only. Keep the received sequence ordering for replay validation. */
     public static JSONArray displayRows(JSONObject data){
         JSONArray result=new JSONArray(),input=data==null?null:data.optJSONArray("rows");
@@ -24,17 +28,17 @@ public final class TaskStatusData {
         return enabled+"|"+(failed<=received&&connected(data,received,now))+"|"+(data!=null&&data.optBoolean("verified"))+"|"+(received/60000)+"|"+displayRows(data).toString();
     }
     public static int widgetColumns(int width){return width>=280?2:1;}
-    public static int widgetCapacity(int width,int height,float font){return widgetColumns(width)*Math.max(1,Math.min(3,(int)((height-94)/(40*Math.max(1,font)))));}
+    public static int widgetCapacity(int width,int height,float font){return widgetColumns((int)(width/Math.max(1,font)))*Math.max(1,Math.min(3,(int)((height-94)/(40*Math.max(1,font)))));}
     public static int widgetColor(boolean current,String state){return !current?0xffa7adb5:state.equals("running")?0xff86dfb6:state.equals("completed")||state.equals("interrupted")?0xfff28b82:0xffa7adb5;}
     public static JSONObject clean(JSONObject data,long now)throws Exception {
         if(data==null)return new JSONObject().put("verified",false).put("rows",new JSONArray()).put("checked",0);
         String epoch=data.getString("epoch"),device=data.getString("device");
         if(!epoch.matches("[a-f0-9]{32}")||!device.matches("[a-f0-9]{64}")||!data.getString("source").equals("local_log_trial"))throw new IllegalArgumentException("Invalid observer");
-        long checked=data.getLong("checked");if(checked<0||checked>now+300000)throw new IllegalArgumentException("Invalid check time");
+        long checked=integer(data,"checked");if(checked<0||checked>now+300000)throw new IllegalArgumentException("Invalid check time");
         JSONArray input=data.getJSONArray("rows"),rows=new JSONArray();if(input.length()>MAX_TASKS)throw new IllegalArgumentException("Too many tasks");
         long previous=Long.MAX_VALUE;java.util.Set<String> threads=new java.util.HashSet<>();
         for(int i=0;i<input.length();i++){JSONObject r=input.getJSONObject(i);String thread=r.getString("Thread"),turn=r.getString("Turn"),state=r.getString("State");
-            long at=r.getLong("At"),seen=r.getLong("Seen"),seq=r.getLong("Sequence");
+            long at=integer(r,"At"),seen=integer(r,"Seen"),seq=integer(r,"Sequence");
             if(!threads.add(thread)||!thread.matches("[a-f0-9-]{16,40}")||!turn.matches("[a-f0-9-]{16,40}")||!(state.equals("running")||state.equals("completed")||state.equals("interrupted")))throw new IllegalArgumentException("Invalid task");
             if(at<=0||at>now+300000||seen<at-300000||seen>now+300000||seq<=0||seq>=previous)throw new IllegalArgumentException("Invalid task ordering");previous=seq;
             String issue=r.optString("Issue","");long issueAt=r.optLong("IssueAt",0);
@@ -54,7 +58,7 @@ public final class TaskStatusData {
         if(left!=null)for(int i=0;i<left.length();i++){JSONObject row=left.optJSONObject(i);if(row!=null)oldRows.put(row.optString("thread"),row);}
         if(right!=null)for(int i=0;i<right.length();i++){JSONObject row=right.optJSONObject(i),old=row==null?null:oldRows.get(row.optString("thread"));if(old==null)continue;
             if(row.optLong("seq")<old.optLong("seq")||row.optLong("at")<old.optLong("at"))return false;
-            if(row.optLong("seq")==old.optLong("seq"))for(String key:new String[]{"turn","state","name","issue","issue_at","at","seen"})if(!java.util.Objects.equals(row.opt(key),old.opt(key)))return false;
+            if(row.optLong("seq")==old.optLong("seq"))for(String key:new String[]{"turn","state","name","issue","issue_at","at","seen"})if(!row.optString(key).equals(old.optString(key)))return false;
         }
         return true;
     }

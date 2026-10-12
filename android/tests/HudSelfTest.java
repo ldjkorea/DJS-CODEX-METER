@@ -56,6 +56,9 @@ public final class HudSelfTest {
         check(TaskStatusData.connected(clean,now,now),"Connected heartbeat");
         check(!TaskStatusData.connected(clean,now,now+120001),"Stale without fabricated failure");
         check(!TaskStatusData.connected(clean,now+1,now),"Future receive time rejected");
+        check(TaskStatusData.newer(new JSONObject(clean.toString()),clean),"Persisted integer metadata retains exact heartbeat compatibility");
+        JSONObject fractionalTask=new JSONObject(snapshot.toString());fractionalTask.getJSONArray("rows").getJSONObject(0).put("Sequence",2.5);boolean fractionRejected=false;try{TaskStatusData.clean(fractionalTask,now);}catch(IllegalArgumentException expected){fractionRejected=true;}check(fractionRejected,"Fractional sequence cannot become an integer replay identity");
+        check(TaskStatusData.widgetCapacity(320,180,1.5f)==1,"Large-font width switches to one column consistently");
         JSONObject reversed=new JSONObject(clean.toString()).put("checked",now+1);reversed.getJSONArray("rows").getJSONObject(0).put("seq",1);
         check(!TaskStatusData.newer(clean,reversed),"Older turn event cannot replace newer running turn");
         JSONObject restart=new JSONObject(clean.toString()).put("epoch","c".repeat(32)).put("checked",now+1);restart.getJSONArray("rows").getJSONObject(0).put("seq",1);

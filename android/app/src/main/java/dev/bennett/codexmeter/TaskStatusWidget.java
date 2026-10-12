@@ -48,7 +48,7 @@ public final class TaskStatusWidget extends AppWidgetProvider {
         views.setViewVisibility(R.id.task_status_connection,View.VISIBLE);
         views.setTextViewText(R.id.task_status_copy,received>0?c.getString(R.string.task_trial_last,time(c,received)):c.getString(R.string.task_trial_unverified));
         JSONArray rows=TaskStatusData.displayRows(data);float font=Math.max(1,c.getResources().getConfiguration().fontScale);
-        int columns=TaskStatusData.widgetColumns((int)(width/font)),maximum=Math.min(TaskStatusData.MAX_TASKS,columns*Math.max(1,Math.min(3,(int)((height-94)/(40*font)))));
+        int columns=TaskStatusData.widgetColumns((int)(width/font)),maximum=TaskStatusData.widgetCapacity(width,height,font);
         int count=enabled&&rows!=null?Math.min(maximum,rows.length()):0;
         boolean current=connected&&data!=null&&data.optBoolean("verified");
         int running=0;if(current)for(int i=0;i<rows.length();i++)if("running".equals(rows.optJSONObject(i).optString("state")))running++;
