@@ -16,6 +16,9 @@
 | Samsung/Now Bar/Wear | ParserSelfTest, shared 계약, PhaseCNativeTest, Wear 빌드 | 에뮬레이터/컴파일; OEM 실기기 별도 |
 | Windows·PC 연결 | windows-widget/build.ps1 -Test, verify-rpg-windows, verify-lan-sync | Windows 실행/오프스크린/TLS 루프백 |
 | 업데이트·서명 | RpgReleaseSelfTest, PhaseEUpgradeNativeTest, apksigner, verify-publication | 파서·격리 업데이트·서명·폰트/패키지 |
+| 로컬 프로필 공유 | verify-profile-share, ProfileShareNativeTest | 허용 목록·PNG metadata·실제 Activity/FileProvider/저장 stream/chooser 취소; 실제 수신 앱 별도 |
+
+차기 로컬 후보의 업데이트 체인은 UpgradeContinuityNativeTest로 v51의 일회성 수집 초기화 뒤 재시작한 컬렉션이 다음 업데이트에서 다시 초기화되지 않는지 확인한다. 후보 snapshot은 production 소스와 동일하며 QA applicationId만 별도다. 기존 사용자 DB·인증·서명을 조작하지 않는다. 문서 선택 UI/실제 친구 전송/삼성 호스트 성공은 별도 증거가 필요하다.
 
 ## 실행 순서
 

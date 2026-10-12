@@ -39,6 +39,14 @@ SQLite 스키마, RPG IDs/판정/XP/칭호 장착 정책, OAuth/API, LAN/Wear/Wi
 
 실제 삼성·Wear, Android OS 여러 버전, 시스템 SAF chooser의 실제 사용자 파일 선택, Quick Share/카카오톡 수신, 실제 회전·프로세스 죽음 중 파일 선택: **NOT VERIFIED**. 공유 메뉴를 가로채 취소했으므로 실제 친구에게 전송했다고 보고하지 않는다.
 
+## 합성 화면 예시
+
+Diamond 예시는 테스트용 명시적 합성 등급이며 실제 사용자 평가 결과가 아니다. 영어/2배 글꼴 예시는 별도 빈 상태로 렌더했다.
+
+![합성 Diamond 프로필 이미지](qa/profile-share/tier-example.png)
+
+![영어 2배 글꼴의 프로필 공유 화면](qa/profile-share/large-font-1.png)
+
 ## 변경 파일
 
 - shared/ProfileCard.java: 계정 식별자 없는 허용 목록/표시 검증.
