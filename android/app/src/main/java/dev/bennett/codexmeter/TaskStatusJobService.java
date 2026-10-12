@@ -12,12 +12,12 @@ import android.content.Context;
 public final class TaskStatusJobService extends JobService {
     private static final int JOB=73421;
     private JobParameters active;
+    static boolean needed(Context c){return TaskStatusStore.enabled(c)&&AppWidgetManager.getInstance(c).getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)).length>0;}
     static void schedule(Context c) {
         try {
             JobScheduler jobs=(JobScheduler)c.getSystemService(Context.JOB_SCHEDULER_SERVICE);
             if(jobs==null)return;
-            boolean widget=AppWidgetManager.getInstance(c).getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)).length>0;
-            if(!widget||!TaskStatusStore.enabled(c)){jobs.cancel(JOB);return;}
+            if(!needed(c)){jobs.cancel(JOB);return;}
             if(jobs.getPendingJob(JOB)!=null)return;
             jobs.schedule(new JobInfo.Builder(JOB,new ComponentName(c,TaskStatusJobService.class))
                     .setPeriodic(15*60000L,5*60000L).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
@@ -25,6 +25,7 @@ public final class TaskStatusJobService extends JobService {
         } catch(RuntimeException ignored) { /* Foreground refresh is still available. */ }
     }
     @Override public boolean onStartJob(JobParameters params) {
+        if(!needed(this)){schedule(this);return false;}
         active=params;
         TaskStatusWidget.update(this);
         LanSync.taskStatus(this,ok->new android.os.Handler(getMainLooper()).post(()->{

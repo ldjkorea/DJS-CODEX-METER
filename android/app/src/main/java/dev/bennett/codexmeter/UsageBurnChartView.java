@@ -84,7 +84,7 @@ public final class UsageBurnChartView extends View {
 
     /** Enables finger scrubbing across the burn line for point-in-time inspection. */
     public void setScrubEnabled(boolean enabled) {
-        this.scrubEnabled = enabled;
+        this.scrubEnabled = enabled;setFocusable(enabled);setClickable(enabled);
     }
 
     public void setOnScrubListener(OnScrubListener listener) {
@@ -143,6 +143,7 @@ public final class UsageBurnChartView extends View {
                 updateScrub(event.getX(), active, axis);
                 return true;
             case MotionEvent.ACTION_UP:
+                performClick();
             case MotionEvent.ACTION_CANCEL:
                 scrubbing = false;
                 lastHapticBucket = Long.MIN_VALUE;
@@ -152,6 +153,12 @@ public final class UsageBurnChartView extends View {
             default:
                 return super.onTouchEvent(event);
         }
+    }
+
+    @Override public boolean performClick(){
+        super.performClick();
+        if(!scrubbing&&scrubEnabled){List<UsageSample> active=activeSamples();long[] axis=activeAxis();if(!active.isEmpty()&&axis!=null){updateScrub(getWidth()-16f*getResources().getDisplayMetrics().density,active,axis);scrubbing=false;if(scrubListener!=null)scrubListener.onScrubEnd();setContentDescription(label+" · "+DateFormat.getDateFormat(getContext()).format(new Date(scrubTimeMillis))+" "+DateFormat.getTimeFormat(getContext()).format(new Date(scrubTimeMillis))+" · "+UsagePrecision.number(scrubPercent)+"%");invalidate();}}
+        return true;
     }
 
     private void updateScrub(float touchX, List<UsageSample> active, long[] axis) {

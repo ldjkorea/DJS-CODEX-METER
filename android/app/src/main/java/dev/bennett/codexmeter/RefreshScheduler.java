@@ -37,6 +37,7 @@ public final class RefreshScheduler {
             if (jobSchedulerScheduler == null) {
                 AppPreferences.setSchedulerError(contextAppContext, "Android's background scheduler is unavailable.");
             } else {
+                if(BackgroundRefreshJobs.keepExisting(contextAppContext,jobSchedulerScheduler,PERIODIC_JOB_ID,SHORT_JOB_ID_A,SHORT_JOB_ID_B))return true;
                 jobSchedulerScheduler.cancel(PERIODIC_JOB_ID);
                 jobSchedulerScheduler.cancel(SHORT_JOB_ID_A);
                 jobSchedulerScheduler.cancel(SHORT_JOB_ID_B);

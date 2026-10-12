@@ -36,11 +36,11 @@ Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Code
 
 ## Windows 바탕화면 위젯
 
-[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.27/CodexMeter-WindowsWidget-0.1.9.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
+[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.30/CodexMeter-WindowsWidget-0.1.9.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
 ## Android 설치
 
-이미 설치한 한국어판은 **기록 → 설정 → 앱 정보 및 라이선스 → 업데이트**에서 새 버전을 확인하세요. 자동 업데이트 확인이 켜져 있으면 기존 검사에서도 2.8.28을 안내합니다. 다운로드·검증 뒤 Android 설치 승인은 직접 눌러야 합니다. 기존 앱을 삭제할 필요는 없습니다.
+이미 설치한 한국어판은 **기록 → 설정 → 앱 정보 및 라이선스 → 업데이트**에서 새 버전을 확인하세요. 자동 업데이트 확인이 켜져 있으면 기존 검사에서 공개 채널의 최신 버전을 안내합니다. 다운로드·검증 뒤 Android 설치 승인은 직접 눌러야 합니다. 기존 앱을 삭제할 필요는 없습니다.
 
 1. 저장소 **Releases**에서 최신 한국어판을 엽니다. `Source code.zip`은 설치 파일이 아닙니다.
 2. 스마트폰에서는 `CodexMeter-<버전>-ko.apk`를 내려받습니다. `CodexMeter-Wear-<버전>-ko.apk`는 Wear OS 시계용입니다.
