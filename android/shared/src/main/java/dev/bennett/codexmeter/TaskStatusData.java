@@ -32,10 +32,10 @@ public final class TaskStatusData {
         if(!epoch.matches("[a-f0-9]{32}")||!device.matches("[a-f0-9]{64}")||!data.getString("source").equals("local_log_trial"))throw new IllegalArgumentException("Invalid observer");
         long checked=data.getLong("checked");if(checked<0||checked>now+300000)throw new IllegalArgumentException("Invalid check time");
         JSONArray input=data.getJSONArray("rows"),rows=new JSONArray();if(input.length()>MAX_TASKS)throw new IllegalArgumentException("Too many tasks");
-        long previous=Long.MAX_VALUE;
+        long previous=Long.MAX_VALUE;java.util.Set<String> threads=new java.util.HashSet<>();
         for(int i=0;i<input.length();i++){JSONObject r=input.getJSONObject(i);String thread=r.getString("Thread"),turn=r.getString("Turn"),state=r.getString("State");
             long at=r.getLong("At"),seen=r.getLong("Seen"),seq=r.getLong("Sequence");
-            if(!thread.matches("[a-f0-9-]{16,40}")||!turn.matches("[a-f0-9-]{16,40}")||!(state.equals("running")||state.equals("completed")||state.equals("interrupted")))throw new IllegalArgumentException("Invalid task");
+            if(!threads.add(thread)||!thread.matches("[a-f0-9-]{16,40}")||!turn.matches("[a-f0-9-]{16,40}")||!(state.equals("running")||state.equals("completed")||state.equals("interrupted")))throw new IllegalArgumentException("Invalid task");
             if(at<=0||at>now+300000||seen<at-300000||seen>now+300000||seq<=0||seq>=previous)throw new IllegalArgumentException("Invalid task ordering");previous=seq;
             String issue=r.optString("Issue","");long issueAt=r.optLong("IssueAt",0);
             if(!(issue.equals("command_error")||issue.equals("tool_error"))||issueAt<=0||issueAt>now+300000){issue="";issueAt=0;}
@@ -49,7 +49,14 @@ public final class TaskStatusData {
         JSONArray left=prior.optJSONArray("rows"),right=next.optJSONArray("rows");
         long previous=left==null||left.length()==0?0:left.optJSONObject(0).optLong("seq");
         long incoming=right==null||right.length()==0?0:right.optJSONObject(0).optLong("seq");
-        return incoming>=previous;
+        if(incoming<previous)return false;
+        java.util.Map<String,JSONObject> oldRows=new java.util.HashMap<>();
+        if(left!=null)for(int i=0;i<left.length();i++){JSONObject row=left.optJSONObject(i);if(row!=null)oldRows.put(row.optString("thread"),row);}
+        if(right!=null)for(int i=0;i<right.length();i++){JSONObject row=right.optJSONObject(i),old=row==null?null:oldRows.get(row.optString("thread"));if(old==null)continue;
+            if(row.optLong("seq")<old.optLong("seq")||row.optLong("at")<old.optLong("at"))return false;
+            if(row.optLong("seq")==old.optLong("seq"))for(String key:new String[]{"turn","state","name","issue","issue_at","at","seen"})if(!java.util.Objects.equals(row.opt(key),old.opt(key)))return false;
+        }
+        return true;
     }
     public static boolean connected(JSONObject data,long received,long now){
         long checked=data==null?0:data.optLong("checked");

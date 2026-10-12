@@ -53,7 +53,8 @@ public final class WidgetSimplificationNativeTest extends Instrumentation {
    String account=LanSync.account(c);SharedPreferences tasks=c.getSharedPreferences("codex_task_trial",0);tasks.edit().putBoolean(account+"_on",true).commit();
    JSONObject data=raw(now);TaskStatusStore.save(c,account,data);check(TaskStatusStore.snapshot(c).getJSONArray("rows").length()==6,"Six rows through production store");
    String prior=TaskStatusData.widgetFingerprint(TaskStatusStore.snapshot(c),TaskStatusStore.received(c),0,now,true);
-   for(int i=3;i<6;i++){data.getJSONArray("rows").getJSONObject(i).put("State","completed");TaskStatusStore.save(c,account,data);String next=TaskStatusData.widgetFingerprint(TaskStatusStore.snapshot(c),TaskStatusStore.received(c),0,now,true);check(!prior.equals(next),"Actual store notices fourth-sixth status change");prior=next;}
+   for(int i=3;i<6;i++){JSONArray sourceRows=data.getJSONArray("rows");JSONObject changed=null;for(int j=0;j<sourceRows.length();j++)if(sourceRows.getJSONObject(j).getString("Thread").equals(String.format("%032x",i)))changed=sourceRows.getJSONObject(j);
+   changed.put("State","completed").put("Sequence",7+i);JSONArray reordered=new JSONArray().put(changed);for(int j=0;j<sourceRows.length();j++)if(sourceRows.getJSONObject(j)!=changed)reordered.put(sourceRows.getJSONObject(j));data.put("rows",reordered);TaskStatusStore.save(c,account,data);String next=TaskStatusData.widgetFingerprint(TaskStatusStore.snapshot(c),TaskStatusStore.received(c),0,now,true);check(!prior.equals(next),"Actual store notices fourth-sixth status change");prior=next;}
    check(TaskStatusStore.state(c,"unknown").equals(c.getString(R.string.task_trial_unverified)),"Unknown is not interrupted");
    main(()->{
     for(float font:new float[]{1f,1.5f}){Configuration conf=new Configuration(c.getResources().getConfiguration());conf.fontScale=font;c.getResources().updateConfiguration(conf,c.getResources().getDisplayMetrics());

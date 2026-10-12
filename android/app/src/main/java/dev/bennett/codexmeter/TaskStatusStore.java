@@ -10,7 +10,7 @@ final class TaskStatusStore {
     static void enable(Context c,boolean on)throws Exception{String a=LanSync.account(c);if(a==null)throw new IllegalStateException();c.getSharedPreferences(PREFS,0).edit().putBoolean(a+"_on",on).apply();TaskStatusWidget.update(c);TaskStatusJobService.schedule(c);}
     static void save(Context c,String a,JSONObject incoming)throws Exception{
         if(!enabled(c,a))return;JSONObject clean=TaskStatusData.clean(incoming,System.currentTimeMillis());
-        JSONObject prior=read(c,a);if(!TaskStatusData.newer(prior,clean))return;
+        JSONObject prior=read(c,a);if(!TaskStatusData.newer(prior,clean))throw new IllegalArgumentException("Older or inconsistent task snapshot");
         long now=System.currentTimeMillis();android.content.SharedPreferences prefs=c.getSharedPreferences(PREFS,0);
         String previous=TaskStatusData.widgetFingerprint(prior,prefs.getLong(a+"_received",0),prefs.getLong(a+"_failed",0),now,true);
         prefs.edit().putString(a,clean.toString()).putLong(a+"_received",now).remove(a+"_failed").apply();

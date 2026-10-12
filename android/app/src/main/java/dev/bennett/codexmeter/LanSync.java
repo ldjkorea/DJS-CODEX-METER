@@ -64,7 +64,7 @@ final class LanSync {
                 LiveUsageStore.invalidate();LiveUtilization.Result live=LiveUsageStore.calculate(app,snapshot,data);payload=payload(data,snapshot,live,floor,TierTheme.tier(app));}
             JSONObject ack=LanSyncWire.exchange(target,a,payload);if(!ack.getBoolean("ok"))throw new IllegalStateException("Not saved");
             synchronized(UsageApi.NETWORK_LOCK){if(!a.equals(account(app))||!paired.equals(code(app,a))||floor!=UsageLedgerDatabase.lanFloor(app))return;
-                if(TaskStatusStore.enabled(app,a))try{TaskStatusStore.save(app,a,reply.optJSONObject("tasks"));}catch(Exception ignored){}
+                if(TaskStatusStore.enabled(app,a))try{TaskStatusStore.save(app,a,reply.optJSONObject("tasks"));}catch(Exception ignored){TaskStatusStore.failed(app,a);}
                 success=app.getSharedPreferences(PREFS,0).edit().putLong(a+"_last",System.currentTimeMillis()).commit();LiveUsageStore.schedule(app);}
         }catch(Exception ignored){DiagnosticLog.warn(app,"history","lan_sync_deferred");}
         finally{BUSY.set(false);if(done!=null)done.finish(success);}});

@@ -65,6 +65,10 @@ public final class HudSelfTest {
         for(String state:new String[]{"running","completed","interrupted"}){snapshot.put("rows",new JSONArray().put(row(state,3,now)));check(TaskStatusData.clean(snapshot,now).getJSONArray("rows").getJSONObject(0).getString("state").equals(state),"Observed "+state);}
         snapshot.put("rows",new JSONArray().put(row("running",4,now)).put(row("completed",3,now)).put(row("interrupted",2,now)));
         check(TaskStatusData.clean(snapshot,now).getJSONArray("rows").length()==3,"Concurrent threads remain separate");
+        JSONObject multi=TaskStatusData.clean(snapshot,now),mixed=new JSONObject(multi.toString());mixed.put("checked",now+1);mixed.getJSONArray("rows").getJSONObject(0).put("seq",5);mixed.getJSONArray("rows").getJSONObject(1).put("seq",1);
+        check(!TaskStatusData.newer(multi,mixed),"New top task cannot hide regression of another thread");
+        JSONObject sameSeq=new JSONObject(multi.toString());sameSeq.getJSONArray("rows").getJSONObject(0).put("state","completed");check(!TaskStatusData.newer(multi,sameSeq),"Same sequence cannot change observed task state");
+        JSONObject duplicate=new JSONObject(snapshot.toString());duplicate.getJSONArray("rows").getJSONObject(1).put("Thread",duplicate.getJSONArray("rows").getJSONObject(0).getString("Thread"));boolean duplicateRejected=false;try{TaskStatusData.clean(duplicate,now);}catch(IllegalArgumentException expected){duplicateRejected=true;}check(duplicateRejected,"One thread cannot occupy multiple task slots");
         System.out.println("HUD precision/parser/serialization/ledger/connection ordering: "+count+" assertions passed (synthetic).");
     }
     static JSONObject row(String state,long sequence,long at)throws Exception{return new JSONObject().put("Thread",Long.toHexString(sequence)+"d".repeat(31)).put("Turn","e".repeat(32)).put("State",state).put("At",at).put("Seen",at).put("Sequence",sequence);}
