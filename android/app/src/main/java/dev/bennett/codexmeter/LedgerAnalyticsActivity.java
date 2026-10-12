@@ -53,7 +53,7 @@ public class LedgerAnalyticsActivity extends AppCompatActivity {
         ((androidx.swiperefreshlayout.widget.SwipeRefreshLayout)findViewById(R.id.dashboard_refresh)).setEnabled(false);
         if(!recordsRoot()&&!settingsRoot()){startActivity(new Intent(this,RecordsActivity.class).putExtra("screen",getIntent().getIntExtra("screen",0)).putExtra("manual_record",getIntent().getBooleanExtra("manual_record",false)));finish();return;}
         screen=getIntent().getIntExtra("screen",0);
-        if(state==null&&getIntent().getStringExtra("selected_date")!=null)try{selectedDate=LocalDate.parse(getIntent().getStringExtra("selected_date"));}catch(java.time.format.DateTimeParseException ignored){}
+        if(state==null&&getIntent().getStringExtra("selected_date")!=null)try{selectedDate=LocalDate.parse(getIntent().getStringExtra("selected_date"));month=YearMonth.from(selectedDate);}catch(java.time.format.DateTimeParseException ignored){}
         if(state!=null){selectedDate=LocalDate.parse(state.getString("selected_date",selectedDate.toString()));policy=state.getString("policy","");period=state.getInt("period",7);screen=state.getInt("screen",0);month=YearMonth.parse(state.getString("month",month.toString()));}
         if(screen==3){startActivity(new Intent(this,FunActivity.class));finish();return;}
         if(!recordsRoot()&&!settingsRoot()&&screen==2){MatteNav.open(this,2);finish();return;}

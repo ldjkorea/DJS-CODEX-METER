@@ -1,0 +1,12 @@
+{
+  "AccountProgress.java": [
+    [
+      "String fingerprint=b.toString()+\":\"+settled.getString(\"status\")+\":\"+MonthlyLedger.VERSION;",
+      "String fingerprint=calculationFingerprint(b,settled.getString(\"status\"),buckets);"
+    ],
+    [
+      "",
+      "    private static String calculationFingerprint(JSONObject bill,String status,JSONObject buckets) throws JSONException {\n        StringBuilder stamp=new StringBuilder();\n        for(String key:new String[]{\"plan\",\"amount\",\"currency\",\"start\",\"end\",\"saved_at\"})stamp.append(bill.optString(key)).append(':');\n        stamp.append(status).append(':').append(MonthlyLedger.VERSION);\n        List<String> policies=keys(buckets);Collections.sort(policies);\n        for(String policy:policies){JSONObject v=buckets.getJSONObject(policy);\n            stamp.append('|').append(policy).append(':').append(v.getString(\"points\")).append(':').append(v.getString(\"allocation\"))\n                    .append(':').append(v.optString(\"reference_value\",\"unavailable\"));\n        }\n        return stamp.toString();\n    }\n"
+    ]
+  ]
+}

@@ -343,7 +343,7 @@ public final class MainActivity extends AppCompatActivity {
         LinearLayout crestSlot=new LinearLayout(this);crestSlot.setOrientation(LinearLayout.VERTICAL);content.addView(crestSlot);
         ledgerOverview=LedgerDashboard.addOverview(this,content,executor,snapshot,dark);
         if(snapshot!=null&&ledgerOverview==null&&AppPreferences.showUsageOverview(this)){
-            LinearLayout hidden=Ui.card(this,dark);hidden.addView(LedgerUi.caption(this,getString(R.string.v3_hidden),dark));content.addView(hidden);Ui.addSpacer(content,16);
+            LinearLayout hidden=Ui.card(this,dark);hidden.addView(LedgerUi.caption(this,getString(UsageEvidence.hasQuota(snapshot)?R.string.v3_hidden:R.string.phase_a_not_provided),dark));content.addView(hidden);Ui.addSpacer(content,16);
         }
         if(snapshot==null){
             LinearLayout empty=Ui.card(this,dark);empty.addView(LedgerUi.heading(this,getString(R.string.ui_ledger_collecting),dark));

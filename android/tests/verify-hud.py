@@ -8,7 +8,7 @@ subprocess.run([str(jdk/'java'),'-ea','-cp',cp,'dev.bennett.codexmeter.HudSelfTe
 main=(app/'MainActivity.java').read_text(encoding='utf-8');analytics=(app/'LedgerAnalyticsActivity.java').read_text(encoding='utf-8');settings=(app/'RecordSettings.java').read_text(encoding='utf-8');home=(app/'LiveCards.java').read_text(encoding='utf-8')
 assert main.index('content.addView(crestSlot)')<main.index('LedgerDashboard.addOverview')<main.index('TaskStatusStore.enabled(this)){')<main.index('FunHome.add')
 assert 'Gravity.CENTER_HORIZONTAL' in home and 'TierPresentation.ENGLISH[rank]' in home and 'setEllipsize' not in home
-assert 'addRecords(today);RecordSettings.add' in analytics and 'addEvents(rows)' in analytics
+assert 'Ui.addSpacer(body,12);addRecords(today);' in analytics and '}else addTrends(today);' in analytics and 'RecordSettings.add(this,body,dark)' in analytics and 'addEvents(rows)' in analytics
 assert 'hud_month_pattern' in analytics and 'setContentDescription(getString(R.string.next_previous_month))' in analytics
 for value in ['hud_pc_settings','hud_data_settings','hud_privacy','next_export_csv','next_export_json']:assert 'R.string.'+value in settings
 assert 'toggle(a,' not in settings.split('static void add(',1)[1].split('static void hub(',1)[0]

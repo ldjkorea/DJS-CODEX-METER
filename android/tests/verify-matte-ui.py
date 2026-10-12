@@ -21,7 +21,7 @@ assert 'moveTaskToBack(true)' in nav and 'else open(activity,1)' in nav
 assert 'matte_return' in nav and 'dialog.setOnDismissListener' in main
 assert '!(context instanceof WidgetConfigActivity)' in ui and '!(context instanceof LockWidgetConfigActivity)' in ui
 assert 'if(phoneSurface(context))return' in ui and 'if(phoneSurface(context)&&' in ui
-assert 'screen=Math.max(0,Math.min(1,screen))' in analytics and 'addRecords(today);RecordSettings.add' in analytics
+assert 'screen=Math.max(0,Math.min(1,screen))' in analytics and 'Ui.addSpacer(body,12);addRecords(today);' in analytics and '}else addTrends(today);' in analytics and 'RecordSettings.add(this,body,dark)' in analytics
 assert 'protected boolean recordsRoot(){return true;}' in src('RecordsActivity')
 assert 'home_scroll' in main and 'restoreHomePending' in main and 'ACTION_DOWN' in main
 for state in ['selected_date','policy','period','screen','month','scroll','groups']:

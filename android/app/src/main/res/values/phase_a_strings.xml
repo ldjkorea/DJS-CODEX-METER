@@ -16,4 +16,10 @@
     <string name="phase_a_reset_passed">Reset time passed · refresh needed</string>
     <string name="phase_a_integer_source">This observation has an integer percentage. Decimal places are display formatting and do not add measured precision. Usage and remaining share the same server value.</string>
     <string name="phase_a_decimal_source">This observation includes a fractional percentage. The selected decimal places only round the displayed value; stored observations remain unchanged.</string>
+    <string name="phase_a_value_note">Reference allocation from your registered payment and observed quota use. This is not an API bill or money saved. Partial observations are a confirmed lower bound.</string>
+    <string name="phase_a_reference_price">Your registered payment is separate from public plan reference prices. No official price is assumed to be your actual charge.</string>
+    <string name="phase_a_bill_pending">Payment settlement updating · prior statements remain in history</string>
+    <string name="phase_a_registered_payment">Registered payment · %1$s</string>
+    <string name="phase_a_unavailable">Observation time unverified</string>
+    <string name="phase_a_not_provided">No quota supplied in the last response</string>
 </resources>

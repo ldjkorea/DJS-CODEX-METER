@@ -111,7 +111,7 @@ final class LedgerDashboard {
             long now=System.currentTimeMillis();
             UsageEvidence.State evidence=UsageEvidence.state(snapshot,window,!AppPreferences.getLastError(activity).isEmpty(),now,RefreshScheduler.effectiveRefreshMinutes(activity));
             boolean fresh=evidence==UsageEvidence.State.CONFIRMED;
-            int status=evidence==UsageEvidence.State.CACHED_AFTER_FAILURE?R.string.phase_a_cached_failed:evidence==UsageEvidence.State.RESET_PASSED?R.string.phase_a_reset_passed:evidence==UsageEvidence.State.STALE?R.string.phase_a_stale:R.string.phase_a_confirmed;
+            int status=evidence==UsageEvidence.State.CACHED_AFTER_FAILURE?R.string.phase_a_cached_failed:evidence==UsageEvidence.State.RESET_PASSED?R.string.phase_a_reset_passed:evidence==UsageEvidence.State.STALE?R.string.phase_a_stale:evidence==UsageEvidence.State.UNAVAILABLE?R.string.phase_a_unavailable:R.string.phase_a_confirmed;
             quality.setText(activity.getString(status));
             quality.setContentDescription(activity.getString(status));
             quality.setTextColor(fresh?LedgerUi.muted(dark):Ui.mainText(dark));

@@ -3,6 +3,8 @@ from pathlib import Path
 import json
 
 def strip_precision(name, text):
+    from phase_a_review import strip_phase_a
+    text=strip_phase_a(name,text)
     from widget_review import strip_widget
     text=strip_widget(name,text)
     patches=json.loads(Path(__file__).with_name('precision-reviewed-patches.json').read_text(encoding='utf-8'))
