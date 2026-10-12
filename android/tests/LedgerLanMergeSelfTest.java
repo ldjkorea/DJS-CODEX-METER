@@ -24,8 +24,10 @@ public final class LedgerLanMergeSelfTest {
         check(data.records.size()==3,"Clock-skew observation preserved as original evidence");
         check(data.days.size()==1&&Math.abs(data.days.get(0).points-4.875)<1e-9,"Future evidence cannot contribute to current daily consumption");
         restart();check(Math.abs(UsageLedgerDatabase.load(c).days.get(0).points-4.875)<1e-9,"Restart cannot activate future evidence early");
+        long localNow=System.currentTimeMillis();check(UsageLedgerDatabase.record(c,new UsageSnapshot("pro",true,false,null,new UsageWindow(21.25,604800,0,end/1000),localNow),null,false),"Skewed peer time cannot suppress a real current mobile observation");
+        data=UsageLedgerDatabase.load(c);check(data.records.size()==4&&Math.abs(data.days.get(0).points-6.125)<1e-9,"Current local observation counted while future peer remains deferred");
         boolean atomic=false;try{UsageLedgerDatabase.mergeLan(c,Arrays.asList(new LedgerRecord("weekly","pro",now-500,21,"21",end/1000*1000,604800,"api_precise",false),null),floor);}catch(Exception expected){atomic=true;}
-        check(atomic&&UsageLedgerDatabase.load(c).records.size()==3,"Failed batch rolls back without partial insertion");
+        check(atomic&&UsageLedgerDatabase.load(c).records.size()==4,"Failed batch rolls back without partial insertion");
         UsageLedgerDatabase.clear(c);long cleared=UsageLedgerDatabase.lanFloor(c);check(cleared>=now,"durable clear watermark");
         UsageLedgerDatabase.mergeLan(c,Collections.singletonList(pc),cleared);check(UsageLedgerDatabase.load(c).records.isEmpty(),"peer cannot resurrect deleted history");
         boolean rejected=false;try{UsageLedgerDatabase.mergeLan(c,Collections.singletonList(pc),floor);}catch(IllegalStateException expected){rejected=true;}check(rejected,"inflight stale merge rejected after clear");

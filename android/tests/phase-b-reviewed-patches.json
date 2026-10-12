@@ -3,6 +3,14 @@
     [
       "        List<LedgerRecord> rows = observations(db);\n        List<Long> credits = new ArrayList<>();",
       "        List<LedgerRecord> rows = observations(db);\n        // Retain tolerated peer clock skew as evidence, but do not spend future usage today.\n        rows.removeIf(row -> row.at > now);\n        List<Long> credits = new ArrayList<>();"
+    ],
+    [
+      "                        long latest = scalar(db, \"SELECT COALESCE(MAX(observed_at),0) FROM observations WHERE meter=?\", row.meter);",
+      "                        long latest = scalar(db, \"SELECT COALESCE(MAX(observed_at),0) FROM observations WHERE meter=? AND observed_at<=?\", row.meter, Long.toString(System.currentTimeMillis()));"
+    ],
+    [
+      "    private static long scalar(SQLiteDatabase db, String query, String argument) {\n        try (Cursor c=db.rawQuery(query,new String[]{argument})) { return c.moveToFirst()?c.getLong(0):0L; }",
+      "    private static long scalar(SQLiteDatabase db, String query, String... arguments) {\n        try (Cursor c=db.rawQuery(query,arguments)) { return c.moveToFirst()?c.getLong(0):0L; }"
     ]
   ]
 }

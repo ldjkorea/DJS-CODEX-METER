@@ -67,7 +67,7 @@ public final class UsageLedgerDatabase extends SQLiteOpenHelper {
                     List<LedgerRecord> capture = LedgerCapture.fromSnapshot(snapshot, body, manual);
                     int accepted = 0;
                     for (LedgerRecord row : capture) {
-                        long latest = scalar(db, "SELECT COALESCE(MAX(observed_at),0) FROM observations WHERE meter=?", row.meter);
+                        long latest = scalar(db, "SELECT COALESCE(MAX(observed_at),0) FROM observations WHERE meter=? AND observed_at<=?", row.meter, Long.toString(System.currentTimeMillis()));
                         if (row.at < latest) continue;
                         insert(db, row);
                         if (manual) {
@@ -297,8 +297,8 @@ public final class UsageLedgerDatabase extends SQLiteOpenHelper {
         }
         return data;
     }
-    private static long scalar(SQLiteDatabase db, String query, String argument) {
-        try (Cursor c=db.rawQuery(query,new String[]{argument})) { return c.moveToFirst()?c.getLong(0):0L; }
+    private static long scalar(SQLiteDatabase db, String query, String... arguments) {
+        try (Cursor c=db.rawQuery(query,arguments)) { return c.moveToFirst()?c.getLong(0):0L; }
     }
     private static void meta(SQLiteDatabase db, String key, String value) {
         ContentValues v = new ContentValues(); v.put("key",key); v.put("value",value);
