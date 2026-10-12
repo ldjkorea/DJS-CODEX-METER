@@ -30,6 +30,11 @@ if '--phase-d-growth' in sys.argv or '--phase-d-tasks' in sys.argv:
     test_class='GrowthRebornNativeTest' if '--phase-d-growth' in sys.argv else 'PhaseBNativeTest';out=root/('build/phase-d-growth' if '--phase-d-growth' in sys.argv else 'build/phase-d-tasks');out.mkdir(parents=True,exist_ok=True)
 if '--phase-d-platform' in sys.argv:
     test_class='PhaseCNativeTest';out=root/'build/phase-d-platform';out.mkdir(parents=True,exist_ok=True)
+phase_e='--phase-e-upgrade' in sys.argv or '--phase-e-ui' in sys.argv
+phase=next((a.split('=',1)[1] for a in sys.argv if a.startswith('--fixture-phase=')),'verify')
+if phase_e:
+    assert phase in ['legacy','checkpoint','verify']
+    test_class='PhaseEUiNativeTest' if '--phase-e-ui' in sys.argv else 'PhaseEUpgradeNativeTest';out=root/('build/phase-e-ui' if '--phase-e-ui' in sys.argv else 'build/phase-e-upgrade-'+phase);out.mkdir(parents=True,exist_ok=True)
 run=lambda args:subprocess.run(list(map(str,args)),check=True)
 if '--presentation' in sys.argv:
     assert medals and not regression
@@ -41,6 +46,13 @@ apk=root/('build/widget30-qa/qa.apk' if '--widget30' in sys.argv or '--reborn30'
 if '--phase-b' in sys.argv or '--rebornB' in sys.argv:apk=root/'build/phase-b-qa/qa.apk'
 if any(flag in sys.argv for flag in ['--phase-c','--phase-c-tasks','--phase-c-growth','--phase-d-baseline']):apk=root/'build/phase-c-qa/qa.apk'
 if any(flag in sys.argv for flag in ['--phase-d','--phase-d-growth','--phase-d-tasks','--phase-d-platform']):apk=root/'build/phase-d-qa/qa.apk'
+if phase_e:apk=root/('build/phase-e-qa/'+{'legacy':'v28','checkpoint':'v30','verify':'v50'}[phase]+'.apk');package='dev.bennett.codexmeter.phaseeqa';test_package='dev.bennett.codexmeter.phaseetest'
+if '--phase-e-regression' in sys.argv:
+    assert not phase_e
+    apk=root/'build/phase-e-regression-qa/qa.apk';out=root/'build/phase-e-regression'/test_class;out.mkdir(parents=True,exist_ok=True)
+if '--phase-e-baseline' in sys.argv:
+    assert '--phase-d-baseline' in sys.argv and not phase_e
+    apk=root/'build/phase-e-qa/perf-v30.apk';out=root/'build/phase-e-performance-before';out.mkdir(parents=True,exist_ok=True)
 badging=subprocess.check_output([str(bt/'aapt2.exe'),'dump','badging',str(apk)],text=True,encoding='utf-8');assert "name='"+package+"'" in badging
 installed=shell('pm','list','packages',package).splitlines();reuse='--reuse-owned-fixture' in sys.argv
 if reuse:assert 'package:'+test_package in shell('pm','list','packages',test_package).splitlines()
@@ -68,8 +80,12 @@ if '--widget30' in sys.argv:
     seed=shell('am','instrument','-r','-w','-e','phase','seed',test_package+'/dev.bennett.codexmeter.'+test_class);(out/'SEED.txt').write_text(seed,encoding='utf-8');print(seed)
     assert 'INSTRUMENTATION_CODE: -1' in seed and 'checks passed' in seed
 run([adb,'-s',serial,'install',*(['-r'] if reuse else []),apk]);run([adb,'-s',serial,'install',*(['-r'] if reuse else []),out/'tests.apk'])
+if phase_e and phase=='checkpoint':shell('appwidget','grantbind','--package',package,'--user','0')
 try:
-    result=shell('am','instrument','-r','-w',*(['-e','optimized','true'] if '--phase-d' in sys.argv else []),test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
+    result=shell('am','instrument','-r','-w',*(['-e','optimized','true'] if '--phase-d' in sys.argv else []),*(['-e','phase',phase] if phase_e else []),*(['-e','resume','true'] if '--resume-checkpoint' in sys.argv else []),test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
 finally:
     if '--widget30' in sys.argv:shell('appwidget','revokebind','--package',package,'--user','0')
-run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/phase-d-fixtures' if '--phase-d' in sys.argv or '--phase-d-baseline' in sys.argv else '/files/phase-c-fixtures' if '--phase-c' in sys.argv or '--phase-d-platform' in sys.argv else '/files/phase-b-fixtures' if '--phase-b' in sys.argv or '--phase-c-tasks' in sys.argv or '--phase-d-tasks' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv or '--phase-c-growth' in sys.argv or '--phase-d-growth' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
+    if phase_e and phase=='checkpoint':shell('appwidget','revokebind','--package',package,'--user','0')
+if not phase_e:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/phase-d-fixtures' if '--phase-d' in sys.argv or '--phase-d-baseline' in sys.argv else '/files/phase-c-fixtures' if '--phase-c' in sys.argv or '--phase-d-platform' in sys.argv else '/files/phase-b-fixtures' if '--phase-b' in sys.argv or '--phase-c-tasks' in sys.argv or '--phase-d-tasks' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv or '--phase-c-growth' in sys.argv or '--phase-d-growth' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
+
+if '--phase-e-ui' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/phase-e-ui',out/'captures'])

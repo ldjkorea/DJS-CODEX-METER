@@ -1,24 +1,28 @@
 # GPT HUD 한국어판
 
-현재 버전은 **2.8.30 / versionCode 60**입니다. 자주 쓰는 **사용량 2×1 · Codex 작업현황 5×3**를 먼저 안내하고 작은 위젯의 숫자·저장값 상태를 개선했습니다. 미배포 2.8.29의 간결한 성장 프로필과 업적·칭호의 독립 시작도 통합했습니다. 기존 XP·티어·칭호·구독 결산·소수점·개별 위젯 설정은 유지합니다.
+통합 버전은 **2.8.50 / versionCode 80 · Windows 0.1.10**입니다. 홈·기록을 정리하고 원본 소수값·PC 응답 순서·백업·업데이트 검사를 보완했습니다. 같은 데이터의 도감 재로딩과 위젯·주기 작업 중복 갱신을 줄였습니다. 기존 XP·티어·칭호·구독 결산·소수점·개별 위젯 설정과 로그인은 유지합니다. [통합 검증 보고서](docs/GPT_HUD_2.8.50_FINAL_REPORT.ko.md)에 실제 검증과 미검증 범위를 구분합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.30/CodexMeter-2.8.30-ko.apk) · [Windows 위젯 0.1.9](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.30/CodexMeter-WindowsWidget-0.1.9.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.30) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md) · [위젯 감사 보고](docs/WIDGET_SIMPLIFICATION_2.8.30.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.50/CodexMeter-2.8.50-ko.apk) · [Windows 위젯 0.1.10](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.50/CodexMeter-WindowsWidget-0.1.10.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.50) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md) · [위젯 감사 보고](docs/WIDGET_SIMPLIFICATION_2.8.30.ko.md)
 
 소수점 자릿수는 **설정 → 위젯 및 화면 → 사용량 소수점 자리수**에서 바꿉니다. 기존 사용량 기록의 원본 정밀도나 계산은 변경하지 않고 화면 표시만 조정합니다. 기존 휴대폰 앱은 삭제하지 않고 업데이트하세요. Windows 위젯 0.1.9 이상은 위젯 메뉴의 **⋯ → 업데이트 확인**으로 새 버전을 받을 수 있습니다. 최초 설치 또는 0.1.8 이하에서 업데이트할 때는 ZIP을 직접 내려받아 새 폴더에 풀어 실행하세요. 로그인·설정·Tailscale 연결을 보존하려면 기존 AppData 폴더를 삭제하지 마세요.
 
 ## 성장 새 출발과 위젯
 
-v2.8.29는 개별 공개하지 않고 이번 버전에 통합했습니다. 업적과 칭호는 각각 확인 후 새 활동부터 수집합니다. 이전 자동 메달은 읽기 전용 보관함에 남고 XP·티어·기존 칭호는 유지됩니다. [변경 및 데이터 보존 정책](docs/GROWTH_REBORN_2.8.29.ko.md)을 참고하세요. v2.8.31~49는 내부 개발 후 v2.8.50에서 한 번 통합 배포합니다.
+v2.8.29는 v2.8.30에 통합했습니다. 업적과 칭호는 각각 확인 후 새 활동부터 수집합니다. 이전 자동 메달은 읽기 전용 보관함에 남고 XP·티어·기존 칭호는 유지됩니다. [변경 및 데이터 보존 정책](docs/GROWTH_REBORN_2.8.29.ko.md)을 참고하세요. v2.8.31~49는 내부 개발 후 v2.8.50에 통합합니다.
 
-**기록 → 설정 → 위젯 및 화면 → 위젯 선택**에서 권장 위젯을 추가하거나 기존 위젯 설정을 엽니다. 진화형과 삼성 잠금화면 Provider는 제거하지 않았습니다. Windows 위젯 0.1.9 사용자는 이번 업데이트 때문에 PC를 재설치할 필요가 없습니다.
+**기록 → 설정 → 위젯 및 화면 → 위젯 선택**에서 권장 위젯을 추가하거나 기존 위젯 설정을 엽니다. 진화형과 삼성 잠금화면 Provider는 제거하지 않았습니다. Windows 0.1.9 사용자는 위젯 메뉴에서 0.1.10으로 업데이트하세요. 기존 AppData·로그인·Tailscale 정보를 지우지 않습니다.
 
 ## 앱 화면 미리보기
 
-이번 2.8.30 코드의 분리된 Android QA 에뮬레이터 렌더링입니다. 합성 계정/작업 기록이며 실제 삼성 런처나 사용자 PC 연결 화면이 아닙니다. 큰 글꼴/좁은 크기에서는 표시 항목을 줄이고 전체 작업은 상세 화면에서 확인합니다.
+이번 2.8.50 코드의 분리된 Android QA Activity 렌더링입니다. 한국어·다크 테마의 합성 계정/기록이며 실제 삼성 런처나 사용자 PC 연결 화면이 아닙니다. 큰 글꼴에서는 카드가 1열로 바뀌고 목록을 스크롤해 세부 정보를 확인합니다.
 
-| 위젯 선택 | Codex 작업현황 · 320×180dp | 성장 프로필 |
+| 홈 · 주간 사용량 | 기록 · 날짜 선택 | 성장 프로필 |
 | :---: | :---: | :---: |
-| <img src="docs/widget-simplification-2.8.30/widget-guide.png" width="280" alt="2.8.30 위젯 선택, 테스트값 미리보기"/> | <img src="docs/widget-simplification-2.8.30/tasks-1.0.png" width="320" alt="2.8.30 작업현황 4개 합성 렌더"/> | <img src="docs/widget-simplification-2.8.30/growth.png" width="280" alt="2.8.30 성장 프로필, 분리된 QA 계정"/> |
+| <img src="docs/integration-2.8.50/home.png" width="280" alt="2.8.50 홈, 합성 기록"/> | <img src="docs/integration-2.8.50/records.png" width="280" alt="2.8.50 기록, 큰 글꼴 합성 화면"/> | <img src="docs/integration-2.8.50/growth.png" width="280" alt="2.8.50 성장 프로필, 분리된 QA 계정"/> |
+
+| 메달 도감 | 칭호 보관함 |
+| :---: | :---: |
+| <img src="docs/integration-2.8.50/medals.png" width="280" alt="2.8.50 메달 도감"/> | <img src="docs/integration-2.8.50/titles.png" width="280" alt="2.8.50 칭호 보관함"/> |
 
 현재 배포 앱의 대한민국·홈 티어별 삼족오 휘장 자산은 아래 미리보기에서 확인할 수 있습니다.
 
@@ -36,7 +40,7 @@ Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Code
 
 ## Windows 바탕화면 위젯
 
-[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.30/CodexMeter-WindowsWidget-0.1.9.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
+[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.50/CodexMeter-WindowsWidget-0.1.10.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
 ## Android 설치
 

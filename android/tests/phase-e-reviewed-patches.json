@@ -1,0 +1,8 @@
+{
+  "build.gradle.kts": [
+    [
+      "            applicationId = \"dev.bennett.codexmeter.rpg3qa\"",
+      "            val qaId = providers.gradleProperty(\"rpgQaId\").orNull ?: \"dev.bennett.codexmeter.rpg3qa\"\n            require(qaId.matches(Regex(\"dev[.]bennett[.]codexmeter[.][a-z][a-z0-9]*qa\")))\n            applicationId = qaId"
+    ]
+  ]
+}

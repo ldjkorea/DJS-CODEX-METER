@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'printf "Regression failed at line %s\n" "$LINENO" >&2' ERR
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 # Embedded native Python on Windows needs a Windows-readable path; Unix keeps ROOT.
 export PYTHONUTF8=1
@@ -83,14 +84,14 @@ javac -encoding UTF-8 -cp "$JSON_JAR" -d "$OUT" \
 java -ea -cp "$OUT:$JSON_JAR" dev.bennett.codexmeter.ParserSelfTest
 
 # Source-level release checks.
-grep -q 'VERSION_NAME = "2.8.30"' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
-grep -q 'VERSION_CODE = 60' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
-grep -q 'versionName = "2.8.30"' "$ROOT/app/build.gradle.kts"
-grep -q 'versionCode = 60' "$ROOT/app/build.gradle.kts"
-grep -q 'versionName = "2.8.30"' "$ROOT/wear/build.gradle.kts"
-grep -q 'versionCode = 60' "$ROOT/wear/build.gradle.kts"
-grep -q 'codex-meter-android/2.8.30' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
-grep -q 'VERSION_NAME="2.8.30"' "$ROOT/build.sh"
+grep -q 'VERSION_NAME = "2.8.50"' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
+grep -q 'VERSION_CODE = 80' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
+grep -q 'versionName = "2.8.50"' "$ROOT/app/build.gradle.kts"
+grep -q 'versionCode = 80' "$ROOT/app/build.gradle.kts"
+grep -q 'versionName = "2.8.50"' "$ROOT/wear/build.gradle.kts"
+grep -q 'versionCode = 80' "$ROOT/wear/build.gradle.kts"
+grep -q 'codex-meter-android/2.8.50' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
+grep -q 'VERSION_NAME="2.8.50"' "$ROOT/build.sh"
 WORKFLOW="$ROOT/../.github/workflows/build-apk.yml"
 grep -Fq 'contents: read' "$WORKFLOW"
 ! grep -Fq 'contents: write' "$WORKFLOW"

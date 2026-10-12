@@ -1,6 +1,6 @@
 # 한국어판 버전·업데이트·배포 정책
 
-현재 확인한 공개 기준: 앱/Wear v2.8.28, versionCode 58. 내부 개발: v2.8.29, versionCode 59. 이전 공개 APK·Tag·자산은 보존한다.
+통합 전 공개 기준: 앱/Wear v2.8.30, versionCode 60. 최종 통합 후보: v2.8.50, versionCode 80 / Windows 0.1.10. 최신 공개 여부는 Release와 최종 보고서에서 확인한다. 이전 공개 APK·Tag·자산은 보존한다.
 
 ## 최신 사용자 배포 지시 (2026-10-12)
 

@@ -10,12 +10,14 @@ android {
         applicationId = "dev.bennett.codexmeter"
         // Isolated emulator QA only; the release command does not set this property.
         if (providers.gradleProperty("rpgIsolatedQa").orNull == "true") {
-            applicationId = "dev.bennett.codexmeter.rpg3qa"
+            val qaId = providers.gradleProperty("rpgQaId").orNull ?: "dev.bennett.codexmeter.rpg3qa"
+            require(qaId.matches(Regex("dev[.]bennett[.]codexmeter[.][a-z][a-z0-9]*qa")))
+            applicationId = qaId
         }
         minSdk = 26
         targetSdk = 36
-        versionCode = 60
-        versionName = "2.8.30"
+        versionCode = 80
+        versionName = "2.8.50"
         providers.gradleProperty("demoVersionCode").orNull?.toIntOrNull()?.let {
             versionCode = it
         }

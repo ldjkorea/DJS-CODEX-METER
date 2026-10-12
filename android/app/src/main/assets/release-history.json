@@ -1,5 +1,41 @@
 [
   {
+    "version": "2.8.50",
+    "date": "2026-10-12",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.50",
+    "ko": {
+      "title": "기록 신뢰성 · 성취 보존 · 통합 안정화",
+      "changes": [
+        "달력 관측 기록과 추세를 분리하고 로그인 후 선택 기능 안내를 제공합니다.",
+        "서버 관측·저장값·조회 실패·오래됨을 구분하고 소수점 표시의 실제 정밀도를 안내합니다.",
+        "결제액 수정과 결산 근거 일치 여부를 확인하며 소비 변경의 계산 이력을 보존합니다.",
+        "소수 관측·미래 관측·시계 역행·PC 역순 상태를 안전하게 처리합니다.",
+        "업적·칭호 독립 시작과 OFF 기간 제외를 보완하고 기존 XP·성취·장착 선택을 보존합니다.",
+        "위젯과 도감의 중복 렌더·저널 조회를 줄이고 같은 정책의 갱신 예약을 유지합니다.",
+        "암호화 RPG 백업과 APK 무결성 검증을 강화하고 일반 설정의 신규 인증정보 내보내기를 차단합니다.",
+        "큰 글꼴의 필터 줄바꿈과 사용량 차트 접근성 클릭을 개선합니다.",
+        "Windows 0.1.10은 지속 재생 검사·공유 메타데이터 검증을 강화합니다. 기존 로그인·연결 설정을 유지합니다.",
+        "Samsung·Wear 실기기와 배터리 절감량은 미검증입니다. 티어는 실제 순위가 아닌 게임형 추정입니다."
+      ]
+    },
+    "en": {
+      "title": "Reliable records · preserved progress · integrated stability",
+      "changes": [
+        "Separate calendar observations and trends; offer optional setup after sign-in.",
+        "Distinguish observations, cached values, failed refresh and stale data; explain display precision.",
+        "Match billing evidence and preserve revisions when measured consumption changes.",
+        "Handle decimal observations, future timestamps, clock reversal and regressing PC task events.",
+        "Keep independent achievement/title opt-in, exclude paused activity and retain XP, awards and equipped selections.",
+        "Reduce duplicate widget rendering and collection reads; preserve unchanged job deadlines.",
+        "Harden encrypted RPG backup and APK integrity checks; stop exporting authentication in settings files.",
+        "Wrap large-font filters and add accessible quota-chart clicks.",
+        "Windows 0.1.10 hardens persisted replay checks and shared metadata; retain login and pairing settings.",
+        "Samsung/Wear hardware and power savings remain unverified. Tiers are game estimates, not actual rankings."
+      ]
+    },
+    "origin": "korean"
+  },
+  {
     "version": "2.8.30",
     "date": "2026-10-12",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.30",

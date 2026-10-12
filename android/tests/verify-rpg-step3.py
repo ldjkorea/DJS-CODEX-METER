@@ -16,7 +16,7 @@ manifest=ET.parse(root/'app/src/main/AndroidManifest.xml').getroot();names={a.ge
 for name in ['GrowthActivity','BillingHistoryActivity']:assert names['dev.bennett.codexmeter.'+name].get('{http://schemas.android.com/apk/res/android}exported')=='false'
 en={e.get('name'):e.text for e in ET.parse(root/'app/src/main/res/values/rpg3_strings.xml').getroot()};ko={e.get('name'):e.text for e in ET.parse(root/'app/src/main/res/values-ko/rpg3_strings.xml').getroot()};assert en.keys()==ko.keys() and all(ko.values())
 for key in en:assert sorted(re.findall(r'%\d+\$[sd]',en[key]))==sorted(re.findall(r'%\d+\$[sd]',ko[key])),key
-history=json.loads((root/'app/src/main/assets/release-history.json').read_text(encoding='utf-8'));assert len(history)==58 and history[0]['version']=='2.8.30'
+history=json.loads((root/'app/src/main/assets/release-history.json').read_text(encoding='utf-8'));assert len(history)==59 and history[0]['version']=='2.8.50'
 assets=json.loads((root.parent/'docs/RPG_PLAN_SEALS.json').read_text(encoding='utf-8'))['assets'];assert len(assets)==6
 for asset in assets:assert asset['license']=='MIT' and ET.parse(root.parent/asset['path']).getroot().tag=='vector'
 assert 'Tier=mirror.Tier' in (root.parent/'windows-widget/src/Widget.cs').read_text(encoding='utf-8')

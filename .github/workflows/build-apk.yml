@@ -44,9 +44,7 @@ jobs:
       - name: Core and Korean regression tests
         shell: bash
         run: |
-          bash android/run-tests.sh
-          python3 android/tests/verify-localization.py
-          python3 android/tests/verify-publication.py
+          python3 android/tests/run-release-validation.py
       - name: Compile unsigned APKs and lint
         working-directory: android
         shell: bash
