@@ -62,6 +62,10 @@ final class LedgerDashboard {
             Ui.addSpacer(card,6);
             quality=LedgerUi.badge(activity,activity.getString(R.string.ui_ledger_last_value),dark,false);
             quality.setPadding(0,0,0,0);quality.setBackground(null);card.addView(quality); Ui.addSpacer(card,8);
+            quality.setMinHeight(Ui.dp(activity,48));quality.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            quality.setOnClickListener(v->new android.app.AlertDialog.Builder(activity).setTitle(R.string.phase_a_data_source)
+                    .setMessage(activity.getString(UsageEvidence.fractional(window)?R.string.phase_a_decimal_source:R.string.phase_a_integer_source)+"\n\n"+activity.getString(R.string.next_observed_at,V3Display.time(snapshot.fetchedAtMillis)))
+                    .setPositiveButton(R.string.ui_done_e9b450,null).show());
             LedgerPeriods.Span span=LedgerPeriods.span(window.effectiveResetAtMillis(snapshot.fetchedAtMillis),window.windowSeconds,snapshot.fetchedAtMillis);
             card.addView(LedgerUi.caption(activity,span==null?activity.getString(R.string.next_missing_timeline):span.end<=System.currentTimeMillis()?activity.getString(R.string.ui_ledger_last_value)+" · "+V3Display.range(span):activity.getString(R.string.v3_window_range,activity.getString(label),V3Display.range(span)),dark));
             Ui.addSpacer(card,8);
@@ -105,9 +109,11 @@ final class LedgerDashboard {
 
         void updateClock() {
             long now=System.currentTimeMillis();
-            boolean fresh=UsageInsights.freshness(snapshot.fetchedAtMillis,now,
-                    RefreshScheduler.effectiveRefreshMinutes(activity))==UsageInsights.Freshness.FRESH;
-            quality.setText(activity.getString(fresh?R.string.ui_ledger_last_value:R.string.ui_ledger_refresh));
+            UsageEvidence.State evidence=UsageEvidence.state(snapshot,window,!AppPreferences.getLastError(activity).isEmpty(),now,RefreshScheduler.effectiveRefreshMinutes(activity));
+            boolean fresh=evidence==UsageEvidence.State.CONFIRMED;
+            int status=evidence==UsageEvidence.State.CACHED_AFTER_FAILURE?R.string.phase_a_cached_failed:evidence==UsageEvidence.State.RESET_PASSED?R.string.phase_a_reset_passed:evidence==UsageEvidence.State.STALE?R.string.phase_a_stale:R.string.phase_a_confirmed;
+            quality.setText(activity.getString(status));
+            quality.setContentDescription(activity.getString(status));
             quality.setTextColor(fresh?LedgerUi.muted(dark):Ui.mainText(dark));
             long at=window.effectiveResetAtMillis(snapshot.fetchedAtMillis);
             reset.setText(window==snapshot.fiveHour

@@ -30,7 +30,7 @@ final class FunHome {
         String stamp=LiveUsageStore.signature(activity,snapshot);
         String account=SubscriptionStore.accountKey(activity);
         if(key==null){target.removeAllViews();target.addView(LedgerUi.caption(activity,activity.getString(R.string.fun_placing),dark));return;}
-        if(stamp.equals(cachedStamp)&&cachedLive!=null){try{UsageWindow w=snapshot.longWindow();long now=System.currentTimeMillis();boolean fresh=w!=null&&now<w.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageInsights.freshness(snapshot.fetchedAtMillis,now,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageInsights.Freshness.FRESH;
+        if(stamp.equals(cachedStamp)&&cachedLive!=null){try{UsageWindow w=snapshot.longWindow();long now=System.currentTimeMillis();boolean fresh=w!=null&&now<w.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageEvidence.state(snapshot,w,!AppPreferences.getLastError(activity).isEmpty(),now,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageEvidence.State.CONFIRMED;
             String quote=SpicyQuotes.select(activity,key,snapshot,fresh,cachedLive.bonus,cachedDaily,now);home.render(snapshot,w,"",java.util.Collections.emptyList(),java.util.Collections.emptyList(),new JSONObject(),cachedLive,cachedDaily,quote);return;
         }catch(Exception ignored){/* Fall back to the guarded worker. */}}
         WORKER.execute(()->{try{
@@ -43,7 +43,7 @@ final class FunHome {
             JSONObject doc=FunStore.load(activity.getApplicationContext(),key);
             LiveUtilization.Result live=LiveUsageStore.calculate(activity.getApplicationContext(),snapshot,data);
             double daily=LiveCards.daily(data,policy,System.currentTimeMillis());
-            long quoteAt=System.currentTimeMillis();boolean quoteFresh=window!=null&&quoteAt<window.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageInsights.freshness(snapshot.fetchedAtMillis,quoteAt,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageInsights.Freshness.FRESH;
+            long quoteAt=System.currentTimeMillis();boolean quoteFresh=window!=null&&quoteAt<window.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageEvidence.state(snapshot,window,!AppPreferences.getLastError(activity).isEmpty(),quoteAt,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageEvidence.State.CONFIRMED;
             if(!stamp.equals(LiveUsageStore.signature(activity.getApplicationContext(),AppPreferences.loadSnapshot(activity.getApplicationContext()))))return;
             RpgProgressStore.reconcile(activity.getApplicationContext(),snapshot,data,account);
             String quote=SpicyQuotes.select(activity.getApplicationContext(),key,snapshot,quoteFresh,live.bonus,daily,quoteAt);
@@ -55,7 +55,7 @@ final class FunHome {
     private String getString(int id,Object... args){return activity.getString(id,args);}
     private void render(UsageSnapshot snapshot,UsageWindow window,String policy,List<LedgerRecord> records,List<FunInsights.Window> completed,JSONObject doc,LiveUtilization.Result live,double daily,String quote)throws Exception{
         target.removeAllViews();if(crestTarget!=null)crestTarget.removeAllViews();long now=System.currentTimeMillis();
-        boolean fresh=window!=null&&now<window.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageInsights.freshness(snapshot.fetchedAtMillis,now,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageInsights.Freshness.FRESH;
+        boolean fresh=window!=null&&now<window.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageEvidence.state(snapshot,window,!AppPreferences.getLastError(activity).isEmpty(),now,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageEvidence.State.CONFIRMED;
         LinearLayout tier=LiveCards.crest(activity,dark,live,fresh);
         if(crestTarget!=null){crestTarget.addView(tier);Ui.addSpacer(crestTarget,10);}else target.addView(tier);
         LinearLayout quotation=LiveCards.ai(activity,dark,live,snapshot,fresh,daily,now,quote);
