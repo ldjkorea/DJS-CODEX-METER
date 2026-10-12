@@ -19,7 +19,8 @@ public final class RpgArchive {
     private static void noSecrets(Object value,int depth)throws Exception {
         if(depth>40)throw new IllegalArgumentException("Archive nesting");
         if(value instanceof JSONObject){JSONObject o=(JSONObject)value;for(String k:AccountProgress.keys(o)){
-            if(k.matches("(?i)(access_token|refresh_token|id_token|password|authorization|client_secret|session_secret|accessToken|refreshToken|idToken)"))throw new IllegalArgumentException("Authentication is not portable RPG data");
+            String privateKey=k.replaceAll("[_-]","").toLowerCase(Locale.ROOT);
+            if(privateKey.matches("access(token)?|refresh(token)?|idtoken|password|authorization|clientsecret|sessionsecret|pairing(secret|key|code)?|pairsecret|secret|prompt|command|conversation|sourcecode|rawlog|privatekey"))throw new IllegalArgumentException("Private content is not portable RPG data");
             noSecrets(o.get(k),depth+1);
         }}else if(value instanceof JSONArray){JSONArray a=(JSONArray)value;for(int i=0;i<a.length();i++)noSecrets(a.get(i),depth+1);}
     }
@@ -37,7 +38,7 @@ public final class RpgArchive {
         }
     }
     public static void validate(JSONObject file,String account,long now)throws Exception {
-        if(!FORMAT.equals(file.getString("format"))||file.getInt("version")!=VERSION||!account.equals(file.getString("account"))||!account.matches("[a-f0-9]{64}"))throw new IllegalArgumentException("Archive account/version");
+        if(!FORMAT.equals(file.getString("format"))||integer(file,"version")!=VERSION||!account.equals(file.getString("account"))||!account.matches("[a-f0-9]{64}"))throw new IllegalArgumentException("Archive account/version");
         long made=file.getLong("created_at");if(made<=0||made>now+300000L)throw new IllegalArgumentException("Archive time");noSecrets(file,0);
         JSONObject doc=file.getJSONObject("document");if(doc.getInt("schema")!=AccountProgress.SCHEMA||doc.getLong("floor")<0||doc.getLong("floor")>now)throw new IllegalArgumentException("Account schema");
         JSONObject r=doc.getJSONObject("future").getJSONObject("rpg");long xp=0;JSONObject awards=r.getJSONObject("awards");for(String k:AccountProgress.keys(awards))xp=Math.addExact(xp,integer(awards,k));if(xp!=integer(r,"xp")||RpgEngine.level(xp)!=r.getInt("level"))throw new IllegalArgumentException("XP provenance");

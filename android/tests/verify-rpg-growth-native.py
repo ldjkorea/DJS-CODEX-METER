@@ -20,6 +20,10 @@ if '--rebornB' in sys.argv:
     test_class='GrowthRebornNativeTest';out=root/'build/phase-b-growth';out.mkdir(parents=True,exist_ok=True)
 if '--phase-b' in sys.argv:
     test_class='PhaseBNativeTest';out=root/'build/phase-b-native';out.mkdir(parents=True,exist_ok=True)
+if '--phase-c' in sys.argv:
+    test_class='PhaseCNativeTest';out=root/'build/phase-c-native';out.mkdir(parents=True,exist_ok=True)
+if '--phase-c-tasks' in sys.argv or '--phase-c-growth' in sys.argv:
+    test_class='PhaseBNativeTest' if '--phase-c-tasks' in sys.argv else 'GrowthRebornNativeTest';out=root/('build/phase-c-tasks' if '--phase-c-tasks' in sys.argv else 'build/phase-c-growth');out.mkdir(parents=True,exist_ok=True)
 run=lambda args:subprocess.run(list(map(str,args)),check=True)
 if '--presentation' in sys.argv:
     assert medals and not regression
@@ -29,6 +33,7 @@ assert shell('getprop','ro.kernel.qemu').strip()=='1'
 package='dev.bennett.codexmeter.rpg3qa';test_package='dev.bennett.codexmeter.rpg3test'
 apk=root/('build/widget30-qa/qa.apk' if '--widget30' in sys.argv or '--reborn30' in sys.argv else 'build/reborn-qa/qa.apk' if '--reborn' in sys.argv else 'build/achievement-qa/qa.apk' if '--achievement-journey' in sys.argv else 'build/presentation-native/qa.apk' if '--presentation' in sys.argv else 'build/medal-qa/qa.apk' if medals else 'build/growth-ux-qa/qa.apk' if growth else 'build/rpg3-qa/qa.apk');apk=root/'build/phase-a-qa/qa.apk' if '--phase-a' in sys.argv or '--rebornA' in sys.argv else apk
 if '--phase-b' in sys.argv or '--rebornB' in sys.argv:apk=root/'build/phase-b-qa/qa.apk'
+if any(flag in sys.argv for flag in ['--phase-c','--phase-c-tasks','--phase-c-growth']):apk=root/'build/phase-c-qa/qa.apk'
 badging=subprocess.check_output([str(bt/'aapt2.exe'),'dump','badging',str(apk)],text=True,encoding='utf-8');assert "name='"+package+"'" in badging
 installed=shell('pm','list','packages',package).splitlines();reuse='--reuse-owned-fixture' in sys.argv
 if reuse:assert 'package:'+test_package in shell('pm','list','packages',test_package).splitlines()
@@ -60,4 +65,4 @@ try:
     result=shell('am','instrument','-r','-w',test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
 finally:
     if '--widget30' in sys.argv:shell('appwidget','revokebind','--package',package,'--user','0')
-run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/phase-b-fixtures' if '--phase-b' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
+run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/phase-c-fixtures' if '--phase-c' in sys.argv else '/files/phase-b-fixtures' if '--phase-b' in sys.argv or '--phase-c-tasks' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv or '--phase-c-growth' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])

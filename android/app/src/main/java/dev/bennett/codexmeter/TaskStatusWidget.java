@@ -27,10 +27,12 @@ public final class TaskStatusWidget extends AppWidgetProvider {
         if(expires>now)alarms.set(android.app.AlarmManager.RTC,expires,tick);
     }
     private static void draw(Context c,AppWidgetManager manager,int id){Bundle options=manager.getAppWidgetOptions(id);
+        String marker="tasks:"+id,signature=WidgetRenderCache.environment(c,options)+"|"+SubscriptionStore.accountKey(c)+"|"+TierTheme.tier(c)+"|"+TaskStatusData.widgetFingerprint(TaskStatusStore.snapshot(c),TaskStatusStore.received(c),TaskStatusStore.failed(c),System.currentTimeMillis(),TaskStatusStore.enabled(c))+"|"+System.currentTimeMillis()/86400000;
+        if(WidgetRenderCache.unchanged(marker,signature))return;
         int width=Math.max(160,options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,280)),height=Math.max(140,options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,200));
         RemoteViews views=render(c,width,height,TierTheme.tier(c),TaskStatusStore.snapshot(c),TaskStatusStore.received(c),TaskStatusStore.enabled(c),TaskStatusStore.failed(c));
         views.setOnClickPendingIntent(R.id.task_status_root,PendingIntent.getActivity(c,id,new Intent(c,TaskStatusActivity.class),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));
-        views.setOnClickPendingIntent(R.id.task_status_refresh,PendingIntent.getBroadcast(c,id,new Intent(c,TaskStatusWidget.class).setAction(REFRESH),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));manager.updateAppWidget(id,views);
+        views.setOnClickPendingIntent(R.id.task_status_refresh,PendingIntent.getBroadcast(c,id,new Intent(c,TaskStatusWidget.class).setAction(REFRESH),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE));manager.updateAppWidget(id,views);WidgetRenderCache.delivered(marker,signature);
     }
     static RemoteViews render(Context c,int width,int height,int tier,JSONObject data,long received,boolean enabled){
         return render(c,width,height,tier,data,received,enabled,0);
@@ -75,8 +77,9 @@ public final class TaskStatusWidget extends AppWidgetProvider {
     private static Bitmap background(int width,int height,int tier){int w=Math.min(360,width),h=Math.min(480,height);Bitmap bitmap=Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);bitmap.setDensity(160);Canvas canvas=new Canvas(bitmap);Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setShader(new LinearGradient(0,0,0,h,tier<0?0xff252c33:WidgetTierPalette.top(tier),tier<0?0xff12171d:WidgetTierPalette.bottom(tier),Shader.TileMode.CLAMP));canvas.drawRoundRect(new RectF(0,0,w,h),20,20,paint);
         TierTheme.Frame frame=new TierTheme.Frame(tier,true,false);frame.setBounds(0,0,w,h);frame.draw(canvas);return bitmap;}
-    @Override public void onUpdate(Context c,AppWidgetManager manager,int[] ids){for(int id:ids)draw(c,manager,id);scheduleExpiry(c);TaskStatusJobService.schedule(c);if(TaskStatusStore.enabled(c))LanSync.taskStatus(c,ok->update(c));}
+    @Override public void onUpdate(Context c,AppWidgetManager manager,int[] ids){for(int id:ids){WidgetRenderCache.forget("tasks:"+id);draw(c,manager,id);}scheduleExpiry(c);TaskStatusJobService.schedule(c);if(TaskStatusStore.enabled(c)&&!TaskStatusStore.connected(c,TaskStatusStore.snapshot(c),TaskStatusStore.received(c),System.currentTimeMillis()))LanSync.taskStatus(c,ok->update(c));}
     @Override public void onDisabled(Context c){scheduleExpiry(c);TaskStatusJobService.schedule(c);}
     @Override public void onReceive(Context c,Intent intent){super.onReceive(c,intent);if(EXPIRE.equals(intent.getAction()))update(c);if(REFRESH.equals(intent.getAction())&&TaskStatusStore.enabled(c))LanSync.taskStatus(c,ok->update(c));}
-    @Override public void onAppWidgetOptionsChanged(Context c,AppWidgetManager manager,int id,Bundle options){draw(c,manager,id);}
+    @Override public void onAppWidgetOptionsChanged(Context c,AppWidgetManager manager,int id,Bundle options){WidgetRenderCache.forget("tasks:"+id);draw(c,manager,id);}
+    @Override public void onDeleted(Context c,int[] ids){for(int id:ids)WidgetRenderCache.forget("tasks:"+id);}
 }

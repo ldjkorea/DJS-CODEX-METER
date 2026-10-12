@@ -33,12 +33,7 @@ public final class SettingsTransferStore {
         JSONObject nowBar = includeNowBar ? collectNowBar(app) : null;
         JSONObject authentication = null;
         if (includeAuthentication) {
-            AuthTokens tokens = SecureTokenStore.load(app);
-            if (tokens == null || !tokens.isUsable()) {
-                throw new IllegalStateException(
-                        "No ChatGPT authentication is saved on this device to export.");
-            }
-            authentication = tokens.toJson();
+            throw new IllegalArgumentException(context.getString(R.string.phase_c_no_auth_backup));
         }
         return SettingsTransfer.create(System.currentTimeMillis(), appSettings, notifications,
                 nowBar, authentication);
@@ -52,6 +47,7 @@ public final class SettingsTransferStore {
         if (!document.hasAnySection()) {
             throw new IllegalArgumentException("Select at least one section to export.");
         }
+        if(document.hasAuthentication())throw new IllegalArgumentException(context.getString(R.string.phase_c_no_auth_backup));
         byte[] bytes = document.toJsonString().getBytes(StandardCharsets.UTF_8);
         try (OutputStream output = context.getContentResolver().openOutputStream(uri, "wt")) {
             if (output == null) {

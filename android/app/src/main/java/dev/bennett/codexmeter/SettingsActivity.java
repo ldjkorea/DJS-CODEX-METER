@@ -1423,19 +1423,16 @@ public final class SettingsActivity extends AppCompatActivity {
                             + "\n" + DisplayMessages.localize(requireContext(), SettingsTransfer.sectionSummary(
                             SettingsTransfer.SECTION_NOW_BAR)),
                     DisplayMessages.localize(requireContext(), SettingsTransfer.sectionTitle(SettingsTransfer.SECTION_AUTHENTICATION))
-                            + "\n" + (signedIn
-                            ? DisplayMessages.localize(requireContext(), SettingsTransfer.sectionSummary(
-                            SettingsTransfer.SECTION_AUTHENTICATION))
-                            : requireContext().getString(R.string.ui_sign_in_first_to_export_chatgpt_authentication_9925bd))
+                            + "\n" + requireContext().getString(R.string.phase_c_no_auth_backup)
             };
             boolean[] checked = {true, true, true, false};
             new AlertDialog.Builder(requireContext())
                     .setTitle(requireContext().getString(R.string.ui_export_sections_0c67ff))
                     .setMultiChoiceItems(labels, checked, (dialog, which, isChecked) -> {
-                        if (which == 3 && isChecked && !signedIn) {
+                        if (which == 3 && isChecked) {
                             checked[3] = false;
                             ((AlertDialog) dialog).getListView().setItemChecked(3, false);
-                            Toast.makeText(requireContext(), DisplayMessages.localize(requireContext(), requireContext().getString(R.string.ui_sign_in_before_exporting_authentication_391f94)),
+                            Toast.makeText(requireContext(), requireContext().getString(R.string.phase_c_no_auth_backup),
                                     Toast.LENGTH_LONG).show();
                             return;
                         }

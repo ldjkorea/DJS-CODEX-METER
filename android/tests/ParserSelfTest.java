@@ -64,6 +64,10 @@ public final class ParserSelfTest {
     }
 
     private static void testDiagnosticSanitizer() {
+        String privateLog="pairing_secret=SYNTHETIC_SECRET account_id=TEST_ACCOUNT cm1|100.64.0.2|1234|"+"a".repeat(64)+"|"+"b".repeat(64)+" C:\\Users\\Synthetic\\private-session.jsonl";
+        String safe=DiagnosticSanitizer.redact(privateLog);
+        if(safe.contains("SYNTHETIC_SECRET")||safe.contains("TEST_ACCOUNT")||safe.contains("cm1|")||safe.contains("private-session"))throw new AssertionError("Private diagnostic metadata leaked");
+        if(!DiagnosticSanitizer.redact("https://github.com/a").equals("https://github.com/a"))throw new AssertionError("Public URL mistaken for local drive");
         String jwt = "abcdefghijklmnop.qrstuvwxyzABCDE.FGHIJKLMNOP";
         String input = "Authorization: Bearer top-secret "
                 + "access_token=\"access-secret\" refresh_token=refresh-secret "

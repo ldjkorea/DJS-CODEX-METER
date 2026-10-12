@@ -51,14 +51,15 @@ public final class SecureTokenStore {
                     byte[] bArrDecode = Base64.getDecoder().decode(jSONObject.getString("iv"));
                     byte[] bArrDecode2 = Base64.getDecoder().decode(jSONObject.getString("ct"));
                     Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-                    cipher.init(2, getOrCreateKey(), new GCMParameterSpec(128, bArrDecode));
+                    cipher.init(2, existingKey(), new GCMParameterSpec(128, bArrDecode));
                     AuthTokens authTokensFromJson = AuthTokens.fromJson(new JSONObject(new String(cipher.doFinal(bArrDecode2), StandardCharsets.UTF_8)));
                     if (!authTokensFromJson.isUsable()) {
                         authTokensFromJson = null;
                     }
                     authTokens = authTokensFromJson;
                 } catch (Exception e) {
-                    sharedPreferences.edit().remove(KEY_BLOB).commit();
+                    // Keystore may be temporarily unavailable. Explicit sign-out alone deletes credentials.
+                    DiagnosticLog.warn(context,"auth","encrypted_credentials_unavailable");
                 }
             }
         }
@@ -93,5 +94,11 @@ public final class SecureTokenStore {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES", "AndroidKeyStore");
         keyGenerator.init(new KeyGenParameterSpec.Builder(KEY_ALIAS, 3).setBlockModes("GCM").setEncryptionPaddings("NoPadding").setRandomizedEncryptionRequired(true).build());
         return keyGenerator.generateKey();
+    }
+    private static SecretKey existingKey() throws Exception {
+        KeyStore store=KeyStore.getInstance("AndroidKeyStore");store.load(null);
+        Key key=store.getKey(KEY_ALIAS,null);
+        if(!(key instanceof SecretKey))throw new java.security.KeyStoreException("Stored credential key unavailable");
+        return (SecretKey)key;
     }
 }

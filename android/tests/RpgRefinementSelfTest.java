@@ -42,6 +42,26 @@ public final class RpgRefinementSelfTest {
         JSONObject newer=copy(fresh);RpgEngine.ingestOfficial(newer,ACCOUNT,official(NOW+1,5_000_000_000L,30,10_000_000L),NOW+1);long newerXp=RpgEngine.state(newer).getLong("xp");JSONObject retained=RpgArchive.merge(newer,decoded,ACCOUNT,NOW+1);check(RpgEngine.state(retained).getLong("xp")==newerXp&&RpgEngine.state(retained).getJSONObject("achievements").getJSONObject("tokens_5b").getBoolean("unlocked"),"Old archive cannot remove newer achievement or XP");
         String source=newer.toString();JSONObject partial=copy(file);partial.getJSONObject("document").getJSONObject("future").getJSONObject("rpg").getJSONObject("achievements").remove("tokens_1000000");rejects(()->RpgArchive.merge(newer,partial,ACCOUNT,NOW+1),"Missing achievement entry rejects whole archive");check(newer.toString().equals(source),"Failed validation leaves source unchanged");
         JSONObject wrong=copy(file);wrong.getJSONObject("document").put("access_token","DO_NOT_EXPORT");rejects(()->RpgArchive.validate(wrong,ACCOUNT,NOW),"Authentication cannot enter archive");
+        for(String key:new String[]{"pairing_secret","pairingCode","private_key","prompt","command","conversation","sourceCode","raw_log"}){
+            JSONObject secret=copy(file);secret.getJSONObject("document").getJSONObject("future").put(key,"SYNTHETIC_PRIVATE");String preserved=doc.toString();rejects(()->RpgArchive.merge(doc,secret,ACCOUNT,NOW),"Private metadata rejected: "+key);check(doc.toString().equals(preserved),"Rejected archive keeps current journal");
+        }
+        JSONObject fractionalArchive=copy(file).put("version",1.5);rejects(()->RpgArchive.validate(fractionalArchive,ACCOUNT,NOW),"Fractional archive version rejected");
+        for(boolean medals:new boolean[]{false,true})for(boolean titles:new boolean[]{false,true}){
+            JSONObject opted=copy(doc);AchievementJourney.prepare(opted,NOW+1);TitleJourney.prepare(opted,NOW+1);
+            AchievementJourney.setEnabled(opted,medals,NOW+2);TitleJourney.setEnabled(opted,titles,NOW+2);
+            if(medals){AchievementJourney.setEnabled(opted,false,NOW+3);AchievementJourney.setEnabled(opted,true,NOW+4);}
+            if(titles){TitleJourney.setEnabled(opted,false,NOW+3);TitleJourney.setEnabled(opted,true,NOW+4);}
+            JSONObject portable=RpgArchive.create(opted,ACCOUNT,new JSONArray(),true,NOW+10),decodedJourney=RpgBackupCodec.decrypt(RpgBackupCodec.encrypt(portable,pass),pass);
+            JSONObject recovered=RpgArchive.merge(AccountProgress.empty(),decodedJourney,ACCOUNT,NOW+10),rs=RpgEngine.state(recovered),os=RpgEngine.state(opted);
+            check(AchievementJourney.journey(rs).toString().equals(AchievementJourney.journey(os).toString()),"Encrypted medal ON/OFF segments and baseline preserved");
+            JSONObject originalScope=copy(TitleJourney.journey(os)),restoredScope=copy(TitleJourney.journey(rs));
+            // Restore refreshes derived locked-title facts; compare every persisted counting baseline.
+            originalScope.remove("facts");restoredScope.remove("facts");originalScope.remove("linked_medals");restoredScope.remove("linked_medals");
+            check(originalScope.similar(restoredScope),"Encrypted title ON/OFF segments and counting baselines preserved");
+            JSONObject linkedBefore=TitleJourney.journey(os).optJSONObject("linked_medals"),linkedAfter=TitleJourney.journey(rs).optJSONObject("linked_medals");
+            check(linkedBefore==null?linkedAfter==null||linkedAfter.length()==0:linkedBefore.similar(linkedAfter),"Title linked medal evidence preserved without invented medals");
+            long originalXp=rs.getLong("xp");recovered=RpgArchive.merge(recovered,decodedJourney,ACCOUNT,NOW+11);check(RpgEngine.state(recovered).getLong("xp")==originalXp,"Encrypted repeated restore never awards XP");
+        }
         JSONObject tooMany=copy(file);tooMany.getJSONObject("showcase").getJSONArray("ids").put("days_1");rejects(()->RpgArchive.validate(tooMany,ACCOUNT,NOW),"Showcase bounds strictly validated");
         JSONObject fabricated=copy(file);fabricated.getJSONObject("document").getJSONObject("future").getJSONObject("rpg").getJSONObject("awards").put("arbitrary-xp",200);rejects(()->RpgArchive.validate(fabricated,ACCOUNT,NOW),"Unrecognized award rejected");
         JSONObject early=AccountProgress.empty();JSONObject earlyBill=new JSONObject().put("plan","pro").put("amount","100").put("currency","USD").put("start","2026-08-01").put("end","2026-08-31").put("saved_at",S);List<LedgerRecord> earlyRows=List.of(row(S+D,"80",S+W),row(S+2*D,"0",S+W+D),row(S+2*D+1000,"40",S+W+D));AccountProgress.reconcile(early,earlyRows,List.of(),List.of(),new JSONArray().put(earlyBill),0,S+2*D+1000);JSONObject earlyFile=RpgArchive.create(early,ACCOUNT,new JSONArray(),false,S+2*D+1000),deleted=AccountProgress.empty();deleted.put("floor",S+3*D);deleted=RpgArchive.merge(deleted,earlyFile,ACCOUNT,S+4*D);check(deleted.getJSONObject("evidence").length()==0,"Deletion floor prevents old raw reimport");AccountProgress.reconcile(deleted,List.of(row(S+4*D,"10",S+W+D),row(S+4*D+1000,"20",S+W+D)),List.of(),List.of(),new JSONArray(),S+3*D,S+4*D+1000);check(points(deleted)==130,"Recovered pre-deletion recap plus actual new consumption, no double counting");

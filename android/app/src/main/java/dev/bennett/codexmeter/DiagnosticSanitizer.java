@@ -18,12 +18,14 @@ public final class DiagnosticSanitizer {
             "(?i)\\b(authorization|proxy-authorization|cookie|set-cookie|"
                     + "access[_-]?token|refresh[_-]?token|id[_-]?token|"
                     + "client[_-]?secret|code[_-]?verifier|password|passwd|"
-                    + "session(?:id)?|api[_-]?key)\\b"
+                    + "session(?:id)?|api[_-]?key|pair(?:ing)?[_-]?(?:secret|code|key)|secret|account[_-]?id)\\b"
                     + "\\s*[\"']?\\s*[:=]\\s*[\"']?"
                     + "([^\\s,;&}\\]]+)");
     private static final Pattern SENSITIVE_QUERY = Pattern.compile(
             "(?i)([?&](?:code|state|token|access_token|refresh_token|id_token|"
                     + "code_verifier|client_secret|password|session)=)[^&#\\s]+");
+    private static final Pattern PAIR_CODE=Pattern.compile("cm1\\|[0-9.]+\\|[0-9]+\\|[a-f0-9]{64}\\|[a-f0-9]{64}");
+    private static final Pattern LOCAL_PATH=Pattern.compile("(?i)(?:(?<![a-z0-9])[a-z]:[\\\\/]|/data/(?:user|user_de|data)/)[^\\r\\n\"']+");
 
     private DiagnosticSanitizer() {
     }
@@ -33,6 +35,8 @@ public final class DiagnosticSanitizer {
             return value == null ? "" : value;
         }
         String result = AUTH_SCHEME.matcher(value).replaceAll(REDACTED);
+        result = PAIR_CODE.matcher(result).replaceAll(REDACTED);
+        result = LOCAL_PATH.matcher(result).replaceAll("[REDACTED_PATH]");
         result = JWT.matcher(result).replaceAll(REDACTED);
         result = EMAIL.matcher(result).replaceAll("[REDACTED_EMAIL]");
         result = replaceAssignments(result);

@@ -197,6 +197,18 @@ final class SamsungLockWidgetSupport {
         }
         int iRemaining = binding.primaryRemaining;
         int iRemaining2 = binding.secondaryRemaining;
+        if(zIsSignedIn&&usageSnapshotLoadSnapshot!=null&&(!AppPreferences.getLastError(context).isEmpty()
+                ||UsageInsights.freshness(usageSnapshotLoadSnapshot.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(context))!=UsageInsights.Freshness.FRESH)){
+            String dedicated=metric==Metric.FIVE_HOUR?WidgetMeters.FIVE_HOUR:WidgetMeters.WEEKLY;
+            if(metric!=Metric.BOTH&&MeterVisibility.allowed(context,dedicated,usageSnapshotLoadSnapshot))binding=new LockMeterBinding(lockSlot(context,dedicated,usageSnapshotLoadSnapshot),null);
+            RemoteViews stale=buildNumberViews(context,shape,true,binding,lockWidgetOptionsLoadLockWidgetOptions,i3);
+            String at=android.text.format.DateFormat.getTimeFormat(context).format(new java.util.Date(usageSnapshotLoadSnapshot.fetchedAtMillis));
+            if(System.currentTimeMillis()-usageSnapshotLoadSnapshot.fetchedAtMillis>=86400000L)at=android.text.format.DateFormat.getDateFormat(context).format(new java.util.Date(usageSnapshotLoadSnapshot.fetchedAtMillis))+" "+at;
+            String copy=context.getString(R.string.phase_c_saved_at,at)+"\n"+(binding.showPrimary?binding.primary.label+" "+value(binding.primaryRemaining):"—");
+            if(binding.showSecondary)copy+="\n"+binding.secondary.label+" "+value(binding.secondaryRemaining);
+            stale.setTextViewText(shape==Shape.SQUARE?R.id.lock_square_value:R.id.lock_wide_value,copy);
+            applyOpenIntent(context,stale,shape==Shape.SQUARE?R.id.lock_square_root:R.id.lock_wide_root,i,shape,style,lockWidgetOptionsLoadLockWidgetOptions,true,i3);return stale;
+        }
         if (metric != Metric.BOTH && (metric == Metric.FIVE_HOUR ? MeterVisibility.allowed(context,WidgetMeters.FIVE_HOUR,usageSnapshotLoadSnapshot) : MeterVisibility.allowed(context,WidgetMeters.WEEKLY,usageSnapshotLoadSnapshot))) {
             boolean monthlyFallback = metric == Metric.WEEKLY
                     && usageSnapshotLoadSnapshot != null

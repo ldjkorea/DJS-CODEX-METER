@@ -35,11 +35,13 @@ public final class UpdateInstaller {
         public final File apk;
         public final String versionName;
         public final long versionCode;
+        private final String sha256;
 
-        PreparedUpdate(File apk, String versionName, long versionCode) {
+        PreparedUpdate(File apk, String versionName, long versionCode) throws Exception {
             this.apk = apk;
             this.versionName = versionName;
             this.versionCode = versionCode;
+            this.sha256 = ReleaseIntegrity.sha256(apk);
         }
     }
 
@@ -120,6 +122,9 @@ public final class UpdateInstaller {
         if (update == null || update.apk == null || !update.apk.isFile()) {
             throw new IllegalArgumentException("The verified update APK is missing.");
         }
+        if(!MessageDigestSupport.constantTimeEquals(update.sha256,ReleaseIntegrity.sha256(update.apk)))throw new SecurityException("Prepared APK changed before installation.");
+        PreparedUpdate current=verifyPackage(context,update.versionName,update.apk);
+        if(current.versionCode!=update.versionCode)throw new SecurityException("Prepared APK metadata changed.");
         PackageInstaller installer = context.getPackageManager().getPackageInstaller();
         PackageInstaller.SessionParams params =
                 new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
@@ -139,11 +144,15 @@ public final class UpdateInstaller {
             try (InputStream input = new FileInputStream(update.apk);
                     OutputStream output = session.openWrite("base.apk", 0L, update.apk.length())) {
                 byte[] buffer = new byte[64 * 1024];
+                java.security.MessageDigest copied=java.security.MessageDigest.getInstance("SHA-256");
                 int read;
                 while ((read = input.read(buffer)) != -1) {
                     if (Thread.currentThread().isInterrupted()) throw new java.io.InterruptedIOException("Update cancelled");
                     output.write(buffer, 0, read);
+                    copied.update(buffer,0,read);
                 }
+                StringBuilder written=new StringBuilder();for(byte b:copied.digest())written.append(String.format(Locale.US,"%02x",b&255));
+                if(!MessageDigestSupport.constantTimeEquals(update.sha256,written.toString()))throw new SecurityException("Prepared APK changed during installation.");
                 session.fsync(output);
             }
             Intent result = new Intent(context, UpdateInstallReceiver.class)
@@ -176,6 +185,9 @@ public final class UpdateInstaller {
 
     private static PreparedUpdate verifyPackage(Context context, GitHubRelease release, File apk)
             throws Exception {
+        return verifyPackage(context,release.version,apk);
+    }
+    private static PreparedUpdate verifyPackage(Context context,String version,File apk)throws Exception {
         PackageManager manager = context.getPackageManager();
         int flags = Build.VERSION.SDK_INT >= 28
                 ? PackageManager.GET_SIGNING_CERTIFICATES : PackageManager.GET_SIGNATURES;
@@ -186,7 +198,7 @@ public final class UpdateInstaller {
         if (!context.getPackageName().equals(archive.packageName)) {
             throw new SecurityException("The APK package name is not Codex Meter.");
         }
-        ReleaseVersion expected = ReleaseVersion.parse(release.version);
+        ReleaseVersion expected = ReleaseVersion.parse(version);
         ReleaseVersion actual = ReleaseVersion.parse(archive.versionName);
         if (expected == null || actual == null || expected.compareTo(actual) != 0) {
             throw new SecurityException("The APK version does not match the selected release.");

@@ -11,22 +11,24 @@ public final class CodexUsageWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] iArr) {
         if (iArr != null) {
             for (int i : iArr) {
+                WidgetRenderCache.forget("usage:"+i); // A host lifecycle request always receives a full delivery.
                 WidgetRenderer.update(context, appWidgetManager, i);
             }
         }
         RefreshScheduler.schedulePeriodic(context);
-        RefreshScheduler.scheduleImmediate(context);
+        if(!WidgetRenderCache.freshUsage(context))RefreshScheduler.scheduleImmediate(context);
     }
 
     @Override // android.appwidget.AppWidgetProvider
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int i, Bundle bundle) {
+        WidgetRenderCache.forget("usage:"+i);
         WidgetRenderer.update(context, appWidgetManager, i);
     }
 
     @Override // android.appwidget.AppWidgetProvider
     public void onEnabled(Context context) {
         RefreshScheduler.schedulePeriodic(context);
-        RefreshScheduler.scheduleImmediate(context);
+        if(!WidgetRenderCache.freshUsage(context))RefreshScheduler.scheduleImmediate(context);
     }
 
     @Override // android.appwidget.AppWidgetProvider
@@ -39,6 +41,7 @@ public final class CodexUsageWidget extends AppWidgetProvider {
         if (iArr != null) {
             for (int i : iArr) {
                 WidgetCrest.deleted(context,i);
+                WidgetRenderCache.forget("usage:"+i);
                 AppPreferences.deleteWidgetOptions(context, i);
             }
         }

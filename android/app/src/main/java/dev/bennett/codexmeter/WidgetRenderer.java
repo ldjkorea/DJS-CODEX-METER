@@ -63,6 +63,8 @@ public final class WidgetRenderer {
             try {
                 WidgetOptions widgetOptionsLoadWidgetOptions = AppPreferences.loadWidgetOptions(context, i);
                 Bundle appWidgetOptions = appWidgetManager.getAppWidgetOptions(i);
+                String marker="usage:"+i,signature=WidgetRenderCache.usage(context,i,appWidgetOptions,widgetOptionsLoadWidgetOptions);
+                if(WidgetRenderCache.unchanged(marker,signature))return;
                 if (Build.VERSION.SDK_INT >= 31) {
                     remoteViewsBuildViews = buildResponsiveWidget(context, i, widgetOptionsLoadWidgetOptions);
                 } else {
@@ -71,6 +73,7 @@ public final class WidgetRenderer {
                             appWidgetOptions);
                 }
                 appWidgetManager.updateAppWidget(i, remoteViewsBuildViews);
+                WidgetRenderCache.delivered(marker,signature);
             } catch (RuntimeException e) {
                 DiagnosticLog.error(context, "widget", "render_failed", e,
                         "widget_id", i);
