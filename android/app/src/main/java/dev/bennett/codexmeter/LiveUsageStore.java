@@ -24,7 +24,7 @@ final class LiveUsageStore {
             +":"+LedgerAggregation.day(System.currentTimeMillis())+":"+c.getSharedPreferences("codex_meter_settings_v1",0).getString("usage_history_weekly","").hashCode()+":"+c.getSharedPreferences("codex_meter_settings_v1",0).getString("usage_history_monthly","").hashCode();}
     private static String quotaStamp(UsageSnapshot s){
         UsageWindow w=s==null?null:s.longWindow();
-        return w==null?"":s.planType+":"+(s.weekly!=null?"weekly":"monthly")+":"+w.windowSeconds+":"+w.usedPercent+":"+w.effectiveResetAtMillis(s.fetchedAtMillis);
+        return w==null?"":s.planType+":"+(s.weekly!=null?"weekly":"monthly")+":"+w.windowSeconds+":"+w.preciseUsedPercent+":"+w.effectiveResetAtMillis(s.fetchedAtMillis);
     }
     static LiveUtilization.Result calculate(Context c,UsageSnapshot s,UsageLedgerDatabase.Data data){
         UsageWindow w=s==null?null:s.longWindow();String meter=s!=null&&s.weekly!=null?"weekly":"monthly";
@@ -39,7 +39,7 @@ final class LiveUsageStore {
         }
         List<LedgerRecord> rows=new ArrayList<>(data.records);
         if(w!=null&&rows.stream().noneMatch(r->r.policy().equals(policy)&&r.at==s.fetchedAtMillis))
-            rows.add(new LedgerRecord(meter,s.planType,s.fetchedAtMillis,w.usedPercent,Integer.toString(w.usedPercent),w.effectiveResetAtMillis(s.fetchedAtMillis),w.windowSeconds,"api_rounded",false));
+            rows.add(new LedgerRecord(meter,s.planType,s.fetchedAtMillis,w.preciseUsedPercent,Double.toString(w.preciseUsedPercent),w.effectiveResetAtMillis(s.fetchedAtMillis),w.windowSeconds,w.preciseUsedPercent==w.usedPercent?"api_rounded":"api_precise",false));
         List<Long> credits=new ArrayList<>();for(UsageLedgerDatabase.Event e:data.events)if(e.type.equals("credit_used")&&e.origin.equals("confirmed"))credits.add(e.at);
         return LiveUtilization.calculate(rows,credits,policy,span,start,end,s==null?0:s.fetchedAtMillis);
     }

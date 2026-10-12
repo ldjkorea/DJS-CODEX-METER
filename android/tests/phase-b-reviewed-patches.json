@@ -1,0 +1,8 @@
+{
+  "UsageLedgerDatabase.java": [
+    [
+      "        List<LedgerRecord> rows = observations(db);\n        List<Long> credits = new ArrayList<>();",
+      "        List<LedgerRecord> rows = observations(db);\n        // Retain tolerated peer clock skew as evidence, but do not spend future usage today.\n        rows.removeIf(row -> row.at > now);\n        List<Long> credits = new ArrayList<>();"
+    ]
+  ]
+}

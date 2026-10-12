@@ -60,16 +60,23 @@ public final class LedgerCapture {
     }
     private static JSONObject match(JSONObject rate, UsageWindow window) {
         if (rate == null || window == null) return null;
+        JSONObject roundedMatch = null;
+        int roundedMatches = 0;
         for (String slot : new String[] {"primary_window", "secondary_window"}) {
             JSONObject raw = rate.optJSONObject(slot);
             UsageWindow candidate = UsageWindow.fromJson(raw);
-            if (candidate != null && candidate.windowSeconds == window.windowSeconds
-                    && candidate.usedPercent == window.usedPercent
-                    && candidate.resetAtEpochSeconds == window.resetAtEpochSeconds
-                    && candidate.resetAfterSeconds == window.resetAfterSeconds) return raw;
+            if (candidate == null || candidate.windowSeconds != window.windowSeconds
+                    || candidate.resetAtEpochSeconds != window.resetAtEpochSeconds
+                    || candidate.resetAfterSeconds != window.resetAfterSeconds) continue;
+            if (Double.compare(candidate.preciseUsedPercent, window.preciseUsedPercent) == 0) return raw;
+            // Legacy rounded snapshots may recover raw precision only from an unambiguous slot.
+            if (window.preciseUsedPercent == window.usedPercent && candidate.usedPercent == window.usedPercent) {
+                roundedMatch = raw; roundedMatches++;
+            }
         }
-        return null;
+        return roundedMatches == 1 ? roundedMatch : null;
     }
+
     private static void add(List<LedgerRecord> records, String meter, UsageSnapshot snapshot,
             UsageWindow window, JSONObject raw, boolean manual) {
         if (window == null) return;

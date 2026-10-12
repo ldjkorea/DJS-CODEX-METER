@@ -230,6 +230,8 @@ public final class UsageLedgerDatabase extends SQLiteOpenHelper {
 
     private void rollup(SQLiteDatabase db, long now) {
         List<LedgerRecord> rows = observations(db);
+        // Retain tolerated peer clock skew as evidence, but do not spend future usage today.
+        rows.removeIf(row -> row.at > now);
         List<Long> credits = new ArrayList<>();
         try (Cursor c = db.rawQuery("SELECT at FROM events WHERE type='credit_used' ORDER BY at", null)) {
             while (c.moveToNext()) credits.add(c.getLong(0));

@@ -25,6 +25,11 @@ public final class HudSelfTest {
             LedgerRecord record=LedgerCapture.fromSnapshot(s,response.toString(),true).get(0);
             check(record.used==input[i]&&record.manual,"Actual ledger capture with precise source");
         }
+        JSONObject slots=new JSONObject().put("plan_type","pro").put("rate_limit",new JSONObject()
+            .put("primary_window",new JSONObject().put("used_percent",42.125).put("limit_window_seconds",604800).put("reset_at",1792000000L))
+            .put("secondary_window",new JSONObject().put("used_percent",42.25).put("limit_window_seconds",604800).put("reset_at",1792000000L)));
+        UsageSnapshot exact=new UsageSnapshot("pro",true,false,null,new UsageWindow(42.25,604800,0,1792000000L),1791500000000L);
+        check(LedgerCapture.fromSnapshot(exact,slots.toString(),false).stream().filter(r->r.meter.equals("weekly")).findFirst().get().used==42.25,"Same rounded integer cannot select wrong raw slot");
         UsageWindow old=UsageWindow.fromJson(new JSONObject().put("used_percent",13).put("limit_window_seconds",604800));
         check(UsagePrecision.used(old).equals("13%")&&!old.toJson().has("used_percent_precise"),"No invented legacy decimals");
         check(UsageWindow.fromJson(new JSONObject().put("used_percent",13).put("used_percent_precise",99.999).put("limit_window_seconds",604800)).preciseUsedPercent==13,"Conflicting precision cannot override legacy value");

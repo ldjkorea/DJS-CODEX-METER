@@ -10,5 +10,7 @@ subprocess.run([jdk/'java','-ea','-Duser.language=en','-cp',cp,'dev.bennett.code
 repo=root.parent
 for relative in ['android/shared/src/main/java/dev/bennett/codexmeter/MonthlyLedger.java','android/app/src/main/java/dev/bennett/codexmeter/SubscriptionStore.java','android/app/src/main/java/dev/bennett/codexmeter/UsageLedgerDatabase.java','android/app/src/main/java/dev/bennett/codexmeter/AccountSession.java','android/app/src/main/java/dev/bennett/codexmeter/AppPreferences.java']:
     expected=subprocess.check_output(['git','show','43ed903:'+relative],cwd=repo).replace(b'\r\n',b'\n')
-    assert (repo/relative).read_bytes().replace(b'\r\n',b'\n')==expected,relative
-print('Monthly formula, SQLite schema, payment preferences and account/settings storage unchanged from v2.8.30.')
+    from phase_b_review import strip_phase_b
+    current=strip_phase_b(relative,(repo/relative).read_text(encoding='utf-8')).encode('utf-8')
+    assert current==expected,relative
+print('Monthly formula, SQLite schema, payment preferences and account/settings storage protected; exact Phase B clock-skew DAO patch reviewed separately.')

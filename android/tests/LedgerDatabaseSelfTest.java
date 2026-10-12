@@ -100,6 +100,9 @@ public final class LedgerDatabaseSelfTest {
         UsageEventStore.recordConfirmedCreditUse(context, creditAt);
         check(UsageLedgerDatabase.record(context, snapshot(NOW - 2 * HOUR, 50), null, false), "Credit scenario baseline");
         check(UsageLedgerDatabase.record(context, snapshot(creditAt + 1000, 20), null, false), "Credit-related gain saved");
+        // The synthetic clock-skew row remains uncounted until its real observation time.
+        check(UsageLedgerDatabase.load(context).events.stream().noneMatch(event -> event.type.equals("CREDIT_CHANGE")), "Future gain is not classified early");
+        while(System.currentTimeMillis() < creditAt + 1000) Thread.sleep(10);
         data = UsageLedgerDatabase.load(context);
         check(data.events.stream().anyMatch(event -> event.type.equals("credit_used") && event.origin.equals("confirmed")), "Confirmed operation imported independently");
         check(data.events.stream().anyMatch(event -> event.type.equals("CREDIT_CHANGE") && event.origin.equals("observed")), "Nearby gain classification preserves observational scope");
