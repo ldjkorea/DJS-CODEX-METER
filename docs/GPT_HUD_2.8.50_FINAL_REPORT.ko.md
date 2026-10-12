@@ -4,9 +4,9 @@
 
 ## 결과와 배포 게이트
 
-로컬 필수 검증을 통과했다. 확인된 P0/P1 차단 결함은 없다. 공개 게시 전 GitHub Actions, draft 자산, 공개 다운로드 및 생산 업데이트 파서 검증을 차례로 완료해야 한다. 이 문서의 게시 후 확인 기록과 실제 Release 상태로 배포 완료 여부를 판단한다.
+로컬 필수 검증, GitHub Actions, draft 자산 재다운로드, 공개 다운로드 및 생산 업데이트 파서 검증을 통과해 **v2.8.50 정식 Release 한 번을 게시했다**. 확인된 P0/P1 차단 결함은 없다. 실제 사용자 휴대폰에 설치하거나 사용자 DB를 복구한 상태는 아니다.
 
-목표 Release: [v2.8.50](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.50). 중간 2.8.31~49 Tag·Release·APK는 생성하지 않는다. 이전 공개 파일은 보존한다.
+공개 Release: [v2.8.50](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.50). 중간 2.8.31~49 Tag·Release·APK를 생성하지 않았다. 이전 공개 파일을 보존했다.
 
 ## 통합 기준과 코드
 
@@ -81,6 +81,7 @@ UI 비교 기준은 이전 `docs/widget-simplification-2.8.30/`와 새 `docs/int
 |---|---:|---|
 | `CodexMeter-2.8.50-ko.apk` | 27,039,225 | `f0d3c4089e0e28f2fd3dea9ec0d88535ea7995676b12cd32bd1d8f9dac7553df` |
 | `CodexMeter-Wear-2.8.50-ko.apk` | 16,142,789 | `3f3aad972acc8c742e8315d0a2e9165993d0dda6da3c2d893edc6e9ef07b0384` |
+| `CodexMeter-WindowsWidget-0.1.10.zip` | 5,479,509 | `60a3526e9821210b3a3b51e214081b822dd29fc94ef3972992926cc02fb01492` |
 
 Phone/Wear package: `dev.bennett.codexmeter`. 인증서 SHA-256: `6abd39b13e561cd67fa0d76ab79f9f22500cf5378dc60b176bfe18bf0d2f8be3`. 최종 APK와 기존 공개 v30의 인증서 일치. 새로운 키를 생성하지 않았다. Windows ZIP의 정확한 SHA-256은 릴리스 `SHA256SUMS.txt`에 포함한다. Windows Authenticode 서명은 없으며 기존 업데이트 경로의 체크섬·실행 파일 버전을 확인한다.
 
@@ -96,3 +97,18 @@ Phone/Wear package: `dev.bennett.codexmeter`. 인증서 SHA-256: `6abd39b13e561c
 ## 설치
 
 휴대폰 기존 앱의 **기록 → 설정 → 앱 정보 및 라이선스 → 업데이트 → 새 버전 확인**, 다운로드·검증 후 Android의 **업데이트**를 누른다. 앱을 삭제하지 않는다. Windows 0.1.9 이상은 **⋯ → 업데이트 확인**. 로그인·SQLite·AppData·Tailscale 정보를 지우지 않는다. 설치 실패 시 오류와 기존 버전/서명을 먼저 조사한다.
+
+## 게시 후 최종 확인
+
+- 게시: **2026-10-12 05:54:42 UTC / 14:54:42 KST**, stable, draft=false, prerelease=false. Tag `v2.8.50`은 `bd9ed8d5b033472a7ec3e768d195db41e64dcfc4`를 가리킨다.
+- [GitHub Actions 38209519439](https://github.com/ldjkorea/codex-meter-ko/actions/runs/38209519439): 해당 배포 커밋의 Android/Wear 빌드·lint·전체 회귀/현지화/폰트/소스 검사와 Windows 빌드·회귀 모두 성공. Node 20/setup-java v4 deprecation annotation은 비차단 경고로 남아 있다.
+- 13개 draft 자산을 다시 내려받아 크기·모든 SHA-256·source/version을 확인한 다음 게시했다.
+- 게시 후 **인증 헤더 없는 HTTPS**로 13개 파일을 모두 다시 내려받았다. 파일 크기, GitHub asset digest, 로컬 원본, 공개 `SHA256SUMS.txt` 모두 일치했다. 공개 최신 Release가 v2.8.50이며 31~49 중간 Release가 없음을 확인했다.
+- Android 생산 `GitHubReleaseParser`/`UpdateChannel`로 공개 API 원문을 읽어 22개 검사 통과. 이전 v30의 stable·기존 업데이트 채널이 v50을 인식하고 동일/상위 버전에는 다운그레이드를 제안하지 않는다.
+- Windows 생산 `WidgetUpdate.Parse`/`HashMatches`가 공개 0.1.10의 이름·크기·ZIP 체크섬을 인식했다. 실제 사용자 Windows 프로그램 교체·AppData 변경은 하지 않았다.
+- 최종 커밋에서 다시 빌드한 Phone/Wear APK가 공개 후보와 바이트 해시가 일치했다. 공개 다운로드 APK의 인증서도 다시 확인했다. 게시 뒤 APK나 공개 자산을 교체하지 않았다.
+- [휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.50/CodexMeter-2.8.50-ko.apk), [Wear APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.50/CodexMeter-Wear-2.8.50-ko.apk), [Windows ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.50/CodexMeter-WindowsWidget-0.1.10.zip), [체크섬](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.8.50/SHA256SUMS.txt).
+
+초기 QA 과정의 위젯 배치 권한 누락, exact patch의 중복 역적용, 새 release-history 항목의 `origin` 누락을 수정했다. 화면 검사의 언어/글꼴을 Activity 생성 전에 적용하고 실제 적용값을 추가 검증했다. 기존 QA 자료를 삭제해 실패를 우회하지 않았다. 초기 실패를 최종 통과 로그로 보고하지 않고 수정 후 전체 회귀·관련 native를 재실행했다.
+
+**판정:** BUILD READY / 공개 배포 및 기존 자동 업데이트 채널 인식 확인 완료. 기존 공개 인증서 기준 INSTALL READY. DEVICE VERIFIED는 미완료이며 사용자의 실제 설치본 인증서·데이터·갤럭시 기능은 업데이트 후 확인해야 한다.
