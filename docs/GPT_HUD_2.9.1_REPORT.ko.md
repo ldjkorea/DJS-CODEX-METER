@@ -20,6 +20,10 @@
 
 실행: `run-release-validation.py`, `verify-publication.py` (최종 APK 2개), `verify-rpg-growth-native.py` (candidate/profile/phaseC/collection), `windows-widget/build.ps1 -Test`, Gradle assembleRelease/lintRelease, apksigner verify, aapt2 badging. 원시 로그와 합성 DB는 ignored android/build에 보관하며 공개하지 않는다.
 
+## 검증 중 발견한 문제와 수정
+
+최초 공개 CI에서 회귀 단계가 실패해 Release 게시를 보류했다. 프로필 JVM 검사가 먼저 실행되는 순서인데 이미 생성된 Gradle 클래스에 의존하고 있었다. Gradle 출력이 없는 격리 사본에서 기존 검사의 `RpgEngine/RpgGrowthFacts/RpgTitleCatalog cannot find symbol` 실패를 재현했다. 앞선 RPG JVM 검사의 클래스 경로를 사용하도록 수정하고 cold 테스트 14개를 통과시켰다. 실패 로그의 마지막 60줄이 CI에 보이도록 검사 runner도 보완했다. APK 코드나 데이터 정책은 바꾸지 않았다. 최종 CI run은 release manifest에 기록한다.
+
 ## 실제 화면과 제한
 
 프로필 실제 Activity/Bitmap을 320/360/411dp, 한국어 light 320dp 1.5배와 영어 dark 411dp 2배로 렌더했다. README 프로필 이미지는 명시적 합성 Diamond 예시이다. 기존 2.8.51 화면 캡처는 이전 자료임을 표시한다. 모든 화면·700dp·다중 OS·TalkBack 매트릭스를 이번 배포에서 새로 완주한 것은 아니다.

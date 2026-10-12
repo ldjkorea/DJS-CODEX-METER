@@ -27,4 +27,6 @@ for name, scope, command in checks:
         android_native='separate', physical_device='not verified'), indent=2)+'\n', encoding='utf-8')
     print(name, 'PASS' if result.returncode == 0 else 'FAIL', str(out/(name+'.log')), flush=True)
     if result.returncode:
+        # Make cold-run failures inspectable in CI; retain the complete local log.
+        print('\n'.join((out/(name+'.log')).read_text(encoding='utf-8', errors='replace').splitlines()[-60:]), flush=True)
         sys.exit(result.returncode)

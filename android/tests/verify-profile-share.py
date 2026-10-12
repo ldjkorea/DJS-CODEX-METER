@@ -2,7 +2,8 @@ from pathlib import Path
 import os,subprocess,struct,xml.etree.ElementTree as ET
 root=Path(__file__).resolve().parents[1];out=root/'build/profile-tests';out.mkdir(parents=True,exist_ok=True)
 jdk=Path(os.environ['JAVA_HOME'])/'bin';shared=root/'shared/src/main/java/dev/bennett/codexmeter'
-cp=os.pathsep.join(map(str,[out,root/'shared/build/classes/java/main',root/'build/test-libs/json-20250517.jar']))
+# Use the preceding JVM fixtures; CI runs these before any Android Gradle build.
+cp=os.pathsep.join(map(str,[out,root/'build/rpg-step2',root/'build/rpg-step1',root/'build/insight-verification/classes',root/'build/subscription-store-verification/classes',root/'build/evolution-verification',root/'build/test-libs/json-20250517.jar']))
 subprocess.run([jdk/'javac','-encoding','UTF-8','-cp',cp,'-d',out,shared/'ProfileCard.java',root/'tests/ProfileCardSelfTest.java'],check=True)
 subprocess.run([jdk/'java','-ea','-cp',cp,'dev.bennett.codexmeter.ProfileCardSelfTest'],check=True)
 sets=[]
