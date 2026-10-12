@@ -9,6 +9,8 @@
     <TextView android:id="@+id/task_status_tier" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#D5D8DE" android:textSize="10sp" android:maxLines="1" android:ellipsize="end"/>
    </LinearLayout>
   </LinearLayout>
+  <TextView android:id="@+id/combined_usage" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="32dp" android:textSize="20sp" android:textStyle="bold" android:maxLines="2" android:ellipsize="end" android:textColor="#F5F5F5" android:visibility="gone"/>
+  <TextView android:id="@+id/combined_usage_time" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="11sp" android:maxLines="1" android:ellipsize="end" android:textColor="#BFC7D2" android:visibility="gone"/>
   <TextView android:id="@+id/task_status_connection" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="#D5D8DE" android:textSize="10sp" android:maxLines="1" android:ellipsize="end"/>
   <LinearLayout android:id="@+id/task_status_tasks" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:gravity="top" android:paddingTop="4dp"/>
   <LinearLayout android:layout_width="match_parent" android:layout_height="30dp" android:gravity="center_vertical">

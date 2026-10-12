@@ -30,6 +30,7 @@ public final class WidgetGuideActivity extends AppCompatActivity {
             int width=Math.min(320,getResources().getConfiguration().screenWidthDp-64);
             preview(tasks,TaskStatusWidget.render(this,width,180,4,new JSONObject().put("verified",true).put("checked",now).put("rows",rows),now,true),width,180);
         }catch(Exception ignored){}tasks.addView(LedgerUi.caption(this,getString(R.string.ws_sample),dark));
+        tasks.addView(LedgerUi.action(this,getString(R.string.combined_widget_add),false,dark,()->pin(CombinedStatusWidget.class)));
         tasks.addView(LedgerUi.action(this,getString(R.string.hud_add_task_widget),true,dark,()->pin(TaskStatusWidget.class)));
         tasks.addView(LedgerUi.action(this,getString(R.string.task_trial_title),false,dark,()->startActivity(new Intent(this,TaskStatusActivity.class))));
         LinearLayout advanced=card(content,R.string.ws_advanced,R.string.ws_advanced_note,dark);

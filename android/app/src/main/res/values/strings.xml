@@ -856,4 +856,16 @@
     <string name="usage_decimal_current">Usage decimal places · %1$d digits</string>
     <string name="usage_decimal_two">2 decimal places · 86.57%</string>
     <string name="usage_decimal_three">3 decimal places · 86.573%</string>
+    <string name="collection_restart_note">Achievements and titles start OFF at zero. Only activity after you start counts. Lifetime XP, level and tiers remain.</string>
+    <string name="collection_reset_titles">Reset title collection</string>
+    <string name="collection_reset_medals">Reset achievement collection</string>
+    <string name="collection_reset_confirmation">Reset this collection to OFF and zero? Its existing records are archived. Equipped items are removed. Lifetime XP, level, tiers, usage and billing records remain. Older backups cannot refill this collection.</string>
+    <string name="collection_reset_done">Collection reset. Start it in Growth when you are ready.</string>
+    <string name="collection_calendar_legend" formatted="false">Observed activity rises from red to orange, green, silver and gold. No color means no measurement. Each quota is separate.</string>
+    <string name="collection_tier_goal">Tier prerequisite: %1$s or higher, confirmed after collection starts.</string>
+    <string name="combined_widget">Usage + Codex tasks</string>
+    <string name="combined_widget_add">Add combined widget</string>
+    <string name="combined_widget_usage">Weekly remaining · %1$s</string>
+    <string name="combined_widget_unknown">Usage unavailable</string>
+    <string name="combined_widget_usage_time">Usage checked · %1$s</string>
 </resources>

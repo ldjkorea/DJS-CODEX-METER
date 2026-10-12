@@ -108,7 +108,7 @@ public final class UsageWaveView extends View {
         float density = getResources().getDisplayMetrics().density;
         boolean dark = Ui.isDark(getContext());
         if (warning) {
-            trackPaint.setColor(Ui.warningTrack(getContext(), dark));
+            trackPaint.setColor(Ui.cardColor(getContext(), dark));
             canvas.drawRect(0f, 0f, getWidth(), getHeight(), trackPaint);
         }
         float edge = getWidth() * percent / 100f;
@@ -128,9 +128,7 @@ public final class UsageWaveView extends View {
         }
         fillPath.lineTo(0, getHeight());
         fillPath.close();
-        fillPaint.setColor(warning ? Ui.warning(dark)
-                : tierAccent == null ? Ui.desaturatedAccent(getContext(), dark)
-                : androidx.core.graphics.ColorUtils.blendARGB(Ui.cardColor(getContext(),dark),tierAccent,dark?.32f:.18f));
+        fillPaint.setColor(tierAccent == null ? Ui.desaturatedAccent(getContext(), dark) : androidx.core.graphics.ColorUtils.blendARGB(Ui.cardColor(getContext(),dark),tierAccent,dark?.40f:.16f));
         canvas.drawPath(fillPath, fillPaint);
 
         int foreground = warning ? (dark ? 0xFFFFFFFF : 0xFF000000) : Ui.mainText(dark);

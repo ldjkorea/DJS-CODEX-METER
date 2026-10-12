@@ -1,5 +1,35 @@
 [
   {
+    "version": "2.8.51",
+    "date": "2026-10-12",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.51",
+    "origin": "korean",
+    "ko": {
+      "title": "수집의 새 출발 · 티어 색상 · 통합 위젯",
+      "changes": [
+        "모든 계정의 업적·칭호 수집을 한 번 OFF, 0으로 새로 시작합니다. 직접 ON으로 시작한 이후의 활동만 반영합니다.",
+        "기존 수집은 보관하고 누적 XP·레벨·최고 티어·사용량·결제 기록은 유지합니다. 예전 백업이 새 수집을 다시 채우지 않도록 보호합니다.",
+        "설정에 업적·칭호별 초기화를 추가하고 대표 메달은 업적 도감에서 장착합니다. 칭호 랜덤 추천을 제거합니다.",
+        "티어에 따른 메달·토큰 활동 목표를 표시하고 한도 상세의 사용량 색상을 티어에 맞춥니다. 토큰 실제 측정값은 변경하지 않습니다.",
+        "관측 달력을 빨강·주황·녹색·실버·골드의 다섯 단계로 구분합니다. 미관측은 별도로 표시합니다.",
+        "소수점 자릿수 설정과 X 최신글 버튼을 제거합니다. 사용량은 정수로 표시하되 원장의 원본 정밀도는 보존합니다.",
+        "사용량과 Codex 작업현황을 함께 보는 크기 조절 가능한 5×4 통합 위젯을 추가합니다. 기존 위젯·PC 연결은 유지합니다."
+      ]
+    },
+    "en": {
+      "title": "Fresh collections · tier colors · combined widget",
+      "changes": [
+        "Restart every account’s achievement and title collection once at OFF and zero; count only verified activity after explicit opt-in.",
+        "Archive previous collections while keeping lifetime XP, levels, best tiers, usage and billing records. Old backups cannot refill restarted collections.",
+        "Add separate collection resets in Settings; equip showcase medals inside the codex and remove random title recommendations.",
+        "Show tier-specific medal/token-activity prerequisites; use tier colors in quota details without changing measured tokens.",
+        "Use red, orange, green, silver and gold calendar activity bands, separate from missing observations.",
+        "Remove decimal-place settings and the latest-X-post button. Display whole quota percentages while preserving raw ledger precision.",
+        "Add a resizable 5×4 combined usage and Codex task widget using the existing authenticated PC connection and schedulers."
+      ]
+    }
+  },
+  {
     "version": "2.8.50",
     "date": "2026-10-12",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.50",

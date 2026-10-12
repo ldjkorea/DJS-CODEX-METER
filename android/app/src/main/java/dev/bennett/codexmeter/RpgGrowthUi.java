@@ -67,7 +67,7 @@ final class RpgGrowthUi {
         LinearLayout medals=new LinearLayout(a);medals.setOrientation(LinearLayout.HORIZONTAL);
         for(String id:selected){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout badge=RpgDisplayStyle.medal(a,e,dark);badge.setTag("growth:representative");badge.setOnClickListener(v->a.medalDetail(state,e));RpgDisplayStyle.addMedal(medals,badge);}parent.addView(medals);Ui.addSpacer(parent,12);
         parent.addView(LedgerUi.action(a,a.getString(R.string.medal_codex),false,dark,()->a.open("achievements")));
-        parent.addView(LedgerUi.action(a,a.getString(R.string.growth_showcase_edit),false,dark,()->a.chooseShowcase(state)));
+
         }
         JSONObject tj=TitleJourney.journey(state);if(tj!=null&&(tj.optLong("first_started_at")>0||!equipped.isEmpty())){
         LedgerUi.section(parent,a.getString(R.string.rpg3_titles),dark);

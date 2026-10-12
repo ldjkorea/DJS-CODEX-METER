@@ -32,7 +32,7 @@ final class RpgShowcase {
             old.addAll(earned);
             if(!p.edit().putString(key,new JSONArray(old).toString()).commit())return Collections.emptyList();
         }catch(Exception e){return Collections.emptyList();}
-        try{String titlesKey=account+":titles_seen";boolean baseline=p.contains(titlesKey);JSONArray titles=new JSONArray(p.getString(titlesKey,"[]"));Set<String> old=new HashSet<>();for(int i=0;i<titles.length();i++)old.add(titles.getString(i));for(String id:RpgTitleCatalog.owned(state))if(RpgTitleCatalog.find(id)!=null&&old.add(id)&&baseline)fresh.add(id);if(!p.edit().putString(titlesKey,new JSONArray(old).toString()).commit())return Collections.emptyList();}catch(Exception ignored){return Collections.emptyList();}
+        try{JSONObject tj=TitleJourney.journey(state);String titlesKey=account+":titles_seen"+(tj!=null&&tj.optInt("collection_revision")>=CollectionRestart.REVISION?":"+tj.optString("id","not-started"):"");boolean baseline=p.contains(titlesKey);JSONArray titles=new JSONArray(p.getString(titlesKey,"[]"));Set<String> old=new HashSet<>();for(int i=0;i<titles.length();i++)old.add(titles.getString(i));for(String id:RpgTitleCatalog.owned(state))if(RpgTitleCatalog.find(id)!=null&&old.add(id)&&baseline)fresh.add(id);if(!p.edit().putString(titlesKey,new JSONArray(old).toString()).commit())return Collections.emptyList();}catch(Exception ignored){return Collections.emptyList();}
         return TierTheme.effects(c)?fresh:Collections.emptyList();
     }
 }

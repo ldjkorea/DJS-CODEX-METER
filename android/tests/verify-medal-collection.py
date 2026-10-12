@@ -11,7 +11,10 @@ for name in ['android/shared/src/main/java/dev/bennett/codexmeter/'+n+'.java' fo
 en={e.get('name'):e.text for e in ET.parse(root/'app/src/main/res/values/medal_strings.xml').getroot()};ko={e.get('name'):e.text for e in ET.parse(root/'app/src/main/res/values-ko/medal_strings.xml').getroot()};assert en.keys()==ko.keys() and all(en.values()) and all(ko.values())
 for key in en:assert sorted(re.findall(r'%\d+\$[sd]',en[key]))==sorted(re.findall(r'%\d+\$[sd]',ko[key])),key
 app=root/'app/src/main/java/dev/bennett/codexmeter';collection=(app/'RpgCollectionActivity.java').read_text(encoding='utf-8')
-for guard in ['setHasStableIds(true)','DiffUtil.calculateDiff','GridLayoutManager','onSaveInstanceState','RpgShowcase.save','RpgProgressStore.equip','RpgCollectionFacts.recommend']:assert guard in collection
+for guard in ['setHasStableIds(true)','DiffUtil.calculateDiff','GridLayoutManager','onSaveInstanceState','RpgShowcase.save','RpgProgressStore.equip']:assert guard in collection
 assert 'RpgEngine.reconcile' not in collection and 'RpgProgressStore.recommend' not in collection
 assert 'setMultiChoiceItems' not in (app/'GrowthActivity.java').read_text(encoding='utf-8')
 print(f'53 unchanged catalog definitions and 7 unchanged catalog/ledger/auth/widget files; changed RPG engine/backup paths covered by refinement regressions; {len(en)} bilingual resource keys; recycled UI contracts passed. Native render is separate.')
+
+assert "collection:recommend" not in collection
+assert 'else h.addView(LedgerUi.action(this,getString(R.string.medal_edit)' in collection

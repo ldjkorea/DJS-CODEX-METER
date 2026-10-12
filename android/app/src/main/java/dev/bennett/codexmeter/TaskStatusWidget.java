@@ -16,13 +16,13 @@ import org.json.*;
 public final class TaskStatusWidget extends AppWidgetProvider {
     private static final String REFRESH="dev.bennett.codexmeter.TASK_WIDGET_REFRESH";
     private static final String EXPIRE="dev.bennett.codexmeter.TASK_WIDGET_EXPIRE";
-    static void update(Context c){AppWidgetManager manager=AppWidgetManager.getInstance(c);for(int id:manager.getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)))draw(c,manager,id);scheduleExpiry(c);}
+    static void update(Context c){CombinedStatusWidget.update(c);AppWidgetManager manager=AppWidgetManager.getInstance(c);for(int id:manager.getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)))draw(c,manager,id);scheduleExpiry(c);}
     /** One local, non-wakeup repaint; no extra PC or quota request. Android may defer it. */
     static void scheduleExpiry(Context c){
         android.app.AlarmManager alarms=(android.app.AlarmManager)c.getSystemService(Context.ALARM_SERVICE);if(alarms==null)return;
         PendingIntent tick=PendingIntent.getBroadcast(c,0,new Intent(c,TaskStatusWidget.class).setAction(EXPIRE),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         alarms.cancel(tick);long now=System.currentTimeMillis(),received=TaskStatusStore.received(c);JSONObject data=TaskStatusStore.snapshot(c);
-        if(AppWidgetManager.getInstance(c).getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)).length==0||!TaskStatusStore.enabled(c)||!TaskStatusStore.connected(c,data,received,now))return;
+        if((AppWidgetManager.getInstance(c).getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)).length==0&&!CombinedStatusWidget.installed(c))||!TaskStatusStore.enabled(c)||!TaskStatusStore.connected(c,data,received,now))return;
         long expires=Math.min(received+120001,data.optLong("checked")+120001);
         if(expires>now)alarms.set(android.app.AlarmManager.RTC,expires,tick);
     }

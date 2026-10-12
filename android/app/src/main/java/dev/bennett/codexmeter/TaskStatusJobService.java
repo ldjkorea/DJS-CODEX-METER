@@ -12,7 +12,7 @@ import android.content.Context;
 public final class TaskStatusJobService extends JobService {
     private static final int JOB=73421;
     private JobParameters active;
-    static boolean needed(Context c){return TaskStatusStore.enabled(c)&&AppWidgetManager.getInstance(c).getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)).length>0;}
+    static boolean needed(Context c){return TaskStatusStore.enabled(c)&&(CombinedStatusWidget.installed(c)||AppWidgetManager.getInstance(c).getAppWidgetIds(new ComponentName(c,TaskStatusWidget.class)).length>0);}
     static void schedule(Context c) {
         try {
             JobScheduler jobs=(JobScheduler)c.getSystemService(Context.JOB_SCHEDULER_SERVICE);

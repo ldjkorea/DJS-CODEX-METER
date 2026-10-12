@@ -20,10 +20,6 @@ final class TiboQuote {
         });
         source.setGravity(android.view.Gravity.START|android.view.Gravity.CENTER_VERTICAL);source.setTextSize(12);
         quote.addView(source);
-        quote.addView(LedgerUi.action(a,a.getString(R.string.tibo_latest_posts),false,dark,()->{
-            try{a.startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://x.com/thsottiaux")));}
-            catch(RuntimeException ignored){android.widget.Toast.makeText(a,R.string.polish_open_source_failed,android.widget.Toast.LENGTH_SHORT).show();}
-        }));
         parent.addView(quote);
     }
 }

@@ -346,27 +346,18 @@ public class LedgerAnalyticsActivity extends AppCompatActivity {
             TextView text=Ui.text(this,YearMonth.from(date).equals(month)?Integer.toString(date.getDayOfMonth()):"",13,Ui.mainText(dark));text.setGravity(Gravity.CENTER);
             if(YearMonth.from(date).equals(month)){
                 text.setContentDescription(getString(R.string.next_calendar_cell,date.toString(),dayText(date,"")));
-                boolean emerald=LedgerCalendar.emerald(day);
-                int accent=Ui.accent(this,dark);
-                if(emerald){
-                    text.setBackground(new CalendarGlowDrawable(getResources().getDisplayMetrics().density,date.equals(selectedDate),date.equals(today),dark));
-                    text.setTextColor(0xFFD1FAE5);
-                    text.setTypeface(Ui.mediumTypeface(this));
-                    text.setContentDescription(text.getContentDescription()+" · "+getString(R.string.calendar_activity_highlight));
-                }else{
-                    android.graphics.drawable.GradientDrawable background=new android.graphics.drawable.GradientDrawable();background.setCornerRadius(Ui.dp(this,8));
-                    int fill=LedgerCalendar.intensity(day)>0?Color.argb(LedgerCalendar.intensity(day),Color.red(accent),Color.green(accent),Color.blue(accent)):Ui.cardColor(this,dark);
-                    background.setColor(fill);if(date.equals(selectedDate))background.setStroke(Ui.dp(this,2),accent);else if(date.equals(today))background.setStroke(Ui.dp(this,1),LedgerUi.muted(dark));
-                    text.setBackground(background);
-                }
-                text.setSelected(date.equals(selectedDate));if(date.equals(today))text.setTypeface(Ui.mediumTypeface(this));
+                int accent=Ui.accent(this,dark),band=LedgerCalendar.band(day);
+                android.graphics.drawable.GradientDrawable background=LedgerUi.shape(this,band<0?Ui.cardColor(this,dark):Color.argb(70+band*22,Color.red(LedgerCalendar.color(day)),Color.green(LedgerCalendar.color(day)),Color.blue(LedgerCalendar.color(day))),10);
+                if(date.equals(selectedDate))background.setStroke(Ui.dp(this,2),accent);else if(date.equals(today))background.setStroke(Ui.dp(this,1),LedgerUi.muted(dark));
+                text.setBackground(background);if(band>=0){text.setTextColor(dark?LedgerCalendar.color(day):Ui.mainText(false));text.setTypeface(Ui.mediumTypeface(this));}
+                text.setSelected(date.equals(selectedDate));
                 text.setOnClickListener(v->{selectedDate=date;render();});
             }
             cell(grid,text);
         }
         android.widget.HorizontalScrollView calendarScroll=new android.widget.HorizontalScrollView(this);calendarScroll.setFillViewport(true);
         calendarScroll.addView(grid,new android.widget.FrameLayout.LayoutParams(Ui.dp(this,350),-2));body.addView(calendarScroll);
-        Ui.addSpacer(body,10);body.addView(LedgerUi.caption(this,getString(R.string.ui_ledger_calendar_note),dark));Ui.addSpacer(body,12);
+        Ui.addSpacer(body,10);body.addView(LedgerUi.caption(this,getString(R.string.collection_calendar_legend),dark));Ui.addSpacer(body,12);
     }
     private void cell(GridLayout grid,TextView cell){GridLayout.LayoutParams p=new GridLayout.LayoutParams();p.width=0;p.height=Ui.dp(this,48);p.columnSpec=GridLayout.spec(GridLayout.UNDEFINED,1f);p.setMargins(1,1,1,1);grid.addView(cell,p);}
     private void detail(LocalDate date){

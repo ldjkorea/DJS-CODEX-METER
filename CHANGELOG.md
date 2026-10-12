@@ -363,6 +363,14 @@ Android 2.8.13 / versionCode 43 베타. 실제 삼성 기기의 화면·업데�
 
 # Changelog
 
+## 2.8.51 (81) — 2026-10-12
+
+- Restart achievement/title collections once per account at OFF/zero; preserve lifetime XP, tiers, usage and billing, archive prior collections, count only after explicit opt-in.
+- Add independent confirmed collection resets and protect them from older archive restores; retain existing IDs and XP award deduplication.
+- Put showcase editing in the codex, remove random title recommendation, add tier prerequisites/medal colors for the new collection.
+- Use tier-colored quota bars, five calendar bands and whole quota percentages without changing raw precision; remove the latest-X shortcut.
+- Add a separate resizable usage + task-status widget using existing stores/authentication/schedulers; retain old providers and Windows 0.1.10 compatibility.
+
 ## 2.8.0 — 2026-08-14
 
 ### Added

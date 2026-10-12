@@ -34,6 +34,8 @@ public final class CalendarSelfTest {
         check(reset.days.values().stream().noneMatch(LedgerCalendar::emerald),"Reset does not invent a daily delta");
         LedgerAggregation.Day high=day("weekly",START+HOUR,START+2*HOUR,0,20);
         check(LedgerCalendar.intensity(zero)<LedgerCalendar.intensity(high)&&LedgerCalendar.intensity(high)==125,"Normal heat intensity increases and remains bounded");
+        check(LedgerCalendar.band(null)==-1&&LedgerCalendar.color(null)==0,"No band for missing evidence");
+        java.util.Set<Integer> colors=new java.util.HashSet<>();double[] values={0,5,13.000001,20,25};for(int i=0;i<values.length;i++){LedgerAggregation.Day band=day("weekly",START+HOUR,START+2*HOUR,0,values[i]);check(LedgerCalendar.band(band)==i,"Distinct observed band "+i);colors.add(LedgerCalendar.color(band));}check(colors.size()==5,"All five colors distinct");
         high.points=Double.NaN;check(!LedgerCalendar.emerald(high)&&LedgerCalendar.intensity(high)==0,"Invalid numeric data cannot light a cell");
         System.out.println("Calendar measured-delta/boundary/isolation checks: "+checks+" assertions passed.");
     }

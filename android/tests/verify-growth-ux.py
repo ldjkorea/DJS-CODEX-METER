@@ -17,6 +17,6 @@ app=root/'app/src/main/java/dev/bennett/codexmeter'
 ui=(app/'RpgGrowthUi.java').read_text(encoding='utf-8')
 assert 'if(mode.equals("titles"))' in ui and 'RpgShowcase.selected' in ui and 'new RpgAchievementMark' in ui
 assert 'TierTheme.frame(card,TierTheme.tier(a),dark)' in ui
-assert 'Ui.warning(dark)' in (app/'UsageWaveView.java').read_text(encoding='utf-8')
+wave=(app/'UsageWaveView.java').read_text(encoding='utf-8');assert 'tierAccent' in wave and 'acceleratedWarning' in wave and 'ui_accelerated_usage_warning' in wave and 'fillPaint.setColor(warning ?' not in wave
 assert 'codex_rpg_showcase_v1' in (app/'MainActivity.java').read_text(encoding='utf-8')
 print(f'Growth UI/source contracts and {len(en)} Korean/English resource keys passed; native interactions are tested separately.')

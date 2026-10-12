@@ -5,11 +5,11 @@ root=Path(__file__).resolve().parents[1]
 app=root/'app/src/main/java/dev/bennett/codexmeter'
 s=(app/'LedgerAnalyticsActivity.java').read_text(encoding='utf-8')
 assert 'LedgerPresentation.find(data.days,policy,date)' in s
-assert 'LedgerCalendar.emerald(day)' in s and 'new CalendarGlowDrawable(' in s
+assert 'LedgerCalendar.band(day)' in s and 'LedgerCalendar.color(day)' in s
 assert 'selectedDate=date;render();' in s and '()->detail(selectedDate)' in s
 assert 'selectedDate=month.atDay(1);render();' in s and 'getString(R.string.next_day_counts,day.count,day.uncertain)' in s
 assert 'text.setSelected(date.equals(selectedDate))' in s
-assert 'calendar_activity_highlight' in s and 'text.setContentDescription' in s
+assert 'collection_calendar_legend' in s and 'text.setContentDescription' in s
 main=(app/'MainActivity.java').read_text(encoding='utf-8')
 assert 'getSharedPreferences("codex_subscription_cost",0).getAll().hashCode()' in main
 assert 'protected void onResume()' in main and 'rebuild();' in main

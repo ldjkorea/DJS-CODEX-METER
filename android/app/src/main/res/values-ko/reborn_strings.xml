@@ -2,7 +2,7 @@
   <string name="reborn_collections">업적 · 칭호</string>
   <string name="reborn_title_switch">칭호 수집</string>
   <string name="reborn_title_start">칭호 수집을 시작하시겠습니까?</string>
-  <string name="reborn_title_note">시작 이후 확인된 새 활동으로 칭호를 해금합니다. 이전 칭호와 장착 기록은 보존합니다.</string>
+  <string name="reborn_title_note">0에서 시작합니다. 칭호 수집을 ON으로 시작한 뒤의 확인된 활동만 해금에 반영하며 이전 수집은 따로 보관합니다.</string>
   <string name="reborn_archive">이전 업적 보관함</string>
   <string name="reborn_archive_note">이전 자동 획득 기록 · 읽기 전용. 새 도감의 획득 수에는 포함되지 않습니다.</string>
   <string name="reborn_baseline_pending">토큰 기준값 확인 중 · 첫 확인 전 활동은 집계되지 않을 수 있습니다.</string>

@@ -3,6 +3,8 @@ from pathlib import Path
 import json
 
 def strip_precision(name, text):
+    from collection_restart_review import strip_collection_restart
+    text=strip_collection_restart(name,text)
     from phase_e_review import strip_phase_e
     text=strip_phase_e(name,text)
     from phase_d_review import strip_phase_d

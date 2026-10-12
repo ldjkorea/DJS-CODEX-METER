@@ -25,6 +25,7 @@ public final class UsagePrecision {
         return number(BigDecimal.valueOf(value),digits);
     }
     private static String number(BigDecimal value,int digits) {
+        if(digits==0){DecimalFormat whole=new DecimalFormat("0",DecimalFormatSymbols.getInstance(Locale.getDefault()));whole.setRoundingMode(RoundingMode.HALF_UP);return whole.format(value.setScale(0,RoundingMode.HALF_UP));}
         digits = digits == 2 ? 2 : 3;
         DecimalFormat format = new DecimalFormat(digits == 2 ? "0.00" : "0.000",
                 DecimalFormatSymbols.getInstance(Locale.getDefault()));
@@ -34,6 +35,7 @@ public final class UsagePrecision {
     }
     public static String percent(UsageWindow window,boolean used,int digits,boolean symbol) {
         if(window==null)return "—";
+        if(digits==0)return Integer.toString(used?window.usedPercent:window.remainingPercent())+(symbol?"%":"");
         BigDecimal value=BigDecimal.valueOf(window.preciseUsedPercent);
         if(!used)value=BigDecimal.valueOf(100).subtract(value);
         return number(value,digits)+(symbol?"%":"");

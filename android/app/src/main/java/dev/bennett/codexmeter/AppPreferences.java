@@ -50,7 +50,7 @@ public final class AppPreferences {
     }
 
     public static int usageDecimalPlaces(Context context) {
-        return prefs(context).getInt("usage_decimal_places", 3) == 2 ? 2 : 3;
+        return 0; // Display whole percentages; retain existing preference and raw evidence.
     }
 
     public static boolean setUsageDecimalPlaces(Context context, int digits) {

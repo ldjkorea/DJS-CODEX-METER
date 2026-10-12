@@ -2,7 +2,7 @@
   <string name="reborn_collections">Achievements · Titles</string>
   <string name="reborn_title_switch">Title collection</string>
   <string name="reborn_title_start">Start collecting titles?</string>
-  <string name="reborn_title_note">Unlock titles through verified new activity. Previous titles and equipment are preserved.</string>
+  <string name="reborn_title_note">Start at zero and unlock titles only through verified activity after you turn collection ON. Previous collections stay archived.</string>
   <string name="reborn_archive">Previous achievements</string>
   <string name="reborn_archive_note">Previously auto-awarded · read only. Excluded from the new collection count.</string>
   <string name="reborn_baseline_pending">Waiting for token baseline · activity before the first verified reading may be unavailable.</string>

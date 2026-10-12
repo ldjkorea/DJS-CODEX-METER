@@ -856,4 +856,16 @@
     <string name="usage_decimal_current">사용량 소수점 자리수 · %1$d자리</string>
     <string name="usage_decimal_two">소수점 2자리 · 86.57%</string>
     <string name="usage_decimal_three">소수점 3자리 · 86.573%</string>
+    <string name="collection_restart_note">업적·칭호는 OFF, 0에서 시작합니다. 직접 시작한 뒤의 활동만 수집하며 누적 XP·레벨·티어는 유지됩니다.</string>
+    <string name="collection_reset_titles">칭호 수집 초기화</string>
+    <string name="collection_reset_medals">업적 수집 초기화</string>
+    <string name="collection_reset_confirmation">이 수집을 OFF, 0으로 초기화할까요? 기존 수집 내역은 보관하고 장착을 해제합니다. 누적 XP·레벨·티어·사용량·결제 기록은 유지하며 예전 백업으로 수집이 되살아나지 않습니다.</string>
+    <string name="collection_reset_done">초기화했습니다. 성장에서 직접 ON으로 시작해 주세요.</string>
+    <string name="collection_calendar_legend" formatted="false">관측 사용량이 많아질수록 빨강 → 주황 → 녹색 → 실버 → 골드로 표시합니다. 색 없음은 미관측이며 한도별로 따로 표시합니다.</string>
+    <string name="collection_tier_goal">필요 티어: %1$s 이상 · 수집 시작 후 확인된 활동 기준</string>
+    <string name="combined_widget">사용량 + Codex 작업현황</string>
+    <string name="combined_widget_add">통합 위젯 추가</string>
+    <string name="combined_widget_usage">주간 잔여량 · %1$s</string>
+    <string name="combined_widget_unknown">사용량 확인 필요</string>
+    <string name="combined_widget_usage_time">사용량 확인 · %1$s</string>
 </resources>
