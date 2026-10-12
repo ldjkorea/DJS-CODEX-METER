@@ -81,6 +81,7 @@ final class RecordSettings {
         page(a,info,dark,R.string.ui_updates_c76d18,"updates");
         action(a,info,dark,R.string.ui_release_history_5044ba,()->a.startActivity(new Intent(a,ReleaseHistoryActivity.class)));
         action(a,info,dark,R.string.ux_licenses,()->a.startActivity(new Intent(a,AboutActivity.class)));
+        action(a,info,dark,R.string.phase_a_optional,()->OptionalSetupUi.show(a,dark));
         page(a,info,dark,R.string.hud_privacy,"privacy");
     }
     private static void billingHistory(AppCompatActivity a,boolean dark) {

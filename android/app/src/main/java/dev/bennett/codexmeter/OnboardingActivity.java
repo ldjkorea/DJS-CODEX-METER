@@ -299,6 +299,10 @@ public final class OnboardingActivity extends AppCompatActivity {
                 null));
         this.content.addView(account);
         addPrimaryAction(OnboardingActivity.this.getString(R.string.ui_open_codex_meter_a55de8), this::completeAndOpenMain);
+        Ui.addSpacer(this.content,12);
+        this.content.addView(LedgerUi.action(this,getString(R.string.phase_a_optional),false,this.dark,()->OptionalSetupUi.show(this,this.dark)));
+        Ui.addSpacer(this.content,12);
+        this.content.addView(LedgerUi.action(this,getString(R.string.phase_a_optional),false,this.dark,()->OptionalSetupUi.show(this,this.dark)));
     }
 
     private void addIntro(String titleText, String bodyText, int iconResource) {

@@ -1,4 +1,19 @@
 <resources>
     <string name="phase_a_billing_details">Payment details</string>
     <string name="phase_a_less">Collapse</string>
+    <string name="phase_a_optional">Optional features</string>
+    <string name="phase_a_optional_note">Sign in and check usage to get started. Everything below is optional. PC pairing is not required. Start medal and title collection separately with the Growth switches and confirmation. You can return here from Settings at any time.</string>
+    <string name="phase_a_setup_widgets">Choose a widget</string>
+    <string name="phase_a_setup_pc">Connect PC task status</string>
+    <string name="phase_a_setup_achievements">Start medal collection · Growth</string>
+    <string name="phase_a_setup_titles">Start title collection · Growth</string>
+    <string name="phase_a_setup_payment">Register subscription payment · Settings</string>
+    <string name="phase_a_setup_notifications">Configure notifications</string>
+    <string name="phase_a_data_source">Usage source</string>
+    <string name="phase_a_confirmed">Server observation</string>
+    <string name="phase_a_cached_failed">Refresh failed · saved observation</string>
+    <string name="phase_a_stale">Old observation · refresh needed</string>
+    <string name="phase_a_reset_passed">Reset time passed · refresh needed</string>
+    <string name="phase_a_integer_source">This observation has an integer percentage. Decimal places are display formatting and do not add measured precision. Usage and remaining share the same server value.</string>
+    <string name="phase_a_decimal_source">This observation includes a fractional percentage. The selected decimal places only round the displayed value; stored observations remain unchanged.</string>
 </resources>
