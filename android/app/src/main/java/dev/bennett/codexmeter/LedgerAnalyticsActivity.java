@@ -146,8 +146,10 @@ public class LedgerAnalyticsActivity extends AppCompatActivity {
         if(!keys.contains(policy)){
             List<LedgerRecord> visible=new ArrayList<>();for(LedgerRecord row:data.records)if(visiblePolicy(row.policy()))visible.add(row);LedgerRecord best=LedgerPresentation.latest(visible);policy=best==null?keys.get(keys.size()-1):best.policy();
         }
-        content.addView(LedgerUi.caption(this,getString(R.string.ui_ledger_choose),dark));Ui.addSpacer(content,6);
-        Spinner meters=Ui.spinner(this,options.values().toArray(new String[0]),dark);meters.setSelection(keys.indexOf(policy));content.addView(meters);
+        Spinner meters=Ui.spinner(this,options.values().toArray(new String[0]),dark);meters.setSelection(keys.indexOf(policy));
+        if(keys.size()>1){
+            content.addView(LedgerUi.caption(this,getString(R.string.ui_ledger_choose),dark));Ui.addSpacer(content,6);content.addView(meters);
+        }else content.addView(LedgerUi.caption(this,label(policy),dark));
         Ui.addSpacer(content,14);
         navigation();
         body=new LinearLayout(this);body.setOrientation(LinearLayout.VERTICAL);content.addView(body);
