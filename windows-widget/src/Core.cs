@@ -76,7 +76,7 @@ namespace CodexMeterWidget {
     public static class DailyUsage {
         public static double? Observed(List<Observation> rows,string policy,string date) {
             Observation before=null;double total=0;bool measured=false;string meter=policy.Split('|')[0];
-            foreach(var row in rows.Where(x=>x.Meter==meter).OrderBy(x=>x.At)) {
+            foreach(var row in rows.Where(x=>x.Meter==meter&&x.At<=Clock.Now).OrderBy(x=>x.At)) {
                 if(before!=null&&row.Policy==policy&&before.Policy==policy&&before.Reset==row.Reset&&row.Reset>row.At&&before.Reset>before.At&&row.At>before.At&&row.At-before.At<=6*3600000L&&row.Used>=before.Used&&Clock.Day(row.At)==date&&Clock.Day(before.At)==date){total+=row.Used-before.Used;measured=true;}before=row;
             }return measured?(double?)total:null;
         }

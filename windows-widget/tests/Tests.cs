@@ -23,6 +23,11 @@ namespace CodexMeterWidget {
   static Observation Row(long at,long end,double used,string plan="pro"){return new Observation{At=at,Reset=end,Used=used,Seconds=604800,Meter="weekly",Plan=plan};}
   [STAThread] public static int Main(string[] args){
    if(args.Length>0&&args[0]=="--lan-probe")return Probe(args[1]);
+   if(args.Length>0&&args[0]=="--observe-live"){
+    string sessions=Path.GetFullPath(args[1]),allowed=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),".codex","sessions");
+    if(!sessions.Equals(allowed,StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Read-only current-user sessions only");
+    using(var observed=new TaskObserve(sessions)){var snapshot=observed.Snapshot();var rows=(TaskView[])snapshot["rows"];Console.WriteLine("READ_ONLY_PC_OBSERVATION "+Json.Write(new{verified=snapshot["verified"],fresh=(long)snapshot["checked"]>0&&Clock.Now-(long)snapshot["checked"]<120000,tasks=rows.Length,running=rows.Count(x=>x.State=="running"),completed=rows.Count(x=>x.State=="completed"),interrupted=rows.Count(x=>x.State=="interrupted"),named=rows.Count(x=>!x.Name.StartsWith("Codex · ")),toolWarnings=rows.Count(x=>!string.IsNullOrEmpty(x.Issue))}));}return 0;
+   }
    string dir=Path.Combine(Environment.GetEnvironmentVariable("CODEX_METER_TEST_ROOT")??Path.GetTempPath(),"lan-"+Guid.NewGuid().ToString("N").Substring(0,8));Directory.CreateDirectory(dir);
    try {
     Check(!new Preferences().TaskObserveEnabled,"Task observation default OFF");
@@ -68,7 +73,8 @@ namespace CodexMeterWidget {
     var jobs=Enumerable.Range(1,12).Select(i=>Task.Run(()=>store.SaveSnapshot(tokens,Snapshot.Parse(Response(37.125+i/100.0,end),now+i*1000),generation))).ToArray();Task.WaitAll(jobs);Check(store.LoadRows("A").Count==13,"concurrent writes");Check(store.LoadSnapshot("A").At==now+12000,"newest snapshot survives out of order writes");
     store.SignOut();Check(store.LoadTokens()==null&&store.LoadRows("A").Count==13,"logout preserves records");Check(!store.SaveTokens(tokens,generation),"stale auth generation");Reject(()=>store.SaveSnapshot(tokens,snap,generation),"stale record generation");
     Check(!File.ReadAllText(Directory.GetFiles(Path.Combine(dir,"accounts",LocalStore.AccountKey("A")),"records-*.json").Single()).Contains("mock-access"),"records exclude credentials");
-    string policy="weekly|pro|604800",day=Clock.Day(now);var rows=new List<Observation>{Row(now,end,10),Row(now+1000,end,23)};Check(DailyUsage.Observed(rows,policy,day)==13,"observed percentage points");
+    string policy="weekly|pro|604800",day=Clock.Day(now);var rows=new List<Observation>{Row(now-1000,end,10),Row(now,end,23)};Check(DailyUsage.Observed(rows,policy,day)==13,"observed percentage points");
+    Check(DailyUsage.Observed(new List<Observation>{Row(now-1000,end,10),Row(Clock.Now+120000,end,23)},policy,day)==null,"Future peer observation does not spend today early");
     rows[1].Used=10;Check(DailyUsage.Observed(rows,policy,day)==0,"true zero");rows[1].Used=0;Check(DailyUsage.Observed(rows,policy,day)==null,"reset or correction not negative");rows[1].Used=23;rows[1].Reset+=1000;Check(DailyUsage.Observed(rows,policy,day)==null,"early reset excluded");rows[1].Reset=end;rows[1].Plan="plus";Check(DailyUsage.Observed(rows,policy,day)==null,"policy change excluded");
     long midnight=(long)(new DateTime(2026,10,10,0,0,0,DateTimeKind.Utc).AddHours(-9)-new DateTime(1970,1,1,0,0,0,DateTimeKind.Utc)).TotalMilliseconds;
     Check(DailyUsage.Observed(new List<Observation>{Row(midnight-1000,end,10),Row(midnight+1000,end,23)},policy,Clock.Day(midnight))==null,"cross midnight not fabricated");
@@ -130,12 +136,24 @@ namespace CodexMeterWidget {
   static double Contrast(Color a,Color b){double x=.2126*Channel(a.R)+.7152*Channel(a.G)+.0722*Channel(a.B),y=.2126*Channel(b.R)+.7152*Channel(b.G)+.0722*Channel(b.B);return(Math.Max(x,y)+.05)/(Math.Min(x,y)+.05);}
   static Dictionary<string,object> Push(Tokens tokens,string secret,Snapshot snapshot){return new Dictionary<string,object>{{"v",1},{"id",Guid.NewGuid().ToString("N")},{"at",Clock.Now},{"account",LocalStore.AccountKey(tokens.Account)},{"secret",secret},{"op","push"},{"floor",0L},{"observed",snapshot.At},{"reset",snapshot.Main.Reset},{"tier",7},{"policy","weekly|pro|604800"},{"percent",87.5},{"rows",new[]{Row(snapshot.At,snapshot.Main.Reset,37.125)}},{"days",new object[]{new{day="2026-01-01",points=12.0}}},{"events",new object[0]}};}
   static void LanChecks(LocalStore store,Tokens tokens,Snapshot snap){
-    long generation=store.Generation;store.SaveTokens(tokens,generation);
+    long generation=store.Generation;store.SaveTokens(tokens,generation);string stablePin="",stableSecret="";byte[] pairBefore=null;
     using(var server=new LanSync(store,IPAddress.Loopback)){
-     var code=server.PairCode("127.0.0.1").Split('|');Check(code[3].Length==64&&code[4].Length==64,"pinned TLS plus random secret");
+     var code=server.PairCode("127.0.0.1").Split('|');stablePin=code[3];stableSecret=code[4];pairBefore=File.ReadAllBytes(Path.Combine(store.DirectoryPath,"lan-pair.dpapi"));Check(code[3].Length==64&&code[4].Length==64,"pinned TLS plus random secret");
      var remoteCode=server.PairCode("100.100.12.34").Split('|');Check(remoteCode[3]==code[3]&&remoteCode[4]==code[4],"remote pairing preserves existing pin and secret");
      Reject(()=>server.PairCode("8.8.8.8"),"cannot pair a public endpoint");
-     var request=Push(tokens,code[4],snap);int before=store.LoadRows(tokens.Account).Count;store.Exchange(request,code[4]);store.Exchange(request,code[4]);
+     var request=Push(tokens,code[4],snap);request["Authorization"]="PRIVATE_AUTH_SENTINEL";request["prompt"]="PRIVATE_PROMPT_SENTINEL";
+     request["days"]=new object[]{new Dictionary<string,object>{{"day","2026-01-01"},{"points",12.0},{"command","PRIVATE_COMMAND_SENTINEL"}}};
+     int before=store.LoadRows(tokens.Account).Count;store.Exchange(request,code[4]);store.Exchange(request,code[4]);
+     string safeArchive=File.ReadAllText(Path.Combine(store.DirectoryPath,"accounts",LocalStore.AccountKey(tokens.Account),"shared-history.json"));Check(!safeArchive.Contains("PRIVATE_"),"Unknown top-level and nested data cannot cross history boundary");
+     request["tier"]=6;Reject(()=>store.Exchange(request,code[4]),"Reused push nonce with changed payload rejected");request["tier"]=7;
+     var reopened=new LocalStore(store.DirectoryPath);reopened.Exchange(request,code[4]);request["percent"]=88.0;Reject(()=>reopened.Exchange(request,code[4]),"Nonce protection survives process reopen");request["percent"]=87.5;
+     var reordered=request.Reverse().ToDictionary(x=>x.Key,x=>x.Value);Check((bool)reopened.Exchange(reordered,code[4])["ok"],"Same retry with reordered JSON keys remains idempotent");
+     var backward=Push(tokens,code[4],snap);backward["at"]=(long)request["at"]-1;Reject(()=>store.Exchange(backward,code[4]),"Late older request cannot replace equally timed mirror");
+     var fraction=Push(tokens,code[4],snap);fraction["v"]=1.5;Reject(()=>store.Exchange(fraction,code[4]),"Fractional protocol version rejected");
+     var scope=Push(tokens,code[4],snap);scope["cycle_start"]="PRIVATE_CYCLE_SENTINEL";Reject(()=>store.Exchange(scope,code[4]),"Non-numeric billing metadata rejected");
+     var contradictory=Push(tokens,code[4],snap);contradictory["rows"]=new[]{new Observation{At=snap.At,Reset=snap.Main.Reset,Seconds=604800,Plan="pro",Meter="weekly",Used=37.125,Decimal="37.5"}};Reject(()=>store.Exchange(contradictory,code[4]),"Contradictory raw precision rejected");
+     var stale=Push(tokens,code[4],snap);stale["at"]=Clock.Now-300001;Reject(()=>store.Exchange(stale,code[4]),"Expired issued time rejected");
+     var damaged=Push(tokens,code[4],snap);damaged["events"]=new object[]{new Dictionary<string,object>{{"type","CREDIT_CHANGE"},{"at",-1L}}};Reject(()=>store.Exchange(damaged,code[4]),"Invalid event metadata rejected before writes");
      Check(store.LoadRows(tokens.Account).Count==before,"peer merge duplicate ignored");Check(store.LoadMirror(tokens.Account).Tier==7,"mobile canonical tier");
      var mirror=store.LoadMirror(tokens.Account);Check(mirror.Current(snap),"matching policy shows phone tier");mirror.Reset+=1000;Check(mirror.Current(snap),"API reset drift tolerance");mirror.Policy="weekly|plus|604800";Check(!mirror.Current(snap),"plan change hides old tier");mirror.Policy="weekly|pro|604800";mirror.At=Clock.Now-16*60000;Check(!mirror.Current(snap),"old phone tier not shown as current");
      Check(File.ReadAllText(Path.Combine(store.DirectoryPath,"accounts",LocalStore.AccountKey(tokens.Account),"shared-history.json")).Contains("2026-01-01"),"historical daily archive shared");
@@ -150,6 +168,7 @@ namespace CodexMeterWidget {
      Check(store.Exchange(pull,code[4])["tasks"]!=null,"Task transport behind existing authentication");pull["secret"]="wrong";Reject(()=>store.Exchange(pull,code[4]),"Task endpoint rejects unauthenticated peer");pull["secret"]=code[4];store.TaskStatus=null;
      store.SignOut();Reject(()=>store.Exchange(pull,code[4]),"logout rejects paired peer");
     }
+    using(var restarted=new LanSync(new LocalStore(store.DirectoryPath),IPAddress.Loopback)){var code=restarted.PairCode("127.0.0.1").Split('|');Check(code[3]==stablePin&&code[4]==stableSecret,"Server restart retains pairing certificate and secret");Check(pairBefore.SequenceEqual(File.ReadAllBytes(Path.Combine(store.DirectoryPath,"lan-pair.dpapi"))),"Server restart never rewrites pairing settings");}
     Check(LanSync.Private(IPAddress.Parse("192.168.1.2"))&&!LanSync.Private(IPAddress.Parse("8.8.8.8")),"LAN/public boundary retained");
     foreach(string ip in new[]{"100.64.0.0","100.100.12.34","100.127.255.255"})Check(LanSync.Private(IPAddress.Parse(ip))&&LanSync.Tailscale(IPAddress.Parse(ip)),"paired Tailscale IPv4 accepted");
     foreach(string ip in new[]{"100.63.255.255","100.128.0.0","100.255.1.1","8.8.8.8","::1"})Check(!LanSync.Private(IPAddress.Parse(ip))&&!LanSync.Tailscale(IPAddress.Parse(ip)),"public/non-Tailscale IP rejected");

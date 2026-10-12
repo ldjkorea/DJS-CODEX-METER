@@ -17,7 +17,7 @@ using System.Web.Script.Serialization;
 namespace CodexMeterWidget {
     // Private LAN or Tailscale only; certificate pin and random pairing secret. Never transfers OAuth credentials.
     public sealed class PhoneMirror {
-        public string Account,Policy; public long At,Received,Reset,Floor; public int Tier=-1; public double Percent; public double? Today;
+        public string Account,Policy; public long At,Received,Reset,Floor,Issued; public int Tier=-1; public double Percent; public double? Today;
         public bool Current(Snapshot snapshot) { return snapshot!=null && snapshot.Fresh(Clock.Now)
             && snapshot.Main!=null && Policy==snapshot.Main.Meter+"|"+(snapshot.Plan??"unknown").Trim().ToLowerInvariant()+"|"+snapshot.Main.Seconds
             && Reset>0&&Math.Abs(Reset-snapshot.Main.Reset)<=Math.Min(900000,Math.Max(60000,snapshot.Main.Seconds*1000/20))
@@ -30,10 +30,10 @@ namespace CodexMeterWidget {
         public Dictionary<string,object> Exchange(Dictionary<string,object> request,string secret) { lock(gate){
             var tokens=LoadTokens();string id=Json.Text(request,"id");
             if(tokens==null||Json.Text(request,"account")!=AccountKey(tokens.Account)||!LanSync.Equal(Json.Text(request,"secret"),secret)
-                ||Json.Integer(request,"v")!=1||!System.Text.RegularExpressions.Regex.IsMatch(id,"^[a-f0-9]{32}$")
-                ||Math.Abs(Json.Integer(request,"at")-Clock.Now)>300000)throw new InvalidDataException("Pairing/account mismatch");
+                ||LanHistory.Integer(request,"v")!=1||!System.Text.RegularExpressions.Regex.IsMatch(id,"^[a-f0-9]{32}$")
+                ||LanHistory.Integer(request,"at")<Clock.Now-300000||LanHistory.Integer(request,"at")>Clock.Now+300000)throw new InvalidDataException("Pairing/account mismatch");
             string dir=Path.Combine(DirectoryPath,"accounts",AccountKey(tokens.Account));var prior=LoadMirror(tokens.Account);
-            long floor=Math.Max(prior==null?0:prior.Floor,Json.Integer(request,"floor"));if(floor<0||floor>Clock.Now+300000)throw new InvalidDataException("Invalid history boundary");
+            long floor=Math.Max(prior==null?0:prior.Floor,(request.ContainsKey("floor")?LanHistory.Integer(request,"floor"):0));if(floor<0||floor>Clock.Now+300000)throw new InvalidDataException("Invalid history boundary");
             var observer=TaskStatus;string op=Json.Text(request,"op");
             if(op=="task-status")return new Dictionary<string,object>{{"v",1},{"id",id},{"account",AccountKey(tokens.Account)},{"tasks",observer==null?null:observer()},{"rpg_tokens",RpgTokens==null?null:RpgTokens(tokens.Account)}};
             if(op=="pull") {
@@ -47,10 +47,15 @@ namespace CodexMeterWidget {
                 ||double.IsNaN(r.Used)||double.IsInfinity(r.Used)||r.Used<0||r.Used>100
                 ||r.Meter==null||!System.Text.RegularExpressions.Regex.IsMatch(r.Meter,"^[a-z0-9_:.-]{1,120}$")
                 ||r.Plan==null||!System.Text.RegularExpressions.Regex.IsMatch(r.Plan,"^[a-z0-9_-]{1,40}$"))throw new InvalidDataException("Invalid observation");
-            int tier=(int)Json.Integer(request,"tier",-1);long at=Json.Integer(request,"observed"),reset=Json.Integer(request,"reset");
+            long tierValue=request.ContainsKey("tier")?LanHistory.Integer(request,"tier"):-1;int tier=tierValue< -1||tierValue>9?10:(int)tierValue;long at=LanHistory.Integer(request,"observed"),reset=LanHistory.Integer(request,"reset");
             double percent; if(!double.TryParse(Json.Text(request,"percent"),System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out percent)
                 ||double.IsNaN(percent)||double.IsInfinity(percent)||percent<0||tier< -1||tier>9||at<0||at>Clock.Now+300000||reset<0)throw new InvalidDataException("Invalid tier");
-            if(prior!=null&&at<prior.At)throw new InvalidDataException("Older mirror rejected");
+            if(prior!=null&&(at<prior.At||LanHistory.Integer(request,"at")<prior.Issued))throw new InvalidDataException("Older mirror rejected");
+            string policy=Json.Text(request,"policy");if(policy.Length>180||policy.Length>0&&!System.Text.RegularExpressions.Regex.IsMatch(policy,@"^[a-z0-9_:.-]{1,120}\|[a-z0-9_-]{1,40}\|[0-9]{1,8}$"))throw new InvalidDataException("Invalid mirror policy");
+            long cycleStart=request.ContainsKey("cycle_start")?LanHistory.Integer(request,"cycle_start"):0,cycleEnd=request.ContainsKey("cycle_end")?LanHistory.Integer(request,"cycle_end"):0;
+            if(cycleStart<0||cycleEnd<0||cycleEnd>0&&cycleStart>cycleEnd)throw new InvalidDataException("Invalid billing scope");
+            rowsIn=LanHistory.Observations(rowsIn);object[] days=LanHistory.Records(request,"days",true),events=LanHistory.Records(request,"events",false);
+            LanHistory.GuardPush(dir,request);
             // Merge by existing observation identity; a retry never counts a observation twice.
             foreach(var group in rowsIn.Where(r=>r.At>floor&&r.At>=Clock.Now-90L*86400000).GroupBy(r=>Clock.Day(r.At))) {
                 string path=Path.Combine(dir,"records-"+group.Key+".json");var rows=File.Exists(path)?LanSync.JsonCodec.Deserialize<List<Observation>>(File.ReadAllText(path)):new List<Observation>();
@@ -59,9 +64,12 @@ namespace CodexMeterWidget {
             }
             // The mobile app is the canonical tier calculator, including its billing cycle and credits.
             // Store its long-term daily archives as well, without adding overlapping percentages.
-            var archive=new Dictionary<string,object>(request);archive.Remove("secret");AtomicWrite(Path.Combine(dir,"shared-history.json"),Encoding.UTF8.GetBytes(LanSync.JsonCodec.Serialize(archive)));
             double today;double? daily=double.TryParse(Json.Text(request,"today"),System.Globalization.NumberStyles.Float,System.Globalization.CultureInfo.InvariantCulture,out today)&&!double.IsNaN(today)&&!double.IsInfinity(today)&&today>=0?(double?)today:null;
-            var mirror=new PhoneMirror{Account=AccountKey(tokens.Account),Policy=Json.Text(request,"policy"),At=at,Received=Clock.Now,Reset=reset,Floor=floor,Tier=tier,Percent=percent,Today=daily};
+            var archive=new Dictionary<string,object>{{"v",1},{"id",id},{"at",LanHistory.Integer(request,"at")},{"account",AccountKey(tokens.Account)},{"op","push"},{"floor",floor},{"tier",tier},{"percent",percent},{"observed",at},{"reset",reset},{"today",daily},{"policy",policy},{"rows",rowsIn},{"days",days},{"events",events}};
+            if(request.ContainsKey("cycle_start"))archive["cycle_start"]=cycleStart;
+            if(request.ContainsKey("cycle_end"))archive["cycle_end"]=cycleEnd;
+            AtomicWrite(Path.Combine(dir,"shared-history.json"),Encoding.UTF8.GetBytes(LanSync.JsonCodec.Serialize(archive)));
+            var mirror=new PhoneMirror{Account=AccountKey(tokens.Account),Policy=Json.Text(request,"policy"),At=at,Received=Clock.Now,Issued=LanHistory.Integer(request,"at"),Reset=reset,Floor=floor,Tier=tier,Percent=percent,Today=daily};
             AtomicWrite(Path.Combine(dir,"phone-mirror.json"),Encoding.UTF8.GetBytes(LanSync.JsonCodec.Serialize(mirror)));
             return new Dictionary<string,object>{{"v",1},{"id",id},{"account",mirror.Account},{"ok",true}};
         }}

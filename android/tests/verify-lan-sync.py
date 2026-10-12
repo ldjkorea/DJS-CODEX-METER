@@ -6,7 +6,7 @@ out=root/'build/lan-verification';out.mkdir(parents=True,exist_ok=True)
 jdk=Path(os.environ['JAVA_HOME'])/'bin';jar=root/'build/test-libs/json-20250517.jar'
 files=[root/'shared/src/main/java/dev/bennett/codexmeter/LanSyncWire.java',Path(__file__).with_name('LanSyncSelfTest.java')]
 subprocess.run([str(jdk/'javac'),'-encoding','UTF-8','-cp',str(jar),'-d',str(out),*map(str,files)],check=True)
-exe=repo/'windows-widget/build/WidgetTests.exe'
+exe=Path(os.environ.get('CODEX_METER_WINDOWS_TEST_EXE',str(repo/'windows-widget/build/WidgetTests.exe')))
 if not exe.exists():raise RuntimeError('Run windows-widget/build.ps1 -Test first')
 directory=Path(tempfile.mkdtemp(prefix='probe-',dir=os.environ.get('CODEX_METER_TEST_ROOT')))
 log=open(out/'probe.log','w',encoding='utf-8')
