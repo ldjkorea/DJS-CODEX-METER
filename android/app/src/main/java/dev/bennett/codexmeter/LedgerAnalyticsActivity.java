@@ -162,15 +162,18 @@ public class LedgerAnalyticsActivity extends AppCompatActivity {
         if(value.startsWith("monthly|"))return AppPreferences.showDashboardMonthly(this);
         return AppPreferences.showDashboardAdditionalLimits(this);
     }
-    private void navigation(){if(!settingsRoot()){content.addView(LedgerUi.tabs(this,new String[]{getString(R.string.ui_ledger_overview),getString(R.string.ui_ledger_trends)},screen,dark,index->{savedScroll=0;restoreScroll=true;screen=index;controls();}));Ui.addSpacer(content,18);}}
+    private void navigation(){if(!settingsRoot()){content.addView(LedgerUi.tabs(this,new String[]{getString(R.string.next_calendar),getString(R.string.ui_ledger_trends)},screen,dark,index->{savedScroll=0;restoreScroll=true;screen=index;controls();}));Ui.addSpacer(content,18);}}
 
     private boolean spikeEnabled(){return getSharedPreferences("codex_next_ui",MODE_PRIVATE).getBoolean("spike",false);}
     private void render(){
         if(body==null||data==null)return;body.removeAllViews();
         LocalDate today=LedgerAggregation.day(System.currentTimeMillis());
         getIntent().putExtra("selected_date",selectedDate.toString());
-        if(recordsRoot()&&screen==0){addTrends(today);Ui.addSpacer(body,12);}else if(screen==0)addOverview(today);else addTrends(today);
-        addRecords(today);RecordSettings.add(this,body,dark);
+        if(screen==0){
+            body.addView(LedgerUi.pair(this,dayTile(today,R.string.ui_ledger_today_usage),dayTile(today.minusDays(1),R.string.next_yesterday)));
+            Ui.addSpacer(body,12);addRecords(today);
+        }else addTrends(today);
+        RecordSettings.add(this,body,dark);
         restorePosition();
     }
     private void restorePosition(){
@@ -264,6 +267,7 @@ public class LedgerAnalyticsActivity extends AppCompatActivity {
         addCalendar(today);
         LinearLayout selected=Ui.card(this,dark);selected.addView(LedgerUi.heading(this,selectedDate.toString(),dark));Ui.addSpacer(selected,10);
         selected.addView(LedgerUi.amount(this,dayAmount(find(selectedDate)),dark,28));selected.addView(LedgerUi.caption(this,dayText(selectedDate,""),dark));Ui.addSpacer(selected,12);
+        selected.addView(LedgerUi.action(this,getString(R.string.v3_observations),false,dark,()->detail(selectedDate)));
         body.addView(selected);Ui.addSpacer(body,16);
     }
     private void expandable(String title,java.util.function.Consumer<LinearLayout> fill){

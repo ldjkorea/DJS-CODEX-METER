@@ -75,8 +75,6 @@ final class LedgerDashboard {
             progress.setProgressBackgroundTintList(ColorStateList.valueOf(Ui.divider(dark)));
             card.addView(progress,new LinearLayout.LayoutParams(-1,Ui.dp(activity,8)));
             Ui.addSpacer(card,6);reset=LedgerUi.caption(activity,"",dark);card.addView(reset);
-            long absolute=window.effectiveResetAtMillis(snapshot.fetchedAtMillis);
-            card.addView(LedgerUi.caption(activity,absolute>0?V3Display.time(absolute):activity.getString(R.string.next_missing_timeline),dark));
             boolean separateFiveHour=window!=snapshot.fiveHour
                     &&snapshot.fiveHour!=null
                     &&AppPreferences.showDashboardFiveHour(activity);
