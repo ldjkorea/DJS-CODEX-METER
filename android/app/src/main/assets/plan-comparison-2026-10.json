@@ -1,0 +1,54 @@
+{
+  "verified": "2026-10-12",
+  "currency": "USD",
+  "plans": [
+    {
+      "key": "free",
+      "name": "Free",
+      "monthly": 0,
+      "ko": "제한된 Codex·파일·이미지·리서치, 기본 채팅",
+      "en": "Basic chats; limited Codex, files, images and research",
+      "source": "https://chatgpt.com/pricing/"
+    },
+    {
+      "key": "go",
+      "name": "Go",
+      "monthly": 8,
+      "ko": "Free보다 많은 메시지·업로드·이미지·메모리. 고급 작업은 Plus와 차이",
+      "en": "More messages, uploads, images and memory than Free; fewer advanced tools than Plus",
+      "source": "https://openai.com/index/introducing-chatgpt-go/"
+    },
+    {
+      "key": "plus",
+      "name": "Plus",
+      "monthly": 20,
+      "ko": "고급 추론, 확대된 Codex·리서치·파일 분석·이미지. Pro보다 낮은 한도",
+      "en": "Advanced reasoning; expanded Codex, research, file analysis and images; lower limits than Pro",
+      "source": "https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus"
+    },
+    {
+      "key": "pro5x",
+      "name": "Pro 100",
+      "monthly": 100,
+      "ko": "Pro 모델·Codex·리서치·이미지·메모리. Pro 200보다 적은 사용량",
+      "en": "Pro models, Codex, research, images and memory; less usage than Pro 200",
+      "source": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers"
+    },
+    {
+      "key": "pro20x",
+      "name": "Pro 200",
+      "monthly": 200,
+      "ko": "Pro 100보다 많은 사용량. 이전 가입자의 한도 정책은 다를 수 있음",
+      "en": "More usage than Pro 100; grandfathered allowances may differ",
+      "source": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers"
+    },
+    {
+      "key": "pro500",
+      "name": "Pro 500",
+      "monthly": 500,
+      "ko": "가장 높은 Pro 사용량 · Astra / Sol Ultrafast 제공",
+      "en": "Highest included Pro usage; Astra / Sol Ultrafast included",
+      "source": "https://help.openai.com/en/articles/9793128-about-chatgpt-pro-tiers"
+    }
+  ]
+}

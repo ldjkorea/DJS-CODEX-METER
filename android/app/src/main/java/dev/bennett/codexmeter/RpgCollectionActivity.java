@@ -43,7 +43,7 @@ public final class RpgCollectionActivity extends AppCompatActivity {
         WORKER.execute(()->{JSONObject result=null;boolean error=false;try{JSONObject journal=RpgProgressStore.export(getApplicationContext(),key);result=journal==null?null:journal.optJSONObject("rpg");}catch(Exception e){error=true;}final JSONObject next=result;final boolean failed=error;
             runOnUiThread(()->{if(isDestroyed()||ticket!=generation)return;busy=false;if(!key.equals(SubscriptionStore.accountKey(this))){clearAccount();load();return;}
                 if(failed){android.widget.Toast.makeText(this,R.string.rpg3_failed,Toast.LENGTH_SHORT).show();return;}
-                state=next;if(!draftReady&&picker()){draft.addAll(RpgShowcase.selected(this,state));draftReady=true;}
+                try{state=titles()?TitleJourney.view(next):next;}catch(Exception e){state=next;}if(!draftReady&&picker()){draft.addAll(RpgShowcase.selected(this,state));draftReady=true;}
                 if(status<0)status=titles()||picker()?RpgCollectionFacts.EARNED:RpgCollectionFacts.initial(state);
                 initialized=false;statusPicker.setSelection(titles()?status==RpgCollectionFacts.EARNED?0:status==RpgCollectionFacts.ALL?1:2:status);categoryPicker.setSelection(category);sortPicker.setSelection(sort);initialized=true;
                 refresh(false);if(restoredLayout!=null){layout.onRestoreInstanceState(restoredLayout);restoredLayout=null;}

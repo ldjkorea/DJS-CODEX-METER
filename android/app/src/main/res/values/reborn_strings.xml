@@ -1,0 +1,25 @@
+<resources>
+  <string name="reborn_collections">Achievements · Titles</string>
+  <string name="reborn_title_switch">Title collection</string>
+  <string name="reborn_title_start">Start collecting titles?</string>
+  <string name="reborn_title_note">Unlock titles through verified new activity. Previous titles and equipment are preserved.</string>
+  <string name="reborn_archive">Previous achievements</string>
+  <string name="reborn_archive_note">Previously auto-awarded · read only. Excluded from the new collection count.</string>
+  <string name="reborn_baseline_pending">Waiting for token baseline · activity before the first verified reading may be unavailable.</string>
+  <string name="reborn_criteria">Evaluation criteria</string>
+  <string name="reborn_xp_all">All XP sources</string>
+  <string name="reborn_level_note">XP grows through verified activity and growth rewards.</string>
+  <string name="reborn_no_xp_log">No recent XP events with verified timestamps. See accumulated source totals.</string>
+  <string name="reborn_activity">Recent activity · %1$s</string>
+  <string name="reborn_tokens">Verified tokens · %1$s</string>
+  <string name="reborn_util">Quota utilization · %1$s</string>
+  <string name="reborn_actual_price">Your registered charge · %1$s %2$s
+%3$s – %4$s</string>
+  <string name="reborn_price_note">US monthly base prices · verified 2026-10-12
+Korean charges may differ by currency, tax and billing channel. API usage is billed separately.</string>
+  <string name="reborn_plan_unknown">A generic Pro server label does not identify its tier. Registered price alone cannot certify your subscription.</string>
+  <string name="reborn_official">Open official pricing</string>
+  <string name="reborn_medal_dependency">This title needs new earned medals. Paused achievement collection cannot advance its medal requirements.</string>
+  <string name="reborn_reward_already">XP was already awarded previously. Reacquisition awards the medal only.</string>
+  <string name="reborn_more">More information</string>
+</resources>

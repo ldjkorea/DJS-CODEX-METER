@@ -3,9 +3,9 @@
   <string name="journey_active">Collecting from your start date. Earned medals are permanent.</string>
   <string name="journey_not_started">OFF · Start your own achievement journey when you are ready.</string>
   <string name="journey_paused">Paused · Your medals and progress are preserved.</string>
-  <string name="journey_start_question">Start the achievement system?</string>
+  <string name="journey_start_question">Start collecting achievements?</string>
   <string name="journey_resume_question">Resume collecting achievements?</string>
-  <string name="journey_start_note">Count verified activity from now on. Previously auto-awarded medals are archived and excluded from this new collection. XP, levels, tiers and usage records stay intact. Earned medals will never reset. The first token observation establishes a baseline.</string>
+  <string name="journey_start_note">Earn medals through verified new activity from now on. Previous usage is excluded from this challenge.</string>
   <string name="journey_resume_note">Keep all earned medals and progress. Resume counting new verified activity from now; activity while paused will not be awarded retroactively.</string>
   <string name="journey_confirm">Start</string>
 </resources>

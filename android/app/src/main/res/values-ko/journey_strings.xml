@@ -3,9 +3,9 @@
   <string name="journey_active">시작 이후의 활동을 수집 중입니다. 얻은 메달은 영구 보존됩니다.</string>
   <string name="journey_not_started">OFF · 준비가 되면 나만의 업적 수집을 시작하세요.</string>
   <string name="journey_paused">수집 일시 중지 · 메달과 진행률은 그대로 보존됩니다.</string>
-  <string name="journey_start_question">업적 시스템을 시작하시겠습니까?</string>
+  <string name="journey_start_question">업적 수집을 시작하시겠습니까?</string>
   <string name="journey_resume_question">업적 수집을 다시 시작하시겠습니까?</string>
-  <string name="journey_start_note">지금부터 확인된 활동만 카운팅합니다. 이전 자동 획득 메달은 보관하고 새 도감에서는 초기화합니다. XP·레벨·티어·사용량 기록은 유지합니다. 이후 얻은 메달은 초기화되지 않습니다. 첫 토큰 관측값은 시작 기준으로 사용합니다.</string>
+  <string name="journey_start_note">지금부터 확인된 새 활동으로 메달을 획득합니다. 이전 사용량은 새 도전에 포함되지 않습니다.</string>
   <string name="journey_resume_note">획득한 메달과 진행률을 유지하고 지금부터 새 활동을 수집합니다. 꺼져 있던 동안의 활동은 소급 지급하지 않습니다.</string>
   <string name="journey_confirm">시작하기</string>
 </resources>

@@ -10,13 +10,13 @@ nav=(app/'MatteNav.java').read_text(encoding='utf-8');assert 'int[] roots={2,1,3
 store=(app/'RpgProgressStore.java').read_text(encoding='utf-8');assert 'r.optJSONObject("KR")' in store
 growth=(app/'GrowthActivity.java').read_text(encoding='utf-8');assert 'WORKER.execute' in growth and 'account.equals(SubscriptionStore.accountKey(this))' in growth
 render=(app/'RpgGrowthUi.java').read_text(encoding='utf-8');assert 'RpgEngine.reconcile' not in render and 'RpgTier.current' not in render
-for needed in ['RpgEngine.threshold','RpgPlanSeals.image','rpg3_token_note','rpg3_local_scope']:assert needed in render
+for needed in ['RpgEngine.threshold','RpgPlanSeals.image','rpg3_token_note','rpg3_local_scope']:assert needed in render+(app/'RpgDetails.java').read_text(encoding='utf-8')
 collection=(app/'RpgCollectionActivity.java').read_text(encoding='utf-8');detail=(app/'RpgMedalUi.java').read_text(encoding='utf-8');assert 'RpgCollectionFacts.select' in collection and 'RpgCollectionFacts.time' in detail
 manifest=ET.parse(root/'app/src/main/AndroidManifest.xml').getroot();names={a.get('{http://schemas.android.com/apk/res/android}name'):a for a in manifest.find('application').findall('activity')}
 for name in ['GrowthActivity','BillingHistoryActivity']:assert names['dev.bennett.codexmeter.'+name].get('{http://schemas.android.com/apk/res/android}exported')=='false'
 en={e.get('name'):e.text for e in ET.parse(root/'app/src/main/res/values/rpg3_strings.xml').getroot()};ko={e.get('name'):e.text for e in ET.parse(root/'app/src/main/res/values-ko/rpg3_strings.xml').getroot()};assert en.keys()==ko.keys() and all(ko.values())
 for key in en:assert sorted(re.findall(r'%\d+\$[sd]',en[key]))==sorted(re.findall(r'%\d+\$[sd]',ko[key])),key
-history=json.loads((root/'app/src/main/assets/release-history.json').read_text(encoding='utf-8'));assert len(history)==56 and history[0]['version']=='2.8.28'
+history=json.loads((root/'app/src/main/assets/release-history.json').read_text(encoding='utf-8'));assert len(history)==57 and history[0]['version']=='2.8.29'
 assets=json.loads((root.parent/'docs/RPG_PLAN_SEALS.json').read_text(encoding='utf-8'))['assets'];assert len(assets)==6
 for asset in assets:assert asset['license']=='MIT' and ET.parse(root.parent/asset['path']).getroot().tag=='vector'
 assert 'Tier=mirror.Tier' in (root.parent/'windows-widget/src/Widget.cs').read_text(encoding='utf-8')

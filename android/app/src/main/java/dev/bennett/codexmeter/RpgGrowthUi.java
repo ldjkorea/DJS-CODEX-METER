@@ -36,12 +36,10 @@ final class RpgGrowthUi {
         ImageView crest=new ImageView(a);if(region.equals("WORLD"))crest.setImageDrawable(new WorldTierMark(grade,dark));else crest.setImageResource(TierTheme.EMBLEMS[Math.max(0,grade)]);crest.setScaleType(ImageView.ScaleType.FIT_CENTER);crest.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);if(grade<0)crest.setAlpha(.35f);
         card.addView(crest,new LinearLayout.LayoutParams(-1,Ui.dp(a,96)));
         TextView name=LedgerUi.amount(a,rank(a,grade),dark,18);name.setTextColor(rankAccent(grade,dark));center(name);card.addView(name,new LinearLayout.LayoutParams(-1,-2));
-        TextView best=LedgerUi.caption(a,a.getString(R.string.rpg3_highest,rank(a,highest)),dark);center(best);Ui.addSpacer(card,8);card.addView(best);
-        TextView note=LedgerUi.caption(a,a.getString(state!=null&&state.optBoolean("provisional")?R.string.fun_provisional:R.string.rpg3_estimate),dark);center(note);card.addView(note);
         return card;
     }
     // Equal measured heights within each row; narrow screens / enlarged text remain natural-height stacks.
-    static boolean stacked(android.content.Context c){return c.getResources().getConfiguration().screenWidthDp<300||c.getResources().getConfiguration().fontScale>1.25f;}
+    static boolean stacked(android.content.Context c){return c.getResources().getConfiguration().screenWidthDp<340||c.getResources().getConfiguration().fontScale>1.25f;}
     static LinearLayout pair(GrowthActivity a,View first,View second){
         LinearLayout row=new LinearLayout(a){@Override protected void onMeasure(int w,int h){super.onMeasure(w,h);if(getOrientation()==HORIZONTAL){int height=Math.max(first.getMeasuredHeight(),second.getMeasuredHeight());if(first.getLayoutParams().height!=height||second.getLayoutParams().height!=height){first.getLayoutParams().height=height;second.getLayoutParams().height=height;super.onMeasure(w,h);}}}};
         row.setOrientation(stacked(a)?LinearLayout.VERTICAL:LinearLayout.HORIZONTAL);
@@ -60,7 +58,9 @@ final class RpgGrowthUi {
         tap(a,kr,"KR",a.getString(R.string.rpg3_korea),()->a.detail("KR",state),dark);tap(a,world,"WORLD",a.getString(R.string.rpg3_world),()->a.detail("WORLD",state),dark);
         parent.addView(pair(a,kr,world));Ui.addSpacer(parent,12);
         parent.addView(pair(a,level(a,state,dark),plan(a,state,dark)));Ui.addSpacer(parent,12);
-        parent.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_model),dark));
+        a.collections(journal);
+        JSONObject aj=AchievementJourney.journey(state);boolean started=aj!=null&&aj.optLong("first_started_at")>0;
+        if(started){
         LedgerUi.section(parent,a.getString(R.string.growth_showcase),dark);
         List<String> selected=RpgShowcase.selected(a,state);
         if(selected.isEmpty())parent.addView(LedgerUi.caption(a,a.getString(R.string.growth_showcase_empty),dark));
@@ -68,9 +68,12 @@ final class RpgGrowthUi {
         for(String id:selected){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout badge=RpgDisplayStyle.medal(a,e,dark);badge.setTag("growth:representative");badge.setOnClickListener(v->a.medalDetail(state,e));RpgDisplayStyle.addMedal(medals,badge);}parent.addView(medals);Ui.addSpacer(parent,12);
         parent.addView(LedgerUi.action(a,a.getString(R.string.medal_codex),false,dark,()->a.open("achievements")));
         parent.addView(LedgerUi.action(a,a.getString(R.string.growth_showcase_edit),false,dark,()->a.chooseShowcase(state)));
+        }
+        JSONObject tj=TitleJourney.journey(state);if(tj!=null&&(tj.optLong("first_started_at")>0||!equipped.isEmpty())){
         LedgerUi.section(parent,a.getString(R.string.rpg3_titles),dark);
         Button titleButton=LedgerUi.action(a,equipped.isEmpty()?a.getString(R.string.growth_title_pick):title(a,equipped),false,dark,()->a.open("titles"));RpgDisplayStyle.title(titleButton,dark,20);parent.addView(titleButton);
-        tokens(a,parent,state,dark);
+        }
+        parent.addView(LedgerUi.action(a,a.getString(R.string.rpg3_tokens),false,dark,()->a.detail("tokens",state)));
     }
     static LinearLayout compact(android.content.Context c,RpgCatalog.Entry e,boolean dark){
         LinearLayout row=Ui.card(c,dark);row.setOrientation(LinearLayout.HORIZONTAL);row.setGravity(Gravity.CENTER_VERTICAL);row.setMinimumHeight(Ui.dp(c,56));
@@ -82,18 +85,16 @@ final class RpgGrowthUi {
         TextView label=LedgerUi.caption(a,a.getString(R.string.rpg3_level),dark);center(label);card.addView(label);Ui.addSpacer(card,10);
         long xp=state==null?0:state.optLong("xp");int level=RpgEngine.level(xp);TextView value=LedgerUi.amount(a,state==null?"Lv. —":"Lv. "+level,dark,38);center(value);card.addView(value);Ui.addSpacer(card,10);
         TextView total=LedgerUi.caption(a,a.getString(R.string.rpg3_xp,number(xp)),dark);center(total);card.addView(total);
-        long base=RpgEngine.threshold(level),next=RpgEngine.threshold(level+1);ProgressBar bar=Ui.progress(a,dark);bar.setMax(1000);bar.setProgress((int)Math.min(1000,1000d*(xp-base)/(next-base)));bar.setContentDescription(a.getString(R.string.rpg3_next_xp,number(next-xp),level+1));Ui.addSpacer(card,12);card.addView(bar);
-        TextView remaining=LedgerUi.caption(a,state==null?a.getString(R.string.rpg3_unknown):a.getString(R.string.rpg3_next_xp,number(next-xp),level+1),dark);center(remaining);card.addView(remaining);
         tap(a,card,"level",a.getString(R.string.rpg3_level),()->a.detail("level",state),dark);return card;
     }
     private static LinearLayout plan(GrowthActivity a,JSONObject state,boolean dark){
         UsageSnapshot snapshot=AppPreferences.loadSnapshot(a);String plan=snapshot==null?null:snapshot.planType;
         LinearLayout card=tile(a,dark);android.graphics.drawable.GradientDrawable frame=LedgerUi.shape(a,LedgerUi.tint(dark),22);frame.setStroke(Ui.dp(a,1),dark?0xff687078:0xff59616b);card.setBackground(frame);TextView label=LedgerUi.caption(a,a.getString(R.string.rpg3_plan),dark);center(label);card.addView(label);Ui.addSpacer(card,8);
         ImageView seal=new ImageView(a);seal.setImageResource(RpgPlanSeals.image(plan));seal.setScaleType(ImageView.ScaleType.FIT_CENTER);seal.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);card.addView(seal,new LinearLayout.LayoutParams(-1,Ui.dp(a,96)));
-        TextView name=LedgerUi.heading(a,PlanArtwork.label(plan),dark);center(name);card.addView(name,new LinearLayout.LayoutParams(-1,-2));TextView concept=LedgerUi.caption(a,RpgPlanSeals.concept(plan),dark);center(concept);Ui.addSpacer(card,8);card.addView(concept);
+        TextView name=LedgerUi.heading(a,PlanArtwork.label(plan),dark);center(name);card.addView(name,new LinearLayout.LayoutParams(-1,-2));
         tap(a,card,"plan",a.getString(R.string.rpg3_plan),()->a.detail("plan",state),dark);return card;
     }
-    private static void tokens(GrowthActivity a,LinearLayout parent,JSONObject state,boolean dark){LinearLayout card=Ui.card(a,dark);card.addView(LedgerUi.heading(a,a.getString(R.string.rpg3_tokens),dark));JSONObject tokens=state==null?null:state.optJSONObject("tokens");boolean known=false;long total=0,at=0;
+    static void tokens(GrowthActivity a,LinearLayout parent,JSONObject state,boolean dark){LinearLayout card=Ui.card(a,dark);card.addView(LedgerUi.heading(a,a.getString(R.string.rpg3_tokens),dark));JSONObject tokens=state==null?null:state.optJSONObject("tokens");boolean known=false;long total=0,at=0;
         try{known=tokens!=null&&RpgTokens.known(tokens);if(known){total=RpgTokens.milestoneTotal(tokens);at=tokens.getJSONObject("official").optLong("at");}}catch(Exception ignored){}
         card.addView(LedgerUi.amount(a,known?number(total):"—",dark,28));card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_token_note),dark));
         if(at>0){card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_last_tokens,V3Display.time(at)),dark));if(System.currentTimeMillis()-at>86400000L)card.addView(LedgerUi.caption(a,a.getString(R.string.rpg3_stale),dark));}
