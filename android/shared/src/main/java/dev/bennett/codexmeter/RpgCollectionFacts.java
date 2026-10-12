@@ -15,7 +15,8 @@ public final class RpgCollectionFacts {
     public static boolean known(JSONObject state,RpgCatalog.Entry e){
         JSONObject f=fact(state,e);if(f==null||!f.has("progress"))return false;
         if(earned(state,e)||f.optLong("progress")>0)return true; // Previously confirmed lower bounds survive missing live data.
-        if(e.metric.equals("tokens"))return state.optString("token_status").equals("observed");
+        JSONObject journey=AchievementJourney.journey(state);if(journey!=null&&journey.optLong("first_started_at")==0)return false;
+        if(e.metric.equals("tokens"))return journey!=null?journey.optBoolean("official_armed")||journey.optLong("tokens")>0:state.optString("token_status").equals("observed");
         if(e.metric.equals("utilization"))return state.has("quota_score_basis")&&!state.optString("quota_score_basis").equals("unavailable");
         // A freshly created empty profile is not evidence of zero historical activity.
         return state.optInt("activity_days")>0||state.optInt("valid_weeks")>0;

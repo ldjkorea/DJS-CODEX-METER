@@ -35,7 +35,7 @@ public final class RpgStoreSelfTest {
         RpgProgressStore.tokens(c,a,token);JSONObject game=RpgProgressStore.progress(c);long xp=game.getLong("xp");check(xp>0&&game.getLong("token_total")==100_000_000L,"Official metadata and XP persisted in actual SQLite");
         RpgProgressStore.tokens(c,a,token);check(RpgProgressStore.progress(c).getLong("xp")==xp,"Cached duplicate token envelope cannot grow XP");
         check(RpgGrowthFacts.earned(document(a).getJSONObject("future").getJSONObject("rpg")).isEmpty(),"Default OFF excludes historical token achievements");
-        check(RpgProgressStore.setAchievementsEnabled(c,a,true),"Explicit account-bound start committed");
+        check(RpgProgressStore.setTitlesEnabled(c,a,true),"Independent title opt-in committed");check(RpgProgressStore.setAchievementsEnabled(c,a,true),"Explicit account-bound start committed");
         Thread.sleep(2);token.put("at",System.currentTimeMillis());RpgProgressStore.tokens(c,a,token);check(RpgGrowthFacts.earned(document(a).getJSONObject("future").getJSONObject("rpg")).isEmpty(),"First post-start token envelope is a baseline");
         Thread.sleep(2);token.put("at",System.currentTimeMillis()).put("summary",new JSONObject().put("lifetimeTokens",200_000_000L));RpgProgressStore.tokens(c,a,token);game=RpgProgressStore.progress(c);xp=game.getLong("xp");
         check(RpgGrowthFacts.earned(document(a).getJSONObject("future").getJSONObject("rpg")).size()==3,"Only actual post-start token delta unlocks three medals");

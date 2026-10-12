@@ -66,7 +66,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
                 try{
                     String old="";try(Cursor cursor=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){if(cursor.moveToFirst())old=cursor.getString(0);}
                     doc=old.isEmpty()?AccountProgress.empty():new JSONObject(old);
-                    AchievementJourney.prepare(doc,System.currentTimeMillis());
+                    prepareJourneys(doc,System.currentTimeMillis());
                     db.execSQL("INSERT OR IGNORE INTO recovery(account,captured_at,document) VALUES(?,?,?)",new Object[]{account,System.currentTimeMillis(),old.isEmpty()?doc.toString():old});
                     Set<String> plans=new LinkedHashSet<>(Arrays.asList("free","go","plus","pro","prolite","pro_lite","pro_light","pro_100","team","business","enterprise"));plans.add(LedgerRecord.cleanPlan(current.planType));
                     for(LedgerRecord r:data.records)plans.add(r.plan);
@@ -110,7 +110,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
             try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{
                 String raw="";try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(row.moveToFirst())raw=row.getString(0);}
                 document=RpgArchive.merge(raw.isEmpty()?AccountProgress.empty():new JSONObject(raw),file,expected,System.currentTimeMillis());
-                AchievementJourney.prepare(document,System.currentTimeMillis());
+                prepareJourneys(document,System.currentTimeMillis());
                 JSONObject ownShow=document.getJSONObject("future").optJSONObject("showcase"),fileShow=file.getJSONObject("showcase");
                 if((ownShow==null||!ownShow.optBoolean("custom"))&&!c.getSharedPreferences("codex_rpg_showcase_v1",0).getBoolean(expected+":custom",false)){
                     JSONArray ids=fileShow.getJSONArray("ids"),kept=new JSONArray();List<String> eligible=RpgGrowthFacts.earned(RpgEngine.state(document));for(int i=0;i<ids.length();i++)if(eligible.contains(ids.getString(i)))kept.put(ids.getString(i));
@@ -164,7 +164,7 @@ final class RpgProgressStore extends SQLiteOpenHelper {
             try(RpgProgressStore helper=new RpgProgressStore(c)){SQLiteDatabase db=helper.getWritableDatabase();db.beginTransaction();
                 try{String raw="";try(Cursor cursor=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){if(cursor.moveToFirst())raw=cursor.getString(0);}
                     document=raw.isEmpty()?AccountProgress.empty():new JSONObject(raw);
-                    AchievementJourney.prepare(document,System.currentTimeMillis());
+                    prepareJourneys(document,System.currentTimeMillis());
                     boolean changed=journal!=null?RpgEngine.merge(document,account,journal,System.currentTimeMillis()):envelope!=null?RpgEngine.ingestOfficial(document,account,envelope,System.currentTimeMillis()):title.equals("@recommend")?!RpgEngine.recommend(document,new Random()).isEmpty():RpgEngine.equip(document,title);
                     if(!changed)return false;
                     db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{account,document.toString()});db.setTransactionSuccessful();
@@ -177,11 +177,14 @@ final class RpgProgressStore extends SQLiteOpenHelper {
         JSONObject s=p.optJSONObject("rpg");if(s!=null&&!s.has("achievement_enabled")){s.put("unlocked_achievements",0).put("unlocked_ids",new JSONArray());JSONArray old=s.optJSONArray("unlocked_titles"),keep=new JSONArray();if(old!=null)for(int i=0;i<old.length();i++)if(RpgGrowthFacts.entry(old.optString(i))==null)keep.put(old.optString(i));s.put("unlocked_titles",keep);if(RpgGrowthFacts.entry(s.optString("equipped_title"))!=null)s.remove("equipped_title");p.put("showcase",new JSONObject().put("ids",new JSONArray()).put("custom",true));}return p;
     }
     private static void ensureJourney(Context c,String expected)throws Exception {
-        try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{JSONObject doc;try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(!row.moveToFirst())return;doc=new JSONObject(row.getString(0));}if(AchievementJourney.prepare(doc,System.currentTimeMillis())){db.execSQL("UPDATE profiles SET document=? WHERE account=?",new Object[]{doc.toString(),expected});c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();}db.setTransactionSuccessful();}finally{db.endTransaction();}}
+        try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{JSONObject doc;try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(!row.moveToFirst())return;doc=new JSONObject(row.getString(0));}if(prepareJourneys(doc,System.currentTimeMillis())){db.execSQL("UPDATE profiles SET document=? WHERE account=?",new Object[]{doc.toString(),expected});c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();}db.setTransactionSuccessful();}finally{db.endTransaction();}}
     }
-    static boolean setAchievementsEnabled(Context c,String expected,boolean enabled)throws Exception {
+    private static boolean prepareJourneys(JSONObject d,long now)throws Exception{if(TitleJourney.journey(RpgEngine.state(d))==null&&!d.getJSONObject("future").has("reborn_before_migration"))d.getJSONObject("future").put("reborn_before_migration",new JSONObject(RpgEngine.state(d).toString()));boolean changed=AchievementJourney.prepare(d,now);return TitleJourney.prepare(d,now)||changed;}
+    static boolean setAchievementsEnabled(Context c,String expected,boolean enabled)throws Exception{return setCollectionEnabled(c,expected,enabled,false);}
+    static boolean setTitlesEnabled(Context c,String expected,boolean enabled)throws Exception{return setCollectionEnabled(c,expected,enabled,true);}
+    private static boolean setCollectionEnabled(Context c,String expected,boolean enabled,boolean titles)throws Exception {
         synchronized(UsageApi.NETWORK_LOCK){if(expected==null||!expected.equals(SubscriptionStore.accountKey(c)))return false;JSONObject doc;
-            try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{String raw="";try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(row.moveToFirst())raw=row.getString(0);}doc=raw.isEmpty()?AccountProgress.empty():new JSONObject(raw);AchievementJourney.prepare(doc,System.currentTimeMillis());AchievementJourney.setEnabled(doc,enabled,System.currentTimeMillis());db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{expected,doc.toString()});db.setTransactionSuccessful();}finally{db.endTransaction();}}
+            try(RpgProgressStore h=new RpgProgressStore(c)){SQLiteDatabase db=h.getWritableDatabase();db.beginTransaction();try{String raw="";try(Cursor row=db.rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{expected})){if(row.moveToFirst())raw=row.getString(0);}doc=raw.isEmpty()?AccountProgress.empty():new JSONObject(raw);prepareJourneys(doc,System.currentTimeMillis());if(titles)TitleJourney.setEnabled(doc,enabled,System.currentTimeMillis());else AchievementJourney.setEnabled(doc,enabled,System.currentTimeMillis());db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{expected,doc.toString()});db.setTransactionSuccessful();}finally{db.endTransaction();}}
             c.getSharedPreferences("codex_rpg_display_v1",0).edit().remove(expected).commit();
             if(enabled)c.getSharedPreferences("codex_rpg_showcase_v1",0).edit().putString(RpgShowcase.seenKey(expected,RpgEngine.state(doc)),new JSONArray(RpgGrowthFacts.earned(RpgEngine.state(doc))).toString()).commit();return true;
         }

@@ -11,7 +11,7 @@ public final class AchievementJourney {
     public static JSONObject journey(JSONObject s){return s==null?null:s.optJSONObject(KEY);}
     public static boolean enabled(JSONObject s){JSONObject j=journey(s);return j!=null&&j.optBoolean("enabled");}
     public static boolean prepare(JSONObject document,long now)throws JSONException {
-        JSONObject s=RpgEngine.state(document);if(journey(s)!=null)return false;
+        JSONObject s=RpgEngine.state(document);if(journey(s)!=null){if(journey(s).getInt("version")!=1)throw new IllegalStateException("Preserve newer journey");return false;}
         JSONObject legacy=new JSONObject().put("achievements",new JSONObject(s.getJSONObject("achievements").toString()));
         for(String key:new String[]{"equipped_title","recommended_title"})if(s.has(key))legacy.put(key,s.get(key));
         JSONObject show=document.getJSONObject("future").optJSONObject("showcase");if(show!=null)legacy.put("showcase",new JSONObject(show.toString()));
@@ -28,7 +28,9 @@ public final class AchievementJourney {
     public static boolean setEnabled(JSONObject document,boolean value,long now)throws JSONException {
         prepare(document,now);JSONObject s=RpgEngine.state(document),j=journey(s);if(j.getBoolean("enabled")==value)return false;
         j.put("enabled",value);if(value){if(j.getLong("first_started_at")==0)j.put("first_started_at",now).put("id",UUID.randomUUID().toString());j.put("from",now).put("official_armed",false).put("official_delta",0).put("local",new JSONObject()).put("segment_tokens",j.getLong("tokens"));
-            int peak=-1;for(String region:new String[]{"KR","WORLD"})peak=Math.max(peak,s.getJSONObject(region).optInt("highest",-1));j.put("tier_baseline",peak);
+            int peak=-1;for(String region:new String[]{"KR","WORLD"})peak=Math.max(peak,s.getJSONObject(region).optInt("highest",-1));j.put("tier_baseline",Math.max(peak,document.getJSONObject("tier").optInt("highest",-1)));
+            JSONObject official=s.getJSONObject("tokens").getJSONObject("official");long at=official.optLong("at");if(at>0&&at<=now&&now-at<=300000L&&official.has("lifetimeTokens"))j.put("official_baseline",official.getLong("lifetimeTokens")).put("official_armed",true);
+            JSONObject sessions=s.getJSONObject("tokens").getJSONObject("sessions");for(String id:AccountProgress.keys(sessions)){JSONObject row=sessions.getJSONObject(id);long observed=row.optLong("at");if(observed>0&&observed<=now&&now-observed<=300000L)j.getJSONObject("local").put(id,new JSONObject().put("baseline",row.getJSONObject("total").getLong("totalTokens")).put("delta",0));}
         }return true;
     }
     public static boolean capture(JSONObject document,List<LedgerRecord> input,List<LedgerAggregation.Day> days,List<Long> credits,List<FunInsights.Window> windows,long now)throws JSONException {
@@ -36,13 +38,13 @@ public final class AchievementJourney {
         String before=j.toString();long from=j.getLong("from");List<LedgerRecord> rows=new ArrayList<>(input);rows.sort(Comparator.comparing((LedgerRecord x)->x.meter).thenComparingLong(x->x.at));
         JSONObject activity=j.getJSONObject("activity"),plans=j.getJSONObject("plans"),weeks=j.getJSONObject("weeks");
         for(int i=1;i<rows.size();i++){LedgerRecord a=rows.get(i-1),b=rows.get(i);if(a.at<=from||b.at>now||a.source.equals("legacy")||b.source.equals("legacy")||!a.meter.equals(b.meter)||!LedgerAggregation.day(a.at).equals(LedgerAggregation.day(b.at))||LedgerAggregation.classify(a,b,credits)!=LedgerAggregation.Change.NORMAL||b.used<=a.used)continue;
-            String day=LedgerAggregation.day(b.at).toString();if(!activity.has(day))activity.put(day,b.at);plans.put(b.plan,true);if(Instant.ofEpochMilli(b.at).atZone(LedgerAggregation.ZONE).getHour()<6)j.put("dawn",true);
+            String day=LedgerAggregation.day(b.at).toString();if(!activity.has(day))activity.put(day,b.at);if(!b.plan.equals("unknown"))plans.put(b.plan,true);if(Instant.ofEpochMilli(b.at).atZone(LedgerAggregation.ZONE).getHour()<6)j.put("dawn",true);
         }
-        for(LedgerAggregation.Day d:days)if(!d.legacy&&d.first>from&&d.last<=now&&d.points>0){if(!activity.has(d.date))activity.put(d.date,d.last);String[] p=d.policy.split("\\|");if(p.length==3)plans.put(p[1],true);}
+        for(LedgerAggregation.Day d:days)if(!d.legacy&&d.first>from&&d.last<=now&&d.points>0){if(!activity.has(d.date))activity.put(d.date,d.last);String[] p=d.policy.split("\\|");if(p.length==3&&!p[1].equals("unknown"))plans.put(p[1],true);}
         for(FunInsights.Window w:windows)if(w.span.start>from&&w.span.end<=now)weeks.put(Long.toString(w.span.end),true);
         // Same-policy actual billing denominator, with disjoint enabled segments. Never sum limits.
         JSONObject billing=document.getJSONObject("billing"),progress=j.getJSONObject("billing");for(String id:AccountProgress.keys(billing)){JSONObject bill=billing.getJSONObject(id).getJSONObject("bill");long start=LocalDate.parse(bill.getString("start")).atStartOfDay(LedgerAggregation.ZONE).toInstant().toEpochMilli(),end=LocalDate.parse(bill.getString("end")).atStartOfDay(LedgerAggregation.ZONE).toInstant().toEpochMilli();
-            for(MonthlyLedger.Bucket b:MonthlyLedger.calculate(rows,days,credits,start,end,from,now).values()){String key=id+"#"+b.policy;JSONObject segments=progress.optJSONObject(key);if(segments==null){segments=new JSONObject();progress.put(key,segments);}String segment=Long.toString(from);segments.put(segment,Math.max(segments.optDouble(segment),b.percent().doubleValue()));}
+            for(MonthlyLedger.Bucket b:MonthlyLedger.calculate(rows,days,credits,start,end,from,now).values()){String key=id+"#"+b.policy;JSONObject segments=progress.optJSONObject(key);if(segments==null){segments=new JSONObject();progress.put(key,segments);}String segment=Long.toString(from);segments.put(segment,Math.max(segments.optDouble(segment,0),b.percent().doubleValue()));}
         }
         return !before.equals(j.toString());
     }
@@ -65,14 +67,19 @@ public final class AchievementJourney {
         JSONObject j=journey(s);if(j==null)return;if(j.getInt("version")!=1||j.getLong("first_started_at")<0||j.getLong("first_started_at")>now||j.getLong("from")<0||j.getLong("from")>now||j.getLong("tokens")<0)throw new IllegalArgumentException("Achievement journey evidence");
         if(j.optBoolean("enabled")&&(j.getLong("first_started_at")==0||j.getLong("from")<j.getLong("first_started_at")))throw new IllegalArgumentException("Achievement start");
         if(j.getLong("first_started_at")>0)UUID.fromString(j.getString("id"));
+        if(j.getLong("from")<j.getLong("first_started_at")||j.optLong("segment_tokens")<0||j.optLong("segment_tokens")>j.getLong("tokens")||j.optLong("official_baseline")<0||j.optLong("official_delta")<0)throw new IllegalArgumentException("Journey counters");
         for(String k:new String[]{"activity","weeks","plans","billing","local"})j.getJSONObject(k);
+        for(String key:AccountProgress.keys(j.getJSONObject("weeks"))){long end=Long.parseLong(key);if(end<=j.getLong("first_started_at")||end>now||!j.getJSONObject("weeks").getBoolean(key))throw new IllegalArgumentException("Journey week");}
+        for(String key:AccountProgress.keys(j.getJSONObject("billing"))){JSONObject segments=j.getJSONObject("billing").getJSONObject(key);for(String segment:AccountProgress.keys(segments)){long from=Long.parseLong(segment);double value=segments.getDouble(segment);if(from<j.getLong("first_started_at")||from>now||!Double.isFinite(value)||value<0)throw new IllegalArgumentException("Journey billing");}}
+        for(String key:AccountProgress.keys(j.getJSONObject("local"))){JSONObject v=j.getJSONObject("local").getJSONObject(key);if(v.getLong("baseline")<0||v.getLong("delta")<0)throw new IllegalArgumentException("Journey local tokens");}
         for(String day:AccountProgress.keys(j.getJSONObject("activity"))){LocalDate.parse(day);long at=j.getJSONObject("activity").getLong(day);if(at<=j.getLong("first_started_at")||at>now)throw new IllegalArgumentException("Achievement activity");}
         for(String id:AccountProgress.keys(s.getJSONObject("achievements"))){JSONObject a=s.getJSONObject("achievements").getJSONObject(id);if(a.optBoolean("unlocked")&&(j.getLong("first_started_at")==0||a.optLong("first_earned_at")<j.getLong("first_started_at")))throw new IllegalArgumentException("Pre-start achievement");}
     }
     public static void merge(JSONObject own,JSONObject incoming)throws JSONException {
-        if(!same(own,incoming))return;JSONObject a=journey(own),b=journey(incoming);
+        JSONObject a=journey(own),b=journey(incoming);if(a!=null&&b!=null){JSONObject x=a.getJSONObject("legacy").optJSONObject("achievements"),y=b.getJSONObject("legacy").optJSONObject("achievements");if(x!=null&&y!=null)for(RpgCatalog.Entry e:RpgCatalog.ALL){JSONObject f=y.optJSONObject(e.id),old=x.optJSONObject(e.id);if(f!=null&&(old==null||f.optBoolean("unlocked")&&(!old.optBoolean("unlocked")||f.optLong("first_earned_at")<old.optLong("first_earned_at"))))x.put(e.id,new JSONObject(f.toString()));}}
+        if(!same(own,incoming))return;
         for(String k:new String[]{"activity","weeks","plans"}){JSONObject x=a.getJSONObject(k),y=b.getJSONObject(k);for(String id:AccountProgress.keys(y))if(!x.has(id))x.put(id,y.get(id));}
-        JSONObject x=a.getJSONObject("billing"),y=b.getJSONObject("billing");for(String id:AccountProgress.keys(y)){JSONObject xs=x.optJSONObject(id),ys=y.getJSONObject(id);if(xs==null){x.put(id,new JSONObject(ys.toString()));continue;}for(String segment:AccountProgress.keys(ys))xs.put(segment,Math.max(xs.optDouble(segment),ys.getDouble(segment)));}
+        JSONObject x=a.getJSONObject("billing"),y=b.getJSONObject("billing");for(String id:AccountProgress.keys(y)){JSONObject xs=x.optJSONObject(id),ys=y.getJSONObject(id);if(xs==null){x.put(id,new JSONObject(ys.toString()));continue;}for(String segment:AccountProgress.keys(ys))xs.put(segment,Math.max(xs.optDouble(segment,0),ys.getDouble(segment)));}
         for(String k:new String[]{"tokens","tier"})a.put(k,Math.max(a.getLong(k),b.getLong(k)));a.put("dawn",a.optBoolean("dawn")||b.optBoolean("dawn"));
         // Merge earned facts, not the other device's enabled switch or token baselines.
     }
