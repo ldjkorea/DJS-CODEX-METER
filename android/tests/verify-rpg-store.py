@@ -9,6 +9,7 @@ root=Path(__file__).resolve().parents[1];out=root/'build/rpg-store';out.mkdir(pa
 source=root/'build/subscription-store-verification/fixtures'
 sql=root/'build/sqlite-verification/fixtures'
 fixtures={}
+fixtures['android/os/Looper.java']='package android.os; public class Looper {public static Looper myLooper(){return null;}public static Looper getMainLooper(){return new Looper();}}'
 for name in ['android/annotation/SuppressLint.java','android/content/SharedPreferences.java','android/content/Context.java','dev/bennett/codexmeter/SecureTokenStore.java','dev/bennett/codexmeter/AppPreferences.java','dev/bennett/codexmeter/UsageApi.java']:
     fixtures[name]=(source/name).read_text(encoding='utf-8')
 fixtures['android/content/SharedPreferences.java']=fixtures['android/content/SharedPreferences.java'].replace('Editor edit();','java.util.Map<String,?> getAll();Editor edit();')

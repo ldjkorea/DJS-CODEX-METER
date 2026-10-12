@@ -8,20 +8,25 @@ import android.graphics.drawable.Drawable;
 final class TierTheme {
     static final int[] COLORS={0xffa9b3bd,0xffdfa778,0xffd5e1eb,0xffe8ce91,0xffaee4ee,0xff68e1b1,0xff9bdcfa,0xffc7a7f4,0xfff1a0ac,0xffffdfa1};
     static final int[] EMBLEMS={R.drawable.prestige_0,R.drawable.prestige_1,R.drawable.prestige_2,R.drawable.prestige_3,R.drawable.prestige_4,R.drawable.prestige_5,R.drawable.prestige_6,R.drawable.prestige_7,R.drawable.prestige_8,R.drawable.prestige_9};
-    private static String cachedBlob="",cachedPolicy="",cachedRevision="";
-    private static int cachedTier=-1;
-    static synchronized int tier(Context c){
+    private static final class Cached {
+        final String blob,policy,revision;final int tier;
+        Cached(String b,String p,String r,int t){blob=b;policy=p;revision=r;tier=t;}
+    }
+    private static volatile Cached cached=new Cached("","","",-1);
+    static int tier(Context c){
         // Read only encrypted identity change markers here; never decrypt tokens per chart/bar/color.
         String blob=c.getSharedPreferences("secure_auth_v1",0).getString("blob","");
         UsageSnapshot snapshot=AppPreferences.loadSnapshot(c);long now=System.currentTimeMillis();
         boolean fresh=snapshot!=null&&snapshot.longWindow()!=null&&now<snapshot.longWindow().effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageInsights.freshness(snapshot.fetchedAtMillis,now,RefreshScheduler.effectiveRefreshMinutes(c))==UsageInsights.Freshness.FRESH;
         String policy=TierStore.policy(c),revision=c.getSharedPreferences("codex_tier_evolution_v2",0).getString("revision","")+":"+LiveUsageStore.revision()+":"+LiveUsageStore.signature(c,snapshot)+":"+fresh+":"+c.getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode();
-        if(!blob.equals(cachedBlob)||!policy.equals(cachedPolicy)||!revision.equals(cachedRevision)){
+        Cached value=cached;
+        if(!blob.equals(value.blob)||!policy.equals(value.policy)||!revision.equals(value.revision)){
             int tier=blob.isEmpty()?-1:RpgProgressStore.tier(c);
             if(tier<0&&!blob.isEmpty())tier=TierStore.read(c,policy).tier;
             if(!blob.equals(c.getSharedPreferences("secure_auth_v1",0).getString("blob","")))return -1;
-            cachedTier=tier;cachedBlob=blob;cachedPolicy=policy;cachedRevision=revision;
-        }return cachedTier;
+            // Publish one immutable result; never hold a theme monitor across journal/network locks.
+            value=new Cached(blob,policy,revision,tier);cached=value;
+        }return value.tier;
     }
     static int accent(Context c,boolean dark){int t=tier(c);int color=t<0?0xffc2c9d0:COLORS[t];
         if(!dark){float[] hsv=new float[3];Color.colorToHSV(color,hsv);hsv[1]=Math.max(.3f,hsv[1]);hsv[2]=.38f;color=Color.HSVToColor(hsv);}return color;}

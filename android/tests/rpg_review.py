@@ -2,6 +2,8 @@
 from pathlib import Path
 import json
 def strip_rpg(name,text):
+    from startup_lock_review import strip_startup_lock
+    text=strip_startup_lock(name,text)
     from precision_review import strip_precision
     text=strip_precision(name,text)
     from refinement_review import strip_refinement

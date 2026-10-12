@@ -1,5 +1,29 @@
 [
   {
+    "version": "2.9.2",
+    "date": "2026-10-13",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.9.2",
+    "origin": "korean",
+    "ko": {
+      "title": "앱 시작 멈춤 긴급 수정",
+      "changes": [
+        "사용량 조회 중 홈 화면의 티어 표시가 조회 잠금을 기다려 멈추는 문제를 수정했습니다.",
+        "화면은 저장된 표시값을 즉시 읽으며 복구·이관은 기존 백그라운드 경로에서 처리합니다. 표시값이 없으면 임의의 수치를 만들지 않습니다.",
+        "티어 색상 캐시와 조회 잠금의 교차 대기를 제거했습니다.",
+        "로그인·사용량 원장·XP·티어·업적·칭호·결제·위젯·PC 연결을 보존하며 수집을 다시 초기화하지 않습니다."
+      ]
+    },
+    "en": {
+      "title": "Emergency startup freeze fix",
+      "changes": [
+        "Fix the home tier display waiting for the quota network lock during background refresh.",
+        "Read the stored display cache immediately on screen; retain worker recovery and migration. Missing cache remains unknown.",
+        "Remove opposite lock ordering between tier color caching and quota requests.",
+        "Preserve login, usage, XP, tiers, collections, billing, widgets and PC pairing without restarting collections."
+      ]
+    }
+  },
+  {
     "version": "2.9.1",
     "date": "2026-10-13",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.9.1",

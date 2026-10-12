@@ -39,6 +39,8 @@ if '--collection-restart' in sys.argv:
     test_class='CollectionRestartNativeTest';out=root/'build/collection-restart-native';out.mkdir(parents=True,exist_ok=True)
 if '--stability' in sys.argv:
     test_class='StabilityNativeTest';out=root/'build/stability-native';out.mkdir(parents=True,exist_ok=True)
+if '--startup-lock' in sys.argv:
+    test_class='StartupLockNativeTest';out=root/'build/startup-lock-native';out.mkdir(parents=True,exist_ok=True)
 if '--profile-share' in sys.argv:
     test_class='ProfileShareNativeTest';out=root/'build/profile-native';out.mkdir(parents=True,exist_ok=True)
 if '--upgrade-continuity' in sys.argv:
@@ -58,6 +60,7 @@ if phase_e:apk=root/('build/phase-e-qa/'+{'legacy':'v28','checkpoint':'v30','ver
 if '--collection-ui' in sys.argv:apk=root/'build/collection-restart-ui-qa/qa.apk'
 if '--collection-restart' in sys.argv:apk=root/'build/collection-restart-qa/qa.apk'
 if '--stability' in sys.argv:apk=root/'build/stability-qa/qa.apk'
+if '--startup-lock' in sys.argv:apk=root/'build/profile-qa/qa.apk'
 if '--profile-share' in sys.argv:apk=root/'build/profile-qa/qa.apk'
 if '--upgrade-continuity' in sys.argv:
     package='dev.bennett.codexmeter.phaseeqa';test_package='dev.bennett.codexmeter.phaseetest'
@@ -101,7 +104,7 @@ if '--widget30' in sys.argv:
 run([adb,'-s',serial,'install',*(['-r'] if reuse else []),apk]);run([adb,'-s',serial,'install',*(['-r'] if reuse else []),out/'tests.apk'])
 if phase_e and phase=='checkpoint':shell('appwidget','grantbind','--package',package,'--user','0')
 try:
-    result=shell('am','instrument','-r','-w',*(['-e','optimized','true'] if '--phase-d' in sys.argv else []),*(['-e','phase',phase] if phase_e else []),*(['-e','continuity',continuity] if '--upgrade-continuity' in sys.argv else []),*(['-e','resume','true'] if '--resume-checkpoint' in sys.argv else []),test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
+    result=shell('am','instrument','-r','-w',*(['-e','probe','true'] if '--startup-probe' in sys.argv else []),*(['-e','optimized','true'] if '--phase-d' in sys.argv else []),*(['-e','phase',phase] if phase_e else []),*(['-e','continuity',continuity] if '--upgrade-continuity' in sys.argv else []),*(['-e','resume','true'] if '--resume-checkpoint' in sys.argv else []),test_package+'/dev.bennett.codexmeter.'+test_class);(out/'RESULT.txt').write_text(result,encoding='utf-8');print(result);assert 'INSTRUMENTATION_CODE: -1' in result and 'checks passed' in result
 finally:
     if '--widget30' in sys.argv:shell('appwidget','revokebind','--package',package,'--user','0')
     if phase_e and phase=='checkpoint':shell('appwidget','revokebind','--package',package,'--user','0')
@@ -109,4 +112,5 @@ if not phase_e and "--upgrade-continuity" not in sys.argv:run([adb,'-s',serial,'
 
 if '--phase-e-ui' in sys.argv or '--collection-ui' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/phase-e-ui',out/'captures'])
 if '--profile-share' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/profile-fixtures',out/'captures'])
+if '--startup-lock' in sys.argv and '--startup-probe' not in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/startup-fixtures',out/'captures'])
 if '--upgrade-continuity' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/upgrade-continuity',out/'captures'])

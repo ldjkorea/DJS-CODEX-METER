@@ -35,6 +35,15 @@ final class RpgProgressStore extends SQLiteOpenHelper {
         }
     }
     static JSONObject peek(Context c){try{String account=SubscriptionStore.accountKey(c);if(account==null)return null;
+        // Painting must never wait for quota HTTP, journal migration or database recovery.
+        // Workers retain the durable recovery path below and refresh this display cache.
+        if(android.os.Looper.myLooper()==android.os.Looper.getMainLooper()){
+            String raw=c.getSharedPreferences("codex_rpg_display_v1",0).getString(account,"");
+            if(raw.isEmpty())return null;
+            JSONObject cached=new JSONObject(raw);
+            if(!cached.has("tier")||!cached.has("settlements")||!account.equals(SubscriptionStore.accountKey(c)))return null;
+            return safeDisplay(cached);
+        }
         synchronized(UsageApi.NETWORK_LOCK){if(c.getDatabasePath(NAME).exists()&&!Integer.toString(CollectionRestart.REVISION).equals(String.valueOf(c.getSharedPreferences("codex_rpg_display_v1",0).getAll().get(account+":collection_revision"))))ensureJourney(c,account);}
         String raw=c.getSharedPreferences("codex_rpg_display_v1",0).getString(account,"");
         if(!raw.isEmpty()){try{JSONObject cached=new JSONObject(raw);if(cached.has("tier")&&cached.has("settlements"))return safeDisplay(cached);}catch(JSONException invalid){/* Recover from durable journal below. */}}
