@@ -19,6 +19,10 @@ public final class BetaReleaseSelfTest {
         check(list.size()==(beta?4:1),"Separate catalog count");check(list.get(0).version.equals(beta?"9.9.3":"3.0.0"),"Separate newest release");
         check(UpdateChannel.selectUpdate(list,beta?"9.9.2":"2.9.2",beta?"stable":"alpha").version.equals(beta?"9.9.3":"3.0.0"),"Installed previous version update");
         check(UpdateChannel.selectUpdate(list,beta?"9.9.3":"3.0.0","alpha")==null,"Same version not offered");
+        JSONArray newer=new JSONArray(fixture.toString()).put(release("beta-v9.9.4","GPT-HUD-BETA-9.9.4.apk"));
+        List<GitHubRelease> nextList=GitHubReleaseParser.parse(newer.toString());
+        check(nextList.get(0).version.equals(beta?"9.9.4":"3.0.0"),"9.9.4 candidate stays beta-only");
+        if(beta){check(UpdateChannel.selectUpdate(nextList,"9.9.3","stable").version.equals("9.9.4"),"9.9.3 to 9.9.4 update discovery");check(UpdateChannel.selectUpdate(nextList,"9.9.4","alpha")==null,"9.9.4 not offered again");}
         JSONObject bad=release(beta?"beta-v9.9.2":"v3.0.1",beta?"GPT-HUD-BETA-9.9.2.apk":"CodexMeter-3.0.1-ko.apk");bad.getJSONArray("assets").getJSONObject(0).put("browser_download_url","https://github.com/evil/repo/releases/download/bad/app.apk");check(GitHubReleaseParser.parse(new JSONArray().put(bad).toString()).isEmpty(),"Foreign repository refused");
         JSONObject draft=release(beta?"beta-v9.9.2":"v3.0.1",beta?"GPT-HUD-BETA-9.9.2.apk":"CodexMeter-3.0.1-ko.apk").put("draft",true);check(GitHubReleaseParser.parse(new JSONArray().put(draft).toString()).isEmpty(),"Draft refused");
         String pkg=beta?"dev.bennett.codexmeter.trial":"dev.bennett.codexmeter";

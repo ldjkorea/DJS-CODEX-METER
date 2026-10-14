@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-VERSION_NAME="3.0.0"
+VERSION_NAME="9.9.4"
 DIST="$ROOT/dist"
 SIGNING_DIR="$ROOT/.local-signing"
 KEYSTORE="$SIGNING_DIR/codex-meter-local.p12"
@@ -27,11 +27,11 @@ mkdir -p "$DIST"
   --console=plain
 
 SOURCE_APK="$ROOT/app/build/outputs/apk/release/app-release.apk"
-OUT="$DIST/CodexMeter-$VERSION_NAME-ko.apk"
+OUT="$DIST/GPT-HUD-BETA-$VERSION_NAME.apk"
 cp "$SOURCE_APK" "$OUT"
 
 WEAR_SOURCE_APK="$ROOT/wear/build/outputs/apk/release/wear-release.apk"
-WEAR_OUT="$DIST/CodexMeter-Wear-$VERSION_NAME-ko.apk"
+WEAR_OUT="$DIST/CodexMeter-Wear-3.0.0-ko.apk"
 cp "$WEAR_SOURCE_APK" "$WEAR_OUT"
 
 APKSIGNER="$(find "$ANDROID_SDK_ROOT/build-tools" -type f \( -name apksigner -o -name apksigner.bat \) | sort | tail -1)"

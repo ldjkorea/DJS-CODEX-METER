@@ -12,6 +12,7 @@ public final class GrowthActivity extends AppCompatActivity {
     private static final ExecutorService WORKER=Executors.newSingleThreadExecutor();
     private LinearLayout content; private boolean busy,dark; private String signature="",loadedAccount="",requestedAccount;
     androidx.appcompat.app.AlertDialog detailDialog;
+    BetaGrowthModel betaGrowthModel;
     private int scroll; private long generation; private boolean receiverRegistered;
     private final BroadcastReceiver updates=new BroadcastReceiver(){public void onReceive(Context c,Intent i){load(false);}};
     @Override protected void onCreate(Bundle state){Ui.applySelectedTheme(this);super.onCreate(state);dark=Ui.isDark(this);
@@ -33,22 +34,23 @@ public final class GrowthActivity extends AppCompatActivity {
         // Clear the old profile immediately, even while its worker is still running.
         if(!java.util.Objects.equals(account,requestedAccount)){
             generation++;busy=false;signature="";loadedAccount="";requestedAccount=account;scroll=0;
-            if(detailDialog!=null)detailDialog.dismiss();content.removeAllViews();
+            if(detailDialog!=null)detailDialog.dismiss();betaGrowthModel=null;content.removeAllViews();
         }
         if(busy)return;
-        String next=account+":"+mode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this));
+        String next=account+":"+mode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this))+":"+AppPreferences.getLastError(this)+":"+AppPreferences.getAutomaticRefresh(this)+":"+MxpEconomy.date(System.currentTimeMillis());
         if(!force&&next.equals(signature)&&content.getChildCount()>0)return;
-        if(account==null){if(detailDialog!=null)detailDialog.dismiss();loadedAccount="";generation++;signature=next;content.removeAllViews();content.addView(LedgerUi.caption(this,getString(R.string.rpg3_no_account),dark));return;}
+        if(account==null){if(detailDialog!=null)detailDialog.dismiss();loadedAccount="";generation++;signature=next;content.removeAllViews();content.addView(LedgerUi.caption(this,"로그인하면 이 계정의 성장 기록을 확인할 수 있어요",dark));content.addView(BetaGrowthUi.link(this,"홈에서 계정 연결",dark,()->MatteNav.open(this,1)));return;}
         busy=true;long ticket=++generation;
         if(content.getChildCount()==0)content.addView(LedgerUi.caption(this,getString(R.string.next_loading),dark));
         WORKER.execute(()->{JSONObject journal=null;java.util.List<String> unlocks=java.util.Collections.emptyList();boolean failed=false;
             try{journal=RpgProgressStore.export(getApplicationContext(),account);unlocks=RpgShowcase.observe(getApplicationContext(),account,journal==null?null:journal.optJSONObject("rpg"));}catch(Exception e){failed=true;}
+            final BetaGrowthModel presentation=failed?null:BetaGrowthModel.create(journal,account,System.currentTimeMillis(),AppPreferences.getAutomaticRefresh(this),!AppPreferences.getLastError(this).isEmpty(),TrialDemo.active(this));
             final JSONObject result=journal;final boolean error=failed;final java.util.List<String> earned=unlocks;
             runOnUiThread(()->{if(isDestroyed()||isFinishing()||ticket!=generation)return;busy=false;
                 if(!account.equals(SubscriptionStore.accountKey(this))){if(detailDialog!=null)detailDialog.dismiss();signature="";load(true);return;}
                 android.view.View view=findViewById(R.id.dashboard_scroll);if(content.getChildCount()>1&&view!=null)scroll=view.getScrollY();
-                loadedAccount=account;signature=next;content.removeAllViews();
-                if(error)content.addView(LedgerUi.caption(this,getString(R.string.rpg3_failed),dark));
+                loadedAccount=account;betaGrowthModel=presentation;signature=next;content.removeAllViews();
+                if(error){content.addView(LedgerUi.caption(this,"성장 기록 확인 실패 · 기존 기록은 유지됩니다",dark));content.addView(BetaGrowthUi.link(this,"저장된 기록 다시 확인",dark,()->load(true)));}
                 else {
                     if(!earned.isEmpty()){
                         android.widget.TextView banner=LedgerUi.badge(this,getString(R.string.growth_new_unlock,earned.size()),dark,false);banner.setAccessibilityLiveRegion(android.view.View.ACCESSIBILITY_LIVE_REGION_POLITE);banner.setOnClickListener(v->open("achievements"));content.addView(banner);Ui.addSpacer(content,12);
@@ -60,6 +62,7 @@ public final class GrowthActivity extends AppCompatActivity {
             });
         });
     }
+    void betaCollections(JSONObject journal,LinearLayout target){LinearLayout saved=content;try{content=target;collections(journal);}finally{content=saved;}}
     void collections(JSONObject journal){
         JSONObject state=journal==null?null:journal.optJSONObject("rpg");
         LinearLayout savedContent=content;content=Ui.card(this,dark);LinearLayout settings=content;settings.setVisibility(android.view.View.GONE);
