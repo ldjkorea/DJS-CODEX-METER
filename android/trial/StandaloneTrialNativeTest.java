@@ -23,13 +23,13 @@ public final class StandaloneTrialNativeTest extends Instrumentation {
         if(phase.equals("seed")){continuity.edit().putLong("total",total).putString("facts",facts).putBoolean("marker",true).commit();}
         else {check(continuity.getBoolean("marker",false),"Upgrade setting marker retained");check(continuity.getLong("total",-1)==total,"Upgrade MXP balance retained");check(continuity.getString("facts","").equals(facts),"Upgrade honors titles equipment dates retained");}
         if(phase.equals("download")){
-            java.util.List<GitHubRelease> releases=ReleaseUpdateClient.check(c);GitHubRelease next=UpdateChannel.selectUpdate(releases,info.versionName,"stable");check(next!=null&&next.version.equals("9.9.1"),"Public beta discovery 9.9.0 to 9.9.1");
-            UpdateInstaller.PreparedUpdate prepared=UpdateInstaller.prepare(c,next,null);check(prepared.versionCode==990001&&prepared.versionName.equals("9.9.1"),"Real APK download checksum package signing code verified");
+            java.util.List<GitHubRelease> releases=ReleaseUpdateClient.check(c);GitHubRelease next=UpdateChannel.selectUpdate(releases,info.versionName,"stable");check(next!=null&&next.version.equals("9.9.2"),"Public beta discovery to 9.9.2");
+            UpdateInstaller.PreparedUpdate prepared=UpdateInstaller.prepare(c,next,null);check(prepared.versionCode==990002&&prepared.versionName.equals("9.9.2"),"Real APK download checksum package signing code verified");
             result.putString("stream","Beta download: "+checks+" checks passed; verified official installer candidate, no silent install.\n");finish(-1,result);return;
         }
         MainActivity home=(MainActivity)startActivitySync(new Intent(c,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));Thread.sleep(2500);waitForIdleSync();main(()->check(home.findViewById(android.R.id.content)!=null,"Actual trial home opened"));
         GrowthActivity growth=(GrowthActivity)startActivitySync(new Intent(c,GrowthActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));Thread.sleep(1200);waitForIdleSync();int level=RpgProgressStore.progress(c).getJSONObject(MxpEconomy.KEY).getInt("level");main(()->check(text(growth.findViewById(android.R.id.content)).contains(Integer.toString(level)),"Growth shows sampled level"));
-        if(info.versionName.equals("9.9.1")){
+        if(ReleaseVersion.compare(info.versionName,"9.9.1")>=0){
             main(()->{
                 View root=growth.findViewById(android.R.id.content);check(root.findViewWithTag("beta:hero")!=null,"Visual level hero");check(root.findViewWithTag("beta:challenges")!=null,"Daily weekly monthly progress cards");
                 androidx.swiperefreshlayout.widget.SwipeRefreshLayout refresh=growth.findViewById(R.id.dashboard_refresh);check(!refresh.isEnabled()&&!refresh.isRefreshing(),"Read-only growth cannot leave spinner running");
@@ -37,7 +37,9 @@ public final class StandaloneTrialNativeTest extends Instrumentation {
                 root.findViewWithTag("beta:honors").performClick();check(growth.detailDialog!=null&&growth.detailDialog.isShowing(),"Honor grid opens");
             });waitForIdleSync();capture(c,"honors");
             main(()->{View grid=growth.detailDialog.getWindow().getDecorView();check(grid.findViewWithTag("beta:medal:rpg3.first_day")!=null,"Earned medal tile");check(grid.findViewWithTag("beta:medal:rpg3.annual_gold_3")!=null,"Locked mythic medal tile");growth.detailDialog.dismiss();growth.findViewById(android.R.id.content).findViewWithTag("beta:wardrobe").performClick();});waitForIdleSync();capture(c,"titles");
-            main(()->{check(growth.detailDialog.getWindow().getDecorView().findViewWithTag("beta:medal:rpg3.workbench")!=null,"Owned title wardrobe tile");growth.detailDialog.dismiss();});waitForIdleSync();capture(c,"growth");
+            main(()->{check(growth.detailDialog.getWindow().getDecorView().findViewWithTag("beta:medal:rpg3.workbench")!=null,"Owned title wardrobe tile");growth.detailDialog.getWindow().getDecorView().findViewWithTag("beta:medal:rpg3.starter").performClick();check(growth.detailDialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE).getText().toString().equals("이 칭호 장착"),"Explicit owned-title equip action");growth.detailDialog.getButton(android.content.DialogInterface.BUTTON_POSITIVE).performClick();});Thread.sleep(1200);waitForIdleSync();
+            check(RpgProgressStore.progress(c).optString("equipped_title").equals("rpg3.starter"),"Actual selected title saved");
+            main(()->growth.equip("rpg3.workbench"));Thread.sleep(1200);waitForIdleSync();check(RpgProgressStore.progress(c).optString("equipped_title").equals("rpg3.workbench"),"Original equipped title restored in synthetic fixture");Thread.sleep(2500);capture(c,"growth");
             check(RpgProgressStore.progress(c).getJSONObject(MxpEconomy.KEY).getLong("total")==total,"Browsing medals titles gives no XP");
         }
         check(SpicyQuotes.peek(c,SubscriptionStore.accountKey(c))!=null&&SpicyQuotes.peek(c,SubscriptionStore.accountKey(c)).tip!=null,"Actual spicy quote links a practice tip");

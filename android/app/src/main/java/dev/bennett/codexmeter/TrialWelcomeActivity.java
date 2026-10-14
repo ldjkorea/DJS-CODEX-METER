@@ -28,7 +28,7 @@ public final class TrialWelcomeActivity extends AppCompatActivity {
         body.addView(LedgerUi.caption(this,"첫 달 활동을 가정한 가상 계정으로 Lv.30대 성장·명예·매운맛 코치를 보여줍니다. 표시된 사용량과 성취는 실제 기록이 아닙니다.",dark));
         Ui.addSpacer(body,20);
         body.addView(LedgerUi.action(this,"내 계정으로 체험판 사용",false,dark,()->{
-            WORKER.execute(()->{try{TrialDemo.leaveDemo(getApplicationContext());runOnUiThread(()->startActivity(new Intent(this,MainActivity.class)));}catch(Exception e){runOnUiThread(()->Toast.makeText(this,"로그인 준비에 실패했습니다.",Toast.LENGTH_LONG).show());}});
+            WORKER.execute(()->{try{TrialDemo.leaveDemo(getApplicationContext());runOnUiThread(()->startActivity(new Intent(this,MainActivity.class).putExtra("start_sign_in",true)));}catch(Exception e){runOnUiThread(()->Toast.makeText(this,"로그인 준비에 실패했습니다.",Toast.LENGTH_LONG).show());}});
         }));
         body.addView(LedgerUi.caption(this,"이 체험판에 별도로 로그인합니다. 기존 3.0 앱의 로그인이나 데이터를 가져오지 않습니다. 새 기록은 체험판에서 처음부터 쌓입니다.",dark));
     }
