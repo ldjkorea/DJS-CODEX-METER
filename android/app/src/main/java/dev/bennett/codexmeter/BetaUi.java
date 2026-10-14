@@ -7,6 +7,7 @@ import android.view.*;
 import android.widget.*;
 final class BetaUi {
     static int accent(boolean dark){return dark?0xff8eb8ff:0xff2458a8;}
+    static int accent(Context context,boolean dark){return TierTheme.accent(context,dark);}
     static TextView text(Context c,String label,int size,int color,boolean bold){TextView t=Ui.text(c,label,size,color);t.setSingleLine(false);t.setIncludeFontPadding(true);t.setLineSpacing(0,1.4f);if(bold)t.setTypeface(PretendardFont.semibold(c));return t;}
     static TextView title(Context c,String label,boolean dark){return text(c,label,20,Ui.mainText(dark),true);}
     static TextView body(Context c,String label,boolean dark){return text(c,label,15,Ui.mainText(dark),false);}

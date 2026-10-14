@@ -29,6 +29,7 @@ final class BetaV4 {
         JSONObject staged=new JSONObject(state.toString());staged.getJSONObject("days").put(date,new JSONObject().put("at",responseAt).put("source","usage_response"));rebuild(staged,now);Iterator<String> fields=staged.keys();while(fields.hasNext()){String key=fields.next();state.put(key,staged.get(key));}return true;
     }
     static void validateIdentity(JSONObject s,String account)throws JSONException{
+        int catalog=s.has("catalog_revision")?new java.math.BigDecimal(s.get("catalog_revision").toString()).intValueExact():1;if(catalog<1||catalog>2)throw new IllegalArgumentException("Newer catalog preserved");
         if(new java.math.BigDecimal(s.get("rules").toString()).intValueExact()!=RULES||!NAMESPACE.equals(s.getString("namespace"))||!Objects.equals(account,s.getString("account")))throw new IllegalArgumentException("Rules/account");
     }
     private static void pay(JSONObject rewards,String period,String stage,long value,long at)throws JSONException{
@@ -60,8 +61,24 @@ final class BetaV4 {
         earned(titles,"rpg3.starter",dates.size()>=1,last);earned(titles,"rpg3.title_rhythm",dates.size()>=7,last);earned(titles,"rpg3.workbench",level>=30&&dates.size()>=14,last);earned(titles,"rpg3.title_orbit",gold>=6,last);earned(titles,"rpg3.title_chronicler",goldYears>=3,last);
         state.put("total",total).put("level",level).put("progress",progress).put("next_cost",cost(level)).put("last_response",last).put("weeks",weeks).put("months",months)
             .put("rewards",rewards).put("honors",honors).put("titles",titles).put("checked_days",dates.size()).put("completed_weeks",weekStages).put("gold_months",gold).put("gold_years",goldYears);
+        int perfect=0,bronze=0,silver=0;Iterator<String> weekKeys=weeks.keys();while(weekKeys.hasNext())if(weeks.getInt(weekKeys.next())>=5)perfect++;Iterator<String> monthKeys=months.keys();while(monthKeys.hasNext()){int count=months.getInt(monthKeys.next());if(count>=7)bronze++;if(count>=10)silver++;}
+        state.put("perfect_weeks",perfect).put("bronze_months",bronze).put("silver_months",silver);
+        if(state.optInt("catalog_revision",2)>=2){expand(state,dates,now);state.put("catalog_revision",2);}
         if(!state.optString("equipped").isEmpty()&&!titles.has(state.getString("equipped")))throw new IllegalArgumentException("Unowned equipment");
     }
+    static void expand(JSONObject state,List<String> dates,long now)throws JSONException{
+        ArrayList<String[]> pending=new ArrayList<>();for(String[] entry:BetaCatalog.ALL)if(entry.length>7&&!state.getJSONObject(BetaCatalog.title(entry[0])?"titles":"honors").has(entry[0]))pending.add(entry);
+        if(pending.isEmpty())return;
+        JSONObject counts=new JSONObject();HashMap<String,Integer> weeks=new HashMap<>(),months=new HashMap<>();long xp=0;int level=1,wn=0,pn=0,bn=0,sn=0,gn=0,index=0;
+        for(String date:dates){long at=state.getJSONObject("days").getJSONObject(date).getLong("at");LocalDate day=LocalDate.parse(date);String week=week(day),month=date.substring(0,7);int w=weeks.getOrDefault(week,0)+1,m=months.getOrDefault(month,0)+1;weeks.put(week,w);months.put(month,m);xp++;
+            if(w==3){wn++;xp+=20;}if(w==5){pn++;xp+=10;}if(m==7){bn++;xp+=40;}if(m==10){sn++;xp+=40;}if(m==14){gn++;xp+=40;}
+            while(level<100&&xp>=threshold(level+1))level++;
+            counts.put("checked_days",++index).put("completed_weeks",wn).put("perfect_weeks",pn).put("bronze_months",bn).put("silver_months",sn).put("gold_months",gn).put("level",level);
+            Iterator<String[]> entries=pending.iterator();while(entries.hasNext()){String[] e=entries.next();if(BetaCatalog.metric(counts,e[7])>=Integer.parseInt(e[8])){state.getJSONObject(BetaCatalog.title(e[0])?"titles":"honors").put(e[0],at);entries.remove();}}
+            if(pending.isEmpty())break;
+        }
+    }
+    static JSONObject upgrade(JSONObject input,long now)throws JSONException{validateIdentity(input,input.getString("account"));JSONObject updated=new JSONObject(input.toString());updated.put("catalog_revision",2);rebuild(updated,now);return updated;}
     private static void earned(JSONObject facts,String id,boolean yes,long at)throws JSONException{if(yes&&!facts.has(id))facts.put(id,at);}
     static JSONObject summary(JSONObject state,long now)throws JSONException{
         JSONObject out=new JSONObject();for(String key:new String[]{"rules","account","enabled","cutover","total","level","progress","next_cost","last_response","honors","titles","equipped","checked_days","completed_weeks","gold_months","gold_years"})out.put(key,state.get(key));
@@ -69,8 +86,8 @@ final class BetaV4 {
     }
     static JSONObject restore(JSONObject own,JSONObject incoming,String account,long now)throws JSONException{
         validateIdentity(incoming,account);
-        Set<String> allowed=new HashSet<>(Arrays.asList("rules","namespace","account","cutover","enabled","days","equipped","seen_total","total","level","progress","next_cost","last_response","weeks","months","rewards","honors","titles","checked_days","completed_weeks","gold_months","gold_years"));Iterator<String> inputKeys=incoming.keys();while(inputKeys.hasNext())if(!allowed.contains(inputKeys.next()))throw new IllegalArgumentException("Unknown backup field; authentication excluded");
-        JSONObject restored=new JSONObject(incoming.toString());
+        Set<String> allowed=new HashSet<>(Arrays.asList("rules","namespace","account","cutover","enabled","days","equipped","seen_total","total","level","progress","next_cost","last_response","weeks","months","rewards","honors","titles","checked_days","completed_weeks","gold_months","gold_years","catalog_revision","perfect_weeks","bronze_months","silver_months"));Iterator<String> inputKeys=incoming.keys();while(inputKeys.hasNext())if(!allowed.contains(inputKeys.next()))throw new IllegalArgumentException("Unknown backup field; authentication excluded");
+        int revision=incoming.optInt("catalog_revision",1);if(revision<1||revision>2)throw new IllegalArgumentException("Newer catalog preserved");JSONObject restored=new JSONObject(incoming.toString()).put("catalog_revision",revision);
         // Derived fields and claimed collectibles must exactly match a rebuilt evidence ledger.
         JSONObject suppliedH=restored.getJSONObject("honors"),suppliedT=restored.getJSONObject("titles");long suppliedTotal=new java.math.BigDecimal(restored.get("total").toString()).longValueExact();int suppliedLevel=new java.math.BigDecimal(restored.get("level").toString()).intValueExact();
         restored.put("honors",new JSONObject()).put("titles",new JSONObject());rebuild(restored,now);
@@ -81,7 +98,7 @@ final class BetaV4 {
             JSONObject days=restored.getJSONObject("days"),ownDays=own.getJSONObject("days");Iterator<String> keys=ownDays.keys();while(keys.hasNext()){String key=keys.next();JSONObject row=ownDays.getJSONObject(key);if(!days.has(key)||row.getLong("at")<days.getJSONObject(key).getLong("at"))days.put(key,new JSONObject(row.toString()));}
             for(String kind:new String[]{"honors","titles"}){JSONObject facts=restored.getJSONObject(kind),original=own.getJSONObject(kind);Iterator<String> ids=original.keys();while(ids.hasNext()){String id=ids.next();facts.put(id,facts.has(id)?Math.min(facts.getLong(id),original.getLong(id)):original.getLong(id));}}
             restored.put("enabled",own.getBoolean("enabled")).put("equipped",own.getString("equipped")).put("seen_total",own.optLong("seen_total"));rebuild(restored,now);
-        }return restored;
+        }return upgrade(restored,now);
     }
     private static boolean sameKeys(JSONObject a,JSONObject b){Set<String> x=new HashSet<>(),y=new HashSet<>();a.keys().forEachRemaining(x::add);b.keys().forEachRemaining(y::add);return x.equals(y);}
 }

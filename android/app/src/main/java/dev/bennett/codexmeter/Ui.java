@@ -229,7 +229,7 @@ public final class Ui {
     }
 
     public static int accent(Context context, boolean z) {
-        if(phoneSurface(context))return BetaUi.accent(z);
+        if(phoneSurface(context))return TierTheme.accent(context,z);
         int oneUi = oneUiAccent(z);
         if (AppPreferences.isMaterialYouEnabled(context)) {
             // Material You system accents; fall back to One UI blues when unavailable.

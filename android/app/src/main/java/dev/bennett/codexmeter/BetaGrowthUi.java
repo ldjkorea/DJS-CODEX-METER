@@ -19,7 +19,7 @@ final class BetaGrowthUi {
         if(s==null){hero.addView(BetaUi.note(a,BetaCopy.t(a,"error"),dark));hero.addView(BetaUi.action(a,BetaCopy.t(a,"backup"),false,dark,()->a.startActivity(new Intent(a,BetaBackupActivity.class))));return true;}
         hero.addView(BetaUi.text(a,"Lv. "+s.optInt("level"),28,Ui.mainText(dark),true));
         hero.addView(BetaUi.note(a,BetaCopy.t(a,"to_level",LedgerUi.number(Math.max(0,s.optLong("next_cost")-s.optLong("progress")))),dark));Ui.addSpacer(hero,10);
-        ProgressBar xp=Ui.progress(a,dark);xp.setMax((int)s.optLong("next_cost"));xp.setProgress((int)s.optLong("progress"));xp.setProgressTintList(android.content.res.ColorStateList.valueOf(BetaUi.accent(dark)));xp.setContentDescription(BetaCopy.t(a,"xp")+" "+s.optLong("progress")+" / "+s.optLong("next_cost"));hero.addView(xp);
+        ProgressBar xp=Ui.progress(a,dark);xp.setMax((int)s.optLong("next_cost"));xp.setProgress((int)s.optLong("progress"));xp.setProgressTintList(android.content.res.ColorStateList.valueOf(BetaUi.accent(a,dark)));xp.setContentDescription(BetaCopy.t(a,"xp")+" "+s.optLong("progress")+" / "+s.optLong("next_cost"));hero.addView(xp);
         hero.addView(BetaUi.note(a,LedgerUi.number(s.optLong("progress"))+" / "+LedgerUi.number(s.optLong("next_cost"))+" "+BetaCopy.t(a,"xp"),dark));
         String next=s.optString("next_id");hero.addView(BetaUi.row(a,BetaCopy.t(a,"next"),next.isEmpty()?BetaCopy.t(a,"complete_all"):BetaCatalog.name(next,BetaIdentity.name(a),BetaCopy.ko(a))+" · "+Math.min(s.optInt("goal_count"),s.optInt("goal_target"))+" / "+s.optInt("goal_target"),dark,()->{if(!next.isEmpty())detail(a,state,next,dark,account);}));
         long fresh=journal.optLong("beta_reward_notice");if(fresh>0){TextView notice=BetaUi.note(a,BetaCopy.t(a,"reward_summary",LedgerUi.number(fresh)),dark);notice.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);hero.addView(notice);}
@@ -33,7 +33,7 @@ final class BetaGrowthUi {
         if(period==0)missions.addView(BetaUi.note(a,BetaCopy.t(a,"day_condition"),dark));
         int count=s.optInt(period==0?"day":period==1?"week":"month");int[] targets=BetaV4.targets(period);
         for(int target:targets){Ui.addSpacer(missions,10);LinearLayout step=new LinearLayout(a);step.setOrientation(LinearLayout.VERTICAL);step.addView(BetaUi.body(a,BetaCopy.t(a,"days",Math.min(count,target),target),dark));
-            ProgressBar bar=Ui.progress(a,dark);bar.setMax(target);bar.setProgress(Math.min(count,target));bar.setProgressTintList(android.content.res.ColorStateList.valueOf(BetaUi.accent(dark)));bar.setContentDescription(BetaCopy.t(a,"days",Math.min(count,target),target));step.addView(bar);
+            ProgressBar bar=Ui.progress(a,dark);bar.setMax(target);bar.setProgress(Math.min(count,target));bar.setProgressTintList(android.content.res.ColorStateList.valueOf(BetaUi.accent(a,dark)));bar.setContentDescription(BetaCopy.t(a,"days",Math.min(count,target),target));step.addView(bar);
             int reward=BetaV4.reward(period,target);step.addView(BetaUi.note(a,BetaCopy.t(a,"stage_reward",reward)+" · "+(count>=target?BetaCopy.t(a,"auto_paid"):BetaCopy.t(a,"remaining",target-count)),dark));missions.addView(step);}
         if(model.lastObserved>0)missions.addView(BetaUi.note(a,BetaCopy.t(a,"last_check",time(a,model.lastObserved)),dark));
         missions.addView(BetaUi.action(a,BetaCopy.t(a,"check_home"),true,dark,()->MatteNav.open(a,1)));

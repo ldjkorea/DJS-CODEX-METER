@@ -10,9 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 final class LiveCards {
     private LiveCards() {}
     static LinearLayout crest(AppCompatActivity a,boolean dark,LiveUtilization.Result live,boolean fresh){
-        LinearLayout card=BetaUi.card(a,dark);org.json.JSONObject growth=BetaGrowthStore.peek(a);
-        String title=growth==null?BetaIdentity.name(a):BetaIdentity.title(a,growth.optString("equipped"));
-        card.addView(BetaUi.row(a,title,growth==null?BetaCopy.t(a,"pending_growth"):"Lv. "+growth.optInt("level"),dark,()->a.startActivity(new android.content.Intent(a,GrowthActivity.class))));return card;
+        return BetaHomeUi.card(a,dark);
     }
     static LinearLayout ai(AppCompatActivity a,boolean dark,LiveUtilization.Result live,UsageSnapshot snapshot,boolean fresh,double daily,long now){
         return ai(a,dark,live,snapshot,fresh,daily,now,null);
