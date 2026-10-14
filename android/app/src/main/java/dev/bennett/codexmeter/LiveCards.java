@@ -29,18 +29,14 @@ final class LiveCards {
             LinearLayout row=new LinearLayout(a);row.setGravity(Gravity.CENTER);Ui.addSpacer(card,14);
             for(String id:representatives){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout medal=RpgDisplayStyle.medal(a,e,dark);medal.setOnClickListener(v->RpgMedalUi.show(a,growth,e,dark,false,null));RpgDisplayStyle.addMedal(row,medal);}card.addView(row,new LinearLayout.LayoutParams(-1,-2));
         }
+        MxpUi.periods(a,card,growth,dark);
         return card;
     }
     static LinearLayout ai(AppCompatActivity a,boolean dark,LiveUtilization.Result live,UsageSnapshot snapshot,boolean fresh,double daily,long now){
         return ai(a,dark,live,snapshot,fresh,daily,now,null);
     }
     static LinearLayout ai(AppCompatActivity a,boolean dark,LiveUtilization.Result live,UsageSnapshot snapshot,boolean fresh,double daily,long now,String selected){
-        UsageWindow window=snapshot.longWindow();
-        LinearLayout card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);card.setPadding(Ui.dp(a,10),Ui.dp(a,14),Ui.dp(a,10),Ui.dp(a,14));
-        card.addView(LedgerUi.caption(a,a.getString(R.string.live_ai_title),dark));Ui.addSpacer(card,10);
-        String key=SpicyAi.key(daily,window==null?Double.NaN:window.usedPercent,fresh,live.bonus,window==null?0:window.effectiveResetAtMillis(snapshot.fetchedAtMillis)-now,now);
-        int id=resource(key);
-        TextView quote=LedgerUi.heading(a,"“"+(selected==null?a.getString(id==0?R.string.live_ai_missing_0:id):selected)+"”",dark);quote.setTextSize(18);card.addView(quote);return card;
+        return CoachUi.card(a,dark,snapshot,fresh,live.bonus,daily);
     }
     private static int resource(String key){
         switch(key){

@@ -139,8 +139,8 @@ public final class UpdateActivity extends AppCompatActivity {
         boolean returnToStable = UpdateChannel.isReturnToStable(release, installedVersion);
         LinearLayout card = Ui.card(this, dark);
         TextView title = Ui.text(this,
-                comparison > 0 ? "GPT HUD " + release.version + UpdateActivity.this.getString(R.string.ui_is_available_7b679e)
-                        : comparison == 0 ? "GPT HUD " + release.version
+                comparison > 0 ? "GPT HUD BETA " + release.version + UpdateActivity.this.getString(R.string.ui_is_available_7b679e)
+                        : comparison == 0 ? "GPT HUD BETA " + release.version
                         : returnToStable ? UpdateActivity.this.getString(R.string.ui_return_to_codex_meter_399f2f) + release.version
                         : UpdateActivity.this.getString(R.string.ui_older_release_a0253c) + release.version,
                 20, Ui.mainText(dark));

@@ -88,6 +88,7 @@ public final class Ui {
     }
 
     public static Page installPage(AppCompatActivity activity, String title, boolean back) {
+        if(TrialDemo.active(activity))title="[가상 데모] "+title;
         ViewGroup parent = activity.findViewById(android.R.id.content);
         View root = LayoutInflater.from(activity).inflate(R.layout.activity_oneui_dashboard, parent, false);
         ToolbarLayout toolbar = root.findViewById(R.id.toolbar_layout);

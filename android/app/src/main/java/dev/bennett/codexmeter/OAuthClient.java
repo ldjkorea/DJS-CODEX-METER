@@ -32,6 +32,7 @@ public final class OAuthClient {
     }
 
     public static AuthTokens refresh(Context context, AuthTokens authTokens) throws Exception {
+        if(TrialDemo.ACCOUNT.equals(authTokens.accountId))throw new Exception("Synthetic demo cannot refresh OAuth");
         JSONObject jSONObject = new JSONObject();
         jSONObject.put("grant_type", "refresh_token");
         jSONObject.put("refresh_token", authTokens.refreshToken);
@@ -41,6 +42,7 @@ public final class OAuthClient {
     }
 
     public static void revokeBestEffort(Context context, AuthTokens authTokens) {
+        if(authTokens!=null&&TrialDemo.ACCOUNT.equals(authTokens.accountId))return;
         if (authTokens != null && !authTokens.refreshToken.isEmpty()) {
             JSONObject jSONObject = new JSONObject();
             try {

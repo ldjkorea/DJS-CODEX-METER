@@ -22,6 +22,7 @@ public final class UsageApi {
     }
 
     public static UsageSnapshot refreshAndCache(Context context, boolean manualRecord) throws Exception {
+        if(TrialDemo.active(context))return TrialDemo.snapshot(context);
         AuthTokens authTokens;
         Response responseRequestUsage;
         String str;
@@ -98,6 +99,7 @@ public final class UsageApi {
     }
 
     static AuthTokens usableTokens(Context context) throws Exception {
+        if(TrialDemo.active(context))throw new Exception("가상 데모에서는 계정 API를 호출하지 않습니다.");
         AuthTokens authTokensLoad = SecureTokenStore.load(context);
         if (authTokensLoad == null) {
             throw new Exception("Sign in to ChatGPT first.");

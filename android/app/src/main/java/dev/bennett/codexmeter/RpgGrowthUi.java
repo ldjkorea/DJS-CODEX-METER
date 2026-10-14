@@ -13,7 +13,7 @@ final class RpgGrowthUi {
     static String number(long n){return NumberFormat.getIntegerInstance().format(n);}
     static boolean korean(android.content.Context c){return c.getResources().getConfiguration().getLocales().get(0).getLanguage().equals("ko");}
     static String rank(android.content.Context c,int rank){return rank<0?c.getString(R.string.fun_placing):TierPresentation.ENGLISH[Math.min(9,rank)];}
-    static String title(android.content.Context c,String id){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);if(e==null){RpgTitleCatalog.Title t=RpgTitleCatalog.find(id);if(t!=null)e=t.display;}return e==null?"—":korean(c)?e.title:e.titleEn;}
+    static String title(android.content.Context c,String id){String[] modern=MxpHonors.find(id);if(modern!=null)return modern[korean(c)?1:2];RpgCatalog.Entry e=RpgGrowthFacts.entry(id);if(e==null){RpgTitleCatalog.Title t=RpgTitleCatalog.find(id);if(t!=null)e=t.display;}return e==null?"—":korean(c)?e.title:e.titleEn;}
     static String name(android.content.Context c,RpgCatalog.Entry e){return RpgDisplayCopy.name(e,korean(c));}
     static int rankAccent(int grade,boolean dark){int color=grade<0?0xffc2c9d0:TierTheme.COLORS[Math.min(9,grade)];if(!dark){float[] hsv=new float[3];android.graphics.Color.colorToHSV(color,hsv);hsv[1]=Math.max(.3f,hsv[1]);hsv[2]=.38f;color=android.graphics.Color.HSVToColor(hsv);}return color;}
     static void center(TextView text){text.setGravity(Gravity.CENTER);}
@@ -49,6 +49,7 @@ final class RpgGrowthUi {
     }
     static void render(GrowthActivity a,LinearLayout parent,JSONObject journal,boolean dark,boolean catalog){render(a,parent,journal,dark,catalog?"achievements":"overview");}
     static void render(GrowthActivity a,LinearLayout parent,JSONObject journal,boolean dark,String mode){
+        if(mode.equals("overview")&&BetaGrowthUi.render(a,parent,journal,dark))return;
         JSONObject state=journal==null?null:journal.optJSONObject("rpg");JSONObject facts=state==null?null:state.optJSONObject("achievements");if(facts==null)facts=new JSONObject();
         if(!mode.equals("overview")){parent.addView(LedgerUi.action(a,a.getString(R.string.growth_overview),false,dark,()->a.open("overview")));}
         if(mode.equals("titles")){parent.addView(LedgerUi.action(a,a.getString(R.string.medal_titles),false,dark,()->a.open("titles")));return;}
@@ -58,6 +59,7 @@ final class RpgGrowthUi {
         tap(a,kr,"KR",a.getString(R.string.rpg3_korea),()->a.detail("KR",state),dark);tap(a,world,"WORLD",a.getString(R.string.rpg3_world),()->a.detail("WORLD",state),dark);
         parent.addView(pair(a,kr,world));Ui.addSpacer(parent,12);
         parent.addView(pair(a,level(a,state,dark),plan(a,state,dark)));Ui.addSpacer(parent,12);
+        MxpUi.honors(a,parent,state,dark);
         a.collections(journal);
         JSONObject aj=AchievementJourney.journey(state);boolean started=aj!=null&&aj.optLong("first_started_at")>0;
         if(started){
@@ -84,8 +86,8 @@ final class RpgGrowthUi {
     private static LinearLayout level(GrowthActivity a,JSONObject state,boolean dark){
         LinearLayout card=tile(a,dark);TierTheme.frame(card,TierTheme.tier(a),dark);
         TextView label=LedgerUi.caption(a,a.getString(R.string.rpg3_level),dark);center(label);card.addView(label);Ui.addSpacer(card,10);
-        long xp=state==null?0:state.optLong("xp");int level=RpgEngine.level(xp);TextView value=LedgerUi.amount(a,state==null?"Lv. —":"Lv. "+level,dark,38);center(value);card.addView(value);Ui.addSpacer(card,10);
-        TextView total=LedgerUi.caption(a,a.getString(R.string.rpg3_xp,number(xp)),dark);center(total);card.addView(total);
+        long xp=state==null?0:state.optLong("xp");int level=MxpUi.level(state);TextView value=LedgerUi.amount(a,state==null?"Lv. —":"Lv. "+level,dark,38);center(value);card.addView(value);Ui.addSpacer(card,10);
+        JSONObject mxp=MxpEconomy.state(state);TextView total=LedgerUi.caption(a,mxp==null?a.getString(R.string.rpg3_xp,number(xp)):a.getString(R.string.mxp_progress,MxpUi.progress(mxp),Long.toString(mxp.optLong("next_cost"))),dark);center(total);card.addView(total);
         tap(a,card,"level",a.getString(R.string.rpg3_level),()->a.detail("level",state),dark);return card;
     }
     private static LinearLayout plan(GrowthActivity a,JSONObject state,boolean dark){

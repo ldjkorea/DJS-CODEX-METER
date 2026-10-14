@@ -32,11 +32,12 @@ public final class GitHubReleaseParser {
                 continue;
             }
             String tag = clean(release.optString("tag_name", ""), 100);
-            ReleaseVersion version = ReleaseVersion.parse(tag.replaceFirst("-beta(?:\\.\\d+)?$", ""));
+            if (!tag.matches("beta-v9\\.9\\.[0-9]+")) continue;
+            ReleaseVersion version = ReleaseVersion.parse(tag.substring(5).replaceFirst("-beta(?:\\.\\d+)?$", ""));
             if (version == null || versions.contains(version.normalized())) {
                 continue;
             }
-            String expectedApk = "CodexMeter-" + version.normalized() + "-ko.apk";
+            String expectedApk = "GPT-HUD-BETA-" + version.normalized() + ".apk";
             JSONObject apk = null;
             JSONObject checksum = null;
             JSONArray assets = release.optJSONArray("assets");
@@ -78,7 +79,7 @@ public final class GitHubReleaseParser {
             }
             String notes = clean(release.optString("body", ""), MAX_NOTES);
             boolean prerelease = release.optBoolean("prerelease", false)
-                    || ReleaseVersion.parse(tag).isPrerelease();
+                    || ReleaseVersion.parse(tag.substring(5)).isPrerelease();
             versions.add(version.normalized());
             parsed.add(new GitHubRelease(version.normalized(), tag, releaseName, notes,
                     clean(release.optString("published_at", ""), 80), pageUrl, expectedApk,

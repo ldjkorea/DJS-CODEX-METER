@@ -48,7 +48,7 @@ public final class RpgArchive {
             RpgCatalog.Entry e=RpgGrowthFacts.entry(id);if(e==null)throw new IllegalArgumentException("Unknown achievement");JSONObject a=ach.getJSONObject(id);
             if(!id.equals(a.getString("id"))||a.getLong("target")!=e.target||a.optLong("progress")<0||a.optInt("progress_days")<0||a.optInt("progress_weeks")<0)throw new IllegalArgumentException("Achievement fact");
             if(a.has("progress"))integer(a,"progress");if(a.has("progress_days"))integer(a,"progress_days");if(a.has("progress_weeks"))integer(a,"progress_weeks");
-            if(a.getBoolean("unlocked")){if(a.getLong("first_earned_at")<=0||a.getLong("first_earned_at")>now||awards.optLong("achievement:"+id)!=e.bonus)throw new IllegalArgumentException("Achievement award");}
+            if(a.getBoolean("unlocked")){if(a.getLong("first_earned_at")<=0||a.getLong("first_earned_at")>now||MxpEconomy.state(r)==null&&awards.optLong("achievement:"+id)!=e.bonus)throw new IllegalArgumentException("Achievement award");}
         }
         JSONObject evidence=doc.getJSONObject("evidence");for(String id:AccountProgress.keys(evidence)){JSONObject v=evidence.getJSONObject(id);long at=v.getLong("at");BigDecimal used=new BigDecimal(v.getString("used"));
             if(!id.equals(v.getString("meter")+"@"+at)||at<=0||at>now||used.signum()<0||used.compareTo(BigDecimal.valueOf(100))>0||v.getLong("seconds")<=0||v.getLong("reset")<=0)throw new IllegalArgumentException("Observation");

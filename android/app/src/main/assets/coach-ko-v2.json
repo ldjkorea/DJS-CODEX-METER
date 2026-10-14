@@ -1,0 +1,5855 @@
+{
+  "schemaVersion": 2,
+  "contentVersion": 20261014,
+  "quotes": [
+    {
+      "id": "ko.practice.problem",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "기획서 제목부터 거창하면 본문이 기죽어. 문제 한 줄부터 세워 보자.",
+      "tipId": "tip.problem",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.3323ab4c6e324eda",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "사용량은 깨끗하네. 이제 할 일까지 깨끗해질 차례.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9789e5b5834a4b2b",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "숫자만 보면 새 제품이야. 보호필름은 언제 뗄 건데?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f277fe1a151445f2",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "아직 첫 장도 안 넘겼네. 책갈피부터 사지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8e18f89194504f47",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "한도 대기실에 의자만 닳겠다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c282ef026a2b406b",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "시작 버튼 앞에서 전략 회의가 너무 길어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.86f8b26944d040db",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "사용률은 영점 조준 완료. 첫 질문만 남았네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.scope",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "기능은 뷔페처럼 담고 일정은 컵라면 3분? 이번 접시부터 줄여 보자.",
+      "tipId": "tip.scope",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.c13eca54365e4d28",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "비워 둔 한도에 먼지 앉기 전에 한 번 써 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.15503cf92c42421e",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "전적은 아직 빈칸. 허세 넣을 자리도 넉넉하네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4e4993a72aca4b0a",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "한도가 널 기다리다 대기 번호표까지 뽑았어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0b7b72aed46d4f10",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "런닝머신은 켜졌는데 아직 운동화 고르는 중이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0738ea1ece104749",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "시작 안 한 작업은 실패도 안 하지. 성공도 안 하지만.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ce3c08bebf884533",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "첫 질문이 그렇게 귀하면 박물관에 모셔야겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.requirements",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "적당히 빠르게, 알아서 예쁘게. 요구사항이 아니라 눈치 시험인데?",
+      "tipId": "tip.requirements",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.93dfe805da184897",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "한도는 새 공책이야. 첫 줄 너무 오래 고민하지 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.67f1a01c61f54dc9",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "지금 숫자에는 예고편도 안 나왔네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.31c7d59d16024743",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "출발선에서 자세만 멋있으면 뭐 해. 한 발은 떼자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5b184775db144c11",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "한도 창고 문은 열렸어. 구경만 하고 나갈 거야?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6c19bf68d807402f",
+      "situation": "zero",
+      "tone": "spicy",
+      "text": "마음의 준비가 길어질 때는 5분짜리 첫 단계만 적어 봐.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.6b0300d25aad476d",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도에 발끝만 담갔네. 수영장은 꽤 넓어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.acceptance",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "완료 도장은 셀프 결재가 아니지. 통과 조건부터 적어 놓자.",
+      "tipId": "tip.acceptance",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.813ce7ea92544212",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도 입장권 끊고 로비 사진만 찍었네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.91ef8193a5b94ec0",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "워밍업은 인정. 준비 운동이 본 운동보다 길지만 않게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c0f2d9a631614fbd",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "사용량이 아니라 출석 체크에 가깝네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.31d3957c058c414a",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도는 대형인데 질문은 소형 포장했어?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2ae8a448320047c2",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "시동은 걸렸네. 이제 주차장에서 나와 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b54ee463fda84619",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "이 정도면 한도에게 인사만 하고 온 거야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.risk",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "일정표에 순풍만 적으면 역풍은 무단결근 처리하냐. 삐끗할 곳도 보자.",
+      "tipId": "tip.risk",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.f5b2a3eb6c9a42fd",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "분명 움직였는데 만보기도 눈치 못 챌 거리네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d3f682b3f54d4a0b",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도 코너에 발자국 하나 찍고 탐험 끝?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2621832d347349e3",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "작은 시작은 좋아. 작은 끝으로 확정하지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ea1d26e0cebf4d19",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "아직 한도는 스트레칭도 안 끝났어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.cfe5f2aa6ce14c75",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "냉장고 문만 열었다 닫은 느낌이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1e5ee55f40b84478",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "오늘의 시범 운전은 끝. 목적지도 찍어 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.summary",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "요약이 멋있다고 원문까지 동의한 건 아니야. 페이지 번호도 데려와.",
+      "tipId": "tip.summary",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.fbd81cc436fd448a",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도에 찻숟가락을 꽂았네. 국자는 어디 갔어?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6b7d528ad88045a3",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "장비는 준비됐는데 첫 몬스터가 아직 멀쩡해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4efbf09cc00e4b59",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "머릿속 회의가 바쁠 땐 안건 한 줄부터 꺼내 봐.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.60138abdcbed4596",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "사용량에 점 하나 찍었네. 문장으로 이어 볼까?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.207e619e420b41ba",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "첫 페이지 모서리만 접고 독서왕 하기는 이르지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.881768408a484356",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도는 출근했는데 아직 명찰만 달았네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.issues",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "회의는 끝났는데 쟁점이 회식까지 따라오네. 합의한 것부터 분리하자.",
+      "tipId": "tip.issues",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.49007ce1d846441d",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "소비 그래프가 속삭이네. 조금만 크게 말해 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c03f3f3cf7cc4b8f",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도를 아끼는 손길이 도자기 장인급이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.158e5701c44d4fb2",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "이건 달리기보다 신발 끈 점검이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.942935891f1b4916",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도와 눈인사는 했어. 대화도 해 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5cda096663f04708",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "먼저 한 번 써 보는 건 좋아. 계속 한 번만 쓰면 아쉽고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.87529d2f2aee46fd",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "작은 요청도 괜찮아. 첫 초안이 최종 결재는 아니니까.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.practice.diff",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "파일명에 최종이 세 번 붙으면 개정 내역이 울어. 바뀐 문장부터 찾자.",
+      "tipId": "tip.diff",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.b44acf6763354784",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "질문은 작아도 돼. 시작까지 작게 만들지는 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1cfceedb7aa04368",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "관람석에서 박수만 치지 말고 한 번 들어와.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e9eeda41ab8b4b60",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도 여행은 아직 출국 심사 중이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d0b4c80f2b314f36",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "키보드 예열에 사용량 한 방울 썼어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.21f1863b318b4b6a",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "바퀴는 돌았는데 차고 문은 아직 앞에 있네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.440c07acd1864a99",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도에 물수제비 한 번 뜨고 바다 정복 선언?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.actions",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "회의록은 장편인데 담당자는 카메오? 할 일 표에서 주연을 찾자.",
+      "tipId": "tip.actions",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.d25506b804f64948",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "할 일이 냄비째 남았다면 한 숟갈만 먼저 덜어 봐.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.dffa57b63e5142ba",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "아직 볼륨이 작아. 네 질문은 음소거가 아니잖아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3eb88bc4d1da4c8c",
+      "situation": "tiny",
+      "tone": "spicy",
+      "text": "한도에게 낯가리는 중이네. 친해질 시간은 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9ed7ed617ff447b6",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "맛보기는 끝났네. 이제 본편도 틀어 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3a1fd97b93874da6",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도 아끼는 솜씨 보니 리모컨에도 비닐 씌웠겠다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4500602d8849436b",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "튜토리얼은 익숙해졌어. 첫 퀘스트는 어디 있어?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.claims",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "자기 답변 자기가 맞대. 셀프 면접 합격 말고 근거부터 가져와.",
+      "tipId": "tip.claims",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.598a48d3722943f5",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "할 일 목록이 묵직하다면 제일 작은 항목부터 골라 봐.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.14611e002a3d4680",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도가 쉬엄쉬엄 출근 중이네. 일감은 전달했어?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ab0b56e3081d4791",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "아직 여유가 크네. 미뤄 둔 질문 하나 꺼내 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0dd387e06a494816",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 널 기다리는데 넌 한도만 보고 있네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8f91e23452c34bc8",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "숫자 구경으로 작업이 진행되면 얼마나 편할까.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fd13c25c085e448a",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "질문도 도시락처럼 아껴 먹는 스타일이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.units",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "엑셀이랑 눈싸움 말고 단위부터 맞춰. 숫자는 눈치로 계산하는 거 아니다.",
+      "tipId": "tip.units",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.6368eaef64ac47c3",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "대시보드는 계기판이지 운전대는 아니지. 방향은 네가 골라.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.632119de33134599",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 꽤 남았어. 고민을 질문으로 바꿀 자리도 있고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.00c40ab6ac2d4974",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "아이디어는 많고 첫 실행은 귀하네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f4301f09fb714eb1",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "오늘의 질문이 너무 소중해서 포장부터 했어?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a81efec01465481f",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도 창고가 한산하네. 재고 조사만 할 필요는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.23f10a357b52442b",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "계획표엔 큰 그림, 사용량엔 작은 점.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.formula",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "수식이 길다고 논리까지 튼튼한 건 아니야. 괄호 안쪽부터 출석 불러.",
+      "tipId": "tip.formula",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.972a4d74762d408b",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "장비 점검은 됐어. 이제 한 판 들어가자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a50699cfa9474cde",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "쓰다 만 문제 하나가 완벽한 빈 질문보다 낫지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4a605e5b179d47c5",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "미루던 일이 있다면 시작 조건 하나만 정해 보자.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.84fc9995f60c4488",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "대형 화면에 예고편만 반복 재생 중이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0fa3affa45044f9f",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 넉넉한데 질문은 절약 모드야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.85497da56f174075",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "아낀다고 할 일이 저절로 줄어들지는 않아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.reconcile",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "합계가 안 맞는데 글자 색만 빨갛게 하면 숫자가 반성하냐. 차액을 따라가자.",
+      "tipId": "tip.reconcile",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.8878cb32828e4c87",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "사용량 그래프가 아직 앉아서 손 흔드는 중이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9d7badae717a4460",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도 걱정 전에 첫 문제부터 올려 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.68c26f3db1bb44dc",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "질문 전송 버튼은 장식품이 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.944dc739d87840d6",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "잔여량 확인도 취미가 될 수 있구나.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ec7ac22c0b00483a",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "이 속도면 한도가 너보다 더 여유로워 보여.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c7250bb3bcf94142",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "작업 전에 앱 산책은 충분했어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.duplicates",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "이름 같다고 쌍둥이도 합칠 기세네. 중복의 기준부터 정하자.",
+      "tipId": "tip.duplicates",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.4b8223766c1a4ece",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "머릿속 초안을 화면으로 옮길 때가 됐어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1e19a533ae994f09",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "질문 한 줄에 모든 조건을 완벽하게 담으려는 중이야?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4ed096ba38de44ab",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "완벽한 출발 준비보다 평범한 첫 질문이 빠르지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3c50efc525b445a6",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "사용량은 소박한데 목표는 대하드라마네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2820465fcd704fe1",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 긴 테이블인데 접시는 하나만 놨어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.38e472704c0a4df6",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "아직 배낭 정리 중이네. 등산로는 저쪽이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.sensitivity",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "예상치를 소수점 네 자리로 써도 수정구슬은 아니지. 가정을 흔들어 보자.",
+      "tipId": "tip.sensitivity",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.9d4b674e6de6428a",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "이 정도 여유면 고민에도 의자를 놓을 수 있겠다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.55df578f0f414d2c",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 빈 좌석이 많아. 할 일을 태워 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1f0fe8be9e2d435f",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "네 아이디어가 대기 줄에서 번호표만 만지는 중이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f030fe88e6f54020",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "오늘도 실행 직전의 장인이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8b4ecda12f79433c",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "장난감은 아니지만 유리장에 넣어 둘 물건도 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.494d2067dcbf4749",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "준비만 오래 하면 준비에만 익숙해져.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.sources",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "출처 없이 최신이라고 하면 어제 신문도 속보가 되겠네.",
+      "tipId": "tip.sources",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.8fa94523044d4309",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "빈칸을 지키는 집중력은 인정한다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.62051f85e8204f20",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "작은 질문이 큰 미루기를 끊을 수도 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fa4f3de6b2ab43a9",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "계획을 한 번 더 손보기 전에 한 번 실행해 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fc7c0c43368b436d",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 기다릴 수 있어도 할 일은 쌓이잖아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.367a2f2c96a64881",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "스크린샷 찍을 여유는 충분해. 질문할 여유도 있고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e4d273b912ed4200",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "남은 한도 보고 안심했으면 다음 화면으로 가자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.options",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "비교표가 광고 전단처럼 보이면 곤란하지. 단점도 같은 크기로 적자.",
+      "tipId": "tip.options",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.c4942938c735454a",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "창작 의욕 충전기가 있다면 좋겠지만, 소재 메모 한 줄도 괜찮지.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.84fe44e0992a4cb2",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 공석 많은 버스야. 문제 하나 태워 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d009a0efb1374c98",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "할 일을 작게 잘라 오면 첫 질문도 가벼워져.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a8c493b3e1a240cf",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도 남긴다고 포장해 주는 건 아니잖아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c4a904c119c94b7b",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "궁금한 걸 아껴 두면 궁금증만 숙성돼.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a9359ae37dd24488",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "오늘의 큰 결심이 작은 클릭을 기다리네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.decision",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "왜 골랐냐고 물었을 때 분위기였다는 답은 회의실에 두고 오자.",
+      "tipId": "tip.decision",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.72d18fa169ed4760",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "진행 버튼 앞에서 마음의 회의가 길다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.dcfc678167314970",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 든든해. 너도 첫 요청은 든든하게 보내.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.15df428831c4486d",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "질문 안 하고 답을 기대하면 AI도 난감해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6185cd88188f4627",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "사용량은 작은데 기대감은 대형 캐리어야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fa46d7c9d0414e62",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "지금의 여유를 꼭 다 쓸 필요는 없어. 필요할 때는 쓰자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ef5dc58e0f664e00",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "아끼는 건 선택이고 미루는 건 습관이지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.assumptions",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "결론은 정장인데 가정은 잠옷이네. 안쪽 전제부터 챙겨 입혀.",
+      "tipId": "tip.assumptions",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.3ae775fa620e4ab6",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "아이디어 서랍 문만 여닫으면 경첩만 바빠져.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.78b5bc6d9b8747aa",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도 시식 코너는 충분히 돌았네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6ba0854533af43f1",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "이제 질문의 그림자 말고 질문 본체를 보내 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.71be4a3a21c24fde",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "빈 노트를 예쁘게 꾸민 만큼 한 줄도 적어 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b04b0fa13ae345aa",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "질문이 낯가리면 초안부터 써 봐. 첫 문장도 수습 기간은 필요하지.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.c84f5b5d1d4043b6",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "할 일 예고편만 만들면 시즌이 안 시작돼.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.questions",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "탭 30개 열면 조사 완료야? 질문부터 좁히면 브라우저도 숨 쉰다.",
+      "tipId": "tip.questions",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.86cc3e89d8654f9f",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 넉넉한 쿠션이야. 눕는 용도만은 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.75bcebffd656440e",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "궁금증을 보관함에서 꺼낼 공간이 남았어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.bd96aff94de74e5a",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "남은 양은 확인했으니 필요한 양을 써 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.353cd2a740a94e7d",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "한도는 네 질문을 기다리는 넓은 책상이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3194e960d70c44f5",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "작은 요청도 요청이야. 망설임보다는 낫지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.aea94b32c00d41aa",
+      "situation": "low",
+      "tone": "spicy",
+      "text": "준비 완료 문구만으로는 작업이 움직이지 않아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.reader",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "설마 모르는 것만 물어보고 끝낼 생각은 아니지? 초안도 시켜봐ㅋㅋ",
+      "tipId": "tip.reader",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.e90712775b474ff9",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "준비 운동 끝. 질문이 제법 몸을 풀었어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.cbc261f4a0cd4676",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "한도에게 업무 배정이 시작됐네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5bac8d45ded4424a",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "속도는 붙었어. 방향도 같이 확인하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a22b8cad6e134bcf",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "숫자는 움직였네. 화면 밖 성과는 직접 확인해 줘.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.626062d7bf2c4cde",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "질문들이 입구에서 안쪽으로 이사했네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.db4676b1d8d44d5d",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "슬슬 본편 분위기가 나. 예고편은 잘 봤고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.structure",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "서론이 본론보다 출근을 일찍 했네. 핵심부터 앉힐 자리 만들자.",
+      "tipId": "tip.structure",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.99d5f5fe04674d4f",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "달리기 시작했네. 신발 끈도 가끔 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4bbc90886e734424",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "소비는 생겼어. 결과 확인도 같은 속도로 해 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e50582bacbe94184",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "사용량만 보면 조용한 엔진이 돌아가는 중이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a74251a93c5c44c6",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "한도에 맡긴 일감이 이제 책상 위에 보이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a9e60885a65e48ca",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "이 정도면 맛보기 접시는 치워도 되겠다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6e2ebb87504f439a",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "첫 단추는 끼웠네. 나머지도 차분하게 가자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.shorten",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "문장이 다이어트하다 조건까지 굶기면 안 되지. 줄일 것만 줄이자.",
+      "tipId": "tip.shorten",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.76e158b7a7fa40af",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "질문이 산책에서 조깅으로 바뀌었어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.33b90b8e6ae34a4c",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "숫자는 움직여. 할 일 체크도 직접 움직여 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4cd985a0f55b4460",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "이제 한도에게 출근 도장만 찍히진 않네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.80be7c0e52c346f7",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "계획을 요청으로 옮길 때는 완료 조건도 같이 챙겨.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.16b1c6db54d24575",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "사용량은 진행 중. 완성 판정은 네 검토 차례야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3d8b932d989e4f1d",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "여유는 남았어. 요청 범위를 잘 나누면 더 편하지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.tone",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "정중하게 부탁했더니 왕실 교서가 왔냐. 사람 말로 한 번 낮춰 보자.",
+      "tipId": "tip.tone",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.d629a5b410884c68",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "질문도 리듬을 찾았어. 답은 꼭 읽고 넘기자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ef75cf40e4db400e",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "한도 바퀴가 이제 흙을 밟았네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f5bb0384ed014a3a",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "작업 장갑에 먼지가 좀 묻었어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1f464d0e61b64b78",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "출발선 뒤풀이 끝. 진짜 코스로 들어왔네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.56c47a66a6794cc8",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "한도가 일한다는 흔적이 보이기 시작했어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ebbde32eae3540a3",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "이제 보고서 표지 말고 내용도 펼친 느낌이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.headlines",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "제목만 대박 나고 본문은 잠수 타면 낚시야. 내용이 감당할 제목으로.",
+      "tipId": "tip.headlines",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.7a9b939fd50c46e8",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "사용량이 흐른다. 물길은 네가 잡는 거야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0fad1f19f00640b5",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "질문 몇 개가 대기실을 탈출했네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6ddad0798b95443c",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "계획과 실행 사이 거리가 조금 줄었어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0871c9a11c1b4cc9",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "속도가 생겼으니 브레이크도 알아 둬.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.05221b197f2e4372",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "남은 한도는 넉넉해. 불필요한 재요청은 줄여 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3fa0c41b1e8b44de",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "시동 소리 대신 이동한 거리가 보이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.reproduce",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "고쳤다는 말 말고 통과한 테스트를 가져와. 여기 구두보고 안 받는다ㅋㅋ",
+      "tipId": "tip.reproduce",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.4077e7ed7cf0462b",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "소비 그래프가 낮잠에서 일어났어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b28eb55198024870",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "빈 책상에 일감이 올라왔네. 우선순위도 놓자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ddaa1b9707c948bd",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "한도와 호흡이 맞아 가. 검토까지 빼먹지는 말고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a031eb11477a42f7",
+      "situation": "moderate",
+      "tone": "spicy",
+      "text": "지금은 달릴 때야. 목적지 확인은 네 몫이고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f1678e283f794809",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도 중간쯤에서 간판이 커 보이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.18cdbbc5a5e74ab1",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "이젠 사용량이 존재감을 숨길 수 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.trace",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "스택트레이스가 길다고 전부 범인은 아니야. 처음 넘어진 줄부터 보자.",
+      "tipId": "tip.trace",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.94411ed55b764c23",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "속도가 붙었네. 답을 읽는 속도도 따라와?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a6426184df034de4",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도 절약 모드는 잠깐 휴가 갔나 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c1660ac6eea84ee3",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "쌓인 요청만큼 검토할 거리도 쌓였겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7b69bbcca19c4042",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도에게 반나절 체험 말고 근무를 시켰어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6066b0015a334ef8",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "이 정도면 숫자도 허리 펴고 서 있네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e92bb4bd71534d4f",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "중간 지점이야. 끝난 척도 시작인 척도 금지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.minimal",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "버그 한 마리 잡으러 집 전체 리모델링하지 말자. 바꿀 줄부터 세어 봐.",
+      "tipId": "tip.minimal",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.f5b8b747c62b4c36",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도도 이제 네 작업 리듬을 알겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c4c82e937a124c6d",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "고민이 요청으로 꽤 번역됐어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.08217baad68c40fc",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "사용량은 탄력이 있어. 범위 관리도 탄력 있게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.62d878db3db0478b",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "지금은 속도와 방향을 같이 보는 구간이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.28f9b7e2be194b60",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "답을 많이 받는 것과 잘 쓰는 건 다른 능력이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2e088e7114544666",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도에 맡긴 숙제가 제법 두꺼워졌네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.boundaries",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "정상 입력만 통과하면 모범생 전용 앱이야. 빈칸 손님도 받아 보자.",
+      "tipId": "tip.boundaries",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.e4f9c00ec096416b",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "절반 근처라고 뒤풀이 예약부터 하지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6b57c225383d4a0e",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "소비 그래프가 이제 큰 목소리를 내네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4306791411bf4419",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "작업대가 바쁘다. 재료 정리도 틈틈이 해 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8abad426fa9c433f",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "질문 행렬이 길어졌네. 앞 답변은 읽고 있지?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.252c2c47153641ed",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도도 숨은 쉬어. 재요청부터 점검해 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.588872ef45914bcf",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "속도는 충분해. 결과의 틈도 같이 찾아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.race",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "두 번 눌렀다고 보상도 두 번 주면 이벤트가 아니라 회계 사고지.",
+      "tipId": "tip.race",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.670b786e30774707",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "지금까지 쓴 양이 보이네. 남은 양도 같이 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.58e80228a4174eb9",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도는 꽤 일했어. AI 답변은 네 검수까지가 한 세트야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0634b7ab18d14e5a",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "중간 보스 앞이야. 버튼 연타만으로 풀리진 않아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c42f1827e9f3479b",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "소비에 무게가 붙었네. 요청도 핵심부터 던지자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3f0d20184a8c4cf5",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도 도로에 차가 많아졌어. 합류 순서 챙겨.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.79e44ec91b034b06",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "이미 받은 답이 있다면 중요한 부분부터 건져 둬.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.practice.diffreview",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "리뷰가 취향 토론으로 새면 버그가 커피 마시고 기다린다.",
+      "tipId": "tip.diffreview",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.e2c60508158243ee",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도는 열심히 움직여. 무한 엔진은 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6ccf8ebc5d384d0f",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "질문은 달리고 검토는 걷는 조합이면 곤란해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b42a717dd96945f6",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "이젠 한도에게 가벼운 인사만 한 수준은 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3fdc85b4105f4682",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "남은 길을 보면서 지금의 속도를 조절해 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.210b46d32cc24005",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "한도 활용이 꽤 선명해. 성과는 숫자 밖에서 확인하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.331f74316f1b4103",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "요청량이 커졌어. 같은 질문 반복은 없는지 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.regression",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "빌드 통과가 만능 도장은 아니지. 옆 기능도 멀쩡한지 출석 불러.",
+      "tipId": "tip.regression",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.c106d61eea6049b4",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "작업 책상에 빈 공간이 줄었네. 중요한 것부터 치우자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8f809a0c02414e10",
+      "situation": "mid",
+      "tone": "spicy",
+      "text": "숫자 구경은 여기까지. 답변 검토도 입장해 주세요.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a5bf3e72d76c4758",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도가 슬슬 숨소리를 들려주네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a8cc7c1c90a74856",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "많이 썼어. 남은 양은 이제 배경 정보가 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e62251533d584869",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "질문 행렬에 질서 담당이 필요하겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ed4c41ed3f284792",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "속도는 빠른데 검토도 같은 차에 탔어?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.authreview",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "로그인했으니 남의 서랍도 열어도 돼? 소유권 검사부터 보자.",
+      "tipId": "tip.authreview",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.5b2364e008684b02",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "브레이크가 옵션이라고 생각하면 위험해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d9da487c6046459e",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "이제 남은 한도가 제법 말을 걸어오네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6397cc824c53454a",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "요청 전에 범위를 한 번만 더 좁혀 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c0dc5c4c510b4be1",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도에게 야근 분위기를 풍기기 시작했어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b48cb3bbce0945cd",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "많이 받은 답 중 중요한 건 따로 챙겨 둬.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f23b02c09123470d",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "가속은 잘해. 코너에서 사고 안 나는 게 더 멋있지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.secrets",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "디버그 로그에 열쇠까지 걸어 두면 현관문은 왜 잠갔냐. 값 말고 경로를 보자.",
+      "tipId": "tip.secrets",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.7f33fca4c4234b6e",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도는 무한 뷔페가 아니라 정해진 접시야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a4cb0baab3204994",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "요청이 몰릴 때는 교통정리도 필요하지. 우선순위부터 적자.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.00811272caff4174",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "속도가 올라오면 실수도 몰래 따라붙어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c5a0862594934f4c",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "숫자는 부지런해. 결과 검수는 네 출근이 필요해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ecff66a6c90746be",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도에게 업무를 꽤 몰았네. 우선순위도 같이 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fca72a2372ed491d",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "이쯤이면 남은 길 표지판도 읽을 때야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.migration",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "이관 한 번 됐다고 끝? 두 번 돌렸을 때도 재산이 같아야지.",
+      "tipId": "tip.migration",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.bf21db754c8a40d2",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도에 기대는 만큼 검증에도 기대자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ba65731d9aa045a9",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "소비는 힘차네. 요청 범위는 더 또렷하게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ee14c436de694767",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "중요한 작업과 궁금한 실험을 구분해 볼 시간.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8785c725408e4073",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도 바닥은 아직 아니야. 천장은 무한도 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b8cdcfc6ca7844c3",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "요청을 묶되 너무 큰 보따리로 만들지는 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d350df0f2ddb482b",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "많이 쓴 흔적은 있어. 잘 쓴 흔적은 직접 확인하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.routine",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "자동화는 거창한 로봇 말고 반복 작업 하나부터. 버튼도 월급값은 해야지.",
+      "tipId": "tip.routine",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.1e7b0151f9b94415",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "잔여량이 이제 조용히 구경만 하지는 않네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.63f61b904ee542e2",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "무작정 더 달리기 전에 목적지부터 점검해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0ee2133edf6948a6",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도가 무거운 짐을 들었어. 같은 짐 두 번 시키진 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.abcc3afdbc254db4",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "질문은 계속 오는데 남은 양은 계속 줄지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.878a7a3df16f4752",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "사용량은 당당해. 재요청 사유도 당당한지 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.42ec056ff70f47c1",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도 회전문이 바쁘다. 들어간 요청은 정리해 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.dryrun",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "자동화가 빠르긴 하지. 실수도 빠르니까 미리보기부터 달자.",
+      "tipId": "tip.dryrun",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.4097997ea7a34907",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "이제 안전거리도 작업 전략이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.298d43ea4b524acc",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도를 빡빡하게 굴리는 중이네. 휴식은 사람도 필요해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.220f0080d2d84cff",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "속도전이어도 방향키는 놓치면 안 돼.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.67fbcf958f8d45d1",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "다음 요청은 길이보다 정확도가 더 중요해 보여.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c56edbe1d36048bb",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "출력 받은 답을 다시 묻기 전에 한 번 정리해 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.29855de32ec14018",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "한도가 열심히 뛴다. 너는 지도도 봐 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.checklist",
+      "situation": "high",
+      "tone": "spicy",
+      "text": "인수인계가 제 머릿속에 있어요면 퇴근도 같이 못 하지. 꺼내서 적자.",
+      "tipId": "tip.checklist",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.6b1f66c4219c4ada",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도 철거반이 현장에 도착했네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c04dea769495456a",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "끝이 보인다. 마지막 질문을 대충 쓰면 아깝지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4ea1843d4792400f",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "이쯤이면 잔여량도 안전벨트 매야 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1647b36c66044c81",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "요청창에 불은 켜졌고 한도 창고는 비어 가네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fb706adf59fc49e9",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도를 굴리는 게 아니라 압축하는 분위기야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.82fc06479d4e4895",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "가속 페달 아래서 바닥 소리가 들리기 시작해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ba276d03c90f4a53",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "남은 질문은 우선순위 순으로 줄 세우자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c7f466ac8d1747ca",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "아직 더 쓸 수 있어도 꼭 더 써야 하는 건 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2b0e5ce45b154c90",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도가 퇴근 시간을 힐끔 보네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.680c1ef66a3c4421",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "이제 실험보다 필요한 요청부터 고르자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f1731213e46449cf",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도 잔고가 목소리를 키웠어. 듣고 있지?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9baf102308654b32",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "많이 썼다고 검증까지 자동 완료는 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.34df77118f8e4a01",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도에게 오늘 일정표는 꽤 매웠겠다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1226298d5d194656",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "잔여량을 배경 장식으로 볼 시기는 지났어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fdf7e0a56f5b42d8",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "끝쪽 페이지를 읽는 중이네. 마지막 줄도 신중하게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.bf959cb2ddc24789",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "재요청 한 번이 이제 묵직해 보이지?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.42e65dcb61504fb5",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도 수영장이 얕아졌어. 점프는 조심해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3f372fd02b5d4a2b",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "속도는 인정. 한도 바닥과 친해질 필요는 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a7d246ca5a074b02",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "필요한 답을 정리하면 다음 요청이 짧아질 수도 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.058081febef24cc3",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도에게 숨 돌릴 틈도 안 줬네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b78df40c9fa04545",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "남은 양은 작아지고 질문의 선택은 중요해졌어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.33ac09a7fcd647e3",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "최종 보스 분위기인데 요청 목록은 잡몹까지 가득하네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3d1eaea0b0e54952",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도 창고에 마지막 상자들이 보인다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5922858e0b254d37",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "소비 그래프가 큰 소리 내는 구간이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e00342bca5d5436c",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "이제 질문마다 목적 하나씩은 달아 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fdfd75bd72c74b89",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "잔여량을 보고도 연타하면 용감한 건지 급한 건지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6de470f43dfc4c37",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도에게는 오늘이 장거리 달리기였겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b3862e47fb93464c",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "필요 없는 재생성부터 줄이면 숨통이 트이지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.881bb3c18f1945c1",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "다음 초기화 시각도 작업 계획에 넣어 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a55b3ac10b584875",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "남은 한도는 예비 타이어야. 계속 주행용으로 쓸 건가?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.dc6baf66dfba4f3e",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "요청 몰아치기는 잘해. 마무리 검토도 몰아쳐 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fba92cc5484c4a4c",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "끝이 가까워도 완료 판정은 답변 검수 뒤에.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.104848bef3f44e67",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "이 속도면 잔여량이 마지막 자리 손님이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6358fba9ac6f476a",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도에게 휴게소가 필요해 보인다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5da1d5d0943d4c2e",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "여기부터는 질문 편집이 한도 관리야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.76e9c4a7ff374ffc",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "질문 보따리에서 당장 안 필요한 건 내려놓자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.39851bbb70ad44bf",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "한도가 많이 버텼네. 무한 체력은 아니니까.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.88dd7539cf2b449e",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "마지막 구간에 들어왔어. 깔끔한 요청이 더 빛나지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b44cd4636d5b40e2",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "소비는 화려해. 검증도 조명 좀 켜 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e86c4763a01d4fda",
+      "situation": "heavy",
+      "tone": "spicy",
+      "text": "남은 양에게도 발언권을 주자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b65a226c309c4d21",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도 끝이 보여. 추가 주문은 신중하게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.80a10e85edb9481d",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "이제 잔여량이 아니라 출구 안내판이 눈에 띄네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.52f528ed5d40496c",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도에게 퇴근 도장을 찍어 줄 시간이 가까워.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4c18ab34925d4705",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "바닥과 눈인사하는 중이네. 친해질 필요는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e141381197f8449a",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "지금은 다음 작업의 입력 자료를 정리해 둬. 호출은 잠시 쉬고.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.7708de60822049ee",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "지금은 메모장이 열일할 차례야. 다음에 필요한 조건만 적어 둬.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.9aabc1e414184b85",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도 철거 현장에 마무리 점검이 필요하겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.94e121c878c5404c",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "지금은 연타보다 정리가 잘 먹힐 구간이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.354fa8f4fdad4fa8",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "잔여량이 거의 마지막 대사를 하고 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9913f4cf5f5648db",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "버튼 연타는 급행권이 아니야. 잠깐 쉬어도 기록은 남아.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.dc452e4910604869",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도는 꽤 달렸어. 사람도 잠깐 숨을 쉬자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b41bf8d3efb749da",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "출구 앞에서 새 장편 기획을 꺼내지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.258e39896c4342ab",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "이미 받은 답이 있다면 먼저 읽고 정리해 봐. 추가 호출 없이도 할 수 있지.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.b0aacfa194034d68",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "끝쪽 숫자라고 프로젝트도 끝난 건 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.940b6185c9694b2d",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도를 다 썼다고 모든 일이 끝나는 건 아니지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.03e3923e27b04f05",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "새 작업은 장바구니에만 담아 둬. 지금 결제 버튼 누를 필요는 없지.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.0e6410fc9ee8406f",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "기다리는 동안 필요한 조건을 메모해. 버튼 연타가 급행권은 아니지.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.1e532246710d41e4",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도에게 더 달리라고 하기 전에 잔여량부터 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.69c8753e7e244acb",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "이미 받은 표의 단위부터 읽어 봐. 숫자가 혼자 반성하진 않거든.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.5d14974cdcf34158",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "남은 양을 아끼는 건 이제 전략이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b84abe5a725d4b36",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "마지막 페이지에서 책 한 권 더 시작하려고?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.bdbe8e78b7874ee2",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "다음 작업에 쓸 자료를 폴더에 모아 둬. 파일 찾기도 은근 야근범이야.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.af6e18c840af41fd",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "좋아, 소비는 충분히 확인했어. 답변을 활용할 차례야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.11dc1f5924574dfd",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "거의 다 왔네. 완료와 소진은 다른 표지판이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.128754d39f27429a",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도 창고 불을 끄기 전에 필요한 것만 챙기자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9726caddc2894abf",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "오늘은 잠깐 멈춰도 돼. 사용량 계기판이 출근부는 아니니까.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.9b95a25d0b85472e",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "지금 숫자는 잠깐 멈추고 계획 보라는 신호야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1e8556d805c24628",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도 체력이 얼마 안 남았네. 중요도를 골라 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0255cb64e4414944",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "마지막 여유까지 실험에 넣을 건지 생각해 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.52890a6e294a4b42",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "잔여량은 작아도 검토할 답은 남아 있을 거야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3544dc292b9a4f25",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "있는 답에서 쓸 부분을 표시해 둬. 복사 전에 맥락도 챙기고.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.917efc581ae54d4b",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도가 끝나면 읽기와 정리도 꽤 괜찮은 작업이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fe0be98f57ce459b",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "이제 필요 없는 재생성은 눈에 더 크게 보이지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.bc72303a2dcb4eed",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도에게는 긴 하루였네. 너도 잠깐 쉬어 가.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ede271ee65394aeb",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "마지막 남은 양에 모든 문제를 몰아넣지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.44d7d36463e9495a",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "소진은 숫자고 성과는 따로 확인해야 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.05885d209a994c96",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "대기 시간이 생기면 답변 검토에 써 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a296c0112faf48b0",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "원문 위치를 찾아 메모해 둬. 근거 없는 자신감은 다음에도 안 쓸 거야.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.8b0ff96aee0b4cae",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "잠시 쉬면서 작업 목록 순서를 바꿔 봐. 맨 위가 꼭 급한 일은 아니지.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.1e28925d210643c2",
+      "situation": "critical",
+      "tone": "spicy",
+      "text": "한도는 유한하고 재검토할 답은 아직 있을 수 있지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0670929937764074",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "추가 소비가 확인됐네. 기본 코스 밖으로 나왔어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6802fa2d632e4d74",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "한도 밖 연장전에 들어갔네. 점수는 검토 후에 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2d1a0b8603824047",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "더 달린 흔적이 보여. 무한 모드로 착각하지는 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.dd73a01d33c94917",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "추가 사용도 기록됐어. 결과 확인은 별도야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c6d3a7050a7342ae",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "기본 일정 뒤에 추가 회차가 붙었네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.180a79e78e1c4a45",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "한도에게 연장 근무가 생겼어. 요청은 더 명확하게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4d402ee4893641ec",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "추가 소비는 확인. 추가 성과는 네 확인이 필요해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a8b59d52ee3147bc",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "오늘 한도 일지가 본편 뒤로 이어졌네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.28c19d2045a34067",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "연장전에서도 공은 똑같이 신중하게 차야지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7b16484bf6a64129",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "추가 구간까지 왔어. 버튼 연타가 목적은 아니잖아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c4d5ec8b9f46476d",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "기본 코스 넘어간 흔적이 있네. 남은 조건도 봐 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c9de74187e3141aa",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "한도에게는 추가 편성이네. 자동 성공 편성은 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7575f28a607542d8",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "더 쓴 양이 보인다. 잘 쓴 양은 검토해 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0989021da8d64074",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "추가 소비가 있다고 무한 이용권이 된 건 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3ebac839e8b34ae4",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "연장전도 계획이 있어야 덜 지치지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c5293483e461421d",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "한도가 추가 페이지를 썼네. 중요한 답은 챙겨 둬.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.934804b137fa4abf",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "기본 분량 밖에서도 일감이 계속 있었나 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.93342fceb8f64da5",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "추가 활용은 확인됐어. 손익은 여기서 확정하지 않아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.28b5ca65b9f94853",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "연장전 시작. 검토 담당은 여전히 너야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e0f9575b91694242",
+      "situation": "bonus",
+      "tone": "spicy",
+      "text": "더 달릴 수 있었다고 무조건 끝까지 달릴 필요는 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c415dc0425da4b74",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도가 새로 열렸네. 낮은 숫자에 잔소리는 보류.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d9543fd3d0fc4b94",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "새 구간 첫 장이야. 지난 장과 섞어 읽지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.aed91ba17d034f91",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "초기화 직후네. 지금은 예열해도 자연스러워.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2e9382b7b2c14d2a",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도는 새 출발. 너까지 기억 초기화할 필요는 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.243f0a02643e40b7",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "다시 열린 구간이야. 필요한 요청부터 차분하게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3bf6c997cc3a4e82",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "숫자가 낮아진 건 새 출발의 흔적이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.batch",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한 번에 싹 처리는 시원한데 복구도 싹 어려워져. 묶음부터 잘라.",
+      "tipId": "tip.batch",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.3282e6d1e3b84d9e",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "아직 엔진 예열 중. 첫 코너부터 질주할 필요는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f2a5e7793cf94951",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도 리필 직후네. 계획까지 리필해 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.bb02b58ed0514c2d",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "새 구간이 왔어. 어제의 답도 계속 쓸 수 있고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.346add420c124eae",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "초기화 뒤 숫자는 가벼워. 할 일은 직접 확인하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1ccf58aac40f40ae",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도 첫 페이지에 낙서부터 하지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e6d610fbb5134363",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "다시 시작하는 숫자야. 게으름 판정은 안 하겠어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.practice.template",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "복붙 장인도 원본 날짜는 놓치더라. 바뀌는 칸에 이름표부터 붙이자.",
+      "tipId": "tip.template",
+      "review": "replaced"
+    },
+    {
+      "id": "ko.quote.0e3b2aed5ccf47ba",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "아직 첫 장면이야. 결말부터 재촉할 이유는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f43ec737f5964771",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도가 갓 출근했네. 업무 인수인계부터 하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.cf08d8afd2ca4a2b",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "새 시작은 좋지. 같은 질문까지 새로 시작하진 말고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.aed591d479404806",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "초기화 직후에는 낮은 사용량이 정상이지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e22454cba0304bb3",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도에 새 공기가 들어왔네. 급하게 다 빼진 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.206ef4a138cb4214",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "출발선이 다시 생겼어. 필요한 방향부터 잡아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5bdb08b323ed45b8",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "지금은 새 구간의 준비 시간이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.387405a4ff334788",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도는 다시 열렸어. 검토할 답은 사라지지 않았고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.17dd24ddd3a846b2",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "초반 숫자 보고 성적표 쓰기는 이르지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.330ce39212474310",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "새 구간에 너무 큰 첫 질문을 선물하진 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0e4742158bc840bb",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도 리셋, 질문 품질은 유지해 주세요.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5064cec4dc5444a0",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "초기화 뒤 첫 걸음이네. 급할 이유는 아직 적어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f84726c290824ef3",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "낮아진 숫자에는 초기화라는 사정이 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8ad41fe8eb354c51",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "이번 구간의 첫 요청이 대기 중인가 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9e70bd80bc5f4631",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "새 한도가 준비됐어. 지난 답도 정리하고 들어가자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4f4bb0baaa5f47c4",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "출발선에서 속도 평가부터 하면 억울하지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.61bbca2401bc46a9",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "구간이 새로 열렸네. 오늘도 필요에 맞춰 써 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c1096b35b1e6476c",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "초기화 직후의 여유는 꽤 든든하지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6fb177cfae5f4dd2",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "아직 한도가 작업 장갑을 끼는 중이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c592f9fe83b74d16",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "첫 질문까지 심호흡하는 건 괜찮아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4325ec105d824311",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "새 구간은 새 숫자야. 이전 소비와 단순 비교는 금지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.11021a6a37e9492c",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "한도에게 새 일정표를 보여 줄 시간.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.98c8681ddad142ca",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "다시 열린 문 앞이네. 입장 순서는 네가 골라.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e239c2672fcc4dad",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "초반에는 방향부터 잡고 속도를 올리자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5a6c283a68ca4996",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "새 한도와 첫 대화할 준비 됐어?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0a29e47b638c4331",
+      "situation": "reset",
+      "tone": "spicy",
+      "text": "오늘은 낮은 숫자도 예열로 봐 줄게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.313e091dbfe44243",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "초기화는 가까운데 한도는 아직 널널하네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.308bb6bcdf044452",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도 퇴근 전에 필요한 질문은 챙겨 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fe933ae2599046f4",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "남은 양이 다음 구간으로 이사 가는 건 아니잖아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b3e17828cd8147d9",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "마감이 다가오는데 사용량은 느긋하네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d6aa120ea52b4192",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도 시계는 간다. 숫자 구경만 하지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7f36a6506ed64e78",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "곧 새 구간이야. 남은 양을 꼭 억지로 쓸 필요는 없고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e2ba5c1803ac446f",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "초기화 직전에도 필요 없는 질문은 필요 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.be5f2563e5a6433a",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도는 곧 퇴근인데 일감이 아직 가볍네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.646198b2c0bf4658",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "남은 시간과 남은 양의 표정이 다르다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3da31a53b7d84aeb",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "미뤄 둔 질문이 있으면 마감 시각부터 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d0b6480b9f2b45ac",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도에게 오늘은 조기 퇴근 분위기네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fc299f1d5b4940fb",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "잔여량 보관함은 다음 구간까지 이어지지 않을 수 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7837fb26f7bf4dc3",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "시계가 먼저 바쁘고 사용량은 아직 산책 중이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4e0c4ebc76144b06",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "마지막 여유야. 필요한 문제 하나만 골라도 좋지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.534df0274e27413d",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "끝나기 직전에 전부 쓰겠다는 계획은 무리수야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.17ae63f02383488b",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도 마감이 가까워. 할 일이 없다면 쉬어도 돼.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.56e4cbdde1514bab",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "곧 문 닫는 도서관인데 아직 로비에 있네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7d5cb794fd854fec",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "남은 양보다 남은 시간이 먼저 작아졌어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.195e7fc63eb24d62",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "마감 전에 질문을 정리하면 덜 허둥대지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fd04ad3fe8ab41a0",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도는 퇴근 준비 중. 필요한 요청도 준비해 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2130734173574fe5",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "낮은 사용량에 마감 시계까지 붙었네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a32ba5803e21453d",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도에게 업무가 적었던 구간인가 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.22d2a61d22114c0d",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "쓸 이유가 없다면 안 써도 돼. 놓친 일은 없는지 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2bc87602cc644834",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "초기화 직전의 여유를 불안으로 바꾸지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.699674fd416e4213",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "끝나기 전에 숫자만 꽉 채우는 건 목표가 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5446c2d167db4b5c",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도 시계가 마지막 안내 방송 중이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0aff2765143b4fa8",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "필요한 질문이 있다면 이제 메모에서 꺼내 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7db455e780ee4cc2",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "마감은 가깝고 한도는 넓어. 목적부터 골라.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b6c8e5efca2e4984",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "이번 구간의 한도가 손님을 덜 만났네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a6bca8b534164e4c",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "남긴 양이 아깝다고 아무 질문이나 던지지는 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ef23de1183fa44ab",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "초기화 전에 할 일을 한 번만 훑어 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.21c0e94505ab41a9",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "시계는 바쁜데 사용량은 여유석이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0faea11db16e4698",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도 활용보다 마감 구경이 더 길어지겠어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.717e39eb575b47b8",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "마지막 하루에는 작은 요청이 더 현실적이지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2bd9be9799b048bb",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "끝나 가는 구간에 새 장편 계획을 몰아넣지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.62b3a2e16c1e42c4",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "필요할 때 쓸 여유는 있어. 남은 시간만 확인해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.453afbb453344da6",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도는 곧 교대해. 질문도 인수인계해 볼까?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4133b5121d0e4c67",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "마감 알림만 읽고 할 일은 안 읽는 건 아니지?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4e97e5b027064394",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "숫자를 채우기보다 필요한 답을 챙겨 가자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f589721811994f12",
+      "situation": "imminent",
+      "tone": "spicy",
+      "text": "한도 종료 전에 할 일 목록도 한 번 닫아 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.53f78c0d840a4eef",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 한도가 유산소 제대로 했네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.efc30deb32984591",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 확인된 소비 증가가 제법 크다.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ac867dc0fea3466e",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "한도에게 오늘 일정은 인터벌 훈련이었네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f883b96b766e4e9c",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘은 질문들이 단체로 몰려왔나 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e4e1fb075ea04b9f",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "평소 속도 이야기는 잠깐 접자. 오늘 숫자가 바쁘네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.cec69375e6654444",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 소비에 가속 페달 자국이 보여.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6363bfa7553f4695",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "한도가 오늘만큼은 편하게 앉기 어렵겠어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8a6ef054726c4e65",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘의 요청창에는 러시아워가 왔네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.50fc02e0f66a49b5",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "관측된 오늘 소비가 한도 운동량을 올렸어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3b5df7ce325943ee",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 달린 양은 확실해. 결과는 따로 검토하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4e155ff64edd470a",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "한도에게 오늘은 집중 근무였네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4dbbc7daff1f4b30",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 그래프에 발자국이 굵게 찍혔어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ab94c581bed44861",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "질문들이 오늘 단체 입장권을 샀나 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.65cc1664e74e4192",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘의 한도는 산책 대신 달리기를 했네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5ff82a8f200a450f",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "가속이 보인다. 검토는 뒤에 두고 오지 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3231f6f8f3614f94",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 사용량에 존재감이 제대로 붙었어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b18732f63cf343e7",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "한도에게 오늘만큼은 한가한 날이 아니었네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fdaaadb6606343c3",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 소비가 굵직해. 남은 양도 확인하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a0059493a400499c",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "요청 몰아치는 날이네. 답 정리도 같이 몰아쳐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.709b412557bf49f9",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 한도는 계단 대신 전력 질주했어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.edf853a30a0242fd",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 관측된 사용량 증가는 꽤 크네. 집중력 점수는 따로 없고.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.96043a92404849bd",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "요청 목록이 붐빈다면 지금 필요한 것부터 남겨 봐.",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.a22fa134e5f3471f",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "한도 체육대회가 오늘 열렸나 봐.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.25b6ac8a39e24d1f",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 소비 증가가 뚜렷해. 속도만 보지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.702a6439dff54d72",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘의 한도 일지에 굵은 펜이 들어갔네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9aecd0cd3c684d44",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "요청 페달을 깊게 밟았어. 브레이크도 챙겨.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c61af85088614d2c",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 관측 구간은 꽤 분주했네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.81d0a20067b642c8",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "한도에게 오늘은 쉬는 시간표가 아니었어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5d44a410d2484bf2",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "소비가 몰린 날이야. 중요한 답부터 건져 둬.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.16c167d5cd9e46bd",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 숫자가 조용히 넘어갈 생각이 없네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ba8ae69f66ea4ecc",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "질문이 달리기 시작하면 검토도 신발을 신어야지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.22a38f3ced2e454d",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘의 한도는 장거리 구간을 뛴 느낌이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8247a319100645b8",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "가속 흔적이 커. 남은 구간 계획도 다시 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.36a0408b3f75447c",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 사용량이 확실히 굵어졌네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.563fa8f6f602499f",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "질문이 몰린 만큼 재요청은 더 또렷하게 하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0793e55df505461c",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘은 소비가 큰 날이네. 성공 판정은 별도고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5081ad65588d432d",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "한도에게 오늘은 집중 훈련 코스였어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a83dcf140a78482a",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘의 사용 흔적에 힘이 들어갔네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3f1165b46c7c4909",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "갑자기 바빠진 숫자야. 잔여량도 같이 읽어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.551e77db2d99499d",
+      "situation": "burst",
+      "tone": "spicy",
+      "text": "오늘 한도가 많이 움직였네. 너도 잠깐 목 좀 풀자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6ae1e69338aa4045",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "아직 전적도 없는데 평가부터 보러 왔네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.59137b2eaca64e35",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "숫자는 준비 중이야. 판정은 잠깐 보류.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2e99bec04db744f6",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "기록 빈칸을 사용량 영점으로 읽으면 곤란해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3e3da6d891a34310",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "증거가 입장 안 했어. 잔소리도 대기할게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.464fe54056e44989",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "아직 측정 자료가 없어. 상상으로 점수는 안 매겨.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a4753fa8d49342aa",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "성적표 종이가 아직 안 왔네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.aa7dc01a034246e2",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "기록부터 모으자. 평가는 도망 안 가.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.de4fd76d10644a39",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "숫자 없는 대시보드에서 독심술을 기대한 거야?",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e924a0de38ab472a",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "현재 사용량을 먼저 확인해야 말도 맞게 하지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1f46ecad82824a1f",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "데이터가 없으니 칭찬도 놀림도 잠깐 휴무.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3dd3d36a6ecf48ae",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "빈칸은 미사용 증명서가 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e8cdc54b021946ab",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "한도가 조용한 건지 기록이 조용한 건지 아직 몰라.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.84252097f92043cd",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "전적 수집 중이야. 별명부터 붙이지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c5b046595eee45d1",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "측정값 없이 속도를 맞히면 그건 점쟁이지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7bb0b9591e07493d",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "기록이 들어오면 그때 제대로 한마디 할게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f900e440505643e5",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "평가 무대는 준비됐는데 숫자가 지각했네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.addd47a51bb3466e",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "아직 확인할 사용량이 부족해. 결론은 천천히.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ce7d7a2c6c8c4e9d",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "숫자 대신 분위기만으로 판정하지는 않겠어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.df6c08f58fae4b77",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "관측 없는 시간에는 사용 여부도 모르는 거야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3aeaec4004d849e2",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "자료가 먼저야. 멋진 결론은 그다음이고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ad0be41486bc4b18",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "아직 한도 숫자를 못 봤어. 성급한 잔소리는 취소.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d2aa55e4f21b49ae",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "빈칸에 성과를 채워 넣는 재주는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9c31d05bfa2f402b",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "측정부터 시작하자. 대시보드는 기다릴 수 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d7994928bda34860",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "기록 없는 날을 쉰 날로 확정하진 않아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1fdc285027504473",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "숫자가 올 때까지 오늘의 평가는 대기실에.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.b39b5306b4464a5f",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "전적이 없다고 전설이라고 부를 수는 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2643ab43a979419a",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "아직 계기판 연결부터 확인해야겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.03da19ad7d6e406f",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "사용량이 안 보이면 추측도 선을 지켜야 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.47d537f5b4f74cfe",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "평가할 재료가 아직 안 도착했어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3d52f6cd3d724b52",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "오늘은 기록 수집이 먼저 출근해야겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.42b5a933f3e04067",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "정보가 비었어. 사용량이 비었다는 뜻은 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.98bdd5a195e942c3",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "확인 안 된 숫자에 자신감 붙이지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6dac0d360cd84a81",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "지금은 점수보다 관측 한 번이 더 유용해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.75f7b30be81842f5",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "기록을 모아야 농담도 상황을 맞추지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a552a7a5eb564f83",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "빈 전적표에 승급 도장부터 찍을 수는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.22ea1757f16f4cb2",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "측정값 대기 중. 추리 소설은 여기서 안 쓸게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c51002955106441d",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "한도 이야기는 숫자 확인 뒤에 시작하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.452aa8d4521f4f84",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "오늘의 증인은 아직 출석 안 했어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e7be26918d8e4309",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "자료가 안 왔는데 널 놀리면 그건 팩폭이 아니라 소설이지ㅋㅋ",
+      "tipId": "",
+      "review": "modified"
+    },
+    {
+      "id": "ko.quote.e14c97bf74d64d81",
+      "situation": "missing",
+      "tone": "spicy",
+      "text": "기록이 채워지면 놀림도 맞춤형으로 준비할게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.2a98e1dcdee04dd9",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "이 숫자는 지난 장면이야. 현재 상황은 다시 확인하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5d648bbf0a894280",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "오래된 계기판으로 지금 속도를 재면 곤란해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.70646edfd8544759",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "사용량 사진이 좀 묵었네. 새 사진이 필요해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c77cd84b5a9042c4",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "기록은 있어. 다만 지금 이야기인지는 확인해야지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.472cdc024b26415b",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "지난 숫자가 현재인 척하면 안 되잖아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.da9bce86a7364932",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "오늘의 판정 전에 데이터 시계부터 맞추자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.78b572ae5bb6459d",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "계기판이 과거를 보고 있어. 새 조회가 필요하네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fd0fe870e0834e90",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "낡은 숫자에 최신 잔소리를 붙이기는 어렵지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.40e27de972544b72",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "확인한 지 시간이 지났어. 결론은 잠깐 대기.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e2080a2c7ea844c4",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "현재 한도는 다시 봐야 해. 예전 숫자는 참고만.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9ca5e1ea148c4fbb",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "오래된 기록은 추억이고 현재 값은 별도야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f7ef70d7ebd34e5a",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "숫자도 유통 시각을 확인해야겠네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e6a4e1016ff74117",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "지금의 한도를 지난 화면으로 단정하지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.37d0587666be40b3",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "데이터가 잠깐 뒤처졌어. 사람 탓부터 하진 않아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6e4621d7e4bb4dbb",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "이건 마지막 관측값이야. 실시간 생중계는 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1d5022de9ba741e2",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "사용량 뉴스가 지연됐네. 새 소식부터 확인하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.61b7b3d8e9cf41ca",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "숫자가 시간 여행 중이야. 현재로 데려오자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.39a0ca7d65e94c25",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "늦은 기록으로 네 오늘을 재단하진 않겠어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d4d55d643b524e1e",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "현재 상황을 묻는다면 데이터도 현재여야지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8f755ef682d14b24",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "지난 관측값에는 지난 시각이 붙어 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.38acc675f215450a",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "계기판이 잠깐 쉬었네. 최신 값부터 불러오자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d25d5439cd4947d7",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "오래된 숫자는 아직 보관 중. 현재 판정은 보류.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ad184e8e33f7446c",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "사용량 시계가 느려졌어. 다시 확인할 시간.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.40f76e9108c940a1",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "낡은 정보가 확신까지 낡게 만들면 안 되지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fdc80700ded74214",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "새 조회 전에는 지금 사용량을 단정 못 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.9224534c201f43ce",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "숫자는 남았는데 최신성은 빠졌네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.da1dca4348264a83",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "지난 기록으로 지금의 여유를 보장할 수는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c4dfdfef6c3d4940",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "데이터 업데이트가 먼저, 매운맛 평가는 나중.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.e9fd669850154404",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "이 화면은 마지막 관측 장면이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.6a50bc86451e4f56",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "현재 값이 확인되면 말도 현재형으로 해 줄게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c791b6fb0bb144e4",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "숫자에 붙은 시간을 같이 읽어 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.626ccd98f00247fb",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "기록이 오래됐어. 낮은 사용량이라고 안심부터 하진 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.79aa8e61083f4b97",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "과거의 한도는 지금의 한도와 다를 수 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d0afdac12cec4e8c",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "새 소식이 없으니 지금 판정도 쉬어 갈게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.050731aa5b3c4c36",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "오늘의 사용량을 어제의 눈으로 보면 곤란하지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.25755b0eb0da4891",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "지금은 숫자보다 마지막 조회 시각이 중요해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.18aa6937871a492f",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "오래된 기록은 남겨도 판단은 새로 해야지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4c0363925b1c4fcc",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "데이터가 뒤에 있어. 앞서 가는 결론은 금지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f54c8872f66441c8",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "현재 상황부터 확인하면 농담도 덜 헛발질하지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.70864eac5c7d487e",
+      "situation": "stale",
+      "tone": "spicy",
+      "text": "이 숫자는 마지막으로 본 값이야. 다시 봐야 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5b05aaf0bbe9426f",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "이번 조회가 안 됐네. 사용량까지 실패한 건 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.247746c731c64cdd",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "숫자 소식이 잠깐 막혔어. 원인은 아직 단정 못 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.cbeebb97bbfc41dd",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회부터 다시 확인하자. 한도 평가는 대기.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.802dedb6cc244f56",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "응답을 못 받았어. 빈칸을 영점으로 바꾸지는 않을게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.c626d17c1e2f43e0",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "데이터 배달이 늦네. 내용까지 지어낼 수는 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.610c47d9134c459c",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회 실패는 확인. 네 작업 실패라는 뜻은 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.fe68f72a22054379",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "지금은 한도보다 조회 상태를 먼저 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d1d431ed3c99483b",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "숫자가 안 도착했네. 재조회 뒤에 얘기하자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.46ab9857a183493d",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "새 값을 못 받았어. 이전 값은 참고만 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a926fb4781924252",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "잠깐 확인이 끊겼어. 잔여량은 다시 봐야 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ef75bb73d00444ba",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "이번 요청은 답을 못 받았네. 결론도 잠깐 보류.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.016903abb2ea43de",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "데이터 통로를 확인 중이야. 사용량은 상상하지 않아.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.797fe7f303da4afd",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회가 쉬어 갔네. 원인까지 넘겨짚지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.86186c8f22b24944",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "새 숫자가 없으니 지금 평가도 잠깐 멈춤.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.3f0803e1bc744c01",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "확인 실패와 한도 소진은 다른 이야기야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.7126aa619aff4962",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회가 막혔다고 작업을 망쳤다고는 안 해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ed3a97c92bc04de6",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "응답 없는 숫자에 표정부터 붙이지는 말자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0a966cfa60504322",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "지금 값은 확인 안 됐어. 새로고침 뒤에 다시 보자.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.8b287282abf84aea",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "계기판 소식이 지연 중이네.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1a53f60eb7e4488d",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회 결과를 못 받았어. 네 사용 습관 탓은 안 할게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.572dfeca7c364f29",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "한도 소식 대기 중. 확정 평가는 대기 번호표 뽑았어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.836eeeb791db4d66",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "이번 조회는 불발. 과거 숫자로 안심시킬 수는 없지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.ec8d72f3b72a43b6",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "데이터가 오면 농담도 다시 출근할게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.06360bd7d7cb4bbf",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "지금은 새 값부터 받는 게 우선이야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.d621ffb68c444b83",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "응답 확인이 먼저지. 평가가 먼저 달리면 안 돼.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.a46fc74e33384dc0",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회는 실패했어도 마지막 기록은 별도야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.0a27f41b2bc342de",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "현재 숫자 확인 안 됨. 엉뚱한 잔소리는 쉬어 갈게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.1d2fc4f6cfe94868",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "새 소식이 안 왔네. 원인 확인 없이 서버 탓부터 하진 마.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.003a633499274211",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "다시 확인하면 되지. 사용량은 임의로 채우지 말고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.53e1ec708b984cb8",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "오늘 판정에 필요한 응답이 아직 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5bbfed141a174d20",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "이번 조회에는 답이 없었네. 결과도 기다려야지.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.898e8a0ff7174e20",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "빈 응답으로 네 사용량을 맞힐 수는 없어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5e961bac7710411d",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "연결 문제일 수도 있어. 확정은 확인 뒤에.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f52c5da5a5cb41f0",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "새 숫자부터 받자. 지금은 평가 재료가 부족해.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.4df95e8597e34eb3",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회가 잠깐 엇박자야. 한도까지 엇나간 건 아니고.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f53f89109cb44156",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "이번 새로고침은 확인 실패. 다시 볼 여지는 있어.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.700f9e2c74ad4d9e",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "데이터가 없다고 잔여량이 많다는 뜻은 아니야.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.50ad6362fcaf4c49",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "조회 소식이 끊겼네. 마지막 시각도 같이 봐 줘.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.f2a0807f50354ff2",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "확인되지 않은 값에는 자신감 붙이지 않을게.",
+      "tipId": "",
+      "review": "retained"
+    },
+    {
+      "id": "ko.quote.5054805785014dc3",
+      "situation": "network",
+      "tone": "spicy",
+      "text": "응답이 돌아오면 그때 다시 한마디 하자.",
+      "tipId": "",
+      "review": "retained"
+    }
+  ],
+  "tips": [
+    {
+      "id": "tip.problem",
+      "field": "plan",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "문제부터 한 문장",
+      "inputs": "현재 불편·영향받는 사람·제약",
+      "prompt": "[상황]에서 해결할 문제를 한 문장으로 정의해. 관찰한 사실과 가정을 나누고, 성공 여부를 확인할 관찰 가능한 기준 3개를 제안해. 없는 정보는 질문으로 남겨.",
+      "check": "문제에 해결책이 미리 끼어 있지 않은지, 기준을 실제로 확인할 수 있는지 본다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.scope",
+      "field": "plan",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "이번 범위 자르기",
+      "inputs": "목표·기한·가능한 자원",
+      "prompt": "[목표/기한/자원]으로 이번에 할 일과 보류할 일을 표로 나눠. 필수 작업마다 완료 조건을 쓰고, 자원이 부족하면 포기 순서를 제안해.",
+      "check": "필수 항목이 주어진 기한과 자원 안에 들어오는지 직접 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.requirements",
+      "field": "plan",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "요구사항의 빈칸",
+      "inputs": "요구사항 초안",
+      "prompt": "[요구사항]에서 모호한 표현을 찾아 원문 구절, 가능한 해석, 결정할 질문으로 정리해. 결정되지 않은 내용을 임의로 확정하지 마.",
+      "check": "원문과 질문을 대조하고 실제 결정권자가 답한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.acceptance",
+      "field": "plan",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "완료 조건 만들기",
+      "inputs": "작업 설명·예외 상황",
+      "prompt": "[작업]의 정상·예외·취소 흐름별 완료 조건을 Given/When/Then으로 작성해. 관찰 가능한 결과만 쓰고 구현 방법은 강제하지 마.",
+      "check": "각 조건을 실제 조작이나 측정으로 판정할 수 있는지 본다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.risk",
+      "field": "plan",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "작은 사전 실패 점검",
+      "inputs": "계획·의존성·기한",
+      "prompt": "[계획]이 실패했다고 가정하고 가능한 원인 5개, 조기 징후, 저비용 예방 행동을 표로 써. 사실과 추정을 구분해.",
+      "check": "위험마다 담당자와 확인 시점을 직접 정한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.summary",
+      "field": "document",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "근거 위치가 있는 요약",
+      "inputs": "공유 권한이 있는 문서 발췌·쪽 번호",
+      "prompt": "[문서]를 핵심 주장 5개로 요약하고 각 주장에 원문 위치와 짧은 근거를 붙여. 원문에 없는 결론은 추가하지 마.",
+      "check": "쪽·문단을 열어 요약과 원문 의미를 대조한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.issues",
+      "field": "document",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "쟁점과 합의 분리",
+      "inputs": "회의 메모 또는 문서",
+      "prompt": "[자료]에서 합의된 내용, 열린 쟁점, 결정이 필요한 질문을 분리해. 담당자와 기한이 없으면 미정으로 표시해.",
+      "check": "합의로 분류된 문장에 실제 동의 기록이 있는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.diff",
+      "field": "document",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "개정 문서 대조",
+      "inputs": "구본·신본 발췌",
+      "prompt": "[구본]과 [신본]을 조항별로 비교해. 추가·삭제·의미 변경과 각 원문 위치를 표로 쓰고 영향은 추정이라고 표시해.",
+      "check": "중요 조항의 양쪽 원문을 직접 펼쳐 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.actions",
+      "field": "document",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "회의에서 할 일 뽑기",
+      "inputs": "개인정보를 제거한 회의 메모",
+      "prompt": "[회의 메모]에서 명시된 실행 항목만 추출해. 할 일·담당·기한·근거 구절을 표로 쓰고 빠진 값은 미정으로 남겨.",
+      "check": "메모에 없는 담당자나 기한을 만들어 넣지 않았는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.claims",
+      "field": "document",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "주장과 근거 대조",
+      "inputs": "검토할 문서·관련 원자료",
+      "prompt": "[문서]의 수치와 핵심 주장을 [원자료]에 대조해. 일치·불일치·자료 없음으로 나누고 원문 위치를 기록해.",
+      "check": "불일치 항목은 실제 원자료에서 재확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.units",
+      "field": "table",
+      "interest": "analyst",
+      "tool": "general",
+      "title": "표의 단위 정리",
+      "inputs": "열 이름·단위·샘플 행",
+      "prompt": "[표]의 열별 의미, 단위, 날짜 기준을 정리하고 섞인 단위와 모호한 열을 표시해. 변환이 필요하면 공식을 제안하되 원값은 보존해.",
+      "check": "샘플 3개를 직접 계산해 단위 변환을 대조한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.formula",
+      "field": "table",
+      "interest": "analyst",
+      "tool": "general",
+      "title": "계산식 풀어 읽기",
+      "inputs": "수식·입력값·기대 결과",
+      "prompt": "[수식/입력]의 계산 순서를 풀어 설명하고 0·빈칸·음수에서 결과를 계산해. 전제와 반올림 규칙을 명시해.",
+      "check": "독립 계산기나 스프레드시트로 같은 입력을 재계산한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.reconcile",
+      "field": "table",
+      "interest": "analyst",
+      "tool": "general",
+      "title": "합계가 안 맞을 때",
+      "inputs": "항목별 값·합계·집계 기준",
+      "prompt": "[항목/합계]의 집계 기준을 먼저 확인하고 중복·누락·반올림 후보를 찾아. 행별 재계산 과정과 차액을 표로 보여 줘.",
+      "check": "원본 행 수와 직접 합산 결과를 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.duplicates",
+      "field": "table",
+      "interest": "analyst",
+      "tool": "general",
+      "title": "중복 기준 정하기",
+      "inputs": "표 샘플·업무상 고유키",
+      "prompt": "[표]에서 [고유키] 기준 중복 후보를 표시해. 완전 중복과 값이 충돌하는 행을 구분하고 삭제 없이 검토 목록만 만들어.",
+      "check": "서로 다른 실제 건을 중복으로 오인하지 않았는지 원자료와 비교한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.sensitivity",
+      "field": "table",
+      "interest": "analyst",
+      "tool": "general",
+      "title": "가정 바꾸어 재계산",
+      "inputs": "계산 모델·가정 범위",
+      "prompt": "[모델]의 [가정]을 낮음·기준·높음으로 바꿔 결과를 계산해. 공식과 입력값을 함께 쓰고 예측 확정처럼 말하지 마.",
+      "check": "각 시나리오를 같은 공식으로 독립 재계산한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.sources",
+      "field": "research",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "최신 사실 확인 계획",
+      "inputs": "확인할 질문·기준일",
+      "prompt": "[질문]을 [기준일] 기준으로 확인할 공식·1차 출처 목록과 확인 항목을 제안해. 검색 가능하면 직접 확인한 URL·날짜를 쓰고, 불가능하면 미확인으로 남겨.",
+      "check": "링크를 직접 열어 발행일과 해당 주장 내용을 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.options",
+      "field": "research",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "대안 비교표",
+      "inputs": "후보·판단 기준·제약",
+      "prompt": "[후보]를 [기준]으로 비교해. 확인된 사실과 추정, 빠진 정보를 칸별로 구분하고 기준의 가중치는 내가 결정하게 해.",
+      "check": "가격·기능 등 변동 정보는 공식 출처와 기준일을 직접 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.decision",
+      "field": "research",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "결정 기록 남기기",
+      "inputs": "대안·선택 이유·불확실성",
+      "prompt": "[결정]을 배경·검토한 대안·선택 이유·남은 불확실성·재검토 조건으로 기록해. 결정하지 않은 것은 확정하지 마.",
+      "check": "실제 선택 이유와 재검토 조건이 빠지지 않았는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.assumptions",
+      "field": "research",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "숨은 가정 찾기",
+      "inputs": "제안서 또는 주장",
+      "prompt": "[제안]의 결론에 필요한 가정을 추출해. 확인된 것과 확인이 필요한 것을 나누고 각 가정을 확인할 작은 실험을 제안해.",
+      "check": "중요 가정부터 실제 자료나 실험으로 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.questions",
+      "field": "research",
+      "interest": "explorer",
+      "tool": "general",
+      "title": "조사 질문 좁히기",
+      "inputs": "궁금한 주제·결정 목적",
+      "prompt": "[주제]를 조사 가능한 질문 3개로 좁혀. 각 질문이 [결정 목적]에 왜 필요한지, 답에 필요한 자료와 중단 기준을 써.",
+      "check": "답을 얻어도 결정에 도움이 안 되는 질문은 제외한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.reader",
+      "field": "writing",
+      "interest": "creator",
+      "tool": "general",
+      "title": "독자에 맞는 초안",
+      "inputs": "목적·독자·핵심 메시지",
+      "prompt": "[독자]가 [행동/이해]하도록 [핵심 메시지]의 초안을 작성해. 독자가 모를 용어는 풀고 사실 확인이 필요한 부분은 표시해.",
+      "check": "실제 독자가 이해할 표현인지 읽어 보고 사실을 별도로 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.structure",
+      "field": "writing",
+      "interest": "creator",
+      "tool": "general",
+      "title": "글의 순서 바꾸기",
+      "inputs": "글 초안·읽는 목적",
+      "prompt": "[초안]의 문단별 역할을 짚고 [목적]에 맞는 순서를 제안해. 원문 사실을 추가하지 말고 이동 이유를 설명해.",
+      "check": "핵심 결론에 도달하기 전에 불필요한 우회가 없는지 읽는다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.shorten",
+      "field": "writing",
+      "interest": "creator",
+      "tool": "general",
+      "title": "길이만 줄이는 편집",
+      "inputs": "초안·목표 길이·필수 정보",
+      "prompt": "[초안]을 [길이]로 줄여. 필수 정보 [목록]은 보존하고 삭제·압축한 이유를 별도 목록으로 알려 줘.",
+      "check": "이름·숫자·조건과 부정 표현이 원문과 같은지 대조한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.tone",
+      "field": "writing",
+      "interest": "creator",
+      "tool": "general",
+      "title": "말투 교정",
+      "inputs": "초안·원하는 말투·피할 표현",
+      "prompt": "[초안]을 [말투]로 고쳐. 사실과 약속 수준은 바꾸지 말고, 고친 문장과 이유를 짝지어 보여 줘.",
+      "check": "완곡하게 고치며 새 약속이나 과장이 생기지 않았는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.headlines",
+      "field": "writing",
+      "interest": "creator",
+      "tool": "general",
+      "title": "제목 후보의 차이",
+      "inputs": "본문·독자·목적",
+      "prompt": "[본문]에 맞는 제목 5개를 서로 다른 관점으로 써. 각 제목의 강조점과 과장 위험을 설명하고 본문에 없는 성과는 넣지 마.",
+      "check": "제목이 본문에서 실제로 뒷받침되는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.reproduce",
+      "field": "bug",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "버그 재현부터",
+      "inputs": "관련 코드·증상·재현 조건",
+      "prompt": "관련 코드를 읽고 [증상/재현 조건]의 버그를 재현해. 가능하면 실패하는 회귀 테스트를 먼저 추가한 뒤 최소 수정하고 관련 테스트를 실행해. 실행 명령·결과·미실행 항목을 구분해 줘. 데이터 삭제나 배포는 하지 마.",
+      "check": "실패했던 동일 입력이 수정 후 통과하는지 실제 명령 결과를 본다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.trace",
+      "field": "bug",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "오류 경로 추적",
+      "inputs": "비밀값 제거한 오류 로그·관련 코드",
+      "prompt": "[오류]의 최초 발생 위치와 호출 경로를 관련 코드에서 추적해. 확인한 근거와 가설을 나누고 최소 재현 방법을 제시해. 아직 코드를 수정하지 마.",
+      "check": "스택과 실제 코드 경로가 일치하는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.minimal",
+      "field": "bug",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "수정 범위 줄이기",
+      "inputs": "재현된 결함·현재 변경 diff",
+      "prompt": "[결함/diff]를 읽고 문제 해결에 필요한 최소 변경을 제안해. 관련 없는 리팩터링을 분리하고 기존 동작 영향과 실행할 테스트를 써.",
+      "check": "수정 줄마다 결함과 연결되는 이유가 있는지 검토한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.boundaries",
+      "field": "bug",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "경계 입력 테스트",
+      "inputs": "함수·입출력 계약",
+      "prompt": "[함수]의 빈값·최솟값·최댓값·중복·잘못된 입력을 다루는 테스트를 작성하고 실행해. 기대값은 계약에서 설명하고 실행하지 못한 항목은 표시해.",
+      "check": "기대값을 구현 결과에서 베끼지 않았는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.race",
+      "field": "bug",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "동시성 재현",
+      "inputs": "상태 변경 코드·저장 구조",
+      "prompt": "[코드]에서 동시에 실행할 때 상태가 깨질 수 있는 경로를 찾아. 재현 가능한 순서를 만들고 중복 처리·중단 후 재시도 테스트를 실행해. 운영 데이터는 쓰지 마.",
+      "check": "최종 상태뿐 아니라 중복 지급·유실 여부를 원장으로 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.diffreview",
+      "field": "review",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "변경분 코드 리뷰",
+      "inputs": "diff·호출부·관련 테스트",
+      "prompt": "[diff]와 호출부를 읽고 실제 결함 후보를 찾아. 파일·줄·재현 조건·영향·최소 수정 방향을 제시하고 추측은 미확인으로 구분해. 스타일 취향을 결함으로 부르지 마.",
+      "check": "지적한 경로가 실제 호출되는지 재현하거나 테스트로 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.regression",
+      "field": "review",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "회귀 범위 고르기",
+      "inputs": "변경 파일·사용자 흐름",
+      "prompt": "[변경]이 영향을 주는 사용자 흐름과 의존 경로를 정리하고 관련 회귀 테스트를 실행해. 실행 명령·결과·남은 미검증을 분리해. 실패를 숨기기 위해 fixture를 일괄 갱신하지 마.",
+      "check": "바뀐 기능 주변의 기존 흐름까지 실제로 실행됐는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.authreview",
+      "field": "review",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "권한 경계 확인",
+      "inputs": "인증·권한 검사 코드·합성 역할",
+      "prompt": "[코드]의 사용자·역할·리소스 소유권 검사를 추적해. 합성 계정으로 권한 없음·다른 계정·만료 상태 테스트를 제안하고 가능한 로컬 테스트를 실행해. 실제 계정이나 서버를 공격하지 마.",
+      "check": "허용 경로와 차단 경로 모두 기대 결과를 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.secrets",
+      "field": "review",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "비밀정보 노출 점검",
+      "inputs": "코드·로그 형식·설정 이름",
+      "prompt": "[범위]에서 토큰·비밀번호·개인정보가 로그나 응답에 나오는 경로를 찾아. 실제 비밀값은 출력하지 말고 위치·노출 조건·마스킹 방안을 제시해.",
+      "check": "합성 비밀값으로 로그와 오류 응답에 원문이 남지 않는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.migration",
+      "field": "review",
+      "interest": "developer",
+      "tool": "codex",
+      "title": "이관 안전성 리뷰",
+      "inputs": "이전·새 스키마·이관 코드",
+      "prompt": "[이관 코드]를 읽고 재실행·중간 중단·오래된 백업·다른 계정 복원에서 손실이나 중복 가능성을 점검해. 합성 데이터와 임시 DB로 검증하고 운영 DB는 변경하지 마.",
+      "check": "원본·이관 후·반복 이관의 레코드 수와 핵심 값을 대조한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.routine",
+      "field": "automation",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "반복 작업 후보",
+      "inputs": "반복 절차·빈도·오류 사례",
+      "prompt": "[절차]를 단계로 나누고 자동화 후보 한 가지를 골라. 입력·출력·사람 확인 지점·실패 시 복구를 적고 예상 절감은 가정으로 표시해.",
+      "check": "자동화 비용이 반복 비용보다 큰지 실제 횟수로 비교한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.dryrun",
+      "field": "automation",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "미리보기 스크립트",
+      "inputs": "파일 예시·변환 규칙",
+      "prompt": "[규칙]을 적용할 스크립트를 만들어. 기본은 dry-run으로 변경 예정 목록만 출력하고 실제 변경은 별도 명시적 옵션으로 나눠. 임시 샘플에서 검증하고 사용자 원본은 변경하지 마.",
+      "check": "샘플의 예상 목록과 출력이 같은지 보고 원본 보존을 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.checklist",
+      "field": "automation",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "인수인계 체크리스트",
+      "inputs": "현재 상태·실행 방법·알려진 문제",
+      "prompt": "[업무] 인수인계를 준비해. 현재 상태·시작 명령·필요 권한·실패 징후·복구 방법·미해결 항목을 써. 비밀값은 넣지 말고 보관 위치 유형만 적어.",
+      "check": "처음 보는 사람이 문서만으로 다음 안전한 단계를 찾는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.batch",
+      "field": "automation",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "일괄 작업 쪼개기",
+      "inputs": "작업 목록·의존성·검토 비용",
+      "prompt": "[목록]을 실패해도 되돌릴 수 있는 작은 묶음으로 나눠. 각 묶음의 입력·산출물·확인 방법·중단 조건을 쓰고 실제 작업은 실행하지 마.",
+      "check": "한 묶음 실패가 다음 묶음을 오염시키지 않는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    },
+    {
+      "id": "tip.template",
+      "field": "automation",
+      "interest": "practitioner",
+      "tool": "general",
+      "title": "재사용 양식 만들기",
+      "inputs": "반복 문서 예시·바뀌는 값",
+      "prompt": "[예시]에서 반복 구조와 매번 바뀌는 값을 분리해 빈칸 양식을 만들어. 필수 입력과 작성 후 확인 목록을 붙이고 개인정보 예시는 가상 값으로 바꿔.",
+      "check": "서로 다른 실제 사례 두 개에 적용해 빠지는 칸이 없는지 확인한다.",
+      "fallback": "공유 권한을 확인하고 개인정보·비밀값을 제거하세요. 파일/검색/코드 실행을 지원하지 않으면 필요한 발췌와 실행 결과를 직접 붙여 넣고, 수행하지 않은 확인은 미검증으로 남기세요."
+    }
+  ],
+  "legacyIds": {
+    "0": "ko.practice.problem",
+    "1": "ko.quote.3323ab4c6e324eda",
+    "2": "ko.quote.9789e5b5834a4b2b",
+    "3": "ko.quote.f277fe1a151445f2",
+    "4": "ko.quote.8e18f89194504f47",
+    "5": "ko.quote.c282ef026a2b406b",
+    "6": "ko.quote.86f8b26944d040db",
+    "7": "ko.practice.scope",
+    "8": "ko.quote.c13eca54365e4d28",
+    "9": "ko.quote.15503cf92c42421e",
+    "10": "ko.quote.4e4993a72aca4b0a",
+    "11": "ko.quote.0b7b72aed46d4f10",
+    "12": "ko.quote.0738ea1ece104749",
+    "13": "ko.quote.ce3c08bebf884533",
+    "14": "ko.practice.requirements",
+    "15": "ko.quote.93dfe805da184897",
+    "16": "ko.quote.67f1a01c61f54dc9",
+    "17": "ko.quote.31c7d59d16024743",
+    "18": "ko.quote.5b184775db144c11",
+    "19": "ko.quote.6c19bf68d807402f",
+    "20": "ko.quote.6b0300d25aad476d",
+    "21": "ko.practice.acceptance",
+    "22": "ko.quote.813ce7ea92544212",
+    "23": "ko.quote.91ef8193a5b94ec0",
+    "24": "ko.quote.c0f2d9a631614fbd",
+    "25": "ko.quote.31d3957c058c414a",
+    "26": "ko.quote.2ae8a448320047c2",
+    "27": "ko.quote.b54ee463fda84619",
+    "28": "ko.practice.risk",
+    "29": "ko.quote.f5b2a3eb6c9a42fd",
+    "30": "ko.quote.d3f682b3f54d4a0b",
+    "31": "ko.quote.2621832d347349e3",
+    "32": "ko.quote.ea1d26e0cebf4d19",
+    "33": "ko.quote.cfe5f2aa6ce14c75",
+    "34": "ko.quote.1e5ee55f40b84478",
+    "35": "ko.practice.summary",
+    "36": "ko.quote.fbd81cc436fd448a",
+    "37": "ko.quote.6b7d528ad88045a3",
+    "38": "ko.quote.4efbf09cc00e4b59",
+    "39": "ko.quote.60138abdcbed4596",
+    "40": "ko.quote.207e619e420b41ba",
+    "41": "ko.quote.881768408a484356",
+    "42": "ko.practice.issues",
+    "43": "ko.quote.49007ce1d846441d",
+    "44": "ko.quote.c03f3f3cf7cc4b8f",
+    "45": "ko.quote.158e5701c44d4fb2",
+    "46": "ko.quote.942935891f1b4916",
+    "47": "ko.quote.5cda096663f04708",
+    "48": "ko.quote.87529d2f2aee46fd",
+    "49": "ko.practice.diff",
+    "50": "ko.quote.b44acf6763354784",
+    "51": "ko.quote.1cfceedb7aa04368",
+    "52": "ko.quote.e9eeda41ab8b4b60",
+    "53": "ko.quote.d0b4c80f2b314f36",
+    "54": "ko.quote.21f1863b318b4b6a",
+    "55": "ko.quote.440c07acd1864a99",
+    "56": "ko.practice.actions",
+    "57": "ko.quote.d25506b804f64948",
+    "58": "ko.quote.dffa57b63e5142ba",
+    "59": "ko.quote.3eb88bc4d1da4c8c",
+    "60": "ko.quote.9ed7ed617ff447b6",
+    "61": "ko.quote.3a1fd97b93874da6",
+    "62": "ko.quote.4500602d8849436b",
+    "63": "ko.practice.claims",
+    "64": "ko.quote.598a48d3722943f5",
+    "65": "ko.quote.14611e002a3d4680",
+    "66": "ko.quote.ab0b56e3081d4791",
+    "67": "ko.quote.0dd387e06a494816",
+    "68": "ko.quote.8f91e23452c34bc8",
+    "69": "ko.quote.fd13c25c085e448a",
+    "70": "ko.practice.units",
+    "71": "ko.quote.6368eaef64ac47c3",
+    "72": "ko.quote.632119de33134599",
+    "73": "ko.quote.00c40ab6ac2d4974",
+    "74": "ko.quote.f4301f09fb714eb1",
+    "75": "ko.quote.a81efec01465481f",
+    "76": "ko.quote.23f10a357b52442b",
+    "77": "ko.practice.formula",
+    "78": "ko.quote.972a4d74762d408b",
+    "79": "ko.quote.a50699cfa9474cde",
+    "80": "ko.quote.4a605e5b179d47c5",
+    "81": "ko.quote.84fc9995f60c4488",
+    "82": "ko.quote.0fa3affa45044f9f",
+    "83": "ko.quote.85497da56f174075",
+    "84": "ko.practice.reconcile",
+    "85": "ko.quote.8878cb32828e4c87",
+    "86": "ko.quote.9d7badae717a4460",
+    "87": "ko.quote.68c26f3db1bb44dc",
+    "88": "ko.quote.944dc739d87840d6",
+    "89": "ko.quote.ec7ac22c0b00483a",
+    "90": "ko.quote.c7250bb3bcf94142",
+    "91": "ko.practice.duplicates",
+    "92": "ko.quote.4b8223766c1a4ece",
+    "93": "ko.quote.1e19a533ae994f09",
+    "94": "ko.quote.4ed096ba38de44ab",
+    "95": "ko.quote.3c50efc525b445a6",
+    "96": "ko.quote.2820465fcd704fe1",
+    "97": "ko.quote.38e472704c0a4df6",
+    "98": "ko.practice.sensitivity",
+    "99": "ko.quote.9d4b674e6de6428a",
+    "100": "ko.quote.55df578f0f414d2c",
+    "101": "ko.quote.1f0fe8be9e2d435f",
+    "102": "ko.quote.f030fe88e6f54020",
+    "103": "ko.quote.8b4ecda12f79433c",
+    "104": "ko.quote.494d2067dcbf4749",
+    "105": "ko.practice.sources",
+    "106": "ko.quote.8fa94523044d4309",
+    "107": "ko.quote.62051f85e8204f20",
+    "108": "ko.quote.fa4f3de6b2ab43a9",
+    "109": "ko.quote.fc7c0c43368b436d",
+    "110": "ko.quote.367a2f2c96a64881",
+    "111": "ko.quote.e4d273b912ed4200",
+    "112": "ko.practice.options",
+    "113": "ko.quote.c4942938c735454a",
+    "114": "ko.quote.84fe44e0992a4cb2",
+    "115": "ko.quote.d009a0efb1374c98",
+    "116": "ko.quote.a8c493b3e1a240cf",
+    "117": "ko.quote.c4a904c119c94b7b",
+    "118": "ko.quote.a9359ae37dd24488",
+    "119": "ko.practice.decision",
+    "120": "ko.quote.72d18fa169ed4760",
+    "121": "ko.quote.dcfc678167314970",
+    "122": "ko.quote.15df428831c4486d",
+    "123": "ko.quote.6185cd88188f4627",
+    "124": "ko.quote.fa46d7c9d0414e62",
+    "125": "ko.quote.ef5dc58e0f664e00",
+    "126": "ko.practice.assumptions",
+    "127": "ko.quote.3ae775fa620e4ab6",
+    "128": "ko.quote.78b5bc6d9b8747aa",
+    "129": "ko.quote.6ba0854533af43f1",
+    "130": "ko.quote.71be4a3a21c24fde",
+    "131": "ko.quote.b04b0fa13ae345aa",
+    "132": "ko.quote.c84f5b5d1d4043b6",
+    "133": "ko.practice.questions",
+    "134": "ko.quote.86cc3e89d8654f9f",
+    "135": "ko.quote.75bcebffd656440e",
+    "136": "ko.quote.bd96aff94de74e5a",
+    "137": "ko.quote.353cd2a740a94e7d",
+    "138": "ko.quote.3194e960d70c44f5",
+    "139": "ko.quote.aea94b32c00d41aa",
+    "140": "ko.practice.reader",
+    "141": "ko.quote.e90712775b474ff9",
+    "142": "ko.quote.cbc261f4a0cd4676",
+    "143": "ko.quote.5bac8d45ded4424a",
+    "144": "ko.quote.a22b8cad6e134bcf",
+    "145": "ko.quote.626062d7bf2c4cde",
+    "146": "ko.quote.db4676b1d8d44d5d",
+    "147": "ko.practice.structure",
+    "148": "ko.quote.99d5f5fe04674d4f",
+    "149": "ko.quote.4bbc90886e734424",
+    "150": "ko.quote.e50582bacbe94184",
+    "151": "ko.quote.a74251a93c5c44c6",
+    "152": "ko.quote.a9e60885a65e48ca",
+    "153": "ko.quote.6e2ebb87504f439a",
+    "154": "ko.practice.shorten",
+    "155": "ko.quote.76e158b7a7fa40af",
+    "156": "ko.quote.33b90b8e6ae34a4c",
+    "157": "ko.quote.4cd985a0f55b4460",
+    "158": "ko.quote.80be7c0e52c346f7",
+    "159": "ko.quote.16b1c6db54d24575",
+    "160": "ko.quote.3d8b932d989e4f1d",
+    "161": "ko.practice.tone",
+    "162": "ko.quote.d629a5b410884c68",
+    "163": "ko.quote.ef75cf40e4db400e",
+    "164": "ko.quote.f5bb0384ed014a3a",
+    "165": "ko.quote.1f464d0e61b64b78",
+    "166": "ko.quote.56c47a66a6794cc8",
+    "167": "ko.quote.ebbde32eae3540a3",
+    "168": "ko.practice.headlines",
+    "169": "ko.quote.7a9b939fd50c46e8",
+    "170": "ko.quote.0fad1f19f00640b5",
+    "171": "ko.quote.6ddad0798b95443c",
+    "172": "ko.quote.0871c9a11c1b4cc9",
+    "173": "ko.quote.05221b197f2e4372",
+    "174": "ko.quote.3fa0c41b1e8b44de",
+    "175": "ko.practice.reproduce",
+    "176": "ko.quote.4077e7ed7cf0462b",
+    "177": "ko.quote.b28eb55198024870",
+    "178": "ko.quote.ddaa1b9707c948bd",
+    "179": "ko.quote.a031eb11477a42f7",
+    "180": "ko.quote.f1678e283f794809",
+    "181": "ko.quote.18cdbbc5a5e74ab1",
+    "182": "ko.practice.trace",
+    "183": "ko.quote.94411ed55b764c23",
+    "184": "ko.quote.a6426184df034de4",
+    "185": "ko.quote.c1660ac6eea84ee3",
+    "186": "ko.quote.7b69bbcca19c4042",
+    "187": "ko.quote.6066b0015a334ef8",
+    "188": "ko.quote.e92bb4bd71534d4f",
+    "189": "ko.practice.minimal",
+    "190": "ko.quote.f5b8b747c62b4c36",
+    "191": "ko.quote.c4c82e937a124c6d",
+    "192": "ko.quote.08217baad68c40fc",
+    "193": "ko.quote.62d878db3db0478b",
+    "194": "ko.quote.28f9b7e2be194b60",
+    "195": "ko.quote.2e088e7114544666",
+    "196": "ko.practice.boundaries",
+    "197": "ko.quote.e4f9c00ec096416b",
+    "198": "ko.quote.6b57c225383d4a0e",
+    "199": "ko.quote.4306791411bf4419",
+    "200": "ko.quote.8abad426fa9c433f",
+    "201": "ko.quote.252c2c47153641ed",
+    "202": "ko.quote.588872ef45914bcf",
+    "203": "ko.practice.race",
+    "204": "ko.quote.670b786e30774707",
+    "205": "ko.quote.58e80228a4174eb9",
+    "206": "ko.quote.0634b7ab18d14e5a",
+    "207": "ko.quote.c42f1827e9f3479b",
+    "208": "ko.quote.3f0d20184a8c4cf5",
+    "209": "ko.quote.79e44ec91b034b06",
+    "210": "ko.practice.diffreview",
+    "211": "ko.quote.e2c60508158243ee",
+    "212": "ko.quote.6ccf8ebc5d384d0f",
+    "213": "ko.quote.b42a717dd96945f6",
+    "214": "ko.quote.3fdc85b4105f4682",
+    "215": "ko.quote.210b46d32cc24005",
+    "216": "ko.quote.331f74316f1b4103",
+    "217": "ko.practice.regression",
+    "218": "ko.quote.c106d61eea6049b4",
+    "219": "ko.quote.8f809a0c02414e10",
+    "220": "ko.quote.a5bf3e72d76c4758",
+    "221": "ko.quote.a8cc7c1c90a74856",
+    "222": "ko.quote.e62251533d584869",
+    "223": "ko.quote.ed4c41ed3f284792",
+    "224": "ko.practice.authreview",
+    "225": "ko.quote.5b2364e008684b02",
+    "226": "ko.quote.d9da487c6046459e",
+    "227": "ko.quote.6397cc824c53454a",
+    "228": "ko.quote.c0dc5c4c510b4be1",
+    "229": "ko.quote.b48cb3bbce0945cd",
+    "230": "ko.quote.f23b02c09123470d",
+    "231": "ko.practice.secrets",
+    "232": "ko.quote.7f33fca4c4234b6e",
+    "233": "ko.quote.a4cb0baab3204994",
+    "234": "ko.quote.00811272caff4174",
+    "235": "ko.quote.c5a0862594934f4c",
+    "236": "ko.quote.ecff66a6c90746be",
+    "237": "ko.quote.fca72a2372ed491d",
+    "238": "ko.practice.migration",
+    "239": "ko.quote.bf21db754c8a40d2",
+    "240": "ko.quote.ba65731d9aa045a9",
+    "241": "ko.quote.ee14c436de694767",
+    "242": "ko.quote.8785c725408e4073",
+    "243": "ko.quote.b8cdcfc6ca7844c3",
+    "244": "ko.quote.d350df0f2ddb482b",
+    "245": "ko.practice.routine",
+    "246": "ko.quote.1e7b0151f9b94415",
+    "247": "ko.quote.63f61b904ee542e2",
+    "248": "ko.quote.0ee2133edf6948a6",
+    "249": "ko.quote.abcc3afdbc254db4",
+    "250": "ko.quote.878a7a3df16f4752",
+    "251": "ko.quote.42ec056ff70f47c1",
+    "252": "ko.practice.dryrun",
+    "253": "ko.quote.4097997ea7a34907",
+    "254": "ko.quote.298d43ea4b524acc",
+    "255": "ko.quote.220f0080d2d84cff",
+    "256": "ko.quote.67fbcf958f8d45d1",
+    "257": "ko.quote.c56edbe1d36048bb",
+    "258": "ko.quote.29855de32ec14018",
+    "259": "ko.practice.checklist",
+    "260": "ko.quote.6b1f66c4219c4ada",
+    "261": "ko.quote.c04dea769495456a",
+    "262": "ko.quote.4ea1843d4792400f",
+    "263": "ko.quote.1647b36c66044c81",
+    "264": "ko.quote.fb706adf59fc49e9",
+    "265": "ko.quote.82fc06479d4e4895",
+    "266": "ko.quote.ba276d03c90f4a53",
+    "267": "ko.quote.c7f466ac8d1747ca",
+    "268": "ko.quote.2b0e5ce45b154c90",
+    "269": "ko.quote.680c1ef66a3c4421",
+    "270": "ko.quote.f1731213e46449cf",
+    "271": "ko.quote.9baf102308654b32",
+    "272": "ko.quote.34df77118f8e4a01",
+    "273": "ko.quote.1226298d5d194656",
+    "274": "ko.quote.fdf7e0a56f5b42d8",
+    "275": "ko.quote.bf959cb2ddc24789",
+    "276": "ko.quote.42e65dcb61504fb5",
+    "277": "ko.quote.3f372fd02b5d4a2b",
+    "278": "ko.quote.a7d246ca5a074b02",
+    "279": "ko.quote.058081febef24cc3",
+    "280": "ko.quote.b78df40c9fa04545",
+    "281": "ko.quote.33ac09a7fcd647e3",
+    "282": "ko.quote.3d1eaea0b0e54952",
+    "283": "ko.quote.5922858e0b254d37",
+    "284": "ko.quote.e00342bca5d5436c",
+    "285": "ko.quote.fdfd75bd72c74b89",
+    "286": "ko.quote.6de470f43dfc4c37",
+    "287": "ko.quote.b3862e47fb93464c",
+    "288": "ko.quote.881bb3c18f1945c1",
+    "289": "ko.quote.a55b3ac10b584875",
+    "290": "ko.quote.dc6baf66dfba4f3e",
+    "291": "ko.quote.fba92cc5484c4a4c",
+    "292": "ko.quote.104848bef3f44e67",
+    "293": "ko.quote.6358fba9ac6f476a",
+    "294": "ko.quote.5da1d5d0943d4c2e",
+    "295": "ko.quote.76e9c4a7ff374ffc",
+    "296": "ko.quote.39851bbb70ad44bf",
+    "297": "ko.quote.88dd7539cf2b449e",
+    "298": "ko.quote.b44cd4636d5b40e2",
+    "299": "ko.quote.e86c4763a01d4fda",
+    "300": "ko.quote.b65a226c309c4d21",
+    "301": "ko.quote.80a10e85edb9481d",
+    "302": "ko.quote.52f528ed5d40496c",
+    "303": "ko.quote.4c18ab34925d4705",
+    "304": "ko.quote.e141381197f8449a",
+    "305": "ko.quote.7708de60822049ee",
+    "306": "ko.quote.9aabc1e414184b85",
+    "307": "ko.quote.94e121c878c5404c",
+    "308": "ko.quote.354fa8f4fdad4fa8",
+    "309": "ko.quote.9913f4cf5f5648db",
+    "310": "ko.quote.dc452e4910604869",
+    "311": "ko.quote.b41bf8d3efb749da",
+    "312": "ko.quote.258e39896c4342ab",
+    "313": "ko.quote.b0aacfa194034d68",
+    "314": "ko.quote.940b6185c9694b2d",
+    "315": "ko.quote.03e3923e27b04f05",
+    "316": "ko.quote.0e6410fc9ee8406f",
+    "317": "ko.quote.1e532246710d41e4",
+    "318": "ko.quote.69c8753e7e244acb",
+    "319": "ko.quote.5d14974cdcf34158",
+    "320": "ko.quote.b84abe5a725d4b36",
+    "321": "ko.quote.bdbe8e78b7874ee2",
+    "322": "ko.quote.af6e18c840af41fd",
+    "323": "ko.quote.11dc1f5924574dfd",
+    "324": "ko.quote.128754d39f27429a",
+    "325": "ko.quote.9726caddc2894abf",
+    "326": "ko.quote.9b95a25d0b85472e",
+    "327": "ko.quote.1e8556d805c24628",
+    "328": "ko.quote.0255cb64e4414944",
+    "329": "ko.quote.52890a6e294a4b42",
+    "330": "ko.quote.3544dc292b9a4f25",
+    "331": "ko.quote.917efc581ae54d4b",
+    "332": "ko.quote.fe0be98f57ce459b",
+    "333": "ko.quote.bc72303a2dcb4eed",
+    "334": "ko.quote.ede271ee65394aeb",
+    "335": "ko.quote.44d7d36463e9495a",
+    "336": "ko.quote.05885d209a994c96",
+    "337": "ko.quote.a296c0112faf48b0",
+    "338": "ko.quote.8b0ff96aee0b4cae",
+    "339": "ko.quote.1e28925d210643c2",
+    "340": "ko.quote.0670929937764074",
+    "341": "ko.quote.6802fa2d632e4d74",
+    "342": "ko.quote.2d1a0b8603824047",
+    "343": "ko.quote.dd73a01d33c94917",
+    "344": "ko.quote.c6d3a7050a7342ae",
+    "345": "ko.quote.180a79e78e1c4a45",
+    "346": "ko.quote.4d402ee4893641ec",
+    "347": "ko.quote.a8b59d52ee3147bc",
+    "348": "ko.quote.28c19d2045a34067",
+    "349": "ko.quote.7b16484bf6a64129",
+    "350": "ko.quote.c4d5ec8b9f46476d",
+    "351": "ko.quote.c9de74187e3141aa",
+    "352": "ko.quote.7575f28a607542d8",
+    "353": "ko.quote.0989021da8d64074",
+    "354": "ko.quote.3ebac839e8b34ae4",
+    "355": "ko.quote.c5293483e461421d",
+    "356": "ko.quote.934804b137fa4abf",
+    "357": "ko.quote.93342fceb8f64da5",
+    "358": "ko.quote.28b5ca65b9f94853",
+    "359": "ko.quote.e0f9575b91694242",
+    "360": "ko.quote.c415dc0425da4b74",
+    "361": "ko.quote.d9543fd3d0fc4b94",
+    "362": "ko.quote.aed91ba17d034f91",
+    "363": "ko.quote.2e9382b7b2c14d2a",
+    "364": "ko.quote.243f0a02643e40b7",
+    "365": "ko.quote.3bf6c997cc3a4e82",
+    "366": "ko.practice.batch",
+    "367": "ko.quote.3282e6d1e3b84d9e",
+    "368": "ko.quote.f2a5e7793cf94951",
+    "369": "ko.quote.bb02b58ed0514c2d",
+    "370": "ko.quote.346add420c124eae",
+    "371": "ko.quote.1ccf58aac40f40ae",
+    "372": "ko.quote.e6d610fbb5134363",
+    "373": "ko.practice.template",
+    "374": "ko.quote.0e3b2aed5ccf47ba",
+    "375": "ko.quote.f43ec737f5964771",
+    "376": "ko.quote.cf08d8afd2ca4a2b",
+    "377": "ko.quote.aed591d479404806",
+    "378": "ko.quote.e22454cba0304bb3",
+    "379": "ko.quote.206ef4a138cb4214",
+    "380": "ko.quote.5bdb08b323ed45b8",
+    "381": "ko.quote.387405a4ff334788",
+    "382": "ko.quote.17dd24ddd3a846b2",
+    "383": "ko.quote.330ce39212474310",
+    "384": "ko.quote.0e4742158bc840bb",
+    "385": "ko.quote.5064cec4dc5444a0",
+    "386": "ko.quote.f84726c290824ef3",
+    "387": "ko.quote.8ad41fe8eb354c51",
+    "388": "ko.quote.9e70bd80bc5f4631",
+    "389": "ko.quote.4f4bb0baaa5f47c4",
+    "390": "ko.quote.61bbca2401bc46a9",
+    "391": "ko.quote.c1096b35b1e6476c",
+    "392": "ko.quote.6fb177cfae5f4dd2",
+    "393": "ko.quote.c592f9fe83b74d16",
+    "394": "ko.quote.4325ec105d824311",
+    "395": "ko.quote.11021a6a37e9492c",
+    "396": "ko.quote.98c8681ddad142ca",
+    "397": "ko.quote.e239c2672fcc4dad",
+    "398": "ko.quote.5a6c283a68ca4996",
+    "399": "ko.quote.0a29e47b638c4331",
+    "400": "ko.quote.313e091dbfe44243",
+    "401": "ko.quote.308bb6bcdf044452",
+    "402": "ko.quote.fe933ae2599046f4",
+    "403": "ko.quote.b3e17828cd8147d9",
+    "404": "ko.quote.d6aa120ea52b4192",
+    "405": "ko.quote.7f36a6506ed64e78",
+    "406": "ko.quote.e2ba5c1803ac446f",
+    "407": "ko.quote.be5f2563e5a6433a",
+    "408": "ko.quote.646198b2c0bf4658",
+    "409": "ko.quote.3da31a53b7d84aeb",
+    "410": "ko.quote.d0b6480b9f2b45ac",
+    "411": "ko.quote.fc299f1d5b4940fb",
+    "412": "ko.quote.7837fb26f7bf4dc3",
+    "413": "ko.quote.4e0c4ebc76144b06",
+    "414": "ko.quote.534df0274e27413d",
+    "415": "ko.quote.17ae63f02383488b",
+    "416": "ko.quote.56e4cbdde1514bab",
+    "417": "ko.quote.7d5cb794fd854fec",
+    "418": "ko.quote.195e7fc63eb24d62",
+    "419": "ko.quote.fd04ad3fe8ab41a0",
+    "420": "ko.quote.2130734173574fe5",
+    "421": "ko.quote.a32ba5803e21453d",
+    "422": "ko.quote.22d2a61d22114c0d",
+    "423": "ko.quote.2bc87602cc644834",
+    "424": "ko.quote.699674fd416e4213",
+    "425": "ko.quote.5446c2d167db4b5c",
+    "426": "ko.quote.0aff2765143b4fa8",
+    "427": "ko.quote.7db455e780ee4cc2",
+    "428": "ko.quote.b6c8e5efca2e4984",
+    "429": "ko.quote.a6bca8b534164e4c",
+    "430": "ko.quote.ef23de1183fa44ab",
+    "431": "ko.quote.21c0e94505ab41a9",
+    "432": "ko.quote.0faea11db16e4698",
+    "433": "ko.quote.717e39eb575b47b8",
+    "434": "ko.quote.2bd9be9799b048bb",
+    "435": "ko.quote.62b3a2e16c1e42c4",
+    "436": "ko.quote.453afbb453344da6",
+    "437": "ko.quote.4133b5121d0e4c67",
+    "438": "ko.quote.4e97e5b027064394",
+    "439": "ko.quote.f589721811994f12",
+    "440": "ko.quote.53f78c0d840a4eef",
+    "441": "ko.quote.efc30deb32984591",
+    "442": "ko.quote.ac867dc0fea3466e",
+    "443": "ko.quote.f883b96b766e4e9c",
+    "444": "ko.quote.e4e1fb075ea04b9f",
+    "445": "ko.quote.cec69375e6654444",
+    "446": "ko.quote.6363bfa7553f4695",
+    "447": "ko.quote.8a6ef054726c4e65",
+    "448": "ko.quote.50fc02e0f66a49b5",
+    "449": "ko.quote.3b5df7ce325943ee",
+    "450": "ko.quote.4e155ff64edd470a",
+    "451": "ko.quote.4dbbc7daff1f4b30",
+    "452": "ko.quote.ab94c581bed44861",
+    "453": "ko.quote.65cc1664e74e4192",
+    "454": "ko.quote.5ff82a8f200a450f",
+    "455": "ko.quote.3231f6f8f3614f94",
+    "456": "ko.quote.b18732f63cf343e7",
+    "457": "ko.quote.fdaaadb6606343c3",
+    "458": "ko.quote.a0059493a400499c",
+    "459": "ko.quote.709b412557bf49f9",
+    "460": "ko.quote.edf853a30a0242fd",
+    "461": "ko.quote.96043a92404849bd",
+    "462": "ko.quote.a22fa134e5f3471f",
+    "463": "ko.quote.25b6ac8a39e24d1f",
+    "464": "ko.quote.702a6439dff54d72",
+    "465": "ko.quote.9aecd0cd3c684d44",
+    "466": "ko.quote.c61af85088614d2c",
+    "467": "ko.quote.81d0a20067b642c8",
+    "468": "ko.quote.5d44a410d2484bf2",
+    "469": "ko.quote.16c167d5cd9e46bd",
+    "470": "ko.quote.ba8ae69f66ea4ecc",
+    "471": "ko.quote.22a38f3ced2e454d",
+    "472": "ko.quote.8247a319100645b8",
+    "473": "ko.quote.36a0408b3f75447c",
+    "474": "ko.quote.563fa8f6f602499f",
+    "475": "ko.quote.0793e55df505461c",
+    "476": "ko.quote.5081ad65588d432d",
+    "477": "ko.quote.a83dcf140a78482a",
+    "478": "ko.quote.3f1165b46c7c4909",
+    "479": "ko.quote.551e77db2d99499d",
+    "480": "ko.quote.6ae1e69338aa4045",
+    "481": "ko.quote.59137b2eaca64e35",
+    "482": "ko.quote.2e99bec04db744f6",
+    "483": "ko.quote.3e3da6d891a34310",
+    "484": "ko.quote.464fe54056e44989",
+    "485": "ko.quote.a4753fa8d49342aa",
+    "486": "ko.quote.aa7dc01a034246e2",
+    "487": "ko.quote.de4fd76d10644a39",
+    "488": "ko.quote.e924a0de38ab472a",
+    "489": "ko.quote.1f46ecad82824a1f",
+    "490": "ko.quote.3dd3d36a6ecf48ae",
+    "491": "ko.quote.e8cdc54b021946ab",
+    "492": "ko.quote.84252097f92043cd",
+    "493": "ko.quote.c5b046595eee45d1",
+    "494": "ko.quote.7bb0b9591e07493d",
+    "495": "ko.quote.f900e440505643e5",
+    "496": "ko.quote.addd47a51bb3466e",
+    "497": "ko.quote.ce7d7a2c6c8c4e9d",
+    "498": "ko.quote.df6c08f58fae4b77",
+    "499": "ko.quote.3aeaec4004d849e2",
+    "500": "ko.quote.ad0be41486bc4b18",
+    "501": "ko.quote.d2aa55e4f21b49ae",
+    "502": "ko.quote.9c31d05bfa2f402b",
+    "503": "ko.quote.d7994928bda34860",
+    "504": "ko.quote.1fdc285027504473",
+    "505": "ko.quote.b39b5306b4464a5f",
+    "506": "ko.quote.2643ab43a979419a",
+    "507": "ko.quote.03da19ad7d6e406f",
+    "508": "ko.quote.47d537f5b4f74cfe",
+    "509": "ko.quote.3d52f6cd3d724b52",
+    "510": "ko.quote.42b5a933f3e04067",
+    "511": "ko.quote.98bdd5a195e942c3",
+    "512": "ko.quote.6dac0d360cd84a81",
+    "513": "ko.quote.75f7b30be81842f5",
+    "514": "ko.quote.a552a7a5eb564f83",
+    "515": "ko.quote.22ea1757f16f4cb2",
+    "516": "ko.quote.c51002955106441d",
+    "517": "ko.quote.452aa8d4521f4f84",
+    "518": "ko.quote.e7be26918d8e4309",
+    "519": "ko.quote.e14c97bf74d64d81",
+    "520": "ko.quote.2a98e1dcdee04dd9",
+    "521": "ko.quote.5d648bbf0a894280",
+    "522": "ko.quote.70646edfd8544759",
+    "523": "ko.quote.c77cd84b5a9042c4",
+    "524": "ko.quote.472cdc024b26415b",
+    "525": "ko.quote.da9bce86a7364932",
+    "526": "ko.quote.78b572ae5bb6459d",
+    "527": "ko.quote.fd0fe870e0834e90",
+    "528": "ko.quote.40e27de972544b72",
+    "529": "ko.quote.e2080a2c7ea844c4",
+    "530": "ko.quote.9ca5e1ea148c4fbb",
+    "531": "ko.quote.f7ef70d7ebd34e5a",
+    "532": "ko.quote.e6a4e1016ff74117",
+    "533": "ko.quote.37d0587666be40b3",
+    "534": "ko.quote.6e4621d7e4bb4dbb",
+    "535": "ko.quote.1d5022de9ba741e2",
+    "536": "ko.quote.61b7b3d8e9cf41ca",
+    "537": "ko.quote.39a0ca7d65e94c25",
+    "538": "ko.quote.d4d55d643b524e1e",
+    "539": "ko.quote.8f755ef682d14b24",
+    "540": "ko.quote.38acc675f215450a",
+    "541": "ko.quote.d25d5439cd4947d7",
+    "542": "ko.quote.ad184e8e33f7446c",
+    "543": "ko.quote.40f76e9108c940a1",
+    "544": "ko.quote.fdc80700ded74214",
+    "545": "ko.quote.9224534c201f43ce",
+    "546": "ko.quote.da1dca4348264a83",
+    "547": "ko.quote.c4dfdfef6c3d4940",
+    "548": "ko.quote.e9fd669850154404",
+    "549": "ko.quote.6a50bc86451e4f56",
+    "550": "ko.quote.c791b6fb0bb144e4",
+    "551": "ko.quote.626ccd98f00247fb",
+    "552": "ko.quote.79aa8e61083f4b97",
+    "553": "ko.quote.d0afdac12cec4e8c",
+    "554": "ko.quote.050731aa5b3c4c36",
+    "555": "ko.quote.25755b0eb0da4891",
+    "556": "ko.quote.18aa6937871a492f",
+    "557": "ko.quote.4c0363925b1c4fcc",
+    "558": "ko.quote.f54c8872f66441c8",
+    "559": "ko.quote.70864eac5c7d487e",
+    "560": "ko.quote.5b05aaf0bbe9426f",
+    "561": "ko.quote.247746c731c64cdd",
+    "562": "ko.quote.cbeebb97bbfc41dd",
+    "563": "ko.quote.802dedb6cc244f56",
+    "564": "ko.quote.c626d17c1e2f43e0",
+    "565": "ko.quote.610c47d9134c459c",
+    "566": "ko.quote.fe68f72a22054379",
+    "567": "ko.quote.d1d431ed3c99483b",
+    "568": "ko.quote.46ab9857a183493d",
+    "569": "ko.quote.a926fb4781924252",
+    "570": "ko.quote.ef75bb73d00444ba",
+    "571": "ko.quote.016903abb2ea43de",
+    "572": "ko.quote.797fe7f303da4afd",
+    "573": "ko.quote.86186c8f22b24944",
+    "574": "ko.quote.3f0803e1bc744c01",
+    "575": "ko.quote.7126aa619aff4962",
+    "576": "ko.quote.ed3a97c92bc04de6",
+    "577": "ko.quote.0a966cfa60504322",
+    "578": "ko.quote.8b287282abf84aea",
+    "579": "ko.quote.1a53f60eb7e4488d",
+    "580": "ko.quote.572dfeca7c364f29",
+    "581": "ko.quote.836eeeb791db4d66",
+    "582": "ko.quote.ec8d72f3b72a43b6",
+    "583": "ko.quote.06360bd7d7cb4bbf",
+    "584": "ko.quote.d621ffb68c444b83",
+    "585": "ko.quote.a46fc74e33384dc0",
+    "586": "ko.quote.0a27f41b2bc342de",
+    "587": "ko.quote.1d2fc4f6cfe94868",
+    "588": "ko.quote.003a633499274211",
+    "589": "ko.quote.53e1ec708b984cb8",
+    "590": "ko.quote.5bbfed141a174d20",
+    "591": "ko.quote.898e8a0ff7174e20",
+    "592": "ko.quote.5e961bac7710411d",
+    "593": "ko.quote.f52c5da5a5cb41f0",
+    "594": "ko.quote.4df95e8597e34eb3",
+    "595": "ko.quote.f53f89109cb44156",
+    "596": "ko.quote.700f9e2c74ad4d9e",
+    "597": "ko.quote.50ad6362fcaf4c49",
+    "598": "ko.quote.f2a0807f50354ff2",
+    "599": "ko.quote.5054805785014dc3"
+  },
+  "review": {
+    "replaced": 40,
+    "retained": 532,
+    "modified": 28
+  }
+}

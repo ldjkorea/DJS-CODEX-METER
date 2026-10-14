@@ -16,6 +16,7 @@ public final class GrowthActivity extends AppCompatActivity {
     private final BroadcastReceiver updates=new BroadcastReceiver(){public void onReceive(Context c,Intent i){load(false);}};
     @Override protected void onCreate(Bundle state){Ui.applySelectedTheme(this);super.onCreate(state);dark=Ui.isDark(this);
         content=Ui.installPage(this,getString(R.string.rpg3_growth),false).content;MatteNav.install(this,3);
+        androidx.swiperefreshlayout.widget.SwipeRefreshLayout refresh=findViewById(R.id.dashboard_refresh);refresh.setRefreshing(false);refresh.setEnabled(false);
         if(state!=null){scroll=state.getInt("growth_scroll");getIntent().putExtra("catalog",false).putExtra("growth_mode",state.getString("growth_mode","overview"));}
         String destination=mode();if(!destination.equals("overview")){getIntent().putExtra("catalog",false).putExtra("growth_mode","overview");content.post(()->RpgCollectionActivity.open(this,destination));}
         getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){public void handleOnBackPressed(){if(!mode().equals("overview")){open("overview");}else MatteNav.open(GrowthActivity.this,1);}});
@@ -61,15 +62,18 @@ public final class GrowthActivity extends AppCompatActivity {
     }
     void collections(JSONObject journal){
         JSONObject state=journal==null?null:journal.optJSONObject("rpg");
+        LinearLayout savedContent=content;content=Ui.card(this,dark);LinearLayout settings=content;settings.setVisibility(android.view.View.GONE);
+        savedContent.addView(LedgerUi.action(this,"수집 설정 · 보관함",false,dark,()->settings.setVisibility(settings.getVisibility()==android.view.View.GONE?android.view.View.VISIBLE:android.view.View.GONE)));savedContent.addView(settings);
         LedgerUi.section(content,getString(R.string.reborn_collections),dark);
         collectionSwitch(state,false);collectionSwitch(state,true);
         JSONObject journey=AchievementJourney.journey(state);if(journey!=null&&journey.optJSONObject("legacy")!=null){android.widget.Button button=LedgerUi.action(this,getString(R.string.reborn_archive),false,dark,()->archive(state));button.setTag("growth:archive");content.addView(button);}
+        content=savedContent;
     }
     private void collectionSwitch(JSONObject state,boolean titles){
         JSONObject j=titles?TitleJourney.journey(state):AchievementJourney.journey(state);boolean enabled=titles?TitleJourney.enabled(state):AchievementJourney.enabled(state);long started=j==null?0:j.optLong("first_started_at");String expected=loadedAccount;
         androidx.appcompat.widget.SwitchCompat toggle=new androidx.appcompat.widget.SwitchCompat(this);toggle.setText(titles?R.string.reborn_title_switch:R.string.journey_switch);toggle.setTextColor(Ui.mainText(dark));toggle.setTextSize(16);toggle.setMinHeight(Ui.dp(this,48));toggle.setChecked(enabled);toggle.setTag(titles?"titles:switch":"journey:switch");content.addView(toggle);
         if(started>0&&!enabled)content.addView(LedgerUi.caption(this,getString(R.string.journey_paused),dark));
-        if(enabled&&j!=null&&!j.optBoolean("official_armed"))content.addView(LedgerUi.caption(this,getString(R.string.reborn_baseline_pending),dark));
+        if(MxpEconomy.state(state)==null&&enabled&&j!=null&&!j.optBoolean("official_armed"))content.addView(LedgerUi.caption(this,getString(R.string.reborn_baseline_pending),dark));
         toggle.setOnCheckedChangeListener((button,on)->{button.setOnCheckedChangeListener(null);button.setChecked(enabled);if(on){detailDialog=new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(started>0?R.string.journey_resume_question:titles?R.string.reborn_title_start:R.string.journey_start_question).setMessage(started>0?R.string.journey_resume_note:titles?R.string.reborn_title_note:R.string.journey_start_note).setNegativeButton(android.R.string.cancel,(d,w)->load(true)).setPositiveButton(R.string.journey_confirm,(d,w)->setCollectionEnabled(true,expected,titles)).setOnCancelListener(d->load(true)).create();detailDialog.show();}else setCollectionEnabled(false,expected,titles);});
     }
     private void setCollectionEnabled(boolean enabled,String account,boolean titles){if(busy||account.isEmpty()||!account.equals(SubscriptionStore.accountKey(this)))return;busy=true;WORKER.execute(()->{boolean ok=false;try{ok=titles?RpgProgressStore.setTitlesEnabled(getApplicationContext(),account,enabled):RpgProgressStore.setAchievementsEnabled(getApplicationContext(),account,enabled);}catch(Exception ignored){}final boolean saved=ok;runOnUiThread(()->{busy=false;if(isDestroyed()||!account.equals(SubscriptionStore.accountKey(this)))return;if(saved)sendBroadcast(new Intent(AppConstants.ACTION_USAGE_UPDATED).setPackage(getPackageName()));else android.widget.Toast.makeText(this,R.string.rpg3_failed,android.widget.Toast.LENGTH_SHORT).show();signature="";load(true);});});}

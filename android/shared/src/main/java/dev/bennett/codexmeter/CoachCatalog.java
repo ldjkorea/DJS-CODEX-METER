@@ -1,0 +1,62 @@
+package dev.bennett.codexmeter;
+
+import java.util.*;
+import org.json.*;
+
+/** Immutable local content and a bounded presentation-only selector. No growth/network dependency. */
+public final class CoachCatalog {
+    public final int schemaVersion,contentVersion;
+    public final List<Quote> quotes;
+    public final Map<String,Tip> tips;
+    public final Map<Integer,String> legacyIds;
+    public static final class Quote {
+        public final String id,group,tone,text,tipId;
+        Quote(JSONObject q)throws JSONException{id=q.getString("id");group=q.getString("situation");tone=q.getString("tone");text=q.getString("text");tipId=q.optString("tipId");}
+    }
+    public static final class Tip {
+        public final String id,field,interest,tool,title,inputs,prompt,check,fallback;
+        Tip(JSONObject t)throws JSONException{id=t.getString("id");field=t.getString("field");interest=t.getString("interest");tool=t.getString("tool");title=t.getString("title");inputs=t.getString("inputs");prompt=t.getString("prompt");check=t.getString("check");fallback=t.getString("fallback");}
+    }
+    public CoachCatalog(JSONObject json)throws JSONException {
+        schemaVersion=json.getInt("schemaVersion");contentVersion=json.getInt("contentVersion");if(schemaVersion!=2)throw new IllegalArgumentException("Coach schema");
+        Map<String,Tip> ts=new LinkedHashMap<>();JSONArray list=json.getJSONArray("tips");for(int i=0;i<list.length();i++){Tip t=new Tip(list.getJSONObject(i));if(ts.put(t.id,t)!=null||t.prompt.isEmpty())throw new IllegalArgumentException("Tip ID/prompt");}tips=Collections.unmodifiableMap(ts);
+        List<Quote> qs=new ArrayList<>();Set<String> ids=new HashSet<>();list=json.getJSONArray("quotes");for(int i=0;i<list.length();i++){Quote q=new Quote(list.getJSONObject(i));if(!ids.add(q.id)||!q.tipId.isEmpty()&&!ts.containsKey(q.tipId))throw new IllegalArgumentException("Quote ID/tip");qs.add(q);}quotes=Collections.unmodifiableList(qs);
+        Map<Integer,String> old=new HashMap<>();JSONObject mapping=json.getJSONObject("legacyIds");Iterator<String> it=mapping.keys();while(it.hasNext()){String k=it.next();String v=mapping.getString(k);if(!ids.contains(v))throw new IllegalArgumentException("Legacy quote mapping");old.put(Integer.parseInt(k),v);}legacyIds=Collections.unmodifiableMap(old);
+    }
+    public Quote find(String id){for(Quote q:quotes)if(q.id.equals(id))return q;return null;}
+    public static String group(UsageSnapshot snapshot,boolean fresh,boolean error,boolean bonus,double daily,long now){
+        if(error)return "network";if(snapshot==null||snapshot.longWindow()==null)return "missing";if(!fresh||snapshot.fetchedAtMillis>now||now-snapshot.fetchedAtMillis>900000L||snapshot.longWindow().effectiveResetAtMillis(snapshot.fetchedAtMillis)<=now)return "stale";
+        if(snapshot.weekly!=null&&snapshot.fiveHour==null&&snapshot.allowed&&!snapshot.limitReached)return "missing"; // Partial relevant limit coverage.
+        // Authoritative blocked flags and relevant short-window constraint precede bonus/burst.
+        if(snapshot.limitReached||!snapshot.allowed||snapshot.fiveHour!=null&&snapshot.fiveHour.usedPercent>=90&&snapshot.fiveHour.usedPercent<100)return "critical";
+        UsageWindow w=snapshot.longWindow();if(w.usedPercent>=90&&w.usedPercent<100)return "critical";
+        if((w.usedPercent>=100||snapshot.fiveHour!=null&&snapshot.fiveHour.usedPercent>=100)&&snapshot.allowed&&!snapshot.limitReached)return bonus?"bonus":"heavy";
+        return SpicyRotation.group(w.usedPercent,daily,true,bonus,w.effectiveResetAtMillis(snapshot.fetchedAtMillis)-now,w.windowSeconds,false);
+    }
+    public static boolean constrained(String group){return Arrays.asList("critical","missing","stale","network").contains(group);}
+    public JSONObject migrate(JSONObject old)throws JSONException {
+        if(old.optInt("schemaVersion")==2)return new JSONObject(old.toString());
+        JSONObject out=new JSONObject().put("schemaVersion",2).put("recent",new JSONArray()).put("tips",new JSONArray()).put("hidden",new JSONArray());
+        String current=legacyIds.get(old.optInt("id",-1));if(current!=null)out.put("current",current);
+        for(String field:new String[]{"recent","hidden"}){JSONArray a=old.optJSONArray(field),result=new JSONArray();if(a!=null)for(int i=0;i<a.length();i++){String id=legacyIds.get(a.optInt(i,-1));if(id!=null&&!contains(result,id))result.put(id);}out.put(field,result);}
+        return out;
+    }
+    private static boolean contains(JSONArray a,String id){for(int i=0;i<a.length();i++)if(id.equals(a.optString(i)))return true;return false;}
+    private static int recentIndex(JSONArray a,String id){for(int i=a.length()-1;i>=0;i--)if(id.equals(a.optString(i)))return i;return -1;}
+    private static void remember(JSONObject state,String key,String id,int limit)throws JSONException{JSONArray a=state.optJSONArray(key);if(a==null)a=new JSONArray();JSONArray b=new JSONArray();for(int i=Math.max(0,a.length()-limit+1);i<a.length();i++)if(!id.equals(a.optString(i)))b.put(a.optString(i));b.put(id);state.put(key,b);}
+    public Quote select(JSONObject state,String group,String tone,String interest,String stamp,boolean rotate,Random random)throws JSONException {
+        if(!tone.equals("spicy"))return null;
+        JSONArray hidden=state.optJSONArray("hidden");if(hidden==null)hidden=new JSONArray();JSONArray recent=state.optJSONArray("recent"),recentTips=state.optJSONArray("tips");if(recent==null)recent=new JSONArray();if(recentTips==null)recentTips=new JSONArray();
+        List<Quote> candidates=new ArrayList<>();for(Quote q:quotes)if(q.group.equals(group)&&q.tone.equals(tone)&&!contains(hidden,q.id))candidates.add(q);
+        Quote current=find(state.optString("current"));if(!rotate&&stamp.equals(state.optString("stamp"))&&candidates.contains(current))return current;
+        Quote chosen=null;int best=Integer.MIN_VALUE,ties=0;for(Quote q:candidates){Tip t=tips.get(q.tipId);int score=0;
+            // No tip calls during constrained/unknown states. Display only offline preparation copy.
+            if(constrained(group)&&t!=null)continue;
+            int rec=recentIndex(recent,q.id),tr=t==null?-1:recentIndex(recentTips,t.id);score-=rec<0?0:1000+rec;score-=tr<0?0:100+tr;
+            if(t!=null&&interest.equals(t.interest))score+=10;
+            if(score>best){best=score;chosen=q;ties=1;}else if(score==best&&random.nextInt(++ties)==0)chosen=q;
+        }
+        if(chosen==null){state.remove("current");return null;}
+        state.put("current",chosen.id).put("stamp",stamp);remember(state,"recent",chosen.id,20);if(!chosen.tipId.isEmpty())remember(state,"tips",chosen.tipId,5);return chosen;
+    }
+}

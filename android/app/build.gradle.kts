@@ -7,7 +7,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "dev.bennett.codexmeter"
+        applicationId = "dev.bennett.codexmeter.trial"
         // Isolated emulator QA only; the release command does not set this property.
         if (providers.gradleProperty("rpgIsolatedQa").orNull == "true") {
             val qaId = providers.gradleProperty("rpgQaId").orNull ?: "dev.bennett.codexmeter.rpg3qa"
@@ -16,8 +16,8 @@ android {
         }
         minSdk = 26
         targetSdk = 36
-        versionCode = 85
-        versionName = "3.0.0"
+        versionCode = 990001
+        versionName = "9.9.1"
         providers.gradleProperty("demoVersionCode").orNull?.toIntOrNull()?.let {
             versionCode = it
         }

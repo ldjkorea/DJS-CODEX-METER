@@ -1,5 +1,29 @@
 [
   {
+    "version": "3.1.0",
+    "date": "2026-10-14",
+    "source": "",
+    "origin": "korean",
+    "ko": {
+      "title": "RPG 3.0 · AI의 한마디 2.0",
+      "changes": [
+        "이전 XP·레벨 내부 진행률을 보존하고 별도 MXP 성장 경제로 전환합니다.",
+        "확인된 활동의 일·주·월 도전과 개인 연간 시즌을 영구 명예에 연결합니다.",
+        "한국어 문구 600개와 실전 팁 40개, 선택 복사·숨김·관심 주제를 제공합니다.",
+        "로컬 설치 후보입니다. 실제 사용자 데이터 이관·실물 기기·공개 배포는 완료하지 않았습니다."
+      ]
+    },
+    "en": {
+      "title": "RPG 3.0 and AI Coach 2.0",
+      "changes": [
+        "Preserves legacy XP and exact fractional level progress in a separate MXP economy.",
+        "Connects verified daily, weekly, monthly and personal annual progress with permanent honors.",
+        "Adds a stable Korean catalog of 600 quotes and 40 practical, explicitly copied prompts.",
+        "Local installation candidate. Live data migration, physical devices and publication are not verified."
+      ]
+    }
+  },
+  {
     "version": "3.0.0",
     "date": "2026-10-14",
     "source": "",

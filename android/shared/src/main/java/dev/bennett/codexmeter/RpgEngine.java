@@ -18,6 +18,7 @@ public final class RpgEngine {
         future.put("rpg",state);return state;
     }
     private static boolean award(JSONObject state,String id,long target)throws JSONException {
+        if(MxpEconomy.state(state)!=null)return false; // Historical XP remains the immutable migration original.
         if(target<0)throw new IllegalArgumentException("XP target");JSONObject awards=state.getJSONObject("awards");long old=awards.optLong(id);if(target<=old)return false;
         state.put("xp",Math.addExact(state.getLong("xp"),target-old));awards.put(id,target);return true;
     }
@@ -162,7 +163,7 @@ public final class RpgEngine {
         if(s.optInt("collection_revision")<CollectionRestart.REVISION&&!s.has("recommended_title"))recommend(document,new Random());
     }
     private static List<String> sortedEnds(JSONObject weeks){List<String> keys=AccountProgress.keys(weeks);keys.sort(Comparator.comparingLong(Long::parseLong));return keys;}
-    public static List<String> eligibleTitles(JSONObject document)throws JSONException {return RpgTitleCatalog.owned(state(document));}
+    public static List<String> eligibleTitles(JSONObject document)throws JSONException {List<String> ids=new ArrayList<>(RpgTitleCatalog.owned(state(document)));JSONObject mxp=MxpEconomy.state(state(document));if(mxp!=null)ids.addAll(AccountProgress.keys(mxp.getJSONObject("titles")));return ids;}
     public static String recommend(JSONObject document,Random random)throws JSONException {List<String> eligible=eligibleTitles(document);if(eligible.isEmpty())return "";String id=eligible.get(random.nextInt(eligible.size()));state(document).put("recommended_title",id);return id;}
     public static boolean equip(JSONObject document,String id)throws JSONException {if(!id.isEmpty()&&!eligibleTitles(document).contains(id))return false;JSONObject s=state(document);s.put("title_selection_set",true);if(id.isEmpty())s.remove("equipped_title");else s.put("equipped_title",id);return true;}
     /** Merge only an account-bound trusted journal (backup/paired device), never add its XP total.
@@ -194,6 +195,7 @@ public final class RpgEngine {
             if(n<0||n>max)throw new IllegalArgumentException("Invalid RPG reward target");
         }
         for(String key:AccountProgress.keys(awards))award(s,key,awards.getLong(key));
+        MxpEconomy.merge(s,imported,account,now);
         JSONObject dates=imported.getJSONObject("activity");for(String date:AccountProgress.keys(dates)){LocalDate.parse(date);long at=dates.getLong(date);if(at<=0||at>now)throw new IllegalArgumentException("Activity timestamp");if(!s.getJSONObject("activity").has(date))s.getJSONObject("activity").put(date,at);}
         JSONObject quota=imported.getJSONObject("quota_days");for(String key:AccountProgress.keys(quota)){double points=quota.getDouble(key);if(!Double.isFinite(points)||points<0||!key.matches("(?:weekly|monthly)\\|[a-z0-9_-]{1,40}\\|[0-9]+@\\d{4}-\\d{2}-\\d{2}"))throw new IllegalArgumentException("Quota fact");s.getJSONObject("quota_days").put(key,Math.max(points,s.getJSONObject("quota_days").optDouble(key)));}
         JSONObject importedWeeks=imported.getJSONObject("weeks");for(String key:AccountProgress.keys(importedWeeks)){JSONObject w=importedWeeks.getJSONObject(key);if(w.getLong("end")!=Long.parseLong(key)||w.getLong("end")-w.getLong("start")!=TierEvolution.WEEK||w.getLong("end")>now||!w.getString("policy").startsWith("weekly|"))throw new IllegalArgumentException("Week fact");if(!s.getJSONObject("weeks").has(key))s.getJSONObject("weeks").put(key,new JSONObject().put("start",w.getLong("start")).put("end",w.getLong("end")).put("policy",w.getString("policy")).put("used",w.getString("used")));}
@@ -224,5 +226,5 @@ public final class RpgEngine {
     public static JSONObject summary(JSONObject document)throws JSONException {JSONObject s=state(document),out=new JSONObject();for(String k:new String[]{"version","model","collection_revision","xp","level","activity_days","active_days_30","valid_weeks","token_status","token_total","token_basis","token_observed_at","daily_basis","quota_score_basis","demotion_status","demotion_checked_at","promotion_evidence","updated_at","recommended_title","equipped_title"})if(s.has(k))out.put(k,s.get(k));
         JSONObject journey=AchievementJourney.journey(s);if(journey!=null)out.put("achievement_enabled",journey.getBoolean("enabled")).put("achievement_started_at",journey.getLong("first_started_at"));
         JSONObject tj=TitleJourney.journey(s);if(tj!=null)out.put("title_enabled",tj.optBoolean("enabled")).put("title_started_at",tj.optLong("first_started_at"));
-        for(String region:new String[]{"KR","WORLD"}){JSONObject t=s.getJSONObject(region),v=new JSONObject();for(String k:new String[]{"tier","highest","protected_until","count","latest_score","provisional","evaluated_at","model","warning","label"})if(t.has(k))v.put(k,t.get(k));out.put(region,v);}out.put("unlocked_achievements",RpgGrowthFacts.earned(s).size()).put("unlocked_ids",new JSONArray(RpgGrowthFacts.earned(s))).put("unlocked_titles",new JSONArray(eligibleTitles(document)));return out;}
+        for(String region:new String[]{"KR","WORLD"}){JSONObject t=s.getJSONObject(region),v=new JSONObject();for(String k:new String[]{"tier","highest","protected_until","count","latest_score","provisional","evaluated_at","model","warning","label"})if(t.has(k))v.put(k,t.get(k));out.put(region,v);}out.put("unlocked_achievements",RpgGrowthFacts.earned(s).size()).put("unlocked_ids",new JSONArray(RpgGrowthFacts.earned(s))).put("unlocked_titles",new JSONArray(eligibleTitles(document)));JSONObject mxp=MxpEconomy.state(s);if(mxp!=null){out.put(MxpEconomy.KEY,MxpEconomy.summary(mxp,System.currentTimeMillis()));out.put("level",mxp.getInt("level"));}return out;}
 }

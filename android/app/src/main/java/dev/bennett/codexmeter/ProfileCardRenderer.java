@@ -21,6 +21,11 @@ final class ProfileCardRenderer {
         Bitmap image=Bitmap.createBitmap(WIDTH,HEIGHT,Bitmap.Config.ARGB_8888);Canvas canvas=new Canvas(image);
         int bg=dark?0xff101214:0xfff3f4f5,fg=dark?0xffedf0f4:0xff1b2026,secondary=dark?0xffb8c0ca:0xff4d5866;
         canvas.drawColor(bg);Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);p.setColor(model.tier<0?secondary:TierTheme.COLORS[model.tier]);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(3);canvas.drawRoundRect(24,24,WIDTH-24,HEIGHT-24,32,32,p);p.setStyle(Paint.Style.FILL);
+        if(!model.frameId.isEmpty()){
+            p.setStyle(Paint.Style.STROKE);p.setColor(model.frameId.equals("rpg3.frame_50")?(dark?0xffe9c96b:0xff7d5a10):(dark?0xff9ac9e9:0xff325d7e));p.setStrokeWidth(4);
+            canvas.drawRoundRect(35,35,WIDTH-35,HEIGHT-35,28,28,p);
+            for(int x:new int[]{45,WIDTH-45})for(int y:new int[]{45,HEIGHT-45}){canvas.drawCircle(x,y,9,p);}p.setStyle(Paint.Style.FILL);
+        }
         Typeface regular=androidx.core.content.res.ResourcesCompat.getFont(c,R.font.pretendard_regular),bold=androidx.core.content.res.ResourcesCompat.getFont(c,R.font.pretendard_bold);
         text(canvas,"GPT HUD",bold,36,secondary,62,52,776);
         String name=model.nickname.isEmpty()?c.getString(R.string.profile_anonymous):model.nickname;
