@@ -1,6 +1,6 @@
 # Android 개발 안내
 
-`app/`은 휴대폰, `wear/`는 Wear OS, `shared/`는 공통 모델입니다. 현재 통합 개발본의 앱·Wear는 2.8.30 / versionCode 60입니다. 내부 Phase A~D 번호는 공개 버전이 아닙니다.
+`app/`은 휴대폰, `wear/`는 Wear OS, `shared/`는 공통 모델입니다. 현재 통합 개발본의 앱·Wear는 3.0.0 / versionCode 85입니다. 검증 결과와 정리 내역은 `../docs/GPT_HUD_3.0.0.ko.md`에 기록합니다.
 
 JDK 21, Android SDK 36/37.0, Build Tools 36.0.0을 사용합니다. 루트 README의 빌드 명령과 docs/BUILD_SECURITY.ko.md를 참고하세요.
 
@@ -15,6 +15,6 @@ JDK 21, Android SDK 36/37.0, Build Tools 36.0.0을 사용합니다. 루트 READM
 - `tests/verify-rpg-growth-native.py`: 별도 QA 패키지와 기존 에뮬레이터에서만 실행합니다. 실사용 앱을 삭제하거나 QA 자료를 사용자 DB에 넣지 않습니다.
 - RPG 암호화 백업은 같은 계정의 성취·결산·수집 시작 상태를 보존합니다. 로그인 토큰과 PC 연결 비밀을 복원하는 기능이 아닙니다. 새 기기에서는 같은 계정으로 다시 로그인합니다. 일반 설정 백업의 신규 인증정보 내보내기는 차단됩니다.
 - 위젯·작업현황은 Android 절전 정책에 따라 갱신이 늦어질 수 있습니다. 작업현황 화면의 15초 확인과 배경 위젯의 최선 노력 주기는 다릅니다.
-- Phase D는 로컬 개발·테스트·커밋만 허용합니다. 공개 Push·Tag·Release·APK 업로드 금지. 실제 패키지·서명·versionCode를 다음 통합 QA에서 다시 검사합니다.
+- 3.0.0은 로컬 통합판입니다. 공개 Push·Tag·Release·APK 업로드는 별도 승인 후 수행합니다. 실제 기기 설치 여부와 로컬 검증 결과를 구분합니다.
 
 사용자 절차는 [RPG 백업 안내](../docs/RPG_BACKUP_GUIDE.ko.md)를 참고하세요. 과거 Release Notes의 버전별 내용은 역사 자료로 보존합니다.

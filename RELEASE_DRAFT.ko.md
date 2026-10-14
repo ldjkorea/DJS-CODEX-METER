@@ -1,20 +1,17 @@
-# Codex Meter 한국어판 2.8.7 — 첫 공개 베타
+# GPT HUD 3.0.0 — 통합 정식 업데이트
 
-2.8.7 / versionCode 37, 태그 `v2.8.7-beta`. 앱 패키지와 기존 한국어판 서명 인증서를 유지합니다.
+Android/Wear 3.0.0 · versionCode 85 / Windows Widget 3.0.0.
 
-- 휴대폰 글꼴을 공식 Pretendard Regular/Medium/SemiBold/Bold로 통일합니다. 두 의존성의 재배포 권한 미확인 글꼴을 교체하고 SIL OFL 1.1과 원저작자 고지를 동봉합니다.
-- 홈 ‘내 사용량 한눈에’에서 주간 한도와 별도로 5시간 초기화까지 남은 시간을 표시합니다. 한도 상세 화면과 기존 위젯의 초기화 영역에도 반영합니다.
-- 서버의 실제 reset_at / reset_after_seconds와 원래 관측 시각으로 계산합니다. 시각 미제공·데이터 미제공·시각 경과·오래된 관측·조회 실패를 구분합니다. 앱의 기존 1분 갱신을 사용하며 추가 API 요청은 없습니다. 위젯은 기존 OS/앱 갱신 일정에 따릅니다.
-- 5시간 OFF, 위젯 구성, SQLite 원장, 결제·티어·코치 계산, OAuth, AOD/Now Bar, Wear 기능을 보존합니다. Wear 기능 변경은 없고 공통 라이선스/의존성 반영을 위한 선택적 APK만 제공합니다.
+- 기존 2.9.2의 사용량·기록·성장·프로필 공유·시작 멈춤 수정 유지.
+- 한국어/영어 앱 언어 선택과 번역 리소스 경량화 통합.
+- 기존 패키지와 서명 유지. Phone versionCode 83 → 85.
+- 앱을 삭제하거나 데이터를 초기화하지 않고 기존 앱 위에 업데이트합니다.
 
-## 설치와 수동 업데이트
+휴대폰: `CodexMeter-3.0.0-ko.apk`
+Wear: `CodexMeter-Wear-3.0.0-ko.apk`
+Windows: `CodexMeter-WindowsWidget-3.0.0.zip`
+체크섬: `SHA256SUMS.txt`
 
-휴대폰: `CodexMeter-2.8.7-ko.apk`. 시계: `CodexMeter-Wear-2.8.7-ko.apk` (휴대폰 설치 파일이 아닙니다).
-[Release](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.8.7-beta)에서 APK를 받아 열고 필요한 앱의 ‘이 출처의 앱 설치’를 허용합니다. 휴대폰 Android 8.0 이상, Wear API 30 이상이 필요합니다. 같은 서명의 기존 한국어판 2.8.6에 앱 삭제 없이 업데이트할 수 있는 조건을 확인합니다. 설치 실패 시 삭제·초기화부터 하지 마세요. 앱 내 업데이트는 비활성화 상태이며 GitHub에서 수동 설치합니다.
+GPT HUD BETA는 별도 설치 앱입니다. RPG 3.0·AI의 한마디 2.0 실험 기능은 이번 정식 3.0.0 업데이트에 포함되지 않습니다.
 
-## 알려진 제한과 검증 범위
-
-자동 계산·저장·소스/리소스 회귀, Plus/Pro 가상 응답 카운트다운, Release 빌드/lint, 폰트/라이선스/서명/패키지 검사를 수행합니다. **실기기·에뮬레이터 설치와 화면, 실제 로그인/API, 삼성 AOD/Now Bar와 Wear 동작은 미검증**입니다. 큰 글씨·좁은 화면·OEM 글꼴 fallback의 실제 모습도 기기 확인이 필요합니다. 베타 릴리스로 제공합니다.
-
-OpenAI 공식 앱이 아니며 인증·사용량 내부 경로와 삼성 전용 기능은 외부 변경으로 중단될 수 있습니다. 계정 토큰·개인 기록·결제정보·원본 로그를 공개 이슈에 올리지 마세요. SHA256SUMS와 LICENSE/제3자 고지 묶음을 함께 제공합니다.
-
+검증: 기존 전체 회귀, Phone/Wear 빌드·lint, 서명·Pretendard 라이선스, 격리 에뮬레이터 시작/언어/프로필 검증. 실물 기기·실계정·삼성 AOD/Wear/외부 PC 연결은 미검증입니다. 자세한 기존 검증은 `VERIFICATION.ko.md`를 참고하세요.

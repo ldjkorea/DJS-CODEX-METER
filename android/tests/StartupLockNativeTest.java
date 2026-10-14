@@ -29,7 +29,7 @@ public final class StartupLockNativeTest extends Instrumentation {
         long launchBegin=SystemClock.elapsedRealtime();
         Activity home=startActivitySync(new Intent(c,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         long launchMillis=SystemClock.elapsedRealtime()-launchBegin;
-        check(launchMillis<3000&&holder.isAlive(),"Actual home opens while networking still holds its mutex");
+        check(launchMillis<3000&&holder.isAlive(),"Actual home opens while networking still holds its mutex (launchMs="+launchMillis+", lockHeld="+holder.isAlive()+")");
         CountDownLatch heartbeat=new CountDownLatch(1);new Handler(Looper.getMainLooper()).postDelayed(heartbeat::countDown,100);
         check(heartbeat.await(2,TimeUnit.SECONDS),"Actual home main loop remains responsive");
         java.io.File images=new java.io.File(c.getExternalFilesDir(null),"startup-fixtures");images.mkdirs();

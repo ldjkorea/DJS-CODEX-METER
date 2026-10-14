@@ -1,5 +1,53 @@
 [
   {
+    "version": "3.0.0",
+    "date": "2026-10-14",
+    "source": "",
+    "origin": "korean",
+    "ko": {
+      "title": "GPT HUD 통합 3.0.0",
+      "changes": [
+        "사용량 원장·달력·결제 결산·성장·업적·칭호·프로필 공유와 시작 멈춤 수정을 하나의 정본으로 통합했습니다.",
+        "새 설치와 설정의 한국어·영어 선택, APK 번역 리소스 경량화를 포함합니다.",
+        "휴대폰·Wear·Windows 버전을 3.0.0으로 맞췄습니다. 기존 패키지·서명·데이터 저장 형식과 PC 연결을 유지합니다.",
+        "로컬 통합판입니다. 공개 배포 및 실물 휴대폰 설치 여부는 별도로 확인해야 합니다."
+      ]
+    },
+    "en": {
+      "title": "GPT HUD unified 3.0.0",
+      "changes": [
+        "Consolidates the usage ledger, calendar, billing, growth, achievements, titles, profile sharing and startup freeze fix.",
+        "Includes Korean and English selection at onboarding and in Settings, with unused library translations removed.",
+        "Aligns phone, Wear and Windows versions to 3.0.0 while retaining package identity, signing, data formats and PC connections.",
+        "Local consolidated release. Public distribution and physical device installation require separate confirmation."
+      ]
+    }
+  },
+  {
+    "version": "2.9.3",
+    "date": "2026-10-13",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.9.3",
+    "origin": "korean",
+    "ko": {
+      "title": "처음 선택하는 한국어·영어",
+      "changes": [
+        "새로 설치하면 첫 실행에서 한국어 또는 English를 선택합니다. 기존 사용자의 화면 언어는 유지됩니다.",
+        "설정의 화면·위젯에서 앱 언어를 바꾸며 Android 앱 언어 메뉴에도 두 언어만 표시합니다.",
+        "사용하지 않는 UI 라이브러리 번역을 제외해 휴대폰 APK 크기를 약 2.46MB 줄였습니다.",
+        "Android/Wear 2.9.3/code84, 기존 기록·설정·서명 유지. Windows 위젯은 0.1.10 그대로입니다."
+      ]
+    },
+    "en": {
+      "title": "Choose Korean or English",
+      "changes": [
+        "Choose Korean or English the first time the new app is opened; existing installs retain their current language.",
+        "Change the app language in Settings. Android per-app language settings also list only these two languages.",
+        "Trim unused UI dependency translations, reducing the phone APK by about 2.46 MB.",
+        "Android/Wear 2.9.3/code84 preserves existing records, settings and signing. Windows Widget remains 0.1.10."
+      ]
+    }
+  },
+  {
     "version": "2.9.2",
     "date": "2026-10-13",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.9.2",

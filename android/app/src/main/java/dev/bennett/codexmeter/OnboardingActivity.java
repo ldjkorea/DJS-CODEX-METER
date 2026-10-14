@@ -98,6 +98,11 @@ public final class OnboardingActivity extends AppCompatActivity {
             }
         });
         render();
+        if (AppLanguage.needsFirstChoice(this)) {
+            getWindow().getDecorView().post(() -> {
+                if (!isFinishing() && !isDestroyed()) AppLanguage.show(this, true);
+            });
+        }
     }
 
     @Override

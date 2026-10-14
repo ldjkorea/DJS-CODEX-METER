@@ -119,6 +119,12 @@ def reviewed_change(relative, transform):
     actual = strip_lan(relative, (REPO / relative).read_text(encoding="utf-8"))
     if relative.endswith("AndroidManifest.xml"):
         current=strip_evolution_manifest(strip_lan(relative,(REPO / relative).read_text(encoding="utf-8"))).replace('    <activity android:name="dev.bennett.codexmeter.WidgetGuideActivity" android:exported="false"/>\n','')
+        locale_attr='        android:localeConfig="@xml/app_locales"\n'
+        assert current.count(locale_attr)==1, "Only the declared Korean/English app locales are exposed"
+        current=current.replace(locale_attr,'')
+        locale_service='        <service android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"\n            android:enabled="false" android:exported="false">\n            <meta-data android:name="autoStoreLocales" android:value="true" />\n        </service>\n'
+        assert current.count(locale_service)==1, "Legacy Android locale persistence stays disabled and private"
+        current=current.replace(locale_service,'')
         for activity in ["FunActivity","FunSettingsActivity","TestNotesActivity","RecordsActivity","MeterSettingsActivity"]:
             current=current.replace(f'        <activity android:name="dev.bennett.codexmeter.{activity}" android:exported="false"/>\n',"")
         assert current==expected,relative
@@ -143,12 +149,18 @@ reviewed_change(APP_JAVA + "AppPreferences.java", lambda s: s.replace(
     "            return prefs(context).edit().putString(KEY_RESET_CREDITS, resetCreditsSnapshot.toJson().toString()).remove(KEY_RESET_ERROR).remove(KEY_RESET_ERROR_AT).commit();",
     "            boolean saved = prefs(context).edit().putString(KEY_RESET_CREDITS, resetCreditsSnapshot.toJson().toString()).remove(KEY_RESET_ERROR).remove(KEY_RESET_ERROR_AT).commit();\n            if (saved) UsageEventStore.recordCredits(context, resetCreditsSnapshot);\n            return saved;").replace(
     "        UsageEventStore.clear(context);\n", "        UsageEventStore.clear(context);\n        UsageLedgerStore.clear(context);\n        UsageLedgerDatabase.clear(context);\n"))
-version_change = lambda s: s.replace("2.8.0", "2.9.2").replace("versionCode = 30", "versionCode = 83").replace("VERSION_CODE = 30", "VERSION_CODE = 83")
+def version_change(s):
+    return (s.replace("2.8.0", "3.0.0").replace("2.9.2", "3.0.0")
+            .replace("versionCode = 30", "versionCode = 85").replace("versionCode = 83", "versionCode = 85")
+            .replace("VERSION_CODE = 30", "VERSION_CODE = 85").replace("VERSION_CODE = 83", "VERSION_CODE = 85"))
 reviewed_change(APP_JAVA + "AppConstants.java", version_change)
 reviewed_change("android/wear/build.gradle.kts", version_change)
 def reviewed_qa(s):
     return s.replace('        applicationId = "dev.bennett.codexmeter"', '        applicationId = "dev.bennett.codexmeter"\n        // Isolated emulator QA only; the release command does not set this property.\n        if (providers.gradleProperty("rpgIsolatedQa").orNull == "true") {\n            applicationId = "dev.bennett.codexmeter.rpg3qa"\n        }')
-reviewed_change("android/app/build.gradle.kts", lambda s: reviewed_qa(version_change(s)).replace(
+def reviewed_app_locales(s):
+    return s.replace('    buildFeatures {',
+        '    androidResources {\n        // Keep English (default) and Korean while excluding unused dependency translations.\n        localeFilters += listOf("en", "ko")\n    }\n\n    buildFeatures {')
+reviewed_change("android/app/build.gradle.kts", lambda s: reviewed_app_locales(reviewed_qa(version_change(s))).replace(
     "    buildFeatures {", '    defaultConfig {\n        buildConfigField("boolean", "KOREAN_UPDATES_ENABLED", "false")\n    }\n\n    buildFeatures {'))
 reviewed_change(APP_JAVA + "UsageApi.java", lambda s: s.replace(
     "    public static UsageSnapshot refreshAndCache(Context context) throws Exception {\n",
@@ -157,6 +169,8 @@ reviewed_change(APP_JAVA + "UsageApi.java", lambda s: s.replace(
     "                UsageHistoryRecorder.record(context, usageSnapshot);\n                UsageLedgerDatabase.record(context, usageSnapshot, responseRequestUsage.body, manualRecord);\n"))
 # Three private presentation activities are reviewed against the 2.8.3 manifest below.
 fun_manifest=strip_evolution_manifest(strip_lan("AndroidManifest.xml",(REPO / "android/app/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))).replace('    <activity android:name="dev.bennett.codexmeter.WidgetGuideActivity" android:exported="false"/>\n','')
+fun_manifest=fun_manifest.replace('        android:localeConfig="@xml/app_locales"\n','')
+fun_manifest=fun_manifest.replace('        <service android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"\n            android:enabled="false" android:exported="false">\n            <meta-data android:name="autoStoreLocales" android:value="true" />\n        </service>\n','')
 old_manifest=subprocess.check_output(["git","-C",str(REPO),"show","e775fd91654a091b68b176a929ff399de2d1cf64:android/app/src/main/AndroidManifest.xml"]).decode("utf-8").replace("\r\n","\n")
 for activity in ["FunActivity","FunSettingsActivity","TestNotesActivity","RecordsActivity","MeterSettingsActivity"]:
     fun_manifest=fun_manifest.replace(f'        <activity android:name="dev.bennett.codexmeter.{activity}" android:exported="false"/>\n',"")

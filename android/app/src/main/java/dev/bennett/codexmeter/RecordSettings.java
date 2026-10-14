@@ -37,6 +37,8 @@ final class RecordSettings {
         action(a,account,dark,R.string.matte_account_manage,()->MatteNav.homeAction(a,"account"));
 
         LinearLayout display=card(a,parent,dark,R.string.ux_widget_screen);
+        Button language=action(a,display,dark,R.string.app_language,()->AppLanguage.show(a,false));
+        language.setText(a.getString(R.string.language_setting,AppLanguage.currentName(a)));
         toggle(a,display,dark,R.string.matte_five_hour,AppPreferences.showDashboardFiveHour(a),on->AppPreferences.setShowDashboardFiveHour(a,on));
         toggle(a,display,dark,R.string.ux_weekly,AppPreferences.showDashboardWeekly(a),on->AppPreferences.setShowDashboardWeekly(a,on));
         toggle(a,display,dark,R.string.ui_ledger_home,AppPreferences.showUsageOverview(a),on->AppPreferences.setShowUsageOverview(a,on));

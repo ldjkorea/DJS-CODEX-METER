@@ -16,8 +16,8 @@ android {
         }
         minSdk = 26
         targetSdk = 36
-        versionCode = 83
-        versionName = "2.9.2"
+        versionCode = 85
+        versionName = "3.0.0"
         providers.gradleProperty("demoVersionCode").orNull?.toIntOrNull()?.let {
             versionCode = it
         }
@@ -28,6 +28,11 @@ android {
             ?: "https://api.github.com/repos/ldjkorea/codex-meter-ko/releases?per_page=30" // pragma: allowlist secret
         buildConfigField("String", "UPDATE_API_URL",
             "\"${updateApiUrl.replace("\\", "\\\\").replace("\"", "\\\"")}\"")
+    }
+
+    androidResources {
+        // Keep English (default) and Korean while excluding unused dependency translations.
+        localeFilters += listOf("en", "ko")
     }
 
     defaultConfig {

@@ -43,6 +43,8 @@ if '--startup-lock' in sys.argv:
     test_class='StartupLockNativeTest';out=root/'build/startup-lock-native';out.mkdir(parents=True,exist_ok=True)
 if '--profile-share' in sys.argv:
     test_class='ProfileShareNativeTest';out=root/'build/profile-native';out.mkdir(parents=True,exist_ok=True)
+if '--language' in sys.argv:
+    test_class='LanguageNativeTest';out=root/'build/language-native';out.mkdir(parents=True,exist_ok=True)
 if '--upgrade-continuity' in sys.argv:
     test_class='UpgradeContinuityNativeTest';out=root/'build/upgrade-continuity';out.mkdir(parents=True,exist_ok=True)
 run=lambda args:subprocess.run(list(map(str,args)),check=True)
@@ -62,6 +64,7 @@ if '--collection-restart' in sys.argv:apk=root/'build/collection-restart-qa/qa.a
 if '--stability' in sys.argv:apk=root/'build/stability-qa/qa.apk'
 if '--startup-lock' in sys.argv:apk=root/'build/profile-qa/qa.apk'
 if '--profile-share' in sys.argv:apk=root/'build/profile-qa/qa.apk'
+if '--language' in sys.argv:apk=root/'build/profile-qa/qa.apk'
 if '--upgrade-continuity' in sys.argv:
     package='dev.bennett.codexmeter.phaseeqa';test_package='dev.bennett.codexmeter.phaseetest'
     apk=root/'build/phase-e-qa/v50.apk'
@@ -91,6 +94,8 @@ classes=out/'classes';classes.mkdir(exist_ok=True);cp=os.pathsep.join(map(str,[j
 args=out/'javac.args';args.write_text('-encoding UTF-8 -source 17 -target 17\n-cp "'+cp.replace('\\','/')+'"\n-d "'+str(classes).replace('\\','/')+'"\n"'+str(Path(__file__).with_name(test_class+'.java')).replace('\\','/')+'"',encoding='utf-8')
 if medals and not regression:
     with args.open('a',encoding='utf-8') as extra:extra.write('\n"'+str(Path(__file__).with_name('RpgGrowthNativeTest.java')).replace('\\','/')+'"')
+if '--language' in sys.argv:
+    with args.open('a',encoding='utf-8') as extra:extra.write('\n"'+str(Path(__file__).with_name('LanguageNativeTest.java')).replace('\\','/')+'"')
 run([jdk/'javac.exe','-proc:none','@'+str(args)]);run([bt/'aapt2.exe','link','-I',jar,'--manifest',manifest,'-o',out/'base.apk']);dex=out/'dex';dex.mkdir(exist_ok=True)
 run([bt/'d8.bat','--lib',jar,'--min-api','26','--output',dex,*classes.rglob('*.class')])
 with ZipFile(out/'base.apk','a') as z:z.write(dex/'classes.dex','classes.dex')
@@ -108,7 +113,8 @@ try:
 finally:
     if '--widget30' in sys.argv:shell('appwidget','revokebind','--package',package,'--user','0')
     if phase_e and phase=='checkpoint':shell('appwidget','revokebind','--package',package,'--user','0')
-if not phase_e and "--upgrade-continuity" not in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/collection-restart-fixtures' if '--collection-restart' in sys.argv else '/files/phase-d-fixtures' if '--phase-d' in sys.argv or '--phase-d-baseline' in sys.argv else '/files/phase-c-fixtures' if '--phase-c' in sys.argv or '--phase-d-platform' in sys.argv else '/files/phase-b-fixtures' if '--phase-b' in sys.argv or '--phase-c-tasks' in sys.argv or '--phase-d-tasks' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv or '--phase-c-growth' in sys.argv or '--phase-d-growth' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
+# Dedicated suites export their own captures; language checks do not create images.
+if not phase_e and not any(flag in sys.argv for flag in ["--upgrade-continuity", "--profile-share", "--language", "--startup-lock"]):run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+('/files/collection-restart-fixtures' if '--collection-restart' in sys.argv else '/files/phase-d-fixtures' if '--phase-d' in sys.argv or '--phase-d-baseline' in sys.argv else '/files/phase-c-fixtures' if '--phase-c' in sys.argv or '--phase-d-platform' in sys.argv else '/files/phase-b-fixtures' if '--phase-b' in sys.argv or '--phase-c-tasks' in sys.argv or '--phase-d-tasks' in sys.argv else '/files/phase-a-fixtures' if '--phase-a' in sys.argv else '/files/widget30-fixtures' if '--widget30' in sys.argv else '/files/reborn-fixtures' if '--reborn' in sys.argv or '--reborn30' in sys.argv or '--rebornA' in sys.argv or '--rebornB' in sys.argv or '--phase-c-growth' in sys.argv or '--phase-d-growth' in sys.argv else '/files/rpg3-fixtures'),out/'captures'])
 
 if '--phase-e-ui' in sys.argv or '--collection-ui' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/phase-e-ui',out/'captures'])
 if '--profile-share' in sys.argv:run([adb,'-s',serial,'pull','/sdcard/Android/data/'+package+'/files/profile-fixtures',out/'captures'])

@@ -73,3 +73,6 @@ __pycache__/
 *.pyc
 
 /windows-widget/build/
+
+# Local consolidation recovery; never publish historical private material.
+/.local-recovery/

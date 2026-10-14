@@ -1,10 +1,12 @@
-# GPT HUD 한국어판
+# GPT HUD 3.0.0
 
-최신 버전은 **2.9.2 / versionCode 83 · Windows 0.1.10**입니다. **앱을 열자마자 멈추는 경로를 긴급 수정했습니다. 앱을 열 수 없으면 아래 휴대폰 APK를 브라우저에서 받아 기존 앱 위에 업데이트하세요. 삭제·데이터 초기화는 하지 마세요.** 성장 화면의 **프로필 공유**에서 내 티어·레벨·대표 메달·칭호를 이미지로 미리 보고 저장하거나 공유합니다. 익명이 기본이며 계정·결제·대화·연결정보는 포함하지 않습니다. 계정 전환 보호와 기존 기록 보존도 검증했습니다. **기존 수집 ON/OFF·XP·장착 상태를 유지하며 다시 초기화하지 않습니다.** [시작 멈춤 수정 검증](docs/GPT_HUD_2.9.2_STARTUP_HOTFIX.ko.md) · [2.9.1 검증 이력](docs/GPT_HUD_2.9.1_REPORT.ko.md)에 자동 검증과 실기기 미검증 범위를 구분합니다.
+현재 정식 통합판은 **Android/Wear 3.0.0 / versionCode 85 · Windows Widget 3.0.0**입니다. 사용량·원장·성장·프로필 공유·시작 멈춤 수정과 한국어·영어 선택을 포함합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.9.2/CodexMeter-2.9.2-ko.apk) · [Windows 위젯 0.1.10](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.9.2/CodexMeter-WindowsWidget-0.1.10.zip) · [전체 배포 파일](https://github.com/ldjkorea/codex-meter-ko/releases/tag/v2.9.2) · [설치 안내](docs/RPG_UPDATE_INSTALL.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-3.0.0-ko.apk) · [Wear APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-Wear-3.0.0-ko.apk) · [Windows 위젯](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-WindowsWidget-3.0.0.zip) · [통합 및 검증 기록](docs/GPT_HUD_3.0.0.ko.md)
 
-사용량 표시는 정수로 통일하고 소수점 선택 메뉴를 제거했습니다. 서버 원본 정밀도와 계산은 보존합니다. **기록 → 설정 → 업적·칭호**에서 업적·칭호를 각각 초기화할 수 있고, **위젯 선택 → 사용량 + 작업현황**에서 새 통합 위젯을 추가합니다. 대표 메달은 **성장 → 업적 도감 → 대표 업적 편집**, 칭호는 **성장 → 칭호 보관함**에서 직접 선택합니다. 기존 앱을 삭제하지 않고 업데이트하세요. Windows 0.1.10은 변경 없이 호환되며 이미 사용 중이라면 다시 설치할 필요가 없습니다. 로그인·설정·Tailscale 정보를 보존하려면 AppData 폴더를 삭제하지 마세요.
+GitHub v3.0.0 정식 릴리스로 제공합니다. 기존 앱을 삭제하지 않고 같은 서명으로 업데이트합니다.
+
+사용량 표시는 정수로 통일하고 소수점 선택 메뉴를 제거했습니다. 서버 원본 정밀도와 계산은 보존합니다. **기록 → 설정 → 업적·칭호**에서 업적·칭호를 각각 초기화할 수 있고, **위젯 선택 → 사용량 + 작업현황**에서 새 통합 위젯을 추가합니다. 대표 메달은 **성장 → 업적 도감 → 대표 업적 편집**, 칭호는 **성장 → 칭호 보관함**에서 직접 선택합니다. 기존 앱을 삭제하지 않고 업데이트하세요. Windows 3.0.0은 기존 0.1.10 연결·데이터 형식을 유지합니다. 로그인·설정·Tailscale 정보를 보존하려면 AppData 폴더를 삭제하지 마세요.
 
 ## 성장 새 출발과 위젯
 
@@ -48,7 +50,7 @@ Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Code
 
 ## Windows 바탕화면 위젯
 
-[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v2.9.2/CodexMeter-WindowsWidget-0.1.10.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
+[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-WindowsWidget-3.0.0.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
 ## Android 설치
 

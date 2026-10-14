@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_language">App language</string>
+    <string name="language_setting">App language · %1$s</string>
+    <string name="language_first_title">Choose your language</string>
+</resources>
