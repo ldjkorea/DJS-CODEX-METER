@@ -1,5 +1,29 @@
 [
   {
+    "version": "3.1.0",
+    "date": "2026-10-15",
+    "source": "",
+    "origin": "korean",
+    "ko": {
+      "title": "홈 티어 복구와 성장·개인화 개편",
+      "changes": [
+        "티어 휘장과 이름·칭호·레벨을 홈에 함께 표시합니다.",
+        "명예37개·칭호24개와 일일·주간·월간 성장 목표를 제공합니다.",
+        "이전 성장 기록 보존과 사용자 선택 후 새 성장 시작, 백업 검증·병합 복원을 제공합니다.",
+        "한국식 AI 한마디600개·실전 팁40개를 연결하며 조회·복사에 보상을 지급하지 않습니다."
+      ]
+    },
+    "en": {
+      "title": "Tier identity, growth and personalization",
+      "changes": [
+        "Tier artwork, name, title and level return to Home.",
+        "37 honors and 24 titles with daily, weekly and monthly goals.",
+        "Previous records stay preserved; new growth requires your choice. Validated backups merge safely.",
+        "600 Korean quotes and 40 practical tips. Viewing and copying never award XP."
+      ]
+    }
+  },
+  {
     "version": "3.0.0",
     "date": "2026-10-14",
     "source": "",

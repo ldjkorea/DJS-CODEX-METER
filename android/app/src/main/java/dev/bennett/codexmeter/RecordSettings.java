@@ -14,10 +14,11 @@ import org.json.JSONObject;
 /** Compact records controls and a separate settings hub over existing stores/forms. */
 final class RecordSettings {
     private RecordSettings() { }
+    static void hub(AppCompatActivity a,LinearLayout p,boolean dark,Consumer<Boolean> export,Runnable clear,Runnable details){BetaSettingsUi.hub(a,p,dark,export,clear,details);}
     static void add(AppCompatActivity a,LinearLayout parent,boolean dark) {
         action(a,parent,dark,R.string.matte_settings,()->a.startActivity(new Intent(a,MeterSettingsActivity.class).putExtra("selected_date",a.getIntent().getStringExtra("selected_date"))));
     }
-    static void hub(AppCompatActivity a,LinearLayout parent,boolean dark,Consumer<Boolean> export,Runnable clear,Runnable details) {
+    static void legacyHub(AppCompatActivity a,LinearLayout parent,boolean dark,Consumer<Boolean> export,Runnable clear,Runnable details) {
         UsageSnapshot snapshot=AppPreferences.loadSnapshot(a);
         SubscriptionCost bill=SubscriptionStore.load(a,snapshot);
         LinearLayout account=card(a,parent,dark,R.string.ux_account_subscription);
@@ -49,6 +50,7 @@ final class RecordSettings {
         toggle(a,fun,dark,R.string.evo_effects,TierTheme.effects(a),on->a.getSharedPreferences("codex_tier_effects",0).edit().putBoolean("enabled",on).apply());
         action(a,fun,dark,R.string.matte_recaps,()->a.startActivity(new Intent(a,FunActivity.class)));
 
+        CoachUi.settings(a,display,dark);
         CollectionControls.add(a,parent,dark);
         LinearLayout notify=card(a,parent,dark,R.string.matte_notify);
         page(a,notify,dark,R.string.ui_refresh_usage_903040,"refresh_usage");

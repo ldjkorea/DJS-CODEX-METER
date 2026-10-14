@@ -1,0 +1,12 @@
+package dev.bennett.codexmeter;
+import android.app.*;import android.content.*;import android.os.*;import org.json.*;
+/** Version-only final candidate replacement; same owned synthetic account and existing records. */
+public final class Stable310FinalNativeTest extends Instrumentation {
+ Bundle args;int checks;void check(boolean ok,String why){checks++;if(!ok)throw new AssertionError(why);}
+ @Override public void onCreate(Bundle b){args=b;super.onCreate(b);start();}
+ @Override public void onStart(){Bundle result=new Bundle();try{Context c=getTargetContext();check(Build.MODEL.contains("sdk")&&c.getPackageName().equals("dev.bennett.codexmeter")&&"stable310-qa".equals(SecureTokenStore.load(c).accountId),"Owned stable fixture only");String account=SubscriptionStore.accountKey(c);SharedPreferences saved=c.getSharedPreferences("stable310_final_qa",0);boolean before=args.getString("phase","").equals("final-before");check(c.getPackageManager().getPackageInfo(c.getPackageName(),0).getLongVersionCode()==(before?86:87),"Actual final version code");JSONObject current=BetaGrowthStore.export(c,account);
+ if(before){check(!saved.contains("state"),"Never overwrite a checkpoint");saved.edit().putString("state",current.getJSONObject("state").toString()).putString("archive",current.getJSONObject("archive").toString()).putString("name",BetaIdentity.name(c)).putString("settings",new JSONObject(c.getSharedPreferences("codex_meter_settings_v1",0).getAll()).toString()).commit();}
+ else{check(current.getJSONObject("state").toString().equals(saved.getString("state","")),"Exact growth state/evidence/rewards/equipment unchanged");check(current.getJSONObject("archive").toString().equals(saved.getString("archive","")),"Exact original archive unchanged");check(BetaIdentity.name(c).equals(saved.getString("name","")),"Name retained");check(new JSONObject(c.getSharedPreferences("codex_meter_settings_v1",0).getAll()).toString().equals(saved.getString("settings","")),"Settings retained");check(current.getJSONObject("archive").getJSONObject("rpg").getLong("xp")==46539,"Original source XP retained");check(current.getJSONObject("archive").getJSONObject("rpg").getInt("level")==31,"Original level retained");}
+ result.putString("stream","Stable final code87 "+(before?"checkpoint":"update")+": "+checks+" checks passed; synthetic only.\n");finish(-1,result);
+ }catch(Throwable e){result.putString("stream",android.util.Log.getStackTraceString(e));finish(0,result);}}
+}

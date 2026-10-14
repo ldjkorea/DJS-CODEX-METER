@@ -10,37 +10,13 @@ import androidx.appcompat.app.AppCompatActivity;
 final class LiveCards {
     private LiveCards() {}
     static LinearLayout crest(AppCompatActivity a,boolean dark,LiveUtilization.Result live,boolean fresh){
-        int rank=TierTheme.tier(a);
-        LinearLayout card=Ui.card(a,dark);TierTheme.frame(card,rank,dark);
-        card.setGravity(Gravity.CENTER_HORIZONTAL);
-        card.setPadding(Ui.dp(a,16),Ui.dp(a,10),Ui.dp(a,16),Ui.dp(a,10));
-        TierCompanionView badge=new TierCompanionView(a,rank);
-        int size=Ui.dp(a,132);
-        card.addView(TierTheme.companion(badge,rank),new LinearLayout.LayoutParams(size,size));
-        TextView title=LedgerUi.amount(a,rank<0?a.getString(R.string.fun_placing):TierPresentation.ENGLISH[rank],dark,24);
-        title.setGravity(Gravity.CENTER);title.setLetterSpacing(.06f);
-        card.addView(title,new LinearLayout.LayoutParams(-1,-2));
-        if(rank<0){TextView note=LedgerUi.caption(a,a.getString(fresh?R.string.live_need_coverage:R.string.ui_ledger_refresh),dark);note.setGravity(Gravity.CENTER);card.addView(note);}
-        org.json.JSONObject growth=RpgProgressStore.progress(a);
-        String equipped=growth==null?"":growth.optString("equipped_title");
-        if(!equipped.isEmpty()){TextView alias=LedgerUi.badge(a,RpgGrowthUi.title(a,equipped),dark,false);RpgDisplayStyle.title(alias,dark,19);alias.setMinHeight(Ui.dp(a,48));alias.setOnClickListener(v->a.startActivity(new android.content.Intent(a,GrowthActivity.class).putExtra("growth_mode","titles")));card.addView(alias);}
-        java.util.List<String> representatives=RpgShowcase.selected(a,growth);
-        if(!representatives.isEmpty()){
-            LinearLayout row=new LinearLayout(a);row.setGravity(Gravity.CENTER);Ui.addSpacer(card,14);
-            for(String id:representatives){RpgCatalog.Entry e=RpgGrowthFacts.entry(id);LinearLayout medal=RpgDisplayStyle.medal(a,e,dark);medal.setOnClickListener(v->RpgMedalUi.show(a,growth,e,dark,false,null));RpgDisplayStyle.addMedal(row,medal);}card.addView(row,new LinearLayout.LayoutParams(-1,-2));
-        }
-        return card;
+        return BetaHomeUi.card(a,dark);
     }
     static LinearLayout ai(AppCompatActivity a,boolean dark,LiveUtilization.Result live,UsageSnapshot snapshot,boolean fresh,double daily,long now){
         return ai(a,dark,live,snapshot,fresh,daily,now,null);
     }
     static LinearLayout ai(AppCompatActivity a,boolean dark,LiveUtilization.Result live,UsageSnapshot snapshot,boolean fresh,double daily,long now,String selected){
-        UsageWindow window=snapshot.longWindow();
-        LinearLayout card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);card.setPadding(Ui.dp(a,10),Ui.dp(a,14),Ui.dp(a,10),Ui.dp(a,14));
-        card.addView(LedgerUi.caption(a,a.getString(R.string.live_ai_title),dark));Ui.addSpacer(card,10);
-        String key=SpicyAi.key(daily,window==null?Double.NaN:window.usedPercent,fresh,live.bonus,window==null?0:window.effectiveResetAtMillis(snapshot.fetchedAtMillis)-now,now);
-        int id=resource(key);
-        TextView quote=LedgerUi.heading(a,"“"+(selected==null?a.getString(id==0?R.string.live_ai_missing_0:id):selected)+"”",dark);quote.setTextSize(18);card.addView(quote);return card;
+        return CoachUi.card(a,dark,snapshot,fresh,live.bonus,daily);
     }
     private static int resource(String key){
         switch(key){

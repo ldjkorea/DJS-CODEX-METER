@@ -33,6 +33,8 @@ class UsageLedgerDatabase {static long floor;
 fixtures['dev/bennett/codexmeter/TierTheme.java']='package dev.bennett.codexmeter; class TierTheme {static boolean effects(android.content.Context c){return true;}}'
 fixtures['android/content/SharedPreferences.java']=fixtures['android/content/SharedPreferences.java'].replace('Editor edit();','boolean getBoolean(String k,boolean f);boolean contains(String k);Editor edit();').replace('boolean commit();','Editor putBoolean(String k,boolean v);Editor remove(String k);boolean commit();')
 fixtures['android/content/Context.java']=fixtures['android/content/Context.java'].replace('public Editor edit(){','public boolean getBoolean(String k,boolean f){return read().optBoolean(k,f);}public boolean contains(String k){return read().has(k);}public Editor edit(){').replace('public boolean commit(){','public Editor putBoolean(String k,boolean v){try{values.put(k,v);}catch(Exception e){throw new RuntimeException(e);}return this;}public Editor remove(String k){values.remove(k);return this;}public boolean commit(){')
+fixtures["dev/bennett/codexmeter/BetaGrowthStore.java"]="package dev.bennett.codexmeter;class BetaGrowthStore {static boolean activeWorker(android.content.Context c,String a){return false;}}"
+fixtures["dev/bennett/codexmeter/BetaLegacy.java"]=(root/"app/src/main/java/dev/bennett/codexmeter/BetaLegacy.java").read_text(encoding="utf-8")
 files=[]
 for name,text in fixtures.items():
     path=out/'fixtures'/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf-8');files.append(str(path))

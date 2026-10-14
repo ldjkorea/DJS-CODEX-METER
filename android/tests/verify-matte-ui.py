@@ -32,7 +32,7 @@ assert 'codex_subscription_cost' in main and 'codex_fun_settings' in main
 assert 'button.setEnabled(true);button.setText(previousLabel)' in main
 assert 'previousLabel.length()>0' in main # no clipped spinner text in compact icon control
 assert main.index('LedgerDashboard.addOverview')<main.index('FunHome.add')
-assert main.index('content.addView(crestSlot)')<main.index('LedgerDashboard.addOverview')
+assert main.index('content.addView(crestSlot,new LinearLayout.LayoutParams(-1,-2))')<main.index('LedgerDashboard.addOverview')
 assert home.index('crestTarget.addView(tier)')<home.index('target.addView(quotation)')<home.index('target.addView(value)')
 assert 'LiveCards.ai(' in home and 'FunStore.tone(' not in home
 assert 'LiveCards.crest(' in home and 'TierStore.evaluate(' in home
@@ -40,8 +40,8 @@ assert 'SubscriptionValueUi.card' in home and 'FunStore.rule(' not in home
 assert 'LiveUsageStore.calculate(' in home
 assert 'screenWidthDp<420' in home and 'figures.setOrientation(LinearLayout.VERTICAL)' in src('SubscriptionValueUi')
 assert 'setMaxLines' not in home and 'setEllipsize' not in home
-assert 'SpicyAi.key(' in src('LiveCards') and 'R.string.live_ai_title' in src('LiveCards')
-records=settings.split('static void add(',1)[1].split('static void hub(',1)[0]
+assert 'CoachUi.card(' in src('LiveCards') and 'R.string.live_ai_title' in src('CoachUi')
+records=settings.split('static void add(',1)[1].split('static void legacyHub(',1)[0]
 assert records.count('toggle(a,')==0 and settings.count('toggle(a,')==4
 assert 'MeterSettingsActivity.class' in records and '=group(' not in settings
 assert 'TestNotesStore' not in settings and 'TestNotesActivity.class' not in settings

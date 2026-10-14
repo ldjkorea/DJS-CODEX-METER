@@ -105,6 +105,8 @@ paths = ["android/app/src/main/java/dev/bennett/codexmeter/" + name for name in 
 # RpgDisplayCopy is new presentation metadata, covered by verify-medal-collection.py.
 paths += [str(p.relative_to(REPO)).replace("\\", "/") for p in (ROOT / "shared/src").rglob("*.java")
           if p.name not in ("ProfileCard.java", "CollectionRestart.java", "CollectionTierGoals.java", "UsageEvidence.java", "BillingEvidence.java", "TitleJourney.java", "AchievementJourney.java", "RpgDisplayCopy.java", "UsagePrecision.java", "UsageInsights.java", "UsageEventDetector.java", "UsageLedger.java", "UsageLedgerInsights.java", "LedgerRecord.java", "LedgerAggregation.java", "LedgerForecast.java", "LedgerExport.java", "LedgerPresentation.java", "LedgerCalendar.java", "FunInsights.java", "TestNote.java", "LedgerPeriods.java", "SubscriptionCost.java", "SubscriptionValue.java", "CoachMoment.java", "WidgetVisibility.java", "WearUsageState.java", "TierEvolution.java", "EvolutionElements.java", "KoreanUpdateTrust.java", "LiveUtilization.java", "SpicyAi.java", "SpicyRotation.java", "TaskStatusData.java", "WidgetTierPalette.java", "LanSyncWire.java", "MonthlyLedger.java", "AccountTier.java", "AccountProgress.java", "RpgTokens.java", "RpgTier.java", "RpgCatalog.java", "RpgEngine.java", "RpgGrowthFacts.java", "RpgCollectionFacts.java", "RpgTitleCatalog.java", "RpgArchive.java", "RpgBackupCodec.java")]
+# Additive growth/coach sources are compiled and checked by run-promoted-checks.py.
+paths=[path for path in paths if Path(path).name not in {"CoachCatalog.java","MxpEconomy.java","MxpHonors.java"}]
 paths += ["android/settings.gradle.kts",
           "android/wear/src/main/AndroidManifest.xml"]
 for path in paths:
@@ -113,6 +115,8 @@ for path in paths:
 def reviewed_change(relative, transform):
     expected = transform(original(relative).decode("utf-8").replace("\r\n", "\n"))
     expected = reviewed_release_patch(Path(relative).name, expected)
+    if relative=="android/app/src/main/AndroidManifest.xml":
+        expected=expected.replace("</application>","".join('<activity android:name="dev.bennett.codexmeter.'+name+'" android:exported="false"/>' for name in ["BetaSetupActivity","BetaCatalogActivity","BetaArchiveActivity","BetaBackupActivity","BetaProfileActivity"])+"</application>")
     if relative.endswith("build.gradle.kts"):
         expected = expected.replace('signingConfig = signingConfigs.getByName("localRelease")', 'signingConfig = signingConfigs.getByName("localRelease").takeIf { it.storeFile != null }')
     if relative=="android/app/build.gradle.kts": expected=reviewed_evolution(relative,expected.encode()).decode()
@@ -150,9 +154,9 @@ reviewed_change(APP_JAVA + "AppPreferences.java", lambda s: s.replace(
     "            boolean saved = prefs(context).edit().putString(KEY_RESET_CREDITS, resetCreditsSnapshot.toJson().toString()).remove(KEY_RESET_ERROR).remove(KEY_RESET_ERROR_AT).commit();\n            if (saved) UsageEventStore.recordCredits(context, resetCreditsSnapshot);\n            return saved;").replace(
     "        UsageEventStore.clear(context);\n", "        UsageEventStore.clear(context);\n        UsageLedgerStore.clear(context);\n        UsageLedgerDatabase.clear(context);\n"))
 def version_change(s):
-    return (s.replace("2.8.0", "3.0.0").replace("2.9.2", "3.0.0")
-            .replace("versionCode = 30", "versionCode = 85").replace("versionCode = 83", "versionCode = 85")
-            .replace("VERSION_CODE = 30", "VERSION_CODE = 85").replace("VERSION_CODE = 83", "VERSION_CODE = 85"))
+    return (s.replace("2.8.0", "3.1.0").replace("2.9.2", "3.1.0")
+            .replace("versionCode = 30", "versionCode = 87").replace("versionCode = 83", "versionCode = 87")
+            .replace("VERSION_CODE = 30", "VERSION_CODE = 87").replace("VERSION_CODE = 83", "VERSION_CODE = 87"))
 reviewed_change(APP_JAVA + "AppConstants.java", version_change)
 reviewed_change("android/wear/build.gradle.kts", version_change)
 def reviewed_qa(s):
@@ -171,6 +175,8 @@ reviewed_change(APP_JAVA + "UsageApi.java", lambda s: s.replace(
 fun_manifest=strip_evolution_manifest(strip_lan("AndroidManifest.xml",(REPO / "android/app/src/main/AndroidManifest.xml").read_text(encoding="utf-8"))).replace('    <activity android:name="dev.bennett.codexmeter.WidgetGuideActivity" android:exported="false"/>\n','')
 fun_manifest=fun_manifest.replace('        android:localeConfig="@xml/app_locales"\n','')
 fun_manifest=fun_manifest.replace('        <service android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"\n            android:enabled="false" android:exported="false">\n            <meta-data android:name="autoStoreLocales" android:value="true" />\n        </service>\n','')
+for name in ["BetaSetupActivity","BetaCatalogActivity","BetaArchiveActivity","BetaBackupActivity","BetaProfileActivity"]:
+    fun_manifest=fun_manifest.replace('<activity android:name="dev.bennett.codexmeter.'+name+'" android:exported="false"/>',"")
 old_manifest=subprocess.check_output(["git","-C",str(REPO),"show","e775fd91654a091b68b176a929ff399de2d1cf64:android/app/src/main/AndroidManifest.xml"]).decode("utf-8").replace("\r\n","\n")
 for activity in ["FunActivity","FunSettingsActivity","TestNotesActivity","RecordsActivity","MeterSettingsActivity"]:
     fun_manifest=fun_manifest.replace(f'        <activity android:name="dev.bennett.codexmeter.{activity}" android:exported="false"/>\n',"")

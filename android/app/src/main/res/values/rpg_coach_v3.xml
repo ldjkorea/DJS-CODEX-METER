@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="coach_try">Try a useful move</string>
+    <string name="coach_more">Quote options</string>
+    <string name="coach_another">Another quote</string>
+    <string name="coach_hide">Hide this quote</string>
+    <string name="coach_copy">Copy prompt</string>
+    <string name="coach_close">Close</string>
+    <string name="coach_copied">Copied the visible prompt.</string>
+    <string name="coach_copy_failed">Copy failed. Please try again.</string>
+    <string name="coach_interest">Interest (optional)</string>
+    <string name="coach_restore_hidden">Restore hidden quotes</string>
+    <string name="coach_local_help">Local quotes and tips. No conversation reading or new AI requests. Viewing, rotating and copying earn no XP or achievements.</string>
+    <string name="coach_prepare_only">Review available material or prepare the next task. There is no need to rush another request.</string>
+    <string name="mxp_periods">Current challenges</string>
+    <string name="mxp_day">Daily · %1$d / 1 day</string>
+    <string name="mxp_week">Weekly · %1$d / 5 days</string>
+    <string name="mxp_month">Monthly · %1$d / 14 days</string>
+    <string name="mxp_progress">%1$s / %2$s MXP</string>
+    <string name="mxp_total">New growth %1$s MXP · preserved original %2$s XP</string>
+    <string name="mxp_help">Only verified Codex activity intervals count. Automatic verification of ordinary ChatGPT conversations is unsupported. Missing records do not prove inactivity. Game levels are not official OpenAI tiers or subscription benefits.</string>
+    <string name="mxp_season">Personal annual season starts · %1$s</string>
+    <string name="mxp_honors">Permanent honors · RPG 3.0</string>
+    <string name="mxp_waiting">Enable collection to record new verified activity.</string>
+    <string name="mxp_reward_note">Daily base 2 + core 4 MXP. Weekly 3/5 days pay cumulative 20/30; monthly 7/10/14 days pay cumulative 40/80/120. Only the difference is paid. Annual awards settle after twelve months at the highest qualifying 200/400/600 target.</string>
+    <string name="mxp_equip">Equip title</string>
+    <string-array name="coach_tones"><item>Calm</item><item>Playful</item><item>Spicy</item><item>Off</item></string-array>
+    <string-array name="coach_interests"><item>General</item><item>Explorer</item><item>Creator</item><item>Developer</item><item>Analyst</item><item>Practitioner</item></string-array>
+    <string name="mxp_honor_no_bonus">Honor achievement. No additional MXP; previous XP records remain preserved.</string>
+    <string name="mxp_observed_date">As of %1$s</string>
+    <string name="mxp_verified">Activity verified</string>
+    <string name="mxp_pending">Awaiting evidence · no record does not mean failure</string>
+    <string name="mxp_earned">Earned</string>
+    <string name="mxp_year_progress">%1$s to %2$s (end exclusive)\nBronze months %3$d/6 · silver %4$d/8 · gold %5$d/10\nSettles after the season ends; delayed evidence belongs to its original period.</string>
+    <string name="mxp_history">Permanent period history</string>
+    <string name="mxp_history_stage">Earned stage %1$d</string>
+    <string name="mxp_previous">Previous records</string>
+    <string name="mxp_next">Next records</string>
+    <string-array name="mxp_period_labels"><item>Daily</item><item>Weekly</item><item>Monthly</item><item>Annual</item><item>Codex week</item><item>Codex month</item><item>Four weeks in a month</item></string-array>
+    <string-array name="mxp_conditions">
+        <item>1 verified core day with achievement collection on</item><item>1 week with 3 distinct verified core days</item><item>Core activity in 4 distinct weeks of one month; decoration only</item><item>7 verified core days</item><item>4 distinct weeks with 3 verified core days</item><item>3 gold months with 14 verified core days each</item><item>6 gold months with 14 verified core days each</item><item>1 completed personal season with 10 gold months</item><item>3 completed personal seasons with 10 gold months each</item><item>Level 30 and 14 new verified core days; profile frame</item><item>Level 50 and 1 gold annual season; profile frame</item><item>1 verified day with title collection on</item><item>Level 30 and 14 verified days with title collection on</item><item>7 verified days with title collection on</item><item>6 months with 14 verified title days each</item><item>3 completed personal title seasons with 10 gold months each; independent of achievement collection</item>
+    </string-array>
+</resources>

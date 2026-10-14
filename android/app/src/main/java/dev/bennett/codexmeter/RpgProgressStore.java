@@ -89,7 +89,9 @@ final class RpgProgressStore extends SQLiteOpenHelper {
                     }
                     List<Long> credits=new ArrayList<>();for(UsageLedgerDatabase.Event e:data.events)if(e.type.equals("credit_used")&&e.origin.equals("confirmed"))credits.add(e.at);
                     long now=System.currentTimeMillis();boolean evaluate=current.fetchedAtMillis<=now&&now-current.fetchedAtMillis<900000L&&AppPreferences.getLastError(c).isEmpty();
+                    boolean promotedActive=BetaGrowthStore.activeWorker(c,account);JSONObject promotedPrior=promotedActive?new JSONObject(RpgEngine.state(doc).toString()):null;
                     AccountProgress.reconcile(doc,data.records,data.days,credits,bills,UsageLedgerDatabase.lanFloor(c),now,evaluate);
+                    if(promotedActive)BetaLegacy.freezeGrowth(promotedPrior,RpgEngine.state(doc));
                     db.execSQL("INSERT OR REPLACE INTO profiles(account,document) VALUES(?,?)",new Object[]{account,doc.toString()});db.setTransactionSuccessful();
                 }finally{db.endTransaction();}
                 JSONObject display=display(doc);

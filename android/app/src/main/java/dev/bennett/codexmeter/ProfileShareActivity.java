@@ -24,7 +24,7 @@ public final class ProfileShareActivity extends AppCompatActivity {
     byte[] pending;String pendingAccount;
     final ActivityResultLauncher<String> create=registerForActivityResult(new ActivityResultContracts.CreateDocument("image/png"),this::saveTo);
     final BroadcastReceiver changed=new BroadcastReceiver(){public void onReceive(Context c,Intent i){reload();}};
-    @Override protected void onCreate(Bundle state){Ui.applySelectedTheme(this);super.onCreate(state);dark=Ui.isDark(this);account=state==null?SubscriptionStore.accountKey(this):state.getString("account");
+    @Override protected void onCreate(Bundle state){Ui.applySelectedTheme(this);super.onCreate(state);if(BetaGrowthStore.peek(this)!=null){startActivity(new Intent(this,BetaProfileActivity.class));finish();return;}dark=Ui.isDark(this);account=state==null?SubscriptionStore.accountKey(this):state.getString("account");
         LinearLayout body=Ui.installPage(this,getString(R.string.profile_share),true).content;
         body.addView(LedgerUi.caption(this,getString(R.string.profile_privacy),dark));
         nickname=new EditText(this);nickname.setSingleLine(true);nickname.setTextColor(Ui.mainText(dark));nickname.setHintTextColor(Ui.secondaryText(dark));nickname.setHint(R.string.profile_nickname);nickname.setContentDescription(getString(R.string.profile_nickname));nickname.setImportantForAutofill(android.view.View.IMPORTANT_FOR_AUTOFILL_NO);
@@ -35,7 +35,7 @@ public final class ProfileShareActivity extends AppCompatActivity {
         save=LedgerUi.action(this,getString(R.string.profile_save),false,dark,this::saveImage);share=LedgerUi.action(this,getString(R.string.profile_share_button),true,dark,this::shareImage);body.addView(save);body.addView(share);buttons();
         nickname.addTextChangedListener(new TextWatcher(){public void beforeTextChanged(CharSequence s,int start,int count,int after){}public void onTextChanged(CharSequence s,int start,int before,int count){requestPreview();}public void afterTextChanged(Editable e){}});date.setOnCheckedChangeListener((b,on)->requestPreview());
     }
-    @Override protected void onResume(){super.onResume();if(!registered){androidx.core.content.ContextCompat.registerReceiver(this,changed,new IntentFilter(AppConstants.ACTION_USAGE_UPDATED),androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);registered=true;}reload();}
+    @Override protected void onResume(){super.onResume();if(isFinishing())return;if(!registered){androidx.core.content.ContextCompat.registerReceiver(this,changed,new IntentFilter(AppConstants.ACTION_USAGE_UPDATED),androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);registered=true;}reload();}
     @Override protected void onPause(){if(registered){unregisterReceiver(changed);registered=false;}super.onPause();}
     @Override protected void onSaveInstanceState(Bundle out){super.onSaveInstanceState(out);out.putString("account",account);out.putString("nickname",nickname.getText().toString());out.putBoolean("date",date.isChecked());}
     @Override protected void onDestroy(){generation++;ui.removeCallbacks(redraw);pending=null;png=null;preview.setImageDrawable(null);if(image!=null)image.recycle();super.onDestroy();}

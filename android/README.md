@@ -1,6 +1,6 @@
 # Android 개발 안내
 
-`app/`은 휴대폰, `wear/`는 Wear OS, `shared/`는 공통 모델입니다. 현재 통합 개발본의 앱·Wear는 3.0.0 / versionCode 85입니다. 검증 결과와 정리 내역은 `../docs/GPT_HUD_3.0.0.ko.md`에 기록합니다.
+`app/`은 휴대폰, `wear/`는 Wear OS, `shared/`는 공통 모델입니다. 현재 통합 개발본의 앱·Wear는 3.1.0 / versionCode 87입니다. 검증 결과와 정리 내역은 `../docs/GPT_HUD_3.0.0.ko.md`에 기록합니다.
 
 JDK 21, Android SDK 36/37.0, Build Tools 36.0.0을 사용합니다. 루트 README의 빌드 명령과 docs/BUILD_SECURITY.ko.md를 참고하세요.
 

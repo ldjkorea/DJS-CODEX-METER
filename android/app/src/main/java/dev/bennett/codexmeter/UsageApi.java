@@ -61,6 +61,7 @@ public final class UsageApi {
                 if (!AppPreferences.saveSnapshot(context, usageSnapshot)) {
                     throw new Exception("Usage was received, but it could not be saved on this device.");
                 }
+                BetaGrowthStore.response(context, SubscriptionStore.accountKey(context), usageSnapshot);
                 UsageHistoryRecorder.record(context, usageSnapshot);
                 UsageLedgerDatabase.record(context, usageSnapshot, responseRequestUsage.body, manualRecord);
                 PhoneWearSync.pushUsage(context, usageSnapshot);

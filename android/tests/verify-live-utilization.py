@@ -13,7 +13,7 @@ for state in ['missing','bonus','empty','sprint','active','idle','zero','partial
  for i in range(3):assert all(d[f'live_ai_{state}_{i}'] for d in [en,ko])
 assert ko['live_ai_title']=='AI의 한마디'
 home=(app/'FunHome.java').read_text(encoding='utf-8');main=(app/'MainActivity.java').read_text(encoding='utf-8');settings=(app/'RecordSettings.java').read_text(encoding='utf-8');cards=(app/'LiveCards.java').read_text(encoding='utf-8')
-assert main.index('content.addView(crestSlot)')<main.index('LedgerDashboard.addOverview')
+assert main.index('content.addView(crestSlot,new LinearLayout.LayoutParams(-1,-2))')<main.index('LedgerDashboard.addOverview')
 assert 'restoreHomeScroll,crestSlot' in main and 'crestTarget.addView(tier)' in home
 assert 'LiveUtilization.Result live' in home and 'LiveCards.crest(' in home
 assert 'LiveUsageStore.calculate(' in home and 'LiveCards.daily(' in home
@@ -24,7 +24,7 @@ assert 'day.coveredMillis>0||day.points>0' in cards and 'Double.NaN' in cards
 assert 'LiveUsageStore.invalidate();WidgetRenderer.updateAll' in (app/'LedgerAnalyticsActivity.java').read_text(encoding='utf-8')
 assert 'LiveUsageStore.schedule(context)' in (app/'WidgetRenderer.java').read_text(encoding='utf-8')
 assert 'RpgProgressStore.tier(c)' in (app/'TierTheme.java').read_text(encoding='utf-8')
-assert 'int rank=TierTheme.tier(a)' in cards, 'Home crest must use the same durable tier as widgets/theme'
+assert 'BetaHomeUi.card(a,dark)' in cards and 'int rank=TierTheme.tier(a)' in (app/'BetaHomeUi.java').read_text(encoding='utf-8'), 'Home crest must use the same durable tier as widgets/theme'
 assert 'floor,TierTheme.tier(app)' in (app/'LanSync.java').read_text(encoding='utf-8'), 'Existing LAN metadata must use the common account result'
 assets=json.loads((repo/'docs/plan-artwork/ASSETS.json').read_text(encoding='utf-8'))['assets']
 assert len(assets)==5 and len({a['sha256'] for a in assets})==5

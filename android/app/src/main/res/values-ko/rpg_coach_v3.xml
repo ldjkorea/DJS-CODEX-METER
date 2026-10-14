@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="coach_try">한 수 써먹기</string>
+    <string name="coach_more">문구 메뉴</string>
+    <string name="coach_another">다른 한마디</string>
+    <string name="coach_hide">이 문구 그만 보기</string>
+    <string name="coach_copy">프롬프트 복사</string>
+    <string name="coach_close">닫기</string>
+    <string name="coach_copied">보이는 프롬프트를 복사했어요.</string>
+    <string name="coach_copy_failed">복사하지 못했어요. 다시 시도해 주세요.</string>
+    <string name="coach_interest">관심 주제 (선택)</string>
+    <string name="coach_restore_hidden">숨긴 문구 되돌리기</string>
+    <string name="coach_local_help">로컬 문구와 팁입니다. 대화 내용을 읽거나 새 AI 요청을 보내지 않습니다. 조회·교체·복사로 XP나 업적을 받지 않습니다.</string>
+    <string name="coach_prepare_only">지금은 확인된 자료를 읽거나 다음 작업을 준비해 두세요. 추가 요청은 서두르지 않아도 됩니다.</string>
+    <string name="mxp_periods">이번 기간의 도전</string>
+    <string name="mxp_day">일일 · %1$d / 1일</string>
+    <string name="mxp_week">주간 · %1$d / 5일</string>
+    <string name="mxp_month">월간 · %1$d / 14일</string>
+    <string name="mxp_progress">%1$s / %2$s MXP</string>
+    <string name="mxp_total">새 성장 누적 %1$s MXP · 이전 원본 %2$s XP</string>
+    <string name="mxp_help">확인된 Codex 활동 구간만 인정합니다. 일반 ChatGPT 대화 자동 인증은 지원하지 않습니다. 기록 없음은 미사용 증명이 아닙니다. 게임 레벨은 OpenAI 공식 등급이나 요금 혜택이 아닙니다.</string>
+    <string name="mxp_season">개인 연간 시즌 시작 · %1$s</string>
+    <string name="mxp_honors">영구 명예 · RPG 3.0</string>
+    <string name="mxp_waiting">수집을 켜면 확인된 새 활동부터 기록합니다.</string>
+    <string name="mxp_reward_note">일일 기본 2 + 핵심 4 MXP. 주 3/5일 20/30, 월 7/10/14일 40/80/120은 누적 목표의 차액만 지급합니다. 연간은 12개월 종료 후 조건에 따라 200/400/600 중 최고 단계만 지급합니다.</string>
+    <string name="mxp_equip">칭호 장착</string>
+    <string-array name="coach_tones"><item>순한맛</item><item>장난맛</item><item>매운맛</item><item>끄기</item></string-array>
+    <string-array name="coach_interests"><item>선택 안 함</item><item>탐험가</item><item>창작자</item><item>개발자</item><item>분석가</item><item>실무가</item></string-array>
+    <string name="mxp_honor_no_bonus">명예 업적입니다. 추가 MXP를 지급하지 않으며 이전 XP 기록은 보존됩니다.</string>
+    <string name="mxp_observed_date">%1$s 기준</string>
+    <string name="mxp_verified">활동 확인됨</string>
+    <string name="mxp_pending">확인 대기 · 기록 없음은 실패가 아닙니다</string>
+    <string name="mxp_earned">획득함</string>
+    <string name="mxp_year_progress">%1$s ~ %2$s (종료일 미포함)\n브론즈 월 %3$d/6 · 실버 월 %4$d/8 · 골드 월 %5$d/10\n종료 후 정산하며, 늦게 확인된 자료는 원래 기간에 반영합니다.</string>
+    <string name="mxp_history">기간별 영구 획득 기록</string>
+    <string name="mxp_history_stage">달성 단계 %1$d</string>
+    <string name="mxp_previous">이전 기록</string>
+    <string name="mxp_next">다음 기록</string>
+    <string-array name="mxp_period_labels"><item>일일</item><item>주간</item><item>월간</item><item>연간</item><item>Codex 주간</item><item>Codex 월간</item><item>한 달 네 주</item></string-array>
+    <string-array name="mxp_conditions">
+        <item>업적 수집 ON 중 확인된 핵심 활동 1일</item><item>서로 다른 3일을 확인한 주간 도전 1개</item><item>한 달에 서로 다른 4개 주에서 핵심 활동 확인 · 장식 보상</item><item>확인된 일일 핵심 도전 7개</item><item>서로 다른 3일을 확인한 주간 도전 4개</item><item>14일을 확인한 월간 골드 3개</item><item>14일을 확인한 월간 골드 6개</item><item>골드 월 10개를 포함하는 완료된 개인 시즌 1개</item><item>골드 월 10개를 포함하는 완료된 개인 시즌 3개</item><item>Lv.30 이상 + 새 핵심 활동 14일 · 프로필 프레임</item><item>Lv.50 이상 + 연간 골드 1개 · 프로필 프레임</item><item>칭호 수집 ON 중 확인된 활동 1일</item><item>Lv.30 이상 + 칭호 수집 ON 중 확인된 활동 14일</item><item>칭호 수집 ON 중 확인된 활동 7일</item><item>칭호 수집 ON 중 14일을 확인한 달 6개</item><item>칭호 개인 시즌에서 14일 확인한 달이 10개인 완료 시즌 3개 · 업적 수집과 독립</item>
+    </string-array>
+</resources>

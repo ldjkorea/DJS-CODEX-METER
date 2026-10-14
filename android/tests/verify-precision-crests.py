@@ -35,7 +35,7 @@ assert 'ANIMATOR_DURATION_SCALE' in companion and 'onDetachedFromWindow' in comp
 for name in ['FunHome','FunActivity']:
     source = (app/(name+'.java')).read_text(encoding='utf-8')
     assert 'LiveCards.crest(' in source
-    live=(app/'LiveCards.java').read_text(encoding='utf-8')
+    live=(app/'LiveCards.java').read_text(encoding='utf-8');assert 'BetaHomeUi.card(a,dark)' in live;live=(app/'BetaHomeUi.java').read_text(encoding='utf-8')
     assert 'new TierCompanionView(' in live and 'TierTheme.companion(' in live
 widget = (app/'EvolutionWidget.java').read_text(encoding='utf-8')
 assert 'TierTheme.EMBLEMS' in widget and 'Bitmap.createBitmap(144,144' in widget

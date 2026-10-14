@@ -171,7 +171,7 @@ public final class Ui {
     }
 
     public static int pageHorizontalPadding(Context context) {
-        return dp(context, isOneUi(context) ? 24.0f : 20.0f);
+        return dp(context, 18.0f);
     }
 
     public static int pageTopPadding(Context context) {
@@ -300,7 +300,7 @@ public final class Ui {
         if(context instanceof Activity&&(i==warning(isDark(context))||i==danger(isDark(context))))i=isDark(context)?Color.rgb(225,227,232):Color.rgb(53,57,65);
         textView.setTextColor(i);
         textView.setTypeface(regularTypeface(context));
-        textView.setLineSpacing(0.0f, isOneUi(context) ? 1.12f : 1.14f);
+        textView.setLineSpacing(0.0f, 1.35f);
         textView.setIncludeFontPadding(false);
         return textView;
     }
@@ -332,7 +332,7 @@ public final class Ui {
         int i = zIsOneUi ? 22 : 20;
         int i2 = zIsOneUi ? 20 : 19;
         linearLayout.setPadding(dp(context, i), dp(context, i2), dp(context, i), dp(context, i2));
-        linearLayout.setBackground(shape(cardColor(context, z), dp(context, 24.0f)));
+        linearLayout.setBackground(shape(cardColor(context, z), dp(context, 18.0f)));
         linearLayout.setElevation(0.0f);
         linearLayout.setClipToOutline(true);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
@@ -343,7 +343,7 @@ public final class Ui {
         RoundedLinearLayout card = new RoundedLinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(dp(context, 18.0f), dp(context, 14.0f), dp(context, 18.0f), dp(context, 14.0f));
-        card.setBackground(shape(cardColor(context, dark), dp(context, 24.0f)));
+        card.setBackground(shape(cardColor(context, dark), dp(context, 18.0f)));
         card.setClipToOutline(true);
         card.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
         return card;
@@ -352,7 +352,7 @@ public final class Ui {
     public static RoundedLinearLayout cardGroup(Context context, boolean dark) {
         RoundedLinearLayout group = new RoundedLinearLayout(context);
         group.setOrientation(LinearLayout.VERTICAL);
-        group.setBackground(shape(cardColor(context, dark), dp(context, 24.0f)));
+        group.setBackground(shape(cardColor(context, dark), dp(context, 18.0f)));
         group.setClipToOutline(true);
         group.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
         return group;
@@ -361,7 +361,7 @@ public final class Ui {
     public static RoundedLinearLayout seslRowCard(Context context, boolean dark) {
         RoundedLinearLayout card = new RoundedLinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
-        card.setBackground(shape(cardColor(context, dark), dp(context, 24.0f)));
+        card.setBackground(shape(cardColor(context, dark), dp(context, 18.0f)));
         card.setClipToOutline(true);
         card.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
         return card;
@@ -387,7 +387,7 @@ public final class Ui {
         button.setMinHeight(dp(context, 52.0f));
         button.setMinWidth(0);
         button.setPadding(dp(context, zIsOneUi ? 18.0f : 20.0f), dp(context, 7.0f), dp(context, zIsOneUi ? 18.0f : 20.0f), dp(context, 7.0f));
-        int iDp = dp(context, 999.0f);
+        int iDp = dp(context, 14.0f);
         int iAccent = z ? accent(context, z2) : controlSurface(context, z2);
         int iOnAccent = z ? onAccent(context, z2) : mainText(z2);
         GradientDrawable gradientDrawableShape = shape(iAccent, iDp);

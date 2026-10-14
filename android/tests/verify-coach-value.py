@@ -28,7 +28,7 @@ jdk=Path(os.environ['JAVA_HOME'])/'bin'
 subprocess.run([str(jdk/'javac'),'-encoding','UTF-8','-cp',cp,'-d',str(classes),*files],check=True)
 subprocess.run([str(jdk/'java'),'-ea','-cp',cp,'dev.bennett.codexmeter.CoachValueSelfTest'],check=True)
 settings=(app/'RecordSettings.java').read_text(encoding='utf-8')
-records=settings.split('static void add(',1)[1].split('static void hub(',1)[0]
+records=settings.split('static void add(',1)[1].split('static void legacyHub(',1)[0]
 assert records.count('toggle(a,')==0 and settings.count('toggle(a,')==4 and 'MeterSettingsActivity.class' in records
 assert not any(x in settings for x in ['TestNotes','fun_test_mode','fun_rule_amount','saveRule('])
 for n in ['FunHome','FunActivity']:

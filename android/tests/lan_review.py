@@ -2,6 +2,8 @@
 from pathlib import Path
 import json
 def strip_lan(name,text):
+    from promotion_review import strip_promotion
+    text=strip_promotion(name,text)
     from hud_review import strip_hud
     from rpg_review import strip_rpg
     text=strip_hud(name,strip_rpg(name,text))

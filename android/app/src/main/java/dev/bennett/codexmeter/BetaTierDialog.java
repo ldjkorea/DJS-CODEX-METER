@@ -1,0 +1,10 @@
+package dev.bennett.codexmeter;
+import android.app.Dialog;import android.os.Bundle;import android.content.*;import androidx.appcompat.app.*;import org.json.*;
+/** Saved fragment, cached grade evidence, and account guard across dismissal/rotation. */
+public final class BetaTierDialog extends AppCompatDialogFragment {
+ String account;boolean registered;final BroadcastReceiver changed=new BroadcastReceiver(){public void onReceive(Context c,Intent i){if(!BetaGrowthStore.current(c,account))dismissAllowingStateLoss();}};
+ static void show(AppCompatActivity a){if(a.getSupportFragmentManager().findFragmentByTag("beta-tier-detail")!=null)return;BetaTierDialog d=new BetaTierDialog();Bundle args=new Bundle();args.putString("account",SubscriptionStore.accountKey(a));d.setArguments(args);d.show(a.getSupportFragmentManager(),"beta-tier-detail");}
+ @Override public Dialog onCreateDialog(Bundle saved){Context c=requireContext();account=requireArguments().getString("account");StringBuilder text=new StringBuilder(BetaCopy.t(c,"tier_note"));JSONObject doc=BetaGrowthStore.current(c,account)?RpgProgressStore.peek(c):null,r=doc==null?null:doc.optJSONObject("rpg");for(String region:new String[]{"KR","WORLD"}){JSONObject fact=r==null?null:r.optJSONObject(region);int rank=fact==null?-1:fact.optInt("tier",-1);text.append("\n\n").append(c.getString(region.equals("KR")?R.string.rpg3_korea:R.string.rpg3_world)).append(" · ").append(rank<0?BetaCopy.t(c,"grade_pending"):RpgGrowthUi.rank(c,rank));}return new AlertDialog.Builder(c).setTitle(BetaCopy.t(c,"tier")).setMessage(text.toString()).setPositiveButton(BetaCopy.t(c,"close"),null).create();}
+ @Override public void onResume(){super.onResume();if(!BetaGrowthStore.current(requireContext(),account)){dismissAllowingStateLoss();return;}androidx.core.content.ContextCompat.registerReceiver(requireContext(),changed,new IntentFilter(AppConstants.ACTION_USAGE_UPDATED),androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);registered=true;}
+ @Override public void onPause(){if(registered){requireContext().unregisterReceiver(changed);registered=false;}super.onPause();}
+}

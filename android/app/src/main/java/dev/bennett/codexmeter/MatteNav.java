@@ -15,15 +15,16 @@ final class MatteNav {
     static void install(AppCompatActivity activity,int selected){
         FrameLayout container=activity.findViewById(R.id.matte_bottom);if(container==null)return;
         boolean dark=Ui.isDark(activity);container.setVisibility(View.VISIBLE);container.setBackgroundColor(Ui.background(activity,dark));
-        LinearLayout bar=new LinearLayout(activity);bar.setOrientation(LinearLayout.HORIZONTAL);bar.setPadding(Ui.dp(activity,16),Ui.dp(activity,8),Ui.dp(activity,16),Ui.dp(activity,8));
+        LinearLayout bar=new LinearLayout(activity);bar.setOrientation(LinearLayout.HORIZONTAL);bar.setPadding(Ui.dp(activity,8),Ui.dp(activity,4),Ui.dp(activity,8),Ui.dp(activity,4));bar.setBackground(LedgerUi.shape(activity,Ui.cardColor(activity,dark),18));
         int[] labels={R.string.matte_records,R.string.matte_home,R.string.rpg3_growth};int[] icons={R.drawable.matte_records,R.drawable.matte_home,R.drawable.rpg_growth};
         int[] roots={2,1,3};selected=selected==0?2:selected;final int active=selected;
-        for(int i=0;i<3;i++){final int index=roots[i];Button button=Ui.button(activity,activity.getString(labels[i]),index==active,dark);
-            button.setTextSize(12);button.setSingleLine(false);button.setMinHeight(Ui.dp(activity,64));button.setSelected(index==active);
-            button.setCompoundDrawablesRelativeWithIntrinsicBounds(0,icons[i],0,0);button.setCompoundDrawablePadding(Ui.dp(activity,5));
-            androidx.core.widget.TextViewCompat.setCompoundDrawableTintList(button,ColorStateList.valueOf(index==active?Ui.onAccent(activity,dark):Ui.secondaryText(dark)));
+        for(int i=0;i<3;i++){final int index=roots[i];Button button=Ui.button(activity,activity.getString(labels[i]),false,dark);
+            button.setTextSize(12);button.setSingleLine(false);button.setIncludeFontPadding(true);button.setLineSpacing(0,1.35f);button.setMinHeight(Ui.dp(activity,64));button.setMinimumHeight(Ui.dp(activity,64));button.setPadding(Ui.dp(activity,6),Ui.dp(activity,8),Ui.dp(activity,6),Ui.dp(activity,8));button.setSelected(index==active);
+            button.setBackground(new android.graphics.drawable.RippleDrawable(ColorStateList.valueOf((0x33000000|(Ui.accent(activity,dark)&0x00ffffff))),index==active?LedgerUi.shape(activity,Ui.controlSurface(activity,dark),12):null,null));
+            button.setTextColor(index==active?Ui.accent(activity,dark):Ui.secondaryText(dark));button.setCompoundDrawablesRelativeWithIntrinsicBounds(0,icons[i],0,0);button.setCompoundDrawablePadding(Ui.dp(activity,4));
+            androidx.core.widget.TextViewCompat.setCompoundDrawableTintList(button,ColorStateList.valueOf(index==active?Ui.accent(activity,dark):Ui.secondaryText(dark)));
             button.setContentDescription(activity.getString(labels[i]));if(index==active)androidx.core.view.ViewCompat.setStateDescription(button,activity.getString(R.string.matte_selected));button.setOnClickListener(v->{if(index!=active)open(activity,index);});
-            LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(0,-2,1);if(i>0)params.setMarginStart(Ui.dp(activity,8));bar.addView(button,params);
+            bar.addView(button,new LinearLayout.LayoutParams(0,-2,1));
         }container.removeAllViews();container.addView(bar);
         activity.getOnBackPressedDispatcher().addCallback(activity,new OnBackPressedCallback(true){public void handleOnBackPressed(){if(active==1)activity.moveTaskToBack(true);else open(activity,1);}});
     }

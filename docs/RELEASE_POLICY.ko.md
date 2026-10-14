@@ -68,3 +68,8 @@
 오류가 생기면 새 배포를 중단하고 릴리스 노트에 상태를 적는다. Android versionCode 제한 때문에 과거 APK를 무조건 덮어쓸 수 없다. 이전 동작을 복원한 새 versionCode로 수정본을 제공하는 방법을 우선 검토한다. 과거 릴리스와 체크섬은 보존한다.
 
 JVM 계산 검사, Android 컴파일, 실제 기기 UI, 기기 내 업데이트, 로그인/API 정상 동작은 서로 다른 검증이다. 릴리스마다 수행한 범위를 명시한다. 현재 실제 기기 검증은 미수행이다.
+
+
+## 정식 3.1.0 최신 사용자 승인
+
+2026-10-15 사용자가 베타9.9.6 개선을 정식3.1.0으로 업데이트·배포하고 베타는 추가 개발용으로 남기도록 명시적으로 승인했습니다. 이전 beta-only/main 금지 및 PUBLICATION_NOT_AUTHORIZED 문구의 공개 범위는 이 최신 승인으로 변경합니다. 실제 사용자 데이터 변경·사용자 기기 설치·새 서명키·원본 영문 remote push 제한은 유지합니다. 공개 ldjkorea/codex-meter-ko main/v3.1.0 non-prerelease/latest에만 검증한phone/Wear code87과Windows3.1.0 및 소스·안내·체크섬을 게시합니다. 기존 베타branch/tag/assets는 변경하지 않습니다. Draft 자산 hash/size 검사, 게시 뒤 익명 다운로드와정식/베타 실제 parser 검증, 기존키 및 정식/베타 분리를 확인합니다.
