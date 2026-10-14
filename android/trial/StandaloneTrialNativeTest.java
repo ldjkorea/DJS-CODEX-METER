@@ -23,8 +23,8 @@ public final class StandaloneTrialNativeTest extends Instrumentation {
         if(phase.equals("seed")){continuity.edit().putLong("total",total).putString("facts",facts).putBoolean("marker",true).commit();}
         else {check(continuity.getBoolean("marker",false),"Upgrade setting marker retained");check(continuity.getLong("total",-1)==total,"Upgrade MXP balance retained");check(continuity.getString("facts","").equals(facts),"Upgrade honors titles equipment dates retained");}
         if(phase.equals("download")){
-            java.util.List<GitHubRelease> releases=ReleaseUpdateClient.check(c);GitHubRelease next=UpdateChannel.selectUpdate(releases,info.versionName,"stable");check(next!=null&&next.version.equals("9.9.2"),"Public beta discovery to 9.9.2");
-            UpdateInstaller.PreparedUpdate prepared=UpdateInstaller.prepare(c,next,null);check(prepared.versionCode==990002&&prepared.versionName.equals("9.9.2"),"Real APK download checksum package signing code verified");
+            java.util.List<GitHubRelease> releases=ReleaseUpdateClient.check(c);GitHubRelease next=UpdateChannel.selectUpdate(releases,info.versionName,"stable");check(next!=null&&next.version.equals("9.9.3"),"Public beta discovery to 9.9.3");
+            UpdateInstaller.PreparedUpdate prepared=UpdateInstaller.prepare(c,next,null);check(prepared.versionCode==990003&&prepared.versionName.equals("9.9.3"),"Real APK download checksum package signing code verified");
             result.putString("stream","Beta download: "+checks+" checks passed; verified official installer candidate, no silent install.\n");finish(-1,result);return;
         }
         MainActivity home=(MainActivity)startActivitySync(new Intent(c,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));Thread.sleep(2500);waitForIdleSync();main(()->check(home.findViewById(android.R.id.content)!=null,"Actual trial home opened"));

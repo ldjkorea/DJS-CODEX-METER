@@ -97,6 +97,7 @@ public final class OnboardingActivity extends AppCompatActivity {
                 }
             }
         });
+        if(getIntent().getBooleanExtra("start_sign_in",false)){this.step=OnboardingFlow.STEP_ACCOUNT;AppPreferences.setOnboardingStep(this,this.step);}
         render();
         if (AppLanguage.needsFirstChoice(this)) {
             getWindow().getDecorView().post(() -> {
@@ -142,6 +143,7 @@ public final class OnboardingActivity extends AppCompatActivity {
                 registerReceiver(this.authReceiver, filter, AppConstants.INTERNAL_PERMISSION, null);
             }
             this.receiverRegistered = true;
+            if(getIntent().getBooleanExtra("start_sign_in",false)){getIntent().removeExtra("start_sign_in");content.post(this::startSignIn);}
         } catch (RuntimeException exception) {
             this.receiverRegistered = false;
             this.authMessage = OnboardingActivity.this.getString(R.string.ui_sign_in_updates_are_unavailable_0b09f3) + safeMessage(exception);

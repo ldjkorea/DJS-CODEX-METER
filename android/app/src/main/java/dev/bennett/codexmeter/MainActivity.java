@@ -278,7 +278,7 @@ public final class MainActivity extends AppCompatActivity {
             intent.removeExtra("start_sign_in");
         }
         Uri data = intent == null ? null : intent.getData();
-        if (data != null && "codexmeter".equals(data.getScheme()) && "auth".equals(data.getHost())) {
+        if (data != null && "codexmetertrial".equals(data.getScheme()) && "auth".equals(data.getHost())) {
             if (SecureTokenStore.isSignedIn(this)) {
                 AppPreferences.setOAuthPending(this, false, "");
                 RefreshScheduler.scheduleImmediate(this);
@@ -309,6 +309,7 @@ public final class MainActivity extends AppCompatActivity {
         }
         startActivity(new Intent(this, OnboardingActivity.class)
                 .putExtra(OnboardingActivity.EXTRA_AUTH_RETURN, oauthReturn)
+                .putExtra("start_sign_in",intent!=null&&intent.getBooleanExtra("start_sign_in",false))
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
         finish();
         return true;
@@ -317,7 +318,7 @@ public final class MainActivity extends AppCompatActivity {
     private static boolean isOAuthReturnIntent(Intent intent) {
         Uri data = intent == null ? null : intent.getData();
         return data != null
-                && "codexmeter".equals(data.getScheme())
+                && "codexmetertrial".equals(data.getScheme())
                 && "auth".equals(data.getHost())
                 && data.getPath() != null
                 && data.getPath().startsWith("/complete");

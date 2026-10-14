@@ -18,11 +18,14 @@ public final class TrialWelcomeActivity extends AppCompatActivity {
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags("ko"));
         }
         BetaUpdatePolicy.initialize(this);
+        // This welcome already chose the initial beta locale; avoid a second language gate.
+        getSharedPreferences("gpt_hud_language",0).edit().putBoolean("chosen",true).apply();
         boolean dark=Ui.isDark(this);LinearLayout body=Ui.installPage(this,"GPT HUD BETA · "+AppConstants.VERSION_NAME,false).content;
         androidx.swiperefreshlayout.widget.SwipeRefreshLayout refresh=findViewById(R.id.dashboard_refresh);refresh.setEnabled(false);
         body.addView(LedgerUi.heading(this,"RPG 3.0 · AI의 한마디 2.0",dark));
         body.addView(LedgerUi.caption(this,"기존 GPT HUD와 별도로 설치됩니다. BETA 업데이트를 자동 확인하며, 설치는 Android 확인 화면에서 직접 선택합니다.",dark));
         body.addView(LedgerUi.action(this,"BETA 업데이트 확인",false,dark,()->startActivity(new Intent(this,UpdateActivity.class))));
+        body.addView(LedgerUi.action(this,"로그인 · 업데이트 진단",false,dark,()->BetaDiagnostics.show(this)));
         Ui.addSpacer(body,20);
         body.addView(LedgerUi.action(this,"로그인 없이 데모 둘러보기",true,dark,()->demo()));
         body.addView(LedgerUi.caption(this,"첫 달 활동을 가정한 가상 계정으로 Lv.30대 성장·명예·매운맛 코치를 보여줍니다. 표시된 사용량과 성취는 실제 기록이 아닙니다.",dark));
