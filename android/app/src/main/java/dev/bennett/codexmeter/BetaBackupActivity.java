@@ -1,0 +1,21 @@
+package dev.bennett.codexmeter;
+import android.net.Uri;
+import android.os.Bundle;
+import android.widget.*;
+import androidx.appcompat.app.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import org.json.*;
+public final class BetaBackupActivity extends AppCompatActivity {
+    String account;LinearLayout body;byte[] pending;JSONObject importFile;AlertDialog dialog;long generation;
+    final ActivityResultLauncher<String> create=registerForActivityResult(new ActivityResultContracts.CreateDocument("application/json"),this::write);
+    final ActivityResultLauncher<String[]> open=registerForActivityResult(new ActivityResultContracts.OpenDocument(),this::read);
+    @Override protected void onCreate(Bundle state){Ui.applySelectedTheme(this);super.onCreate(state);boolean dark=Ui.isDark(this);body=Ui.installPage(this,BetaCopy.t(this,"backup"),true).content;body.addView(BetaUi.body(this,BetaCopy.t(this,"backup_note"),dark));body.addView(BetaUi.action(this,BetaCopy.t(this,"export"),true,dark,this::export));body.addView(BetaUi.action(this,BetaCopy.t(this,"import"),false,dark,()->{account=SubscriptionStore.accountKey(this);open.launch(new String[]{"application/json","text/plain"});}));androidx.swiperefreshlayout.widget.SwipeRefreshLayout refresh=findViewById(R.id.dashboard_refresh);refresh.setEnabled(false);}
+    @Override protected void onDestroy(){generation++;if(dialog!=null)dialog.dismiss();pending=null;super.onDestroy();}
+    void message(String key){Toast.makeText(this,BetaCopy.t(this,key),Toast.LENGTH_LONG).show();}
+    void export(){account=SubscriptionStore.accountKey(this);String key=account;long ticket=++generation;BetaGrowthStore.WORKER.execute(()->{byte[] bytes=null;try{bytes=BetaGrowthStore.export(this,key).toString(2).getBytes(java.nio.charset.StandardCharsets.UTF_8);}catch(Exception ignored){}final byte[] result=bytes;runOnUiThread(()->{if(ticket!=generation||!BetaUi.current(this,key))return;if(result==null){message("failed");return;}pending=result;create.launch("GPT-HUD-BETA-growth.json");});});}
+    void write(Uri uri){byte[] bytes=pending;pending=null;String key=account;if(uri==null||bytes==null||!BetaUi.current(this,key))return;BetaGrowthStore.WORKER.execute(()->{boolean ok=false;try{if(!BetaGrowthStore.current(this,key))return;try(java.io.OutputStream out=getContentResolver().openOutputStream(uri,"w")){if(out==null)throw new java.io.IOException();out.write(bytes);out.flush();}ok=true;}catch(Exception ignored){}final boolean success=ok;runOnUiThread(()->{if(BetaUi.current(this,key))message(success?"saved":"failed");});});}
+    void read(Uri uri){String key=account;if(uri==null||!BetaUi.current(this,key))return;long ticket=++generation;BetaGrowthStore.WORKER.execute(()->{JSONObject file=null,preview=null,current=null;try(java.io.InputStream in=getContentResolver().openInputStream(uri);java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream()){
+            if(in==null)throw new java.io.IOException();byte[] buffer=new byte[8192];for(int n;(n=in.read(buffer))>=0;){if(out.size()+n>8*1024*1024)throw new java.io.IOException("Backup too large");out.write(buffer,0,n);}file=new JSONObject(out.toString("UTF-8"));preview=BetaGrowthStore.preview(this,key,file);current=BetaGrowthStore.load(this,key);
+        }catch(Exception ignored){}final JSONObject candidate=file,after=preview,before=current;runOnUiThread(()->{if(ticket!=generation||!BetaUi.current(this,key))return;if(after==null){message("backup_invalid");return;}importFile=candidate;String note=BetaCopy.t(this,"restore_note",LedgerUi.number(before==null?0:before.optLong("total")),LedgerUi.number(after.optLong("total")),before==null?0:before.optJSONObject("honors").length(),after.optJSONObject("honors").length(),before==null?0:before.optJSONObject("titles").length(),after.optJSONObject("titles").length());if(dialog!=null)dialog.dismiss();dialog=new AlertDialog.Builder(this).setTitle(BetaCopy.t(this,"restore_preview")).setMessage(note).setNegativeButton(BetaCopy.t(this,"cancel"),null).setPositiveButton(BetaCopy.t(this,"restore"),(d,w)->BetaUi.task(this,key,()->BetaGrowthStore.restore(this,key,candidate),()->{})).create();dialog.show();});});}
+}

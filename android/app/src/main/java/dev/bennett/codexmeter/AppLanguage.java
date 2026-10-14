@@ -1,46 +1,11 @@
 package dev.bennett.codexmeter;
-
 import android.content.Context;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.app.*;
 import androidx.core.os.LocaleListCompat;
-
-/** Device-local language choice, independent of account and collection settings. */
+/** Reuses Android per-app locales. Empty locale list follows the system. */
 final class AppLanguage {
-    private static final String PREFS = "gpt_hud_language";
-    private static final String[] TAGS = {"ko", "en"};
-    private static final String[] NAMES = {"한국어", "English"};
-
-    private AppLanguage() { }
-
-    static boolean needsFirstChoice(Context c) {
-        return !AppPreferences.isOnboardingComplete(c)
-                && !c.getSharedPreferences(PREFS, 0).getBoolean("chosen", false);
-    }
-
-    static String currentName(Context c) {
-        return NAMES[currentIndex(c)];
-    }
-
-    private static int currentIndex(Context c) {
-        return "ko".equals(c.getResources().getConfiguration().getLocales().get(0).getLanguage()) ? 0 : 1;
-    }
-
-    static AlertDialog show(AppCompatActivity activity, boolean firstRun) {
-        int[] selected = {currentIndex(activity)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setTitle(firstRun ? R.string.language_first_title : R.string.app_language)
-                .setSingleChoiceItems(NAMES, selected[0], (dialog, index) -> {
-                    activity.getSharedPreferences(PREFS, 0).edit().putBoolean("chosen", true).apply();
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(TAGS[index]));
-                    dialog.dismiss();
-                });
-        if (!firstRun) builder.setNegativeButton(android.R.string.cancel, null);
-        AlertDialog dialog = builder.create();
-        dialog.setCancelable(!firstRun);
-        dialog.setCanceledOnTouchOutside(!firstRun);
-        dialog.show();
-        return dialog;
-    }
+    static boolean needsFirstChoice(Context c){return !AppPreferences.isOnboardingComplete(c)&&!c.getSharedPreferences("gpt_hud_language",0).getBoolean("chosen",false);}
+    static int index(){LocaleListCompat locales=AppCompatDelegate.getApplicationLocales();return locales.isEmpty()?0:"ko".equals(locales.get(0).getLanguage())?1:2;}
+    static String currentName(Context c){return index()==0?BetaCopy.t(c,"system"):index()==1?"한국어":"English";}
+    static AlertDialog show(AppCompatActivity a,boolean first){String[] tags={"","ko","en"},names={BetaCopy.t(a,"system"),"한국어","English"};AlertDialog dialog=new AlertDialog.Builder(a).setTitle(BetaCopy.t(a,"language")).setSingleChoiceItems(names,index(),(d,i)->{a.getSharedPreferences("gpt_hud_language",0).edit().putBoolean("chosen",true).apply();d.dismiss();AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tags[i]));}).setNegativeButton(BetaCopy.t(a,"cancel"),null).create();dialog.show();return dialog;}
 }

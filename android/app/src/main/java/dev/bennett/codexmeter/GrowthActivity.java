@@ -18,7 +18,7 @@ public final class GrowthActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle state){Ui.applySelectedTheme(this);super.onCreate(state);dark=Ui.isDark(this);
         content=Ui.installPage(this,getString(R.string.rpg3_growth),false).content;MatteNav.install(this,3);
         androidx.swiperefreshlayout.widget.SwipeRefreshLayout refresh=findViewById(R.id.dashboard_refresh);refresh.setRefreshing(false);refresh.setEnabled(false);
-        if(state!=null){scroll=state.getInt("growth_scroll");getIntent().putExtra("catalog",false).putExtra("growth_mode",state.getString("growth_mode","overview"));}
+        if(state!=null){scroll=state.getInt("growth_scroll");getIntent().putExtra("catalog",false).putExtra("growth_mode",state.getString("growth_mode","overview"));getIntent().putExtra("beta_period",state.getInt("beta_period",0));}
         String destination=mode();if(!destination.equals("overview")){getIntent().putExtra("catalog",false).putExtra("growth_mode","overview");content.post(()->RpgCollectionActivity.open(this,destination));}
         getOnBackPressedDispatcher().addCallback(this,new androidx.activity.OnBackPressedCallback(true){public void handleOnBackPressed(){if(!mode().equals("overview")){open("overview");}else MatteNav.open(GrowthActivity.this,1);}});
     }
@@ -28,7 +28,7 @@ public final class GrowthActivity extends AppCompatActivity {
     }
     @Override protected void onPause(){if(receiverRegistered){unregisterReceiver(updates);receiverRegistered=false;}super.onPause();}
     @Override protected void onDestroy(){generation++;if(detailDialog!=null)detailDialog.dismiss();super.onDestroy();}
-    @Override protected void onSaveInstanceState(Bundle state){super.onSaveInstanceState(state);android.view.View view=findViewById(R.id.dashboard_scroll);state.putInt("growth_scroll",view==null?scroll:view.getScrollY());state.putString("growth_mode",mode());}
+    @Override protected void onSaveInstanceState(Bundle state){super.onSaveInstanceState(state);android.view.View view=findViewById(R.id.dashboard_scroll);state.putInt("growth_scroll",view==null?scroll:view.getScrollY());state.putString("growth_mode",mode());state.putInt("beta_period",getIntent().getIntExtra("beta_period",0));}
     void load(boolean force){
         if(content==null)return;String account=SubscriptionStore.accountKey(this);
         // Clear the old profile immediately, even while its worker is still running.
@@ -39,18 +39,19 @@ public final class GrowthActivity extends AppCompatActivity {
         if(busy)return;
         String next=account+":"+mode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this))+":"+AppPreferences.getLastError(this)+":"+AppPreferences.getAutomaticRefresh(this)+":"+MxpEconomy.date(System.currentTimeMillis());
         if(!force&&next.equals(signature)&&content.getChildCount()>0)return;
-        if(account==null){if(detailDialog!=null)detailDialog.dismiss();loadedAccount="";generation++;signature=next;content.removeAllViews();content.addView(LedgerUi.caption(this,"로그인하면 이 계정의 성장 기록을 확인할 수 있어요",dark));content.addView(BetaGrowthUi.link(this,"홈에서 계정 연결",dark,()->MatteNav.open(this,1)));return;}
+        if(account==null){if(detailDialog!=null)detailDialog.dismiss();loadedAccount="";generation++;signature=next;content.removeAllViews();content.addView(LedgerUi.caption(this,BetaCopy.t(this,"no_account"),dark));content.addView(BetaGrowthUi.link(this,BetaCopy.t(this,"account"),dark,()->MatteNav.open(this,1)));return;}
         busy=true;long ticket=++generation;
         if(content.getChildCount()==0)content.addView(LedgerUi.caption(this,getString(R.string.next_loading),dark));
         WORKER.execute(()->{JSONObject journal=null;java.util.List<String> unlocks=java.util.Collections.emptyList();boolean failed=false;
             try{journal=RpgProgressStore.export(getApplicationContext(),account);unlocks=RpgShowcase.observe(getApplicationContext(),account,journal==null?null:journal.optJSONObject("rpg"));}catch(Exception e){failed=true;}
-            final BetaGrowthModel presentation=failed?null:BetaGrowthModel.create(journal,account,System.currentTimeMillis(),AppPreferences.getAutomaticRefresh(this),!AppPreferences.getLastError(this).isEmpty(),TrialDemo.active(this));
+            try{JSONObject beta=BetaGrowthStore.load(this,account);if(beta!=null){if(journal==null)journal=new JSONObject();journal.put("beta_v4",beta).put("beta_reward_notice",BetaGrowthStore.acknowledge(this,account));}}catch(Exception unavailable){failed=true;}
+            final BetaGrowthModel presentation=failed?null:BetaGrowthModel.create(journal,account,System.currentTimeMillis(),AppPreferences.getAutomaticRefresh(this),!AppPreferences.getLastError(this).isEmpty()||getSharedPreferences("beta_growth_display_v4",0).getBoolean(account+":error",false),TrialDemo.active(this));
             final JSONObject result=journal;final boolean error=failed;final java.util.List<String> earned=unlocks;
             runOnUiThread(()->{if(isDestroyed()||isFinishing()||ticket!=generation)return;busy=false;
                 if(!account.equals(SubscriptionStore.accountKey(this))){if(detailDialog!=null)detailDialog.dismiss();signature="";load(true);return;}
                 android.view.View view=findViewById(R.id.dashboard_scroll);if(content.getChildCount()>1&&view!=null)scroll=view.getScrollY();
                 loadedAccount=account;betaGrowthModel=presentation;signature=next;content.removeAllViews();
-                if(error){content.addView(LedgerUi.caption(this,"성장 기록 확인 실패 · 기존 기록은 유지됩니다",dark));content.addView(BetaGrowthUi.link(this,"저장된 기록 다시 확인",dark,()->load(true)));}
+                if(error){content.addView(LedgerUi.caption(this,BetaCopy.t(this,"error"),dark));content.addView(BetaGrowthUi.link(this,BetaCopy.t(this,"check_home"),dark,()->load(true)));}
                 else {
                     if(!earned.isEmpty()){
                         android.widget.TextView banner=LedgerUi.badge(this,getString(R.string.growth_new_unlock,earned.size()),dark,false);banner.setAccessibilityLiveRegion(android.view.View.ACCESSIBILITY_LIVE_REGION_POLITE);banner.setOnClickListener(v->open("achievements"));content.addView(banner);Ui.addSpacer(content,12);

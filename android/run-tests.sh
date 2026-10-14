@@ -84,14 +84,14 @@ javac -encoding UTF-8 -cp "$JSON_JAR" -d "$OUT" \
 java -ea -cp "$OUT:$JSON_JAR" dev.bennett.codexmeter.ParserSelfTest
 
 # Source-level release checks.
-grep -q 'VERSION_NAME = "9.9.4"' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
-grep -q 'VERSION_CODE = 990004' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
-grep -q 'versionName = "9.9.4"' "$ROOT/app/build.gradle.kts"
-grep -q 'versionCode = 990004' "$ROOT/app/build.gradle.kts"
+grep -q 'VERSION_NAME = "9.9.5"' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
+grep -q 'VERSION_CODE = 990005' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
+grep -q 'versionName = "9.9.5"' "$ROOT/app/build.gradle.kts"
+grep -q 'versionCode = 990005' "$ROOT/app/build.gradle.kts"
 grep -q 'versionName = "3.0.0"' "$ROOT/wear/build.gradle.kts"
 grep -q 'versionCode = 85' "$ROOT/wear/build.gradle.kts"
-grep -q 'codex-meter-android/9.9.4' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
-grep -q 'VERSION_NAME="9.9.4"' "$ROOT/build.sh"
+grep -q 'codex-meter-android/9.9.5' "$ROOT/app/src/main/java/dev/bennett/codexmeter/AppConstants.java"
+grep -q 'VERSION_NAME="9.9.5"' "$ROOT/build.sh"
 WORKFLOW="$ROOT/../.github/workflows/build-apk.yml"
 grep -Fq 'contents: read' "$WORKFLOW"
 ! grep -Fq 'contents: write' "$WORKFLOW"

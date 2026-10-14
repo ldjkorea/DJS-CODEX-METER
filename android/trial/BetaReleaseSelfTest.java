@@ -23,11 +23,14 @@ public final class BetaReleaseSelfTest {
         List<GitHubRelease> nextList=GitHubReleaseParser.parse(newer.toString());
         check(nextList.get(0).version.equals(beta?"9.9.4":"3.0.0"),"9.9.4 candidate stays beta-only");
         if(beta){check(UpdateChannel.selectUpdate(nextList,"9.9.3","stable").version.equals("9.9.4"),"9.9.3 to 9.9.4 update discovery");check(UpdateChannel.selectUpdate(nextList,"9.9.4","alpha")==null,"9.9.4 not offered again");}
+        JSONArray newest=new JSONArray(newer.toString()).put(release("beta-v9.9.5","GPT-HUD-BETA-9.9.5.apk"));List<GitHubRelease> newestList=GitHubReleaseParser.parse(newest.toString());
+        check(newestList.get(0).version.equals(beta?"9.9.5":"3.0.0"),"9.9.5 beta-only selection");
+        if(beta){for(String oldVersion:new String[]{"9.9.0","9.9.1","9.9.2","9.9.3","9.9.4"})for(String channel:new String[]{"stable","alpha"})check(UpdateChannel.selectUpdate(newestList,oldVersion,channel).version.equals("9.9.5"),"Previous beta update "+oldVersion+channel);check(UpdateChannel.selectUpdate(newestList,"9.9.5","stable")==null,"Current beta not offered again");}
         JSONObject bad=release(beta?"beta-v9.9.2":"v3.0.1",beta?"GPT-HUD-BETA-9.9.2.apk":"CodexMeter-3.0.1-ko.apk");bad.getJSONArray("assets").getJSONObject(0).put("browser_download_url","https://github.com/evil/repo/releases/download/bad/app.apk");check(GitHubReleaseParser.parse(new JSONArray().put(bad).toString()).isEmpty(),"Foreign repository refused");
         JSONObject draft=release(beta?"beta-v9.9.2":"v3.0.1",beta?"GPT-HUD-BETA-9.9.2.apk":"CodexMeter-3.0.1-ko.apk").put("draft",true);check(GitHubReleaseParser.parse(new JSONArray().put(draft).toString()).isEmpty(),"Draft refused");
         String pkg=beta?"dev.bennett.codexmeter.trial":"dev.bennett.codexmeter";
         check(KoreanUpdateTrust.compatible(pkg,KoreanUpdateTrust.CERTIFICATE,990000,990001),"Expected signing and code");check(!KoreanUpdateTrust.compatible(beta?"dev.bennett.codexmeter":"dev.bennett.codexmeter.trial",KoreanUpdateTrust.CERTIFICATE,86,990001),"Other package refused");check(!KoreanUpdateTrust.compatible(pkg,"wrong",990000,990001),"Wrong cert refused");check(!KoreanUpdateTrust.compatible(pkg,KoreanUpdateTrust.CERTIFICATE,990001,990001),"Equal code refused");check(!KoreanUpdateTrust.compatible(pkg,KoreanUpdateTrust.CERTIFICATE,990001,990000),"Downgrade refused");
-        if(args.length>1){List<GitHubRelease> actual=GitHubReleaseParser.parse(Files.readString(Path.of(args[1])));check(actual.get(0).version.equals(beta?"9.9.3":"3.0.0"),"Live public API same contract");}
+        if(args.length>1){List<GitHubRelease> actual=GitHubReleaseParser.parse(Files.readString(Path.of(args[1])));check(actual.get(0).version.equals(beta?"9.9.5":"3.0.0"),"Live public API same contract");}
         System.out.println((beta?"Beta":"Normal")+" updater: "+checks+" checks passed");
     }
 }

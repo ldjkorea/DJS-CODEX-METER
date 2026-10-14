@@ -13,12 +13,12 @@ java = Path(os.environ['JAVA_HOME']) / 'bin' if os.environ.get('JAVA_HOME') else
 suffix = '.exe' if os.name == 'nt' else ''
 sources = list((root / 'shared/src/main/java').rglob('*.java'))
 app = root / 'app/src/main/java/dev/bennett/codexmeter'
-sources += [app / (name + '.java') for name in ['GitHubReleaseParser', 'GitHubRelease', 'GitHubReleaseSource', 'UpdateChannel', 'ReleaseVersion', 'BetaGrowthModel']]
-sources += [root / 'trial/BetaGrowthSelfTest.java', root / 'trial/BetaReleaseSelfTest.java', root / 'tests/MxpEconomySelfTest.java', root / 'tests/CoachV2SelfTest.java']
+sources += [app / (name + '.java') for name in ['GitHubReleaseParser', 'GitHubRelease', 'GitHubReleaseSource', 'UpdateChannel', 'ReleaseVersion', 'BetaGrowthModel','BetaV4','BetaCatalog','BetaLegacy']]
+sources += [root / 'trial/Beta995SelfTest.java', root / 'trial/BetaReleaseSelfTest.java', root / 'tests/MxpEconomySelfTest.java', root / 'tests/CoachV2SelfTest.java']
 args = out / 'javac.args'
 quoted = lambda p: '"' + str(p).replace('\\', '/') + '"'
 args.write_text('-encoding UTF-8\n-cp ' + quoted(jar) + '\n-d ' + quoted(out) + '\n' + '\n'.join(map(quoted, sources)), encoding='utf-8')
 subprocess.run([str(java / ('javac' + suffix)), '@' + str(args)], check=True)
 cp = os.pathsep.join(map(str, [out, jar]))
-for name, extra in [('BetaGrowthSelfTest', []), ('BetaReleaseSelfTest', ['beta']), ('MxpEconomySelfTest', []), ('CoachV2SelfTest', [str(root / 'app/src/main/assets/coach-ko-v2.json')])]:
+for name, extra in [('Beta995SelfTest', []), ('BetaReleaseSelfTest', ['beta']), ('MxpEconomySelfTest', []), ('CoachV2SelfTest', [str(root / 'app/src/main/assets/coach-ko-v2.json')])]:
     subprocess.run([str(java / ('java' + suffix)), '-Xmx768m', '-ea', '-cp', cp, 'dev.bennett.codexmeter.' + name, *extra], check=True)
