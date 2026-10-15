@@ -20,7 +20,17 @@ final class BetaGrowthStore extends SQLiteOpenHelper {
         if(!current(c,account))return null;
         synchronized(LOCK){if(!c.getDatabasePath(NAME).exists()){publish(c,account,null);return null;}try(BetaGrowthStore helper=new BetaGrowthStore(c)){SQLiteDatabase db=helper.getWritableDatabase();JSONObject result;db.beginTransaction();try{result=row(db,account);if(result!=null&&result.optInt("catalog_revision",1)<2){JSONObject upgraded=BetaV4.upgrade(result,System.currentTimeMillis());if(upgraded.getLong("total")!=result.getLong("total")||upgraded.getInt("level")!=result.getInt("level")||upgraded.getLong("progress")!=result.getLong("progress"))throw new IllegalStateException("Catalog must preserve economy");result=upgraded;db.execSQL("UPDATE profiles SET document=? WHERE account=?",new Object[]{result.toString(),account});}db.setTransactionSuccessful();}finally{db.endTransaction();}if(!current(c,account))return null;publish(c,account,result);return result;}}
     }
-    static boolean activeWorker(Context c,String account){try{return load(c,account)!=null;}catch(Exception ignored){return false;}}
+    /** Activation is a DB fact; failure to save a display cache must never resume legacy rewards. */
+    static boolean activeWorker(Context c,String account){
+        if(!current(c,account)||!c.getDatabasePath(NAME).exists())return false;
+        synchronized(LOCK){try(BetaGrowthStore helper=new BetaGrowthStore(c);
+            Cursor cursor=helper.getReadableDatabase().rawQuery("SELECT 1 FROM profiles WHERE account=?",new String[]{account})){
+            return current(c,account)&&cursor.moveToFirst();
+        }catch(Exception unavailable){
+            // Preserve existing growth until the unreadable DB can be checked safely.
+            return current(c,account);
+        }}
+    }
     static JSONObject peek(Context c){String key=SubscriptionStore.accountKey(c);if(key==null)return null;try{JSONObject result=new JSONObject(c.getSharedPreferences("beta_growth_display_v4",0).getString(key,""));return key.equals(result.optString("account"))?result:null;}catch(Exception ignored){return null;}}
     /** Foreground repair runs on the existing worker; never reads the DB while rendering. */
     static void refreshDisplay(Context context){

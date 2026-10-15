@@ -48,15 +48,20 @@ public final class Beta997RecoveryNativeTest extends Instrumentation {
             }
             display.edit().remove(account).commit();boolean failed=false;try{BetaGrowthStore.load(failedCommit(c),account);}catch(java.io.IOException expected){failed=true;}
             check(failed,"Failed display commit is reported");check(BetaGrowthStore.displayError(c),"Failed commit marks recoverable state");
+            check(BetaGrowthStore.activeWorker(failedCommit(c),account),"ACTIVE_STATE_INDEPENDENT: display save failure must not reactivate legacy growth");
             BetaGrowthStore.refreshDisplay(c);awaitWorker();check(!BetaGrowthStore.displayError(c),"Successful worker repair clears error");check(BetaGrowthStore.peek(c).getLong("total")==xp,"Failed display commit retains original XP");
             failed=false;try{BetaGrowthStore.enabled(failedCommit(c),account,!original.getBoolean("enabled"));}catch(java.io.IOException expected){failed=true;}
             check(failed&&BetaGrowthStore.displayError(c),"DB commit followed by display save failure is reported");
+            check(BetaGrowthStore.activeWorker(failedCommit(c),account),"Active DB profile remains active after committed change/display failure");
             try(BetaGrowthStore helper=new BetaGrowthStore(c);android.database.Cursor row=helper.getReadableDatabase().rawQuery("SELECT document FROM profiles WHERE account=?",new String[]{account})){
                 check(row.moveToFirst()&&new JSONObject(row.getString(0)).getBoolean("enabled")!=original.getBoolean("enabled"),"Original DB commit survives failed display save");
             }
             BetaGrowthStore.refreshDisplay(c);awaitWorker();check(BetaGrowthStore.peek(c).getBoolean("enabled")!=original.getBoolean("enabled"),"Worker repairs from committed DB after display save failure");
             check(BetaGrowthStore.enabled(c,account,original.getBoolean("enabled")),"Restore original synthetic setting after fault injection");
             check(BetaGrowthStore.load(c,"f".repeat(64))==null,"Another account cannot read profile");check(BetaGrowthStore.peek(c).getString("account").equals(account),"Other account request cannot replace active cache");
+            check(!BetaGrowthStore.activeWorker(c,"f".repeat(64)),"Other account cannot use activation check");
+            Context unreadable=new ContextWrapper(c){@Override public android.database.sqlite.SQLiteDatabase openOrCreateDatabase(String name,int mode,android.database.sqlite.SQLiteDatabase.CursorFactory factory,android.database.DatabaseErrorHandler handler){throw new android.database.sqlite.SQLiteException("Synthetic read failure");}};
+            check(BetaGrowthStore.activeWorker(unreadable,account),"Unreadable existing growth DB conservatively freezes legacy rewards");
             java.util.concurrent.atomic.AtomicInteger broadcasts=new java.util.concurrent.atomic.AtomicInteger();BroadcastReceiver receiver=new BroadcastReceiver(){public void onReceive(Context context,Intent intent){broadcasts.incrementAndGet();}};
             androidx.core.content.ContextCompat.registerReceiver(c,receiver,new IntentFilter(AppConstants.ACTION_USAGE_UPDATED),androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);
             try{for(int i=0;i<5;i++)BetaGrowthStore.load(c,account);Thread.sleep(300);check(broadcasts.get()==0,"Unchanged display does not cause reload broadcast loop");}finally{c.unregisterReceiver(receiver);}
