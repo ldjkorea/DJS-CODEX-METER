@@ -1,3 +1,44 @@
+## 후속 실제 에뮬레이터 업데이트 검증 — 2026-10-15
+
+사용자가 공개9.9.6→9.9.7 실제 설치·데이터 보존·로그인 복구 검증을 요청했습니다. 공개 소스 HEAD1a8eb500692a22860cd4f66626014124e103b9fd / 제품 코드da5533e와 동일한 공개 APK를 사용했습니다. 이번에는 테스트/실행 보조/검증 문서만 추가했으며 앱·공개 태그·릴리스·정식 코드를 변경하지 않습니다.
+
+### 실제 설치 경로와 결과
+
+- 소유 AVD gpthudbeta99 / emulator-5590 / Android35 Google APIs x86_64,420×900. 기존 데모 AVD와 별도의 새 데이터 디렉터리 두 개를 사용했습니다. 기존 데이터 삭제/초기화/9.9.7에서9.9.6으로 다운그레이드하지 않았습니다.
+- 공개 APK9.9.6 SHA256 `91ebd3f9b33c234959492ae57852a67fff0a684b796f6c7013b7decfedaf0b41`,9.9.7 SHA256 `d7bc69f396d8400840e316605325c950a6e3f63f555f924705775e98b50d3df3` 확인.
+- 초기9.9.6만 adb install로 설치했습니다. **9.9.7은 adb install을 사용하지 않고**9.9.6의 실제 업데이트 확인 행→Download and install→Open settings→Android Allow from this source→앱 복귀→공개 GitHub 다운로드/기존 검증기→Android PackageInstaller의 Update 버튼 클릭으로 설치했습니다. 앱 캐시나 공개 API 응답을 fixture로 주입하지 않았습니다. 설치 권한도 appops 우회 없이 실제 설정 UI에서 허용했습니다.
+- 설치 전9.9.6/code990006, 설치 후9.9.7/code990007. 최초 설치 시각/UID 유지, lastUpdateTime 증가, installerPackageName=`dev.bennett.codexmeter.trial` 확인. 설치된 base.apk를 pull해 공개 APK와 SHA256 일치 확인. 실제 교체는 두 독립 합성 sandbox에서 모두 성공했습니다.
+
+### 데이터와 로그인 검증
+
+| 검사 | 실제 결과 |
+|---|---|
+| 수정한 seed/설치 직전/설치 후 연속성 |11 /5 /38개 통과 |
+| 기존 성장/설정/자격증명 |Lv.31,XP312,명예13개,칭호8개,장착rpg3.workbench,기간 증거·보상 키·획득 날짜·원본 규칙·보관함·이름 보존 |
+| 명시적인 설정 |수집OFF,코치OFF,자동 업데이트OFF,어두운 테마,사용량 자동 갱신/시작 갱신 설정 보존. 숨김 문구 ID 보존 |
+| 암호화 저장 |설치 전 합성 AuthTokens가 설치 후 동일하게 복호화됨. 실제 사용자의 토큰/계정은 사용하지 않음 |
+| 저장 무결성 |실제 SQLite PRAGMA integrity_check=ok,백업 내보내기의 XP 동일,설치 오류 없음,현재9.9.7 재제안 없음 |
+| 실제 설치된 앱의 로그인 복구 |취소·새 PKCE 재시도·이전/중복 토큰 반영 차단·실제 loopback 오류 콜백18개 통과 |
+| 로그인 중 프로세스 종료 |실제 서비스 대기 seed3→force-stop→MainActivity→복구4개 통과 |
+| 같은 업그레이드 sandbox의 회귀 |SQLite/표시 실패/24회 동시 증거/백업 복원/화면 복귀86개 통과 |
+| 성장 cold start |seed4→force-stop→실제 홈 시작→verify5개 통과 |
+
+로그인 검사는 설치 데이터 검사가 끝난 뒤 Wi-Fi와 모바일 데이터를 끄고 실행했습니다. 실제 서비스·로컬 콜백·암호화 저장을 사용하지만 브라우저는 가로채고 실제 OAuth 서버 토큰 교환은 하지 않습니다. 로그인 강제 종료 fixture는 합성 데모에서 명시적으로 로그아웃/복귀하므로, 설치 직후 토큰 동일성 검사는 그 이전38개 단계에서 수행했습니다.
+
+### 첫 시도의 실패와 재검증
+
+첫 synthetic seed가 최초 BetaUpdatePolicy.initialize보다 먼저 자동 업데이트OFF를 저장해,9.9.6 welcome의 일회성 초기 설정이 이를ON으로 바꿨습니다. 첫 실제 설치 자체는 성공했으나 후속 설정 assertion은 실패했습니다.9.9.6/9.9.7의 해당 정책 소스는 동일합니다. 이를 성공으로 계산하거나 assertion을 삭제하지 않았습니다. seed에서 초기 설정 완료 후 사용자OFF를 저장하도록 순서를 바로잡고,9.9.6 화면 진입 뒤에도OFF인지 검사하는 before5개를 추가했습니다. 새 별도 sandbox에서 실제 설치 전체를 반복해 최종38개가 통과했습니다. 실패 로그 preservation-after-install.log와 첫 sandbox를 그대로 보존했습니다.
+
+### 증거와 실행 명령
+
+- `android/build/beta997/endtoend/seed-repeat.log`, `r2-before.log`, `preservation-repeat.log`, `auth-recovery.log`, `auth-process.log`, `regression86.log`, `cold-growth.log`.
+- `r2-android-confirmation.png`는 실제 Android Update 확인창, `r2-package-installed.txt`는 설치 후 패키지 metadata, `r2-installed.apk`는 설치된 파일 재읽기 증거입니다. 원시 QA 파일은 일반 소스 ZIP에 포함하지 않습니다.
+- 재현: `python android/trial/run-beta997-native.py --class-name Beta997UpgradeInstallNativeTest --phase seed`, 실제 UI에서 업데이트 확인, `--phase before`, 실제 Android 설치, `--phase verify`. 로그인은 `--class-name Beta997AuthRecoveryNativeTest`, `--class-name Beta997AuthProcessNativeTest --auth-restart`; 저장 회귀는 `--class-name Beta997RecoveryNativeTest`, `--class-name Beta997ColdStartNativeTest --cold-restart`.
+
+정식 main/v3.1.0 refs,정식 latest의ID/대상/본문/시각/자산ID·크기·digest,정식r310 및 기존 베타b99pub의 HEAD/clean 상태가 시작점과 동일함을 재확인했습니다. 사용자 폰/실계정/운영 데이터 변경 없음. 실제 폰·OEM별 설치/실계정 OAuth 성공·Wear/Windows 연결은 여전히 미검증입니다. 이번 Android 실행 결과는 기존 공통 정식 fixture/localization 실패나 전체 CI 통과를 대체하지 않습니다. 제품 소스 변경이 없어 새 빌드/lint를 실행하지 않았습니다.
+
+---
+
 > 2026-10-15 후속 승인: 사용자가 베타9.9.7 공개 업데이트 배포를 명시했습니다. 아래 구현/검증 보고는 da5533e 시점의 로컬 결과이며 당시 공개하지 않았다는 기록을 보존합니다. 이번 배포는 동일 APK의 해시·서명과 베타 채널을 검증해 beta-v9.9.7 prerelease로 게시합니다. 정식 main/v3.1.0/latest/자산은 보존합니다. 공개 완료·익명 다운로드·실제 업데이트 선택 결과는 설치 자료의 배포 영수증에 기록합니다. 실기기·실계정 미검증과 공통 검사의 기존 불일치는 계속 유효합니다.
 # GPT HUD BETA 9.9.7 — 로그인·업데이트 복구와 다음 목표 화면
 
