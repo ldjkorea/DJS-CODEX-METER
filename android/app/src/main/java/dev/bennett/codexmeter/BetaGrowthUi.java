@@ -8,6 +8,7 @@ final class BetaGrowthUi {
         String account=SubscriptionStore.accountKey(a);BetaGrowthModel model=a.betaGrowthModel;
         if(account==null||model==null)return false;
         JSONObject state=journal==null?null:journal.optJSONObject("beta_v4"),s=model.summary;
+        if(state!=null&&s!=null)BetaNextGoalUi.render(a,parent,state,model,dark,account);
         LinearLayout hero=BetaUi.group(parent,"",dark);hero.setTag("beta:hero");
         String equipped=s==null?"":s.optString("equipped");hero.addView(BetaUi.title(a,BetaIdentity.title(a,equipped),dark));Ui.addSpacer(hero,8);
         if(state==null){
@@ -21,7 +22,6 @@ final class BetaGrowthUi {
         hero.addView(BetaUi.note(a,BetaCopy.t(a,"to_level",LedgerUi.number(Math.max(0,s.optLong("next_cost")-s.optLong("progress")))),dark));Ui.addSpacer(hero,10);
         ProgressBar xp=Ui.progress(a,dark);xp.setMax((int)s.optLong("next_cost"));xp.setProgress((int)s.optLong("progress"));xp.setProgressTintList(android.content.res.ColorStateList.valueOf(BetaUi.accent(a,dark)));xp.setContentDescription(BetaCopy.t(a,"xp")+" "+s.optLong("progress")+" / "+s.optLong("next_cost"));hero.addView(xp);
         hero.addView(BetaUi.note(a,LedgerUi.number(s.optLong("progress"))+" / "+LedgerUi.number(s.optLong("next_cost"))+" "+BetaCopy.t(a,"xp"),dark));
-        String next=s.optString("next_id");hero.addView(BetaUi.row(a,BetaCopy.t(a,"next"),next.isEmpty()?BetaCopy.t(a,"complete_all"):BetaCatalog.name(next,BetaIdentity.name(a),BetaCopy.ko(a))+" · "+Math.min(s.optInt("goal_count"),s.optInt("goal_target"))+" / "+s.optInt("goal_target"),dark,()->{if(!next.isEmpty())detail(a,state,next,dark,account);}));
         long fresh=journal.optLong("beta_reward_notice");if(fresh>0){TextView notice=BetaUi.note(a,BetaCopy.t(a,"reward_summary",LedgerUi.number(fresh)),dark);notice.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);hero.addView(notice);}
         LinearLayout missions=BetaUi.group(parent,BetaCopy.t(a,"missions"),dark);missions.setTag("beta:challenges");
         int period=a.getIntent().getIntExtra("beta_period",0);LinearLayout tabs=new LinearLayout(a);boolean vertical=a.getResources().getConfiguration().fontScale>1.6f;tabs.setOrientation(vertical?LinearLayout.VERTICAL:LinearLayout.HORIZONTAL);

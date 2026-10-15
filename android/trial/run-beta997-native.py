@@ -8,6 +8,9 @@ p.add_argument('--serial', default='emulator-5590')
 p.add_argument('--class-name', default='Beta997CacheNativeTest')
 p.add_argument('--expect-cache-gap', action='store_true')
 p.add_argument('--cold-restart', action='store_true')
+p.add_argument('--auth-restart', action='store_true')
+p.add_argument('--locale', default='ko')
+p.add_argument('--theme', default='dark')
 a = p.parse_args()
 root = Path(__file__).resolve().parents[1]
 out = root / 'build/beta997' / a.class_name
@@ -59,8 +62,8 @@ run([bt/'apksigner.bat', 'sign', '--ks', signing/'codex-meter-local.p12', '--ks-
      '--ks-pass', 'file:'+str(signing/'password'), '--out', out/'tests.apk', out/'base.apk'])
 run([adb, '-s', a.serial, 'install', '-r', out/'tests.apk'])
 component = package+'/dev.bennett.codexmeter.'+a.class_name
-if a.cold_restart:
-    assert a.class_name == 'Beta997ColdStartNativeTest'
+if a.cold_restart or a.auth_restart:
+    assert a.class_name == ('Beta997AuthProcessNativeTest' if a.auth_restart else 'Beta997ColdStartNativeTest')
     seed = shell('am', 'instrument', '-r', '-w', '-e', 'phase', 'seed', component)
     (out/'seed.txt').write_text(seed, encoding='utf-8')
     print(seed)
@@ -69,7 +72,7 @@ if a.cold_restart:
     shell('am', 'start', '-W', '-n', target+'/dev.bennett.codexmeter.MainActivity')
     import time
     time.sleep(3)
-result = shell('am', 'instrument', '-r', '-w', '-e', 'phase', 'verify', component)
+result = shell('am', 'instrument', '-r', '-w', '-e', 'phase', 'verify', '-e', 'locale', a.locale, '-e', 'theme', a.theme, component)
 (out/('baseline.txt' if a.expect_cache_gap else 'result.txt')).write_text(result, encoding='utf-8')
 print(result)
 if a.expect_cache_gap:

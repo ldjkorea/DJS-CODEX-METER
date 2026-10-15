@@ -82,6 +82,8 @@ public final class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String action = intent == null ? null : intent.getAction();
             if (AppConstants.ACTION_OAUTH_READY.equals(action)) {
+                long attempt=intent.getLongExtra("beta_oauth_attempt",0);
+                if(attempt!=0&&!AccountSession.signInCurrent(attempt))return;
                 String stringExtra = intent.getStringExtra(AppConstants.EXTRA_AUTH_URL);
                 if (stringExtra != null && !stringExtra.isEmpty()) {
                     MainActivity.this.openAuthUrl(stringExtra);
@@ -90,6 +92,8 @@ public final class MainActivity extends AppCompatActivity {
                 return;
             }
             if (AppConstants.ACTION_OAUTH_RESULT.equals(action)) {
+                long attempt=intent.getLongExtra("beta_oauth_attempt",0);
+                if(attempt!=0&&!AccountSession.sessionEpoch(attempt))return;
                 boolean booleanExtra = intent.getBooleanExtra(AppConstants.EXTRA_SUCCESS, false);
                 String stringExtra2 = intent.getStringExtra(AppConstants.EXTRA_MESSAGE);
                 MainActivity mainActivity = MainActivity.this;
@@ -189,6 +193,10 @@ public final class MainActivity extends AppCompatActivity {
     @Override // android.app.Activity
     protected void onResume() {
         super.onResume();
+        if(AppPreferences.isOAuthPending(this)&&!AccountSession.signInActive()){
+            AppPreferences.setOAuthPending(this,false,"");
+            Toast.makeText(this,BetaCopy.t(this,"auth_interrupted"),Toast.LENGTH_LONG).show();
+        }
         SpicyQuotes.foreground();
         BetaGrowthStore.refreshDisplay(getApplicationContext());
         LanSync.schedule(this);
@@ -332,7 +340,7 @@ public final class MainActivity extends AppCompatActivity {
     public void rebuild() {
         if(content==null)return;
         invalidateOptionsMenu();UsageSnapshot current=AppPreferences.loadSnapshot(this);String signature=SubscriptionStore.key(this,current)+":"+(current==null?0:current.fetchedAtMillis)+":"+AppPreferences.getLastError(this).hashCode()+":"+getSharedPreferences("codex_subscription_cost",0).getAll().hashCode()+":"+(current==null?"":UsageInsights.freshness(current.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(this)))+":"+LedgerAggregation.day(System.currentTimeMillis())+":"+getSharedPreferences("codex_meter_settings_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_settings",0).getAll().hashCode()+":"+getSharedPreferences("codex_tier_evolution_v2",0).getString("revision","")+":"+getSharedPreferences("codex_meter_updates_v1",0).getAll().hashCode()+":"+LiveUsageStore.revision()+":"+TaskStatusStore.enabled(this)+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode();
-        signature+=":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode();
+        signature+=":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode()+":"+AppPreferences.isOAuthPending(this);
         if(signature.equals(renderedSignature)&&content.getChildCount()>0){if(taskStatusRow!=null){String taskText=TaskStatusStore.homeText(this);if(!taskText.contentEquals(taskStatusRow.getText()))taskStatusRow.setText(taskText);}if(ledgerOverview!=null)ledgerOverview.updateClock();for(Runnable update:quotaClockUpdates)update.run();return;}
         android.view.View scroll=findViewById(R.id.dashboard_scroll);if(scroll!=null&&content.getChildCount()>0)homeScroll=scroll.getScrollY();restoreHomePending=homeScroll>0;renderedSignature=signature;
         freshnessView=null;ledgerOverview=null;taskStatusRow=null;weeklyInsightRows=null;quotaClockUpdates.clear();content.removeAllViews();
@@ -343,7 +351,12 @@ public final class MainActivity extends AppCompatActivity {
             LinearLayout welcome=Ui.card(this,dark);welcome.addView(LedgerUi.heading(this,getString(R.string.v3_welcome),dark));
             Ui.addSpacer(welcome,12);welcome.addView(LedgerUi.caption(this,getString(R.string.v3_signin_note),dark));content.addView(welcome);Ui.addSpacer(content,16);
             Button signIn=Ui.nativePrimaryButton(this,AppPreferences.isOAuthPending(this)?getString(R.string.ui_continue_sign_in_cd1418):getString(R.string.ui_sign_in_with_chatgpt_fe0b3b));
-            signIn.setOnClickListener(v->startOrContinueSignIn());content.addView(signIn);return;
+            signIn.setOnClickListener(v->startOrContinueSignIn());content.addView(signIn);
+            if(AppPreferences.isOAuthPending(this)){
+                content.addView(BetaUi.note(this,BetaCopy.t(this,"auth_waiting"),dark));
+                content.addView(BetaUi.action(this,getString(R.string.ui_cancel_77dfd2),false,dark,this::cancelSignIn));
+            }
+            return;
         }
         LinearLayout crestSlot=new LinearLayout(this);crestSlot.setOrientation(LinearLayout.VERTICAL);content.addView(crestSlot,new LinearLayout.LayoutParams(-1,-2));
         ledgerOverview=LedgerDashboard.addOverview(this,content,executor,snapshot,dark);
@@ -956,6 +969,12 @@ public final class MainActivity extends AppCompatActivity {
             linearLayoutCard.addView(textViewText3, layoutParams2);
         }
         return linearLayoutCard;
+    }
+
+    void cancelSignIn(){
+        AccountSession.cancelSignIn();AppPreferences.setOAuthPending(this,false,"");lastLaunchedAuthUrl="";
+        try{startService(new Intent(this,OAuthService.class).setAction(OAuthService.ACTION_CANCEL_SILENT));}catch(RuntimeException ignored){}
+        rebuild();
     }
 
     public void startOrContinueSignIn() {

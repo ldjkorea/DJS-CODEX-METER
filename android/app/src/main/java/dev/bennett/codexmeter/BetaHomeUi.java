@@ -26,6 +26,8 @@ final class BetaHomeUi {
             card.addView(BetaUi.note(a,LedgerUi.number(growth.optLong("progress"))+" / "+LedgerUi.number(growth.optLong("next_cost"))+" "+BetaCopy.t(a,"xp"),dark));
         }else{JSONObject old=RpgProgressStore.progress(a),mxp=MxpEconomy.state(old);if(old!=null)card.addView(BetaUi.body(a,BetaCopy.t(a,"archive")+" · Lv. "+(mxp==null?old.optInt("level",1):mxp.optInt("level",1)),dark));card.addView(BetaUi.note(a,BetaCopy.t(a,BetaGrowthStore.displayError(a)?"record_error":"pending_growth"),dark));}
         if(BetaGrowthStore.displayError(a))card.addView(BetaUi.row(a,BetaCopy.t(a,"retry_record"),BetaCopy.t(a,"record_error"),dark,()->BetaGrowthStore.refreshDisplay(a)));
+        JSONObject goal=growth==null?null:growth.optJSONObject("next_goal");
+        if(goal!=null&&!goal.optString("id").isEmpty())card.addView(BetaUi.row(a,BetaCopy.t(a,"next_focus"),BetaCatalog.name(goal.optString("id"),BetaIdentity.name(a),BetaCopy.ko(a))+" · "+Math.min(goal.optInt("current"),goal.optInt("target"))+" / "+goal.optInt("target"),dark,()->a.startActivity(new Intent(a,GrowthActivity.class))));
         card.addView(BetaUi.row(a,BetaCopy.ko(a)?"성장과 다음 목표":"Growth and next goal",growth==null?"":BetaCopy.t(a,"counts",growth.optJSONObject("honors").length(),growth.optJSONObject("titles").length()),dark,()->a.startActivity(new Intent(a,GrowthActivity.class))));return card;
     }
 }

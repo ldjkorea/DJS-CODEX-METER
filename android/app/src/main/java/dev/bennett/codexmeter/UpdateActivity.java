@@ -22,6 +22,7 @@ public final class UpdateActivity extends AppCompatActivity {
     public static final String EXTRA_FORCE_CHECK = "force_check";
     public static final String EXTRA_START_INSTALL = "start_install";
 
+    private static final Object INSTALL_LOCK=new Object();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private LinearLayout content;
     private GitHubRelease release;
@@ -32,6 +33,7 @@ public final class UpdateActivity extends AppCompatActivity {
     private boolean startInstallPending;
     private boolean dark;
     private volatile boolean cancelled;
+    private AlertDialog installPermissionDialog;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -39,24 +41,38 @@ public final class UpdateActivity extends AppCompatActivity {
         super.onCreate(bundle);
         dark = Ui.isDark(this);
         content = Ui.installPage(this, UpdateActivity.this.getString(R.string.ui_app_update_45b5d1), true).content;
-        String requested = getIntent().getStringExtra(EXTRA_VERSION);
+        String requested = bundle==null?getIntent().getStringExtra(EXTRA_VERSION):bundle.getString("update_selected_version",getIntent().getStringExtra(EXTRA_VERSION));
         release = UpdatePreferences.findVersion(this, requested);
-        boolean force = getIntent().getBooleanExtra(EXTRA_FORCE_CHECK, false);
-        startInstallPending = getIntent().getBooleanExtra(EXTRA_START_INSTALL, false);
+        boolean force = bundle==null&&getIntent().getBooleanExtra(EXTRA_FORCE_CHECK, false);
+        startInstallPending = bundle==null&&getIntent().getBooleanExtra(EXTRA_START_INSTALL, false);
+        getIntent().removeExtra(EXTRA_START_INSTALL);
+        waitingForInstallPermission=bundle!=null&&bundle.getBoolean("update_waiting_permission");
+        boolean interrupted=bundle!=null&&bundle.getBoolean("update_operation_interrupted");
         UpdateNotificationManager.dismiss(this);
         if (release == null || force) {
             checkReleases(requested);
         } else {
             render();
+            if(interrupted)setStatus(BetaCopy.t(this,"update_interrupted"),Ui.secondaryText(dark));
         }
+    }
+
+    @Override protected void onSaveInstanceState(Bundle state){
+        state.putString("update_selected_version",release==null?getIntent().getStringExtra(EXTRA_VERSION):release.version);
+        state.putBoolean("update_waiting_permission",waitingForInstallPermission);
+        state.putBoolean("update_operation_interrupted",operationRunning);
+        super.onSaveInstanceState(state);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        if(operationRunning)return;
         setIntent(intent);
+        waitingForInstallPermission=false;
         String requested = intent.getStringExtra(EXTRA_VERSION);
         startInstallPending = intent.getBooleanExtra(EXTRA_START_INSTALL, false);
+        intent.removeExtra(EXTRA_START_INSTALL);
         UpdateNotificationManager.dismiss(this);
         if (requested != null && !requested.trim().isEmpty()) {
             release = UpdatePreferences.findVersion(this, requested);
@@ -71,11 +87,12 @@ public final class UpdateActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (waitingForInstallPermission && canInstallPackages()) {
+        if (waitingForInstallPermission && canInstallPackages() && release!=null && progress!=null && !operationRunning) {
             waitingForInstallPermission = false;
             beginInstall();
             return;
         }
+        if(waitingForInstallPermission&&!canInstallPackages()){setStatus(BetaCopy.t(this,"update_permission_pending"),Ui.secondaryText(dark));return;}
         if (status != null && !operationRunning) {
             String error = UpdatePreferences.installError(this);
             if (!error.isEmpty()) {
@@ -87,9 +104,12 @@ public final class UpdateActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         cancelled=true;
+        if(installPermissionDialog!=null)installPermissionDialog.dismiss();
         executor.shutdownNow();
         super.onDestroy();
     }
+
+    @Override public void finish(){cancelled=true;super.finish();}
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -221,6 +241,10 @@ public final class UpdateActivity extends AppCompatActivity {
         historyParams.setMargins(0, Ui.dp(this, 20), 0, 0);
         content.addView(history, historyParams);
 
+        if(waitingForInstallPermission&&canInstallPackages()&&comparison>0&&!irreversible&&!operationRunning){
+            waitingForInstallPermission=false;
+            content.post(this::beginInstall);
+        }
         if (startInstallPending && comparison > 0 && !irreversible) {
             startInstallPending = false;
             content.post(this::requestInstall);
@@ -262,9 +286,10 @@ public final class UpdateActivity extends AppCompatActivity {
         UpdatePreferences.setInstallError(this, "");
         if (!canInstallPackages()) {
             waitingForInstallPermission = true;
-            new AlertDialog.Builder(this)
+            installPermissionDialog=new AlertDialog.Builder(this)
                     .setTitle(UpdateActivity.this.getString(R.string.ui_allow_app_installs_47f4fc))
                     .setMessage(UpdateActivity.this.getString(R.string.ui_android_requires_permission_for_codex_meter_to_hand_its_7e7f1a))
+                    .setOnCancelListener(dialog -> waitingForInstallPermission=false)
                     .setNegativeButton(UpdateActivity.this.getString(R.string.ui_cancel_77dfd2), (dialog, which) ->
                             waitingForInstallPermission = false)
                     .setPositiveButton(UpdateActivity.this.getString(R.string.ui_open_settings_fd7108), (dialog, which) -> {
@@ -299,6 +324,8 @@ public final class UpdateActivity extends AppCompatActivity {
         setStatus(getString(R.string.update_downloading), Ui.secondaryText(dark));
         executor.execute(() -> {
             try {
+                synchronized(INSTALL_LOCK){
+                if(cancelled||Thread.currentThread().isInterrupted())throw new java.util.concurrent.CancellationException("Update cancelled");
                 UpdateInstaller.PreparedUpdate prepared = UpdateInstaller.prepare(
                         getApplicationContext(), release, (downloaded, total) -> {
                             if (cancelled || Thread.currentThread().isInterrupted()) {
@@ -322,8 +349,9 @@ public final class UpdateActivity extends AppCompatActivity {
                     setStatus(getString(R.string.update_waiting_for_installer),
                             Ui.secondaryText(dark));
                 });
+                }
             } catch (Exception exception) {
-                UpdatePreferences.setInstallError(getApplicationContext(),
+                if(!cancelled)UpdatePreferences.setInstallError(getApplicationContext(),
                         safeMessage(exception));
                 postUi(() -> {
                     operationRunning = false;

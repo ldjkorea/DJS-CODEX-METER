@@ -48,7 +48,8 @@ final class BetaGrowthStore extends SQLiteOpenHelper {
     private static void publish(Context c,String account,JSONObject state)throws Exception{
         if(!current(c,account))return;
         android.content.SharedPreferences prefs=c.getSharedPreferences("beta_growth_display_v4",0);
-        String value=state==null?null:BetaV4.summary(state,System.currentTimeMillis()).toString();
+        long now=System.currentTimeMillis();
+        String value=state==null?null:BetaV4.summary(state,now).put("next_goal",BetaNextGoal.choose(state,now)).toString();
         if(java.util.Objects.equals(value,prefs.getString(account,null))&&!prefs.getBoolean(account+":error",false))return;
         android.content.SharedPreferences.Editor editor=prefs.edit().remove(account+":error");
         if(value==null)editor.remove(account);else editor.putString(account,value);

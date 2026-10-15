@@ -1,58 +1,78 @@
-# GPT HUD BETA 9.9.7 — 첫 P0 개발 단위 / 로컬 설치 후보
+# GPT HUD BETA 9.9.7 — 로그인·업데이트 복구와 다음 목표 화면
 
 ## 범위와 기준
 
-사용자가 후속 개발 프롬프트에 따라 베타9.9.7 개발을 시작하고 정식은 건드리지 말라고 요청했습니다. 후속 예산이 지정되지 않은 경우 첫 P0 단위를 완료하도록 작성된 프롬프트에 따라, 이번 단위는 **성장 원본 DB와 화면 요약의 일치·복구**입니다. 전체 P0~P3를 완료한 버전이라는 뜻은 아닙니다.
+최신 요청에 따라 성장 저장 복구에 이어 **로그인·업데이트 수명주기 복구와 다음 목표 중심 화면**을 베타 전용으로 구현했습니다. 전체 후속 프롬프트 P0~P3 완료를 뜻하지 않습니다.
 
-- 시작 베타 HEAD: `4d8f2c9dacb2368fd795fd4163d759785ecdba8f` (9.9.6).
-- 보호한 정식 HEAD: `afc7d0b9749a42c034e7b7c7305cf8a6cd7fd23a` (3.1.0/code87).
-- 새 전용 브랜치 `beta/9.9.7`, phone9.9.7/code990007, package `dev.bennett.codexmeter.trial`.
-- 기존 베타 서명 인증서 SHA256 `6abd39b13e561cd67fa0d76ab79f9f22500cf5378dc60b176bfe18bf0d2f8be3`.
-- 정식 checkout/main/tag/릴리스, 사용자 미커밋 작업, 기존 베타9.9.6 checkout을 변경하지 않았습니다. 새 키 생성/실물 폰 설치/운영 데이터 변경/push/tag/Release/공개 업로드 없음.
+- 시작 베타9.9.6: `4d8f2c9dacb2368fd795fd4163d759785ecdba8f`.
+- 이번 계속 개발의 기준 HEAD: `d01f0a37010cbf4a54cf4c15944d0d199064bcf0`.
+- 전용 worktree `WORKTREES/beta-9.9.7`, branch `beta/9.9.7`.
+- phone9.9.7/code990007, package `dev.bennett.codexmeter.trial`.
+- 기존 인증서 SHA256 `6abd39b13e561cd67fa0d76ab79f9f22500cf5378dc60b176bfe18bf0d2f8be3`.
+- 보호한 정식3.1.0 HEAD `afc7d0b9749a42c034e7b7c7305cf8a6cd7fd23a`, 기존 베타9.9.6 checkout 및 사용자 미커밋 작업을 보존합니다.
+- push/tag/Release/공개 업로드/실물 폰 설치/운영 데이터 변경/새 서명키 생성 없음.
 
-## 재현한 결함과 구현
+## 실제 구현과 변경 이유
 
-기존 서명9.9.6이 설치된 소유한 합성 AVD에서 화면용 SharedPreferences 요약만 제거했습니다. 원본 SQLite 성장 문서는 동일한데 `load` 후에도 요약이 복구되지 않아 `CACHE_RECOVERY_REQUIRED` assertion이 실패했습니다. 이 실패를 build/beta997/cache-baseline.log에 보존했습니다.
+| 파일 | 구현과 이유 |
+|---|---|
+| OAuthAttempt / AccountSession | 로그인 시도별 세대 번호와 원자적 토큰 반영으로 취소된 시도·중복 콜백·다른 계정 선택 뒤의 늦은 토큰 설치를 차단합니다. PKCE 비밀을 저장하지 않습니다. |
+| OAuthService | 새 시도가 취소된 이전 worker를 기다리지 않도록 분리하고, 이전 worker가 새 콜백 소켓·서비스·결과를 닫지 못하게 합니다. 브라우저 준비·결과 방송도 시도 번호로 확인합니다. |
+| MainActivity / TrialDemo | 로그인 취소 및 재시도, 프로세스가 종료된 뒤 남은 대기 표시 해제, 오래된 READY/RESULT 무시, 데모 선택 후 이전 로그인 무효화를 구현합니다. |
+| UpdateActivity | 선택 버전·설치 권한 대기를 화면 재생성에서 복원합니다. 권한 허용 후 이어서 처리하고 취소·중단은 재시도 가능한 상태로 돌립니다. 공유 APK 임시 파일 작업은 worker 잠금으로 직렬화하며 종료한 화면의 worker는 새 오류 상태를 덮어쓰지 못합니다. |
+| BetaNextGoal / BetaGrowthModel | 단순 달성률 순서 대신 남은 확인 횟수·이번 기간 달성 가능성·기한을 기준으로 기존 명예 목표를 선택합니다. 새 보상·증거·예상 획득일을 만들지 않습니다. |
+| BetaNextGoalUi / BetaGrowthUi | 다음 목표를 레벨 상세보다 먼저 배치하고 휘장·획득 조건·진행 막대·이번 주/달 조건을 표시합니다. 오늘 확인 완료 상태에서는 추가 확인 동작 대신 조건을 제공합니다. 수집 중지는 설정으로 연결합니다. |
+| BetaGrowthStore / BetaHomeUi | worker가 게시한 목표 요약만 홈에서 읽습니다. 홈 렌더에서 DB 이관·네트워크·전체 이력을 계산하지 않습니다. |
+| BetaCopy | 로그인 중단·업데이트 복구·목표 상태를 한국어/영어로 제공합니다. |
+| trial tests / runner | 실제 Activity 재생성·로컬 OAuth 콜백·SQLite·프로세스 종료 및 언어/테마/글자크기 검사를 추가합니다. |
 
-- **BetaGrowthStore**: worker에서 읽은 DB를 기준으로 요약 누락·손상·오래된 기간·다른 계정 표기를 복구합니다. 요약이 동일하면 저장/방송하지 않아 반복 로딩을 막습니다. 표시 저장 실패는 IOException과 계정별 오류 상태로 알리며, 이미 커밋한 DB를 되돌리거나 초기화하지 않습니다. 계정이 바뀌면 해당 작업을 게시하지 않습니다. 활성 여부는 표시 저장과 독립적으로 DB 행을 조회합니다. 이미 있는 DB를 읽을 수 없으면 원래 성장 보상을 추가 계산하지 않고 기록을 보존합니다.
-- **MainActivity**: foreground 및 표시 기간 변경 시 기존 worker에 복구를 요청합니다. 홈 렌더 자체는 캐시만 읽으며 DB/네트워크/전체 성장 재계산을 실행하지 않습니다.
-- **GrowthActivity**: 이름·새 성장 요약을 갱신 판단에 포함하여 도감/설정에서 돌아올 때 칭호·이름·수집 토글이 즉시 반영됩니다.
-- **BetaHomeUi/BetaSettingsUi/BetaCopy**: 복구할 수 없는 오류에 저장 기록 재확인 동작을 제공하고, 오류를 신규 시작으로 표시하지 않도록 구분합니다. KO/EN 문구를 함께 제공합니다.
-- **버전/계약**: phone Gradle/AppConstants/build.sh/run-tests 버전9.9.7, code990007. 이전 베타의 고정3.1.0 User-Agent도 현재 베타9.9.7로 바로잡았습니다. Wear3.0.0은 이번 단위에서 유지합니다.
+앞선 P0(d01f0a3까지)의 DB 기준 표시 요약 복구·표시 저장 실패 분리·계정별 오류 재확인·이름/칭호/설정 복귀 갱신도 포함합니다. DB 원본이 읽히지 않으면 기록을 보존하고 이전 성장 지급을 재개하지 않습니다.
 
-새 성장 규칙4/namespace usage-check-v4, 명예37/칭호24의 ID·조건·획득 시각, 문구600/팁40, 원본 RPG/이전 보관함은 변경하지 않았습니다. 같은 증거 재시도·캐시 복구·화면 이동·복원으로 XP를 추가하지 않습니다.
+새 성장 rules4/namespace usage-check-v4, 명예37/칭호24의 안정 ID·획득일·장착·보관함, 문구600/팁40, 기존 티어 색상·자산을 유지합니다. OAuthClient/SecureTokenStore/UpdateInstaller의 인증·암호화·APK 해시/패키지/서명/버전 검증 계약은 변경하지 않습니다. 기존 PKCE·콜백 포트1455/1457·시간 제한·Android 설치 동의 절차도 유지합니다. 새 의존성·AI API·분석 서버 없음.
 
-최종 검토 중 표시 commit 실패가 `activeWorker`의 활성 판단까지 false로 만드는 문제도 실패 주입으로 재현했습니다(`activation-failure-before.log`). 이를 독립적인 DB 존재 확인으로 수정하고, 표시 저장 실패/DB 읽기 실패에서도 이전 성장 보상이 재개되지 않는 검사를 추가했습니다.
+## 재현한 실패와 보완
 
-## 실제 실행 결과
+- 기존9.9.6의 표시 요약 손실 시 `CACHE_RECOVERY_REQUIRED` 실패를 재현한 뒤 DB를 기준으로 복구하도록 수정했습니다.
+- 표시 저장 실패가 활성 여부까지 false로 만드는 결함을 실패 주입으로 재현하고 활성 여부를 DB에서 독립적으로 확인하도록 수정했습니다.
+- 이전 APK에서 화면 재생성 후 설치 권한 대기가 사라지는 `UPDATE_PERMISSION_STATE_REQUIRED` 실패를 재현했습니다.
+- 업데이트 worker 잠금을 이용한 검사에서 Activity.finish() 직후 onDestroy() 전까지 취소 표시가 늦어 새 오류를 덮어쓰는 실제 경쟁을 발견했습니다. finish()에서 즉시 취소하도록 수정한 최종 APK로 재검사했습니다.
+- 초기 UI 검사는 AppCompat 언어 변경이 테스트 시작 전에 반영되지 않아 실제 언어 assertion이 실패했습니다. 테스트를 Android LocaleManager 경로로 준비하고 실제 화면 언어를 검사합니다. assertion을 제거하거나 fixture를 무차별 갱신하지 않았습니다.
 
-1. 기존 실제9.9.6에서 요약 손실 재현: 원본 DB 동일, 요약 미복구 assertion 실패를 확인했습니다.
-2. 기존 서명9.9.6→9.9.7 실제 APK 덮어 설치. 소유 AVD `gpthudbeta99`의 명시적 데모 계정만 사용했습니다. 앱 삭제/데이터 초기화 없음.
-3. 최종 서명 APK의 **native86개 통과**: 기존19개 상태/원본 레벨·XP·기간별 증거·보상·획득일·장착·보관함/이름, 누락·잘못된 JSON·오래된 요약·계정 불일치, 표시 commit 실패, DB commit 성공 후 표시 commit 실패, worker 재시도, 무변경 로딩 방송 없음, 동일 증거24회 동시 처리, 백업 왕복, 실제 Activity 복귀 시 이름·칭호·토글 반영. '보상을 봤음' seen_total은 화면 조회로 증가할 수 있으며 XP/보상 원장은 동일하게 검사합니다.
-4. 최종 APK의 **프로세스 종료·재실행 seed4/verify5개 통과**: 요약을 제거하고 원본을 체크포인트로 저장→실제 force-stop→홈 cold start→계측 테스트가 DB를 읽기 전에 캐시 복구 확인→전체 원본 성장 문서 동일.
-5. 실제 rules4/카탈로그/보존 **1112개 통과**, 2027/2028 모든 시작 날짜의 주5일 확인 시 Lv30 **22~28일**. 경제 코드는 변경하지 않았습니다. 누적XP: Lv30=232, Lv40=1082, Lv50=5332, Lv100=40332.
-6. 별도 기존 MXP엔진1533개/코치30466개 통과. MXP 계산은 rules4와 별개이며 이관·실계정·실기기 증거로 사용하지 않습니다.
-7. 실제 베타 업데이트 파서 **56개 통과**:9.9.0~9.9.6에서 가상9.9.7 후보 선택, 현재 버전 중복 제안 없음, 정식3.1.0/베타 분리 및 기존 신뢰 계약. 실제9.9.7 공개 릴리스가 있다는 뜻은 아닙니다.
-8. 최종 phone Release assemble/lint **31초 성공**. 보고 오류0, 경고271, 기존 baseline으로 오류53/경고110 제외. baseline 파일을 수정하지 않았습니다. 계측 javac에는 Android/Kotlin annotation classpath 경고12개가 있으나 컴파일·실행을 통과했습니다.
-9. 서명/패키지/버전 확인 및 최종 APK의 Pretendard/라이선스 검사 통과. 금지 폰트 없음, 54 archives/1APK.
-10. OAuth·세션·업데이트 설치 신뢰·성장식·코치·티어15개 파일과 manifest/Wear/lint baseline/문구 카탈로그가9.9.6과 동일함을 확인했습니다. 새 코드/테스트/문서를 포함한 Git index1965개 검사에서 알려진 비밀키 패턴 및 추적된 키/런타임 파일이 없음을 확인했습니다. 전체 과거 Git 이력 보안 감사는 아닙니다.
+## 실행 결과
 
-### 실패를 유지한 공통 검사
+모든 Android 검사는 소유 AVD `gpthudbeta99` / emulator-5590의 명시적 합성 데모 계정만 사용합니다. 실계정·실사용 DB 검증이 아닙니다.
 
-- `tests/run-release-validation.py --bash <Git Bash> --apk <후보>`: 공통 회귀가 `ParserSelfTest: only complete published releases accepted`에서 실패하여 후속 게이트 실행을 중단했습니다. 수정 전9.9.6 원본 관련 소스를 별도 경로에서 컴파일·실행해 같은 assertion 실패를 확인했습니다. 정식 릴리스용 fixture와 별도 베타 파서의 기존 불일치이며 이번에 parser/fixture를 바꾸거나 테스트를 삭제하지 않았습니다.
-- `tests/verify-localization.py`: 정식 보호 파일 검사에서 기존 베타 OAuthClient 차이 때문에 실패했습니다. OAuthClient와 해당 검사 파일은9.9.6과 동일합니다. KO/EN XML 전체 파싱은 별도로 통과했습니다. 전체 localization 검사를 통과했다고 보고하지 않습니다.
-- 따라서 이번 결과는 베타 전용 JVM/실제 Android 복구 검사/빌드·lint/최종 APK 검사 통과이며, 공통 release-validation 전체 녹색 상태가 아닙니다. 이 실패를 숨기지 않고 차기 공통 검증 진입점 정비 항목으로 남깁니다.
+- 최종 APK 로그인 복구 **18개 통과**: 실제 서비스·브라우저 intent·로컬 콜백·취소/재시도·신규 PKCE 상태·이전 콜백 거절·늦은 토큰/중복 반영 차단. 실제 OAuth 서버 토큰 교환 없음.
+- 최종 APK 로그인 프로세스 종료 **seed3/verify4 통과**: 실제 force-stop 후 대기 상태 해제 및 다시 로그인 준비. 기존 합성 자격증명/설정을 복원합니다.
+- 최종 APK 업데이트 복구 **18개 통과**: 실제 Activity 재생성·설치 권한 거절/취소/허용 복귀·중단 작업·일회성 intent·종료 worker 차단. 잠금으로 실제 다운로드·설치 직전에 멈추므로 APK 다운로드/설치 성공 증거로 사용하지 않습니다.
+- JVM 수명주기/목표 선택 **29개**, rules4/카탈로그/보존 **1112개**, 베타 업데이트 파서 **56개**, 별도 기존 MXP **1533개**, 코치 **30466개 통과**.
+- rules4: 2027/2028 모든 시작 날짜의 주5일 확인 시 Lv30 **22~28일**. 누적 XP: Lv30=232, Lv40=1082, Lv50=5332, Lv100=40332. 경제 변경 없음. 별도 MXP 성장 결과를 rules4 결과와 섞지 않습니다.
+- 10,000 V4 요약16ms 측정(합성 JVM, DB/네트워크 없음). 실기기 성능 보증이 아닙니다.
+- 최종 `:app:assembleRelease :app:lintRelease` **16초 성공**. 보고 오류0/경고271, 기존 baseline 오류53/경고110 제외. baseline 변경 없음.
+- Git index1974개 공개 소스 검사에서 알려진 비밀키 패턴 없음/키·런타임 미추적 확인. 전체 과거 이력 보안 감사는 아닙니다. 정식/9.9.6 checkout의 HEAD·clean 상태와 보호한 인증 클라이언트·토큰 저장·업데이트 검증기·성장식·manifest/Wear/lint baseline의 무변경을 확인했습니다.
+- 최종 APK 폰트/라이선스/금지 폰트 검사 통과: 54 archives / 1 APK. 계측 javac의 Kotlin annotation classpath 경고38/46개는 남아 있으나 컴파일·실행 성공.
 
-주요 명령: `python trial/run-beta-checks.py`, `python trial/run-beta997-native.py --expect-cache-gap`(기존9.9.6 재현), `python trial/run-beta997-native.py --class-name Beta997RecoveryNativeTest`, `python trial/run-beta997-native.py --class-name Beta997ColdStartNativeTest --cold-restart`, `./gradlew :app:assembleRelease :app:lintRelease`, `python tests/verify-publication.py <APK>`. 상세 실행 로그는 이 worktree의 android/build/beta997에 보관합니다. 최종 APK는 성장 활성 여부와 표시 저장을 분리한 보완까지 포함하며, 그 뒤 최종 APK에 native86개/cold4·5개를 다시 실행했습니다.
+최종 APK의 SQLite/표시 복구 **86개**, 실제 cold start **seed4/verify5 통과**. 기존 원본 레벨·XP·기간 증거·보상·장착·보관함·이름 보존, 표시 commit 실패, 동일 증거24회 동시 처리, 백업 왕복, 실제 Activity 복귀를 재검사했습니다. 보상을 봤음 seen_total은 조회로 증가할 수 있고 XP/보상 원장은 동일하게 검사합니다.
 
-## 미완료·미검증과 다음 작업
+최종 목표 UI는 한국어/영어 × 밝은/어두운 테마 × 글자크기1.0/1.3/1.6/2.0의 세로16조합, 실제640×320 가로 화면의 글자크기2.0 4조합에서 **각30개 검사 통과**. 실제 언어/테마, 목표가 레벨보다 먼저 나옴, 텍스트 생략·세로 잘림 없음, 목표 버튼48dp, 오늘 완료/수집 중지 동작, 조회로 XP 증가 없음, 실제 스크린샷을 검사했습니다. 회전 설정만 바꾼 추가4회는 화면이 세로였으므로 가로 검증에 세지 않았습니다. 전체 화면의 모든 요소·스크롤 끝까지·TalkBack을 검증한 뜻은 아닙니다.
 
-- **다음 P0**: OAuth 프로세스 중단/취소 재시도/늦은 콜백/계정 A→B 경쟁, 업데이트 권한 화면 복귀와 다운로드 복구. 이번에 해당 동작을 수정하거나 실계정 로그인 성공을 검증하지 않았습니다.
-- **P1~P3**: 다음 목표 추천 개선, 넓은 UI/접근성·KO/EN/글자크기 매트릭스, 진단 현지화, 장기 성능 측정은 후속 단계입니다. 이 전체를9.9.7에서 완료했다고 부르지 않습니다.
-- 사용자 실물 폰·실계정·실사용 데이터 복원, TalkBack 음성, 모든 OEM, Wear/Windows 실연결은 미검증입니다. 공개9.9.7 자동 업데이트/익명 다운로드 검증은 배포하지 않아 수행하지 않았습니다.
-- 다음 첫 재현: OAuthService/AccountSession에서 취소→새 로그인→이전 콜백 순서를 합성 두 계정으로 점검합니다. 별도 외부 배포는 새 승인이 필요합니다.
+### 기존 공통 검사 한계
+
+앞선 P0에서 `tests/run-release-validation.py` 공통 회귀는 `ParserSelfTest: only complete published releases accepted`에서 실패했습니다. 수정 전9.9.6 소스도 같은 assertion 실패가 재현되었습니다. 정식용 fixture/베타 파서 불일치로 남겨 두며 이번에 parser/fixture/검사를 삭제·변경하지 않았습니다.
+
+`tests/verify-localization.py` 역시 기존 베타 OAuthClient 차이로 정식 보호 검사에서 실패했습니다. OAuthClient/검사 파일은 기존9.9.6과 동일합니다. 이번 KO/EN 실제 화면 검사가 전체 localization 게이트 통과를 대체하지 않습니다. 공통 검사 전체 녹색으로 보고하지 않습니다.
+
+주요 명령: `python trial/run-beta-checks.py`, `python trial/run-beta997-native.py --class-name Beta997AuthRecoveryNativeTest`, `--class-name Beta997AuthProcessNativeTest --auth-restart`, `--class-name Beta997UpdateRecoveryNativeTest`, `--class-name Beta997GoalUiNativeTest`, `--class-name Beta997RecoveryNativeTest`, `--class-name Beta997ColdStartNativeTest --cold-restart`, `./gradlew :app:assembleRelease :app:lintRelease`, `python tests/verify-publication.py <APK>`, `python tests/verify-public-source.py`. 로그/화면은 해당 worktree의 `android/build/beta997/phase2`에 보관합니다.
+
+## 미검증·남은 범위
+
+- 실물 폰, 실계정 OAuth 서버 성공, 실제 네트워크 다운로드/PackageInstaller 설치 완료, OEM별 권한 화면은 미검증입니다. 따라서 사용자 폰의 로그인·업데이트 문제가 해결됐다고 단정하지 않습니다.
+- 공개9.9.7을 게시하지 않아 자동 업데이트 수신·익명 다운로드는 미검증입니다. 이번 산출물은 기존 베타와 동일 서명의 로컬 설치 후보입니다.
+- 모든 화면의 TalkBack 음성/포커스·장기 성능·진단 전체 현지화·후속 P2/P3 전체는 미완료입니다.
+- Wear/Windows/위젯 실제 연결, 실사용 백업 복원은 미검증입니다. 해당 코드·manifest·서명·저장 스키마를 변경하지 않습니다.
+- 중단한 다운로드를 바이트 위치부터 재개하는 기능은 구현하지 않습니다. 중단 상태를 복구하고 기존 검증 경로로 재시도합니다.
 
 ## 설치 후보
 
-phone APK SHA256: `f660d14e1ed983af9e67063bf1418e8758e51b1b23147aa5573d35a22139726e`.
-동일 베타 앱 위에 설치할 후보입니다. 공개 정식 앱용이 아닙니다. APK-only ZIP과 정확한 로컬 커밋의 소스 ZIP을 함께 보관합니다. 서명키/비밀번호/실제 DB/토큰/가상기기/테스트 로그는 소스 ZIP에서 제외합니다.
+APK SHA256: `d7bc69f396d8400840e316605325c950a6e3f63f555f924705775e98b50d3df3`.
+서명된 베타9.9.7/code990007이며 정식 앱과 별도 패키지입니다. APK-only ZIP, 정확한 로컬 커밋의 소스 ZIP과 Git 복구 bundle을 함께 보관합니다. 서명키/비밀번호/DB/토큰/가상기기/테스트 로그는 소스 ZIP에서 제외합니다. 공개 배포 없음.

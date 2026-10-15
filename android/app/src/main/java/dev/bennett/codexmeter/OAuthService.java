@@ -38,10 +38,14 @@ public final class OAuthService extends Service {
     private static final String CHANNEL_ID = "oauth_sign_in";
     private static final int NOTIFICATION_ID = 7301;
 
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
     private final AtomicBoolean running = new AtomicBoolean(false);
     private volatile ServerSocket serverSocket;
     private volatile boolean cancelled;
+    private volatile long activeAttempt;
+    private int activeStartId;
+    private boolean owns(long attempt){return activeAttempt==attempt;}
+    private boolean current(long attempt){return owns(attempt)&&!cancelled&&AccountSession.signInCurrent(attempt);}
 
     @Override
     public void onCreate() {
@@ -50,7 +54,8 @@ public final class OAuthService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public synchronized int onStartCommand(Intent intent, int flags, int startId) {
+        activeStartId=startId;
         String action = intent == null ? ACTION_START : intent.getAction();
         DiagnosticLog.info(this, "auth", "oauth_service_command",
                 "action", action == null ? "" : action);
@@ -61,21 +66,24 @@ public final class OAuthService extends Service {
         if (SecureTokenStore.isSignedIn(this)) {
             AppPreferences.setOAuthPending(this, false, "");
             broadcastResult(true, "Already signed in.");
-            finishService();
+            finishService(activeAttempt);
             return START_NOT_STICKY;
         }
+        if(running.get()&&!AccountSession.signInCurrent(activeAttempt)){cancelled=true;closeServer();running.set(false);}
         if (running.compareAndSet(false, true)) {
-            cancelled = false;
+            final long attempt=AccountSession.beginSignIn();
+            activeAttempt=attempt;activeStartId=startId;cancelled = false;
+            AppPreferences.setOAuthPending(this,true,"");
             startForegroundCompat(buildNotification("Preparing secure sign-in…", null));
             executor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    runFlow();
+                    runFlow(attempt);
                 }
             });
         } else {
             String url = AppPreferences.getOAuthUrl(this);
-            if (!url.isEmpty()) broadcastReady(url);
+            if (!url.isEmpty()) broadcastReady(url,activeAttempt);
         }
         return START_NOT_STICKY;
     }
@@ -86,29 +94,36 @@ public final class OAuthService extends Service {
     }
 
     @Override
-    public void onDestroy() {
+    public synchronized void onDestroy() {
+        cancelled=true;
+        if(AccountSession.cancelSignIn(activeAttempt))AppPreferences.setOAuthPending(this,false,"");
         closeServer();
         executor.shutdownNow();
         super.onDestroy();
     }
 
-    private void runFlow() {
+    private void runFlow(long attempt) {
         Socket browser = null;
+        ServerSocket listener=null;
         boolean credentialsCommitted = false;
         long started = android.os.SystemClock.elapsedRealtime();
         DiagnosticLog.info(this, "auth", "oauth_flow_started");
         try {
             Pkce pkce = Pkce.generate();
-            int port = bindServer();
+            listener = bindServer(attempt);
+            int port=listener.getLocalPort();
             String redirectUri = "http://localhost:" + port + "/auth/callback";
             String authUrl = buildAuthorizeUrl(redirectUri, pkce);
-            AppPreferences.setOAuthPending(this, true, authUrl);
-            updateNotification("Complete sign-in in your browser", authUrl);
-            broadcastReady(authUrl);
+            synchronized(this){
+                if(!current(attempt))throw new java.util.concurrent.CancellationException();
+                AppPreferences.setOAuthPending(this, true, authUrl);
+                updateNotification("Complete sign-in in your browser", authUrl);
+                broadcastReady(authUrl,attempt);
+            }
 
-            while (!cancelled) {
+            while (current(attempt)) {
                 try {
-                    browser = serverSocket.accept();
+                    browser = listener.accept();
                 } catch (SocketTimeoutException timeout) {
                     throw new Exception("Sign-in timed out. Start again from the app.");
                 }
@@ -146,12 +161,12 @@ public final class OAuthService extends Service {
                     throw new Exception("Sign-in failed because no authorization code was returned.");
                 }
 
+                if(!current(attempt))throw new java.util.concurrent.CancellationException();
                 updateNotification("Securing your ChatGPT session…", null);
                 AuthTokens tokens = OAuthClient.exchangeCode(this, code, redirectUri,
                         pkce.verifier);
-                AccountSession.install(this, tokens, false);
+                if(!AccountSession.installFromOAuth(this,tokens,attempt))throw new java.util.concurrent.CancellationException();
                 credentialsCommitted = true;
-                AppPreferences.setOAuthPending(this, false, "");
 
                 // The browser callback is complete as soon as credentials are safely stored.
                 // Usage retrieval and JobScheduler setup must never turn a successful OAuth
@@ -165,27 +180,28 @@ public final class OAuthService extends Service {
                 }
                 closeQuietly(browser);
                 browser = null;
-                broadcastResult(true, "Signed in successfully.");
+                if(!owns(attempt)||!AccountSession.sessionEpoch(attempt))return;
+                broadcastResult(true, "Signed in successfully.",attempt);
 
                 updateNotification("Loading Codex usage…", null);
-                performPostAuthenticationSetup();
+                performPostAuthenticationSetup(attempt);
                 DiagnosticLog.info(this, "auth", "oauth_flow_succeeded",
                         "duration_ms", android.os.SystemClock.elapsedRealtime() - started);
-                finishService();
+                finishService(attempt);
                 return;
             }
         } catch (Exception exception) {
             DiagnosticLog.error(this, "auth", "oauth_flow_failed", exception,
                     "credentials_committed", credentialsCommitted,
                     "duration_ms", android.os.SystemClock.elapsedRealtime() - started);
-            if (credentialsCommitted) {
+            if (credentialsCommitted&&owns(attempt)&&AccountSession.sessionEpoch(attempt)) {
                 // A post-commit failure is not an authentication failure. Preserve the session,
                 // show a valid success state, and let manual refresh recover later.
                 AppPreferences.setOAuthPending(this, false, "");
                 AppPreferences.setLastError(this, cleanMessage(exception));
-                broadcastResult(true, "Signed in. Usage can be refreshed from the app.");
+                broadcastResult(true, "Signed in. Usage can be refreshed from the app.",attempt);
                 safeWidgetUpdate();
-                finishService();
+                finishService(attempt);
                 return;
             }
             if (browser != null) {
@@ -195,42 +211,48 @@ public final class OAuthService extends Service {
                     // The callback connection may already be gone.
                 }
             }
-            if (!cancelled) {
+            if (current(attempt)) {
                 String message = cleanMessage(exception);
                 AppPreferences.setOAuthPending(this, false, "");
-                broadcastResult(false, message);
+                broadcastResult(false, message,attempt);
             }
-            finishService();
+            finishService(attempt);
         } finally {
             closeQuietly(browser);
-            closeServer();
+            if(listener!=null)try{listener.close();}catch(Exception ignored){}
+            synchronized(this){if(serverSocket==listener)serverSocket=null;}
+            if(owns(attempt)&&running.get())finishService(attempt);
         }
     }
 
-    private void performPostAuthenticationSetup() {
+    private void performPostAuthenticationSetup(long attempt) {
+        if(!AccountSession.sessionEpoch(attempt))return;
         try {
             UsageSnapshot snapshot = UsageApi.refreshAndCache(this);
-            RefreshScheduler.scheduleAtNextReset(this, snapshot);
+            if(AccountSession.sessionEpoch(attempt))RefreshScheduler.scheduleAtNextReset(this, snapshot);
         } catch (Exception refreshError) {
-            AppPreferences.setLastError(this, cleanMessage(refreshError));
+            if(AccountSession.sessionEpoch(attempt))AppPreferences.setLastError(this, cleanMessage(refreshError));
         }
+        if(!AccountSession.sessionEpoch(attempt))return;
         RefreshScheduler.schedulePeriodic(this);
         safeWidgetUpdate();
         broadcastUsageUpdated();
     }
 
-    private int bindServer() throws Exception {
+    private ServerSocket bindServer(long attempt) throws Exception {
         Exception last = null;
         for (int port : AppConstants.OAUTH_PORTS) {
+            ServerSocket candidate=null;
             try {
-                ServerSocket candidate = new ServerSocket();
+                candidate = new ServerSocket();
                 candidate.setReuseAddress(true);
                 candidate.bind(new InetSocketAddress(InetAddress.getByName("127.0.0.1"), port));
                 candidate.setSoTimeout(5 * 60 * 1000);
-                serverSocket = candidate;
-                return port;
+                synchronized(this){if(!current(attempt)){candidate.close();throw new java.util.concurrent.CancellationException();}serverSocket = candidate;}
+                return candidate;
             } catch (Exception exception) {
                 last = exception;
+                if(candidate!=null)try{candidate.close();}catch(Exception ignored){}
             }
         }
         throw new Exception("Could not open the local OAuth callback port (1455 or 1457).", last);
@@ -302,27 +324,30 @@ public final class OAuthService extends Service {
         socket.getOutputStream().flush();
     }
 
-    private void cancelFlow(String message, boolean broadcast) {
+    private synchronized void cancelFlow(String message, boolean broadcast) {
         cancelled = true;
+        AccountSession.cancelSignIn();
         AppPreferences.setOAuthPending(this, false, "");
         closeServer();
         if (broadcast) {
             broadcastResult(false, message);
         }
-        finishService();
+        finishService(activeAttempt);
     }
 
-    private void finishService() {
-        running.set(false);
+    private synchronized void finishService(long attempt) {
+        if(!owns(attempt))return;
+        AccountSession.finishSignIn(attempt);
+        activeAttempt=0;running.set(false);
         try {
             stopForeground(STOP_FOREGROUND_REMOVE);
         } catch (RuntimeException ignored) {
             // The service may not have reached foreground state if startup was interrupted.
         }
-        stopSelf();
+        if(activeStartId>0)stopSelf(activeStartId);else stopSelf();
     }
 
-    private void closeServer() {
+    private synchronized void closeServer() {
         ServerSocket socket = serverSocket;
         serverSocket = null;
         if (socket != null) {
@@ -344,18 +369,19 @@ public final class OAuthService extends Service {
         }
     }
 
-    private void broadcastReady(String authUrl) {
+    private void broadcastReady(String authUrl,long attempt) {
         Intent intent = new Intent(AppConstants.ACTION_OAUTH_READY)
                 .setPackage(getPackageName())
-                .putExtra(AppConstants.EXTRA_AUTH_URL, authUrl);
+                .putExtra(AppConstants.EXTRA_AUTH_URL, authUrl).putExtra("beta_oauth_attempt",attempt);
         sendBroadcast(intent, AppConstants.INTERNAL_PERMISSION);
     }
 
-    private void broadcastResult(boolean success, String message) {
+    private void broadcastResult(boolean success,String message){broadcastResult(success,message,0);}
+    private void broadcastResult(boolean success, String message,long attempt) {
         Intent intent = new Intent(AppConstants.ACTION_OAUTH_RESULT)
                 .setPackage(getPackageName())
                 .putExtra(AppConstants.EXTRA_SUCCESS, success)
-                .putExtra(AppConstants.EXTRA_MESSAGE, message);
+                .putExtra(AppConstants.EXTRA_MESSAGE, message).putExtra("beta_oauth_attempt",attempt);
         sendBroadcast(intent, AppConstants.INTERNAL_PERMISSION);
     }
 
