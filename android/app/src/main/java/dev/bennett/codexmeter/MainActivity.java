@@ -64,6 +64,8 @@ public final class MainActivity extends AppCompatActivity {
             UsageSnapshot snapshot = AppPreferences.loadSnapshot(MainActivity.this);
             if (snapshot != null) {
                 if (ledgerOverview != null) ledgerOverview.updateClock();
+                org.json.JSONObject growthDisplay=BetaGrowthStore.peek(MainActivity.this);
+                if(growthDisplay!=null&&!BetaV4.day(System.currentTimeMillis()).toString().equals(growthDisplay.optString("as_of_day")))BetaGrowthStore.refreshDisplay(getApplicationContext());
                 rebuild();
                 if (freshnessView != null) {
                     freshnessView.setText(UsageInsightDisplay.freshness(MainActivity.this, snapshot));
@@ -188,6 +190,7 @@ public final class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SpicyQuotes.foreground();
+        BetaGrowthStore.refreshDisplay(getApplicationContext());
         LanSync.schedule(this);
         insightHandler.removeCallbacks(insightTicker);
         insightHandler.postDelayed(insightTicker, 60_000L);

@@ -17,15 +17,36 @@ final class BetaGrowthStore extends SQLiteOpenHelper {
     static boolean current(Context c,String expected){return expected!=null&&expected.equals(SubscriptionStore.accountKey(c));}
     private static JSONObject row(SQLiteDatabase db,String account)throws Exception{try(Cursor cursor=db.rawQuery("SELECT document,rules FROM profiles WHERE account=?",new String[]{account})){if(!cursor.moveToFirst())return null;if(cursor.getInt(1)!=BetaV4.RULES)throw new IllegalArgumentException("Newer rules preserved");JSONObject value=new JSONObject(cursor.getString(0));BetaV4.validateIdentity(value,account);long xp=new java.math.BigDecimal(value.get("total").toString()).longValueExact();int level=value.getInt("level");long progress=value.getLong("progress"),cost=BetaV4.cost(level);if(progress<0||progress>=cost||value.getLong("next_cost")!=cost||xp!=Math.addExact(BetaV4.threshold(level),progress))throw new IllegalArgumentException("Stored growth balance");return value;}}
     static JSONObject load(Context c,String account)throws Exception{
-        if(!current(c,account)||!c.getDatabasePath(NAME).exists())return null;
-        synchronized(LOCK){try(BetaGrowthStore helper=new BetaGrowthStore(c)){SQLiteDatabase db=helper.getWritableDatabase();JSONObject result;boolean changed=false;db.beginTransaction();try{result=row(db,account);if(result!=null&&result.optInt("catalog_revision",1)<2){JSONObject upgraded=BetaV4.upgrade(result,System.currentTimeMillis());if(upgraded.getLong("total")!=result.getLong("total")||upgraded.getInt("level")!=result.getInt("level")||upgraded.getLong("progress")!=result.getLong("progress"))throw new IllegalStateException("Catalog must preserve economy");result=upgraded;db.execSQL("UPDATE profiles SET document=? WHERE account=?",new Object[]{result.toString(),account});changed=true;}db.setTransactionSuccessful();}finally{db.endTransaction();}if(changed)publish(c,account,result);return current(c,account)?result:null;}}
+        if(!current(c,account))return null;
+        synchronized(LOCK){if(!c.getDatabasePath(NAME).exists()){publish(c,account,null);return null;}try(BetaGrowthStore helper=new BetaGrowthStore(c)){SQLiteDatabase db=helper.getWritableDatabase();JSONObject result;db.beginTransaction();try{result=row(db,account);if(result!=null&&result.optInt("catalog_revision",1)<2){JSONObject upgraded=BetaV4.upgrade(result,System.currentTimeMillis());if(upgraded.getLong("total")!=result.getLong("total")||upgraded.getInt("level")!=result.getInt("level")||upgraded.getLong("progress")!=result.getLong("progress"))throw new IllegalStateException("Catalog must preserve economy");result=upgraded;db.execSQL("UPDATE profiles SET document=? WHERE account=?",new Object[]{result.toString(),account});}db.setTransactionSuccessful();}finally{db.endTransaction();}if(!current(c,account))return null;publish(c,account,result);return result;}}
     }
     static boolean activeWorker(Context c,String account){try{return load(c,account)!=null;}catch(Exception ignored){return false;}}
     static JSONObject peek(Context c){String key=SubscriptionStore.accountKey(c);if(key==null)return null;try{JSONObject result=new JSONObject(c.getSharedPreferences("beta_growth_display_v4",0).getString(key,""));return key.equals(result.optString("account"))?result:null;}catch(Exception ignored){return null;}}
+    /** Foreground repair runs on the existing worker; never reads the DB while rendering. */
+    static void refreshDisplay(Context context){
+        Context c=context.getApplicationContext();String account=SubscriptionStore.accountKey(c);
+        if(account==null)return;
+        WORKER.execute(()->{if(!current(c,account))return;try{load(c,account);}catch(Exception unavailable){
+            if(!current(c,account))return;
+            android.content.SharedPreferences prefs=c.getSharedPreferences("beta_growth_display_v4",0);
+            boolean alreadyFailed=prefs.getBoolean(account+":error",false);
+            prefs.edit().putBoolean(account+":error",true).apply();
+            if(!alreadyFailed)c.sendBroadcast(new Intent(AppConstants.ACTION_USAGE_UPDATED).setPackage(c.getPackageName()));
+        }});
+    }
+    static boolean displayError(Context c){String account=SubscriptionStore.accountKey(c);return account!=null&&c.getSharedPreferences("beta_growth_display_v4",0).getBoolean(account+":error",false);}
     private static void publish(Context c,String account,JSONObject state)throws Exception{
         if(!current(c,account))return;
-        c.getSharedPreferences("beta_growth_display_v4",0).edit().putString(account,BetaV4.summary(state,System.currentTimeMillis()).toString()).remove(account+":error").commit();
-        c.sendBroadcast(new Intent(AppConstants.ACTION_USAGE_UPDATED).setPackage(c.getPackageName()));
+        android.content.SharedPreferences prefs=c.getSharedPreferences("beta_growth_display_v4",0);
+        String value=state==null?null:BetaV4.summary(state,System.currentTimeMillis()).toString();
+        if(java.util.Objects.equals(value,prefs.getString(account,null))&&!prefs.getBoolean(account+":error",false))return;
+        android.content.SharedPreferences.Editor editor=prefs.edit().remove(account+":error");
+        if(value==null)editor.remove(account);else editor.putString(account,value);
+        if(!editor.commit()){
+            prefs.edit().putBoolean(account+":error",true).apply();
+            throw new java.io.IOException("Growth display save failed; original DB retained");
+        }
+        if(current(c,account))c.sendBroadcast(new Intent(AppConstants.ACTION_USAGE_UPDATED).setPackage(c.getPackageName()));
     }
     static boolean start(Context c,String account)throws Exception{return start(c,account,System.currentTimeMillis(),false);}
     static boolean start(Context c,String account,long cutover,boolean synthetic)throws Exception{

@@ -37,7 +37,8 @@ public final class GrowthActivity extends AppCompatActivity {
             if(detailDialog!=null)detailDialog.dismiss();betaGrowthModel=null;content.removeAllViews();
         }
         if(busy)return;
-        String next=account+":"+mode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this))+":"+AppPreferences.getLastError(this)+":"+AppPreferences.getAutomaticRefresh(this)+":"+MxpEconomy.date(System.currentTimeMillis());
+        String baseSignature=account+":"+mode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this))+":"+AppPreferences.getLastError(this)+":"+AppPreferences.getAutomaticRefresh(this)+":"+MxpEconomy.date(System.currentTimeMillis());
+        String next=baseSignature+":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode();
         if(!force&&next.equals(signature)&&content.getChildCount()>0)return;
         if(account==null){if(detailDialog!=null)detailDialog.dismiss();loadedAccount="";generation++;signature=next;content.removeAllViews();content.addView(LedgerUi.caption(this,BetaCopy.t(this,"no_account"),dark));content.addView(BetaGrowthUi.link(this,BetaCopy.t(this,"account"),dark,()->MatteNav.open(this,1)));return;}
         busy=true;long ticket=++generation;

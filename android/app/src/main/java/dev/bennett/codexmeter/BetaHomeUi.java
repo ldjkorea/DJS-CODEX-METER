@@ -24,7 +24,8 @@ final class BetaHomeUi {
         if(growth!=null){Ui.addSpacer(card,12);TextView level=BetaUi.text(a,"Lv. "+growth.optInt("level"),24,Ui.mainText(dark),true);level.setTag("beta996:level");card.addView(level);
             ProgressBar progress=Ui.progress(a,dark);progress.setMax((int)growth.optLong("next_cost",1));progress.setProgress((int)growth.optLong("progress"));progress.setProgressTintList(ColorStateList.valueOf(Ui.accent(a,dark)));progress.setContentDescription(BetaCopy.t(a,"xp")+" "+growth.optLong("progress")+" / "+growth.optLong("next_cost"));card.addView(progress);
             card.addView(BetaUi.note(a,LedgerUi.number(growth.optLong("progress"))+" / "+LedgerUi.number(growth.optLong("next_cost"))+" "+BetaCopy.t(a,"xp"),dark));
-        }else{JSONObject old=RpgProgressStore.progress(a),mxp=MxpEconomy.state(old);if(old!=null)card.addView(BetaUi.body(a,BetaCopy.t(a,"archive")+" · Lv. "+(mxp==null?old.optInt("level",1):mxp.optInt("level",1)),dark));card.addView(BetaUi.note(a,BetaCopy.t(a,"pending_growth"),dark));}
+        }else{JSONObject old=RpgProgressStore.progress(a),mxp=MxpEconomy.state(old);if(old!=null)card.addView(BetaUi.body(a,BetaCopy.t(a,"archive")+" · Lv. "+(mxp==null?old.optInt("level",1):mxp.optInt("level",1)),dark));card.addView(BetaUi.note(a,BetaCopy.t(a,BetaGrowthStore.displayError(a)?"record_error":"pending_growth"),dark));}
+        if(BetaGrowthStore.displayError(a))card.addView(BetaUi.row(a,BetaCopy.t(a,"retry_record"),BetaCopy.t(a,"record_error"),dark,()->BetaGrowthStore.refreshDisplay(a)));
         card.addView(BetaUi.row(a,BetaCopy.ko(a)?"성장과 다음 목표":"Growth and next goal",growth==null?"":BetaCopy.t(a,"counts",growth.optJSONObject("honors").length(),growth.optJSONObject("titles").length()),dark,()->a.startActivity(new Intent(a,GrowthActivity.class))));return card;
     }
 }
