@@ -22,13 +22,9 @@ final class BetaExperienceUi {
             :done?t(a,"오늘 확인 완료 · 다음 목표를 살펴보세요","Checked today · explore your next goal")
             :t(a,"오늘의 성장 확인을 이어가세요","Continue today's growth check");
         card.addView(BetaUi.body(a,state,dark));
-        if(snapshot!=null){card.addView(BetaUi.note(a,a.getString(R.string.next_observed_at,V3Display.time(snapshot.fetchedAtMillis)),dark));
-            if(BetaPreferences.preset(a).equals("simple"))for(UsageWindow window:new UsageWindow[]{snapshot.fiveHour,snapshot.weekly,snapshot.monthly})if(window!=null){
-                String label=window==snapshot.fiveHour?t(a,"5시간","5 hour"):window==snapshot.weekly?t(a,"주간","Weekly"):t(a,"월간","Monthly");
-                card.addView(BetaUi.body(a,label+" · "+t(a,"남음 %s%%","%s%% remaining",UsagePrecision.number(Math.max(0,100-window.preciseUsedPercent))),dark));
-                card.addView(BetaUi.note(a,FiveHourResetDisplay.text(a,window,snapshot.fetchedAtMillis,System.currentTimeMillis(),WidgetOptions.RESET_RELATIVE,false),dark));
-            }
-        }
+        if(snapshot!=null)card.addView(BetaUi.note(a,a.getString(R.string.next_observed_at,V3Display.time(snapshot.fetchedAtMillis)),dark));
+        if(snapshot!=null&&snapshot.monthly!=null&&BetaPreferences.preset(a).equals("simple"))
+            card.addView(BetaUi.body(a,t(a,"월간 남음 · %s","Monthly remaining · %s",UsagePrecision.remaining(snapshot.monthly,AppPreferences.usageDecimalPlaces(a))),dark));
         if(!fresh||reset||failed||!done&&!paused){Button action=BetaUi.action(a,t(a,"사용량 확인하기","Check usage"),true,dark,()->{});action.setTag("beta998:check");action.setEnabled(!MainActivity.refreshInProgress());action.setOnClickListener(v->refresh.accept(action));card.addView(action);}
         else card.addView(BetaUi.action(a,paused?t(a,"수집 설정 보기","Collection settings"):t(a,"성장 경로 보기","Explore growth path"),true,dark,()->{if(paused)a.startActivity(new Intent(a,MeterSettingsActivity.class));else open(a,"journey");}));
         card.addView(BetaUi.row(a,t(a,"연결·업데이트 복구","Connection and update recovery"),t(a,"상태와 해결 방법 확인","Status and recovery actions"),dark,()->open(a,"health")));

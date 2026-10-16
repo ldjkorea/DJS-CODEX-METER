@@ -23,4 +23,9 @@ for name in ['BetaV4.java','OAuthClient.java','SecureTokenStore.java','UpdateIns
     before=subprocess.check_output(['git','show','8daf3f7:android/app/src/main/java/dev/bennett/codexmeter/'+name],cwd=root).replace(b'\r\n',b'\n')
     assert current==before,name
 assert '2 * 1024 * 1024' in (app/'ReleaseUpdateClient.java').read_text()
+home=(app/'MainActivity.java').read_text(encoding='utf-8')
+assert home.index('BetaQuotaUi.add(')<home.index('LinearLayout crestSlot=')<home.index('BetaExperienceUi.focus(')
+quota=(app/'BetaQuotaUi.java').read_text(encoding='utf-8')
+assert 'BetaPreferences.preset' not in quota and 'UsagePrecision.remaining(' in quota
+assert 'UsageApi.' not in quota and 'UsageLedgerDatabase' not in quota and 'BetaV4.confirm' not in quota
 print('Beta998 source: stable 600 IDs/40 tips,150 revised quotes; locked controls; protected economy/auth/installer unchanged')

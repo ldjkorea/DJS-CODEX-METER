@@ -346,8 +346,8 @@ public final class MainActivity extends AppCompatActivity {
         freshnessView=null;ledgerOverview=null;taskStatusRow=null;weeklyInsightRows=null;quotaClockUpdates.clear();content.removeAllViews();
         UsageSnapshot snapshot=AppPreferences.loadSnapshot(this);
         GitHubRelease available=UpdatePreferences.availableUpdate(this);
-        if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}
         if(!SecureTokenStore.isSignedIn(this)){
+            if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}
             LinearLayout welcome=Ui.card(this,dark);welcome.addView(LedgerUi.heading(this,getString(R.string.v3_welcome),dark));
             Ui.addSpacer(welcome,12);welcome.addView(LedgerUi.caption(this,getString(R.string.v3_signin_note),dark));content.addView(welcome);Ui.addSpacer(content,16);
             Button signIn=Ui.nativePrimaryButton(this,AppPreferences.isOAuthPending(this)?getString(R.string.ui_continue_sign_in_cd1418):getString(R.string.ui_sign_in_with_chatgpt_fe0b3b));
@@ -358,6 +358,8 @@ public final class MainActivity extends AppCompatActivity {
             }
             return;
         }
+        BetaQuotaUi.add(this,content,snapshot,dark,quotaClockUpdates);
+        if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}
         LinearLayout crestSlot=new LinearLayout(this);crestSlot.setOrientation(LinearLayout.VERTICAL);content.addView(crestSlot,new LinearLayout.LayoutParams(-1,-2));
         BetaExperienceUi.focus(this,content,snapshot,dark,this::refreshNow);
         ledgerOverview=BetaPreferences.preset(this).equals("simple")?null:LedgerDashboard.addOverview(this,content,executor,snapshot,dark);
