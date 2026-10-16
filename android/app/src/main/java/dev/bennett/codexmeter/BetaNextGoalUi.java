@@ -8,7 +8,7 @@ import org.json.JSONObject;
 final class BetaNextGoalUi {
     static void render(GrowthActivity a,LinearLayout parent,JSONObject state,BetaGrowthModel model,boolean dark,String account){
         JSONObject goal=model.summary.optJSONObject("next_goal");String id=goal==null?"":goal.optString("id");
-        LinearLayout card=BetaUi.group(parent,BetaCopy.t(a,"next_focus"),dark);card.setTag("beta997:next-goal");
+        LinearLayout card=BetaUi.group(parent,goal!=null&&goal.optBoolean("pinned")?BetaExperienceUi.t(a,"고정한 목표","Pinned goal"):BetaCopy.t(a,"next_focus"),dark);card.setTag("beta997:next-goal");
         card.addView(BetaUi.note(a,"Lv. "+model.summary.optInt("level")+" · "+BetaIdentity.name(a),dark));
         if(id.isEmpty()){card.addView(BetaUi.body(a,BetaCopy.t(a,"complete_all"),dark));return;}
         String[] entry=BetaCatalog.find(id);if(entry==null)return;

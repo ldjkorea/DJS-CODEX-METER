@@ -40,6 +40,7 @@ final class BetaNextGoal {
         return new JSONObject().put("id",selected).put("current",current).put("target",target).put("metric",metric)
             .put("today_done",state.optJSONObject("days").has(date.toString()));
     }
+    static String metric(String id){String[] entry=BetaCatalog.find(id);return entry!=null&&entry.length>7?entry[7]:legacyMetric(id);}
     private static String legacyMetric(String id){
         switch(id){case "rpg3.first_day":case "rpg3.daily_7":return "days";case "rpg3.first_week":return "week_now";
             case "rpg3.weekly_4":return "weeks";case "rpg3.month_four_weeks":return "month_weeks";

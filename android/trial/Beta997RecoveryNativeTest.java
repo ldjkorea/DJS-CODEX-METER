@@ -11,6 +11,7 @@ import java.util.concurrent.*;
 
 /** Actual SQLite, failed preference commit, signed update and Activity resume regression. */
 public final class Beta997RecoveryNativeTest extends Instrumentation {
+    String expectedVersion="9.9.7",checkpoint="beta997_qa";
     int checks;
     Throwable uiFailure;
     void check(boolean value,String message){checks++;if(!value)throw new AssertionError(message);}
@@ -28,13 +29,13 @@ public final class Beta997RecoveryNativeTest extends Instrumentation {
             });
         });
     }};}
-    @Override public void onCreate(Bundle args){super.onCreate(args);start();}
+    @Override public void onCreate(Bundle args){super.onCreate(args);expectedVersion=args.getString("expected_version","9.9.7");checkpoint=args.getString("checkpoint","beta997_qa");start();}
     @Override public void onStart(){Bundle result=new Bundle();int code=0;Context c=getTargetContext();String account=null;JSONObject original=null;String originalName=null;Activity growth=null,other=null,home=null;
         try{
             check(Build.MODEL.contains("sdk")&&c.getPackageName().equals("dev.bennett.codexmeter.trial")&&TrialDemo.active(c),"Owned synthetic beta only");
-            check(c.getPackageManager().getPackageInfo(c.getPackageName(),0).versionName.equals("9.9.7"),"Installed signed 9.9.7");
+            check(c.getPackageManager().getPackageInfo(c.getPackageName(),0).versionName.equals(expectedVersion),"Installed signed "+expectedVersion);
             account=SubscriptionStore.accountKey(c);original=BetaGrowthStore.load(c,account);originalName=BetaIdentity.name(c);
-            SharedPreferences qa=c.getSharedPreferences("beta997_qa",0);JSONObject before=new JSONObject(qa.getString("state",""));
+            SharedPreferences qa=c.getSharedPreferences(checkpoint,0);JSONObject before=new JSONObject(qa.getString("state",""));
             for(String key:new String[]{"rules","namespace","account","cutover","total","level","progress","next_cost","last_response","days","weeks","months","rewards","honors","titles","equipped","enabled","catalog_revision"})check(before.get(key).toString().equals(original.get(key).toString()),"9.9.6 update preserves "+key);
             check(original.optLong("seen_total")>=before.optLong("seen_total")&&original.optLong("seen_total")<=original.getLong("total"),"Viewing may acknowledge rewards without changing their balance");
             check(BetaGrowthStore.archive(c,account).toString().equals(qa.getString("archive","")),"Read-only previous archive retained");
@@ -76,7 +77,7 @@ public final class Beta997RecoveryNativeTest extends Instrumentation {
             display.edit().remove(account).commit();home=startActivitySync(new Intent(c,MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));awaitWorker();check(BetaGrowthStore.peek(c)!=null,"Actual home foreground repairs missing cache");waitText(home,"캐시복구 검수 Alex");
             check(BetaGrowthStore.load(c,account).getLong("total")==xp,"Actual UI creates no growth reward");check(BetaGrowthStore.archive(c,account).toString().equals(qa.getString("archive","")),"Archive remains identical after UI and restore");
             java.io.File dir=new java.io.File(c.getExternalFilesDir(null),"beta997-captures");dir.mkdirs();try(java.io.FileOutputStream out=new java.io.FileOutputStream(new java.io.File(dir,"home.png"))){getUiAutomation().takeScreenshot().compress(android.graphics.Bitmap.CompressFormat.PNG,100,out);}
-            result.putString("stream","Beta9.9.7 recovery: "+checks+" checks passed; signed upgrade/SQLite/cache failure/concurrency/restore/actual Activity resume, synthetic only.\n");code=-1;
+            result.putString("stream","Beta"+expectedVersion+" recovery: "+checks+" checks passed; signed upgrade/SQLite/cache failure/concurrency/restore/actual Activity resume, synthetic only.\n");code=-1;
         }catch(Throwable error){result.putString("stream",android.util.Log.getStackTraceString(error));}
         finally{try{if(other!=null){Activity a=other;main(a::finish);}if(growth!=null){Activity a=growth;main(a::finish);}if(home!=null){Activity a=home;main(a::finish);}if(original!=null){BetaIdentity.save(c,originalName);BetaGrowthStore.equip(c,account,original.getString("equipped"));BetaGrowthStore.enabled(c,account,original.getBoolean("enabled"));}}catch(Throwable cleanup){result.putString("stream",result.getString("stream","")+"Cleanup failed: "+cleanup);code=0;}}
         finish(code,result);

@@ -11,6 +11,8 @@ p.add_argument('--cold-restart', action='store_true')
 p.add_argument('--auth-restart', action='store_true')
 p.add_argument('--locale', default='ko')
 p.add_argument('--theme', default='dark')
+p.add_argument('--expected-version', default='9.9.7')
+p.add_argument('--checkpoint', default='beta997_qa')
 p.add_argument('--phase', choices=['seed', 'before', 'verify'], default='verify')
 a = p.parse_args()
 root = Path(__file__).resolve().parents[1]
@@ -73,7 +75,7 @@ if a.cold_restart or a.auth_restart:
     shell('am', 'start', '-W', '-n', target+'/dev.bennett.codexmeter.MainActivity')
     import time
     time.sleep(3)
-result = shell('am', 'instrument', '-r', '-w', '-e', 'phase', a.phase, '-e', 'locale', a.locale, '-e', 'theme', a.theme, component)
+result = shell('am', 'instrument', '-r', '-w', '-e', 'phase', a.phase, '-e', 'expected_version', a.expected_version, '-e', 'checkpoint', a.checkpoint, '-e', 'locale', a.locale, '-e', 'theme', a.theme, component)
 (out/('baseline.txt' if a.expect_cache_gap else 'result.txt')).write_text(result, encoding='utf-8')
 print(result)
 if a.expect_cache_gap:

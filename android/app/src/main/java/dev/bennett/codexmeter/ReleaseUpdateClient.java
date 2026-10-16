@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Public, unauthenticated GitHub release discovery client. */
 public final class ReleaseUpdateClient {
-    private static final int MAX_RESPONSE_BYTES = 512 * 1024;
+    private static final int MAX_RESPONSE_BYTES = 2 * 1024 * 1024;
     private static final Object LOCK = new Object();
 
     private ReleaseUpdateClient() {

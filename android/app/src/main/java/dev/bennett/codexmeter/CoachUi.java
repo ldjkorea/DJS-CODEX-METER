@@ -15,7 +15,7 @@ final class CoachUi {
     private CoachUi(){}
     static LinearLayout card(AppCompatActivity a,boolean dark,UsageSnapshot snapshot,boolean fresh,boolean bonus,double daily){
         LinearLayout card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);
-        String account=SubscriptionStore.accountKey(a),tone=FunStore.tone(a),identity=SpicyQuotes.identity(a,account);
+        String account=SubscriptionStore.accountKey(a),tone=CoachPolicy.tone(a),identity=SpicyQuotes.identity(a,account);
         SpicyQuotes.Selection selection=SpicyQuotes.peek(a,account);String group=CoachCatalog.group(snapshot,fresh,!AppPreferences.getLastError(a).isEmpty(),bonus,daily,System.currentTimeMillis());
         if(OPEN.containsKey(a)&&(!identity.equals(OWNER.get(a))||tone.equals("off")||CoachCatalog.constrained(group))){OPEN.get(a).dismiss();OPEN.remove(a);}
         if(tone.equals("off")){card.setVisibility(View.GONE);return card;}
@@ -27,9 +27,6 @@ final class CoachUi {
         else text=FunCoach.current(a,tone,RpgProgressStore.tier(a),FunInsights.Situation.TIER,CoachMoment.Kind.NORMAL,"local",System.currentTimeMillis());
         TextView quote=LedgerUi.heading(a,"“"+text+"”",dark);quote.setTextSize(18);card.addView(quote);
         if(selection!=null&&selection.tip!=null&&!CoachCatalog.constrained(group)&&tone.equals("spicy"))card.addView(LedgerUi.action(a,a.getString(R.string.coach_try),false,dark,()->tip(a,dark,account,selection)));
-        if(ko&&tone.equals("spicy"))card.addView(LedgerUi.action(a,a.getString(R.string.coach_more),false,dark,()->new AlertDialog.Builder(a).setItems(new String[]{a.getString(R.string.coach_another),a.getString(R.string.coach_hide)},(dialog,which)->{
-            SpicyQuotes.rotate(a.getApplicationContext(),account,snapshot,fresh,bonus,daily,which==1,()->{if(a.isDestroyed()||!card.isAttachedToWindow())return;LinearLayout replacement=card(a,dark,snapshot,fresh,bonus,daily);android.view.ViewGroup parent=(android.view.ViewGroup)card.getParent();if(parent!=null){int index=parent.indexOfChild(card);parent.removeView(card);parent.addView(replacement,index);}});
-        }).show()));
         return card;
     }
     private static void tip(AppCompatActivity a,boolean dark,String account,SpicyQuotes.Selection selection){
@@ -48,10 +45,9 @@ final class CoachUi {
     static boolean copyPrompt(ClipboardManager clipboard,String title,String visiblePrompt){try{if(clipboard==null)return false;clipboard.setPrimaryClip(ClipData.newPlainText(title,visiblePrompt));return true;}catch(RuntimeException error){return false;}}
     static void settings(AppCompatActivity a,LinearLayout parent,boolean dark){
         parent.addView(LedgerUi.action(a,a.getString(R.string.live_ai_title),false,dark,()->{
-            String[] values={"calm","playful","spicy","off"};new AlertDialog.Builder(a).setTitle(R.string.live_ai_title).setSingleChoiceItems(a.getResources().getStringArray(R.array.coach_tones),Arrays.asList(values).indexOf(FunStore.tone(a)),(d,index)->{d.dismiss();WORKER.execute(()->{FunStore.tone(a,values[index]);a.runOnUiThread(a::recreate);});}).show();
+            String[] labels={BetaExperienceUi.t(a,"켜기 · 앱이 자동 선택","On · chosen automatically"),BetaExperienceUi.t(a,"끄기","Off")};
+            new AlertDialog.Builder(a).setTitle(R.string.live_ai_title).setSingleChoiceItems(labels,CoachPolicy.tone(a).equals("off")?1:0,(d,i)->{d.dismiss();WORKER.execute(()->{FunStore.tone(a,i==1?"off":"spicy");a.runOnUiThread(a::recreate);});}).show();
         }));
-        parent.addView(LedgerUi.action(a,a.getString(R.string.coach_interest),false,dark,()->{String[] values={"","explorer","creator","developer","analyst","practitioner"};new AlertDialog.Builder(a).setTitle(R.string.coach_interest).setSingleChoiceItems(a.getResources().getStringArray(R.array.coach_interests),Arrays.asList(values).indexOf(SpicyQuotes.interest(a)),(d,index)->{a.getSharedPreferences("codex_fun_settings",0).edit().putString("interest",values[index]).apply();d.dismiss();a.recreate();}).show();}));
-        parent.addView(LedgerUi.action(a,a.getString(R.string.coach_restore_hidden),false,dark,()->SpicyQuotes.restoreHidden(a,SubscriptionStore.accountKey(a),a::recreate)));
-        parent.addView(LedgerUi.caption(a,a.getString(R.string.coach_local_help),dark));
+        parent.addView(LedgerUi.caption(a,BetaExperienceUi.t(a,"앱에 포함된 문구가 자동으로 선택됩니다. 문구 편집·추가·수동 교체는 제공하지 않습니다. 기존 숨김 기록은 유지합니다.","The app selects its built-in copy automatically. No editing, additions or manual replacement. Existing hidden choices are retained."),dark));
     }
 }

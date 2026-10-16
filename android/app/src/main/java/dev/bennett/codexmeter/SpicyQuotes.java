@@ -24,7 +24,7 @@ final class SpicyQuotes {
     static synchronized void foreground(){if(away>0&&SystemClock.elapsedRealtime()-away>=30000)generation++;away=0;}
     static synchronized void background(boolean rotation){if(!rotation)away=SystemClock.elapsedRealtime();}
     static synchronized void manual(){generation++;}
-    static String identity(Context c,String account){return account+":"+FunStore.tone(c)+":"+interest(c)+":"+c.getResources().getConfiguration().getLocales().toLanguageTags()+":20261014";}
+    static String identity(Context c,String account){return account+":"+CoachPolicy.tone(c)+":"+interest(c)+":"+c.getResources().getConfiguration().getLocales().toLanguageTags()+":20261016";}
     static String cacheKey(Context c,String account){return identity(c,account)+":"+generation;}
     static String interest(Context c){return c.getSharedPreferences("codex_fun_settings",0).getString("interest","");}
     static Selection peek(Context c,String account){Selection s=account==null?null:CURRENT.get(account);return s!=null&&s.identity.equals(identity(c,account))?s:null;}
@@ -33,12 +33,12 @@ final class SpicyQuotes {
     }
     static String select(Context c,String account,UsageSnapshot snapshot,boolean fresh,boolean bonus,double daily,long now){synchronized(SELECTION_LOCK){try{
         if(account==null)return null;
-        if(!"spicy".equals(FunStore.tone(c))||!c.getResources().getConfiguration().getLocales().get(0).getLanguage().equals("ko")){CURRENT.remove(account);return null;}
+        if(!"spicy".equals(CoachPolicy.tone(c))||!c.getResources().getConfiguration().getLocales().get(0).getLanguage().equals("ko")){CURRENT.remove(account);return null;}
         long epoch=generation;CoachCatalog content=load(c);String identity=identity(c,account);
         android.content.SharedPreferences prefs=c.getSharedPreferences("coach_v2",0);JSONObject state;
         try{state=new JSONObject(prefs.getString(account,""));}catch(Exception missing){String legacyKey=SubscriptionStore.key(c,snapshot);JSONObject old;try{old=new JSONObject(c.getSharedPreferences("spicy_quote_ids",0).getString(legacyKey,""));}catch(Exception ignored){old=new JSONObject();}state=content.migrate(old);}
         String group=CoachCatalog.group(snapshot,fresh,!AppPreferences.getLastError(c).isEmpty(),bonus,daily,now);
-        CoachCatalog.Quote q=content.select(state,group,FunStore.tone(c),interest(c),identity+":"+epoch+":"+group,false,RANDOM);
+        CoachCatalog.Quote q=content.select(state,group,CoachPolicy.tone(c),interest(c),identity+":"+epoch+":"+group,false,RANDOM);
         if(epoch!=generation||!identity.equals(identity(c,account))||!account.equals(SubscriptionStore.accountKey(c)))return null;
         prefs.edit().putString(account,state.toString()).apply();
         if(q==null){CURRENT.remove(account);return null;}CURRENT.put(account,new Selection(q,content.tips.get(q.tipId),identity,group));return q.text;

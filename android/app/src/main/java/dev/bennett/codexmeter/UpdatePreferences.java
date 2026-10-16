@@ -18,7 +18,7 @@ public final class UpdatePreferences {
     private static final String KEY_LAST_CHECK = "last_check";
     private static final String KEY_LAST_ERROR = "last_error";
     private static final String KEY_INSTALL_ERROR = "install_error";
-    private static final int MAX_CACHE_LENGTH = 512 * 1024;
+    private static final int MAX_CACHE_LENGTH = 2 * 1024 * 1024;
     private static final Object CACHE_LOCK = new Object();
     private static String cachedJson;
     private static List<GitHubRelease> cachedReleases;

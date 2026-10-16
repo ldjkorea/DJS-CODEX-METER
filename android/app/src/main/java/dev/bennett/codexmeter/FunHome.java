@@ -61,7 +61,7 @@ final class FunHome {
         if(crestTarget!=null){crestTarget.addView(tier);Ui.addSpacer(crestTarget,10);}else target.addView(tier);
         LinearLayout quotation=LiveCards.ai(activity,dark,live,snapshot,fresh,daily,now,quote);
         LinearLayout value=SubscriptionValueUi.card(activity,dark,snapshot,live,fresh);
-        target.addView(quotation);target.addView(value);TiboQuote.add(activity,target,dark);Ui.addSpacer(target,16);finished.run();
+        target.addView(quotation);if(BetaPreferences.preset(activity).equals("detail")){target.addView(value);TiboQuote.add(activity,target,dark);}Ui.addSpacer(target,16);finished.run();
     }
     private boolean stacked(){return LedgerUi.stacked(activity)||activity.getResources().getConfiguration().screenWidthDp<420;}
     private static String num(double value){return LedgerUi.number(value);}
