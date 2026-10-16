@@ -13,4 +13,40 @@
 
 ## 검증
 
-진행 중. 최종 실행 결과와 한계는 공개 전 이 절에 기록한다. 합성 에뮬레이터 결과를 실물폰·실계정 OAuth 서버 성공으로 표시하지 않는다. 기존 버전 전용 fixture는 보존한다.
+### 실행 결과 — 공개 전
+
+- `python android/trial/run-beta-checks.py`: 새 주간 집계21, 기존766/29/1112, 베타 업데이트94, MXP1533, 코치30466 검사 통과. 새 집계의20000행 투영은 최종PC 실행82ms. 실물폰 성능 수치는 아니다.
+- `python android/trial/verify-beta999-source.py`: 인증/OAuth/설치기/성장 저장소·경제·원장·코치가 공개9.9.8과 바이트 동일. 한 카드/주간 바로 아래/홈 focus·중복 overview 부재, 홈 DB이관/네트워크/XP지급 부재 확인.
+- `:app:assembleRelease :app:lintRelease`: 최종 후보20초 성공. lint0오류/280경고, 기존baseline53오류/110경고는 유지. 처음 외부 다운로드 지연 → 오프라인 의존성 미확보 → 재시도 인수 인용 수정 → 캐시 확보 후 성공. 로컬 SDK경로의 콜론 escape 오류1건을 ignored local.properties에서 고쳤다. baseline 갱신은 없다.
+- 기존 인증서 SHA256 `6abd39b13e561cd67fa0d76ab79f9f22500cf5378dc60b176bfe18bf0d2f8be3`로 서명. Phone9.9.9/code990009/`dev.bennett.codexmeter.trial`. Wear3.0.0/code85, Windows 및 정식3.1.0은 변경하지 않는다.
+- 폰트/라이선스 출처·금지폰트 부재54archives/최종후보APK1개 통과. Git index2001파일의 알려진 비밀 패턴/런타임·개인키 추적 부재 통과. 과거 전체 이력 보안 감사를 뜻하지 않는다.
+
+### Android·SQLite·화면 — 전용 합성 API35 AVD
+
+모든 프리셋 simple/growth/detail에서 통합 박스/주간 인접/기존 프로필·두 잔량·초기화/자료없음·실패·stale·기간만료 표기/텍스트 잘림/성장·토큰 불변을 검사했다.
+
+| 화면·글자·언어/테마 | 실행 검사 |
+|---|---:|
+|320×720·100%·한국어/어둡게|279 통과|
+|320×720·200%·한국어/어둡게|276 통과|
+|360×800·100%·영어/밝게|279 통과|
+|420×900·100%·한국어/어둡게|279 통과|
+|640×420·100%·영어/밝게|276 통과|
+|420×900·지연 worker 제어 추가|281 통과|
+
+큰 글씨는 세로로 펼쳐지고 스크롤한다. 모든 정보를 한 화면에 넣었다는 뜻은 아니다. SQLite fixture를 실제 OPEN_READONLY로 조회하고 소수 증가량2.5, 파일크기 불변, UI스레드 호출 거부를 확인했다. 오래된 스냅샷의 지연 결과를 붙어있는 이전 뷰에도 게시하지 않는 검사가 통과했다. native 검사 도구의 클래스 경로에 기존 vendor AAR들을 추가하여 AppCompat 의존성 누락을 해결했다. 빌드 완료 전 APK를 읽어 발생한 설치 오류는 완료 후 후보로 재실행했다.
+
+- 실제 저장·SQLite·실패 복구·동시 재시도24회·복원·Activity 복귀86 통과.
+- 선택 묶음 백업/복원·부분실패16 통과.
+- 실제 OAuth service/loopback·취소·재시도·늦은 계정 응답 차단18 통과. 실제 계정 코드를 교환하지 않았다.
+- 첫 준비 환경에서 자동업데이트OFF 체크포인트와 값이 달라 보존 검사가 실패했다. 별도 새 공개설치 검증 환경에 마커와 OFF를 디스크에 확정 저장하고, 공개9.9.8 실행 뒤 before5검사를 통과했다(초기 seed12). 공개9.9.8→9.9.9 앱 다운로드·Android 설치 확인 뒤 다시 보존 검증한다. 초기 실패 로그는 유지하며 제품 동작 성공으로 계산하지 않는다.
+
+### 남아 있는 공통 검사 실패와 미검증
+
+`bash android/run-tests.sh`는 `ParserSelfTest.testGitHubReleases`의 정식 complete-published-release fixture에서 실패했다. `python android/tests/verify-localization.py`는 기존 OAuthClient 보호 원본 비교에서 실패했다. 정식 기준 fixture/비교와 베타 기존 코드의 불일치이며 해당 파일은 이번 변경 전후 동일하다. fixture나 보호 목록을 삭제·갱신해 숨기지 않았다. 베타 전용 업데이트94 및 실제 공개 목록 파서는 별도 실행한다.
+
+실물폰·실계정OAuth 서버 성공·모든OEM·TalkBack 실제 조작·장기 성능·위젯/Wear/Windows 실연동은 미검증이다. 실사용 앱 삭제/초기화·사용자 기기 설치·실계정 데이터 변경·새 서명 키 생성은 하지 않았다.
+
+### 공개와 보관
+
+사용자 승인에 따라 beta/9.9.9·beta-v9.9.9만 prerelease/latest=false로 게시한다. 공개 전 draft5파일을 다시 내려받아 크기/SHA256/ZIP CRC와 CI를 확인한다. 공개 후 익명5파일/현재 목록 크기/구버전·신버전·정식 실제 파서/정식 latest·기존 자산 fingerprint를 확인하고, 별도 합성 AVD의9.9.8에서 앱 발견·다운로드·Android 업데이트 확인으로 설치한다. 최종 공개 HEAD/해시·설치 보존·실패·Drive 재읽기 결과는 `SOURCE/delivery/beta-9.9.9/release-20261017/VERIFICATION.ko.md`와 로컬 `android/build/beta999/publish/release-receipt.json`에 기록한다. 이 문서 작성 시점에 미실행인 공개 후 검증을 완료로 주장하지 않는다.
