@@ -56,6 +56,8 @@ public final class Beta998HomeQuotaNativeTest extends Instrumentation {
                     check(profile.getBottom()<=quota.getTop(),"Quota directly below profile");
                     View focus=root.findViewWithTag("beta998:focus");
                     check(parent.indexOfChild(profile)<parent.indexOfChild(quota)&&parent.indexOfChild(quota)<parent.indexOfChild(focus),"Profile then quota then focus in every preset");
+                    check(crest.findViewWithTag("beta998:growth-link")==null&&focus.findViewWithTag("beta998:growth-link")!=null,"Growth navigation retained below limits");
+                    check(focus.findViewWithTag("beta998:goal-link")!=null,"Existing next-goal link retained below limits");
                     check(label(root,"five-hour:value").getText().toString().equals(UsagePrecision.remaining(five,AppPreferences.usageDecimalPlaces(c))),"5-hour remaining, not used");
                     check(label(root,"weekly:value").getText().toString().equals(UsagePrecision.remaining(week,AppPreferences.usageDecimalPlaces(c))),"Weekly remaining, not used");
                     check(label(root,"five-hour:reset").length()>0&&label(root,"weekly:reset").length()>0,"Both reset countdowns visible");

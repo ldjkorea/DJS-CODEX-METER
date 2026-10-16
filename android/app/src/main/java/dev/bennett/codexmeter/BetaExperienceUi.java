@@ -27,6 +27,7 @@ final class BetaExperienceUi {
             card.addView(BetaUi.body(a,t(a,"월간 남음 · %s","Monthly remaining · %s",UsagePrecision.remaining(snapshot.monthly,AppPreferences.usageDecimalPlaces(a))),dark));
         if(!fresh||reset||failed||!done&&!paused){Button action=BetaUi.action(a,t(a,"사용량 확인하기","Check usage"),true,dark,()->{});action.setTag("beta998:check");action.setEnabled(!MainActivity.refreshInProgress());action.setOnClickListener(v->refresh.accept(action));card.addView(action);}
         else card.addView(BetaUi.action(a,paused?t(a,"수집 설정 보기","Collection settings"):t(a,"성장 경로 보기","Explore growth path"),true,dark,()->{if(paused)a.startActivity(new Intent(a,MeterSettingsActivity.class));else open(a,"journey");}));
+        BetaHomeUi.growthLinks(a,card,growth,dark);
         card.addView(BetaUi.row(a,t(a,"연결·업데이트 복구","Connection and update recovery"),t(a,"상태와 해결 방법 확인","Status and recovery actions"),dark,()->open(a,"health")));
         card.addView(BetaUi.row(a,t(a,"주간·월간 회고","Weekly and monthly recap"),t(a,"확인된 기록만 요약","Only recorded evidence"),dark,()->open(a,"recap")));
     }
