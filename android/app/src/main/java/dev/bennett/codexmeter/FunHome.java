@@ -52,13 +52,14 @@ final class FunHome {
                 try{cachedStamp=stamp;cachedCoachIdentity=coachIdentity;cachedLive=live;cachedDaily=daily;cachedQuote=quote;home.render(snapshot,window,policy,data.records,completed,doc,live,daily,quote);}catch(Exception ignored){home.error();}});
         }catch(Exception ignored){activity.runOnUiThread(()->{if(!activity.isDestroyed()&&target.isAttachedToWindow())home.error();});}});
     }
-    private void error(){if(crestTarget!=null)crestTarget.removeAllViews();target.removeAllViews();target.addView(LedgerUi.caption(activity,getString(R.string.fun_load_failed),dark));finished.run();}
+    private boolean merged(){return crestTarget!=null&&"beta999:identity-slot".equals(crestTarget.getTag());}
+    private void error(){if(crestTarget!=null&&!merged())crestTarget.removeAllViews();target.removeAllViews();target.addView(LedgerUi.caption(activity,getString(R.string.fun_load_failed),dark));finished.run();}
     private String getString(int id,Object... args){return activity.getString(id,args);}
     private void render(UsageSnapshot snapshot,UsageWindow window,String policy,List<LedgerRecord> records,List<FunInsights.Window> completed,JSONObject doc,LiveUtilization.Result live,double daily,String quote)throws Exception{
         target.removeAllViews();if(crestTarget!=null)crestTarget.removeAllViews();long now=System.currentTimeMillis();
         boolean fresh=window!=null&&now<window.effectiveResetAtMillis(snapshot.fetchedAtMillis)&&UsageEvidence.state(snapshot,window,!AppPreferences.getLastError(activity).isEmpty(),now,RefreshScheduler.effectiveRefreshMinutes(activity))==UsageEvidence.State.CONFIRMED;
-        LinearLayout tier=LiveCards.crest(activity,dark,live,fresh);
-        if(crestTarget!=null){crestTarget.addView(tier);Ui.addSpacer(crestTarget,10);}else target.addView(tier);
+        LinearLayout tier=merged()?BetaHomeUi.card(activity,dark,false):LiveCards.crest(activity,dark,live,fresh);
+        if(crestTarget!=null){crestTarget.addView(tier);if(merged())TierTheme.frame((android.view.View)crestTarget.getParent(),TierTheme.tier(activity),dark);else Ui.addSpacer(crestTarget,10);}else target.addView(tier);
         LinearLayout quotation=LiveCards.ai(activity,dark,live,snapshot,fresh,daily,now,quote);
         LinearLayout value=SubscriptionValueUi.card(activity,dark,snapshot,live,fresh);
         target.addView(quotation);if(BetaPreferences.preset(activity).equals("detail")){target.addView(value);TiboQuote.add(activity,target,dark);}Ui.addSpacer(target,16);finished.run();

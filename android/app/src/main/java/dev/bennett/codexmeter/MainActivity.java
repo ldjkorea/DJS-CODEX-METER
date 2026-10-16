@@ -358,14 +358,9 @@ public final class MainActivity extends AppCompatActivity {
             }
             return;
         }
-        LinearLayout crestSlot=new LinearLayout(this);crestSlot.setOrientation(LinearLayout.VERTICAL);content.addView(crestSlot,new LinearLayout.LayoutParams(-1,-2));
-        BetaQuotaUi.add(this,content,snapshot,dark,quotaClockUpdates);
+        LinearLayout crestSlot=BetaHomeSummaryUi.add(this,content,snapshot,dark,quotaClockUpdates);
+        BetaWeeklyUi.add(this,content,snapshot,dark,quotaClockUpdates);
         if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}
-        BetaExperienceUi.focus(this,content,snapshot,dark,this::refreshNow);
-        ledgerOverview=BetaPreferences.preset(this).equals("simple")?null:LedgerDashboard.addOverview(this,content,executor,snapshot,dark);
-        if(snapshot!=null&&ledgerOverview==null&&!BetaPreferences.preset(this).equals("simple")&&AppPreferences.showUsageOverview(this)){
-            LinearLayout hidden=Ui.card(this,dark);hidden.addView(LedgerUi.caption(this,getString(UsageEvidence.hasQuota(snapshot)?R.string.v3_hidden:R.string.phase_a_not_provided),dark));content.addView(hidden);Ui.addSpacer(content,16);
-        }
         if(snapshot==null){
             LinearLayout empty=Ui.card(this,dark);empty.addView(LedgerUi.heading(this,getString(R.string.ui_ledger_collecting),dark));
             String error=AppPreferences.getLastError(this);empty.addView(LedgerUi.caption(this,error.isEmpty()?getString(R.string.v3_first_refresh):error,dark));

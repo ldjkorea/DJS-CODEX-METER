@@ -1,7 +1,7 @@
 """Compile native regression against this beta; only an existing owned AVD is allowed."""
 from pathlib import Path
 from zipfile import ZipFile
-import argparse, os, subprocess
+import argparse, os, subprocess, hashlib
 
 p = argparse.ArgumentParser()
 p.add_argument('--serial', default='emulator-5590')
@@ -33,12 +33,12 @@ package = 'dev.bennett.codexmeter.beta997test'
 assert 'package:' + target in shell('pm', 'list', 'packages', target).splitlines()
 deps = []
 cache = Path.home() / '.gradle/caches/modules-2/files-2.1'
-for aar in cache.rglob('*.aar'):
-    if not any(str(aar).split(os.sep)[-5].startswith(g) for g in ['androidx.', 'io.github.oneuiproject']):
+for aar in [*cache.rglob('*.aar'), *(root/'vendor').rglob('*.aar')]:
+    if not aar.is_relative_to(root/'vendor') and not any(str(aar).split(os.sep)[-5].startswith(g) for g in ['androidx.', 'io.github.oneuiproject']):
         continue
     with ZipFile(aar) as z:
         if 'classes.jar' in z.namelist():
-            dest = out / (aar.parent.name + '.jar')
+            dest = out / (hashlib.sha256(aar.read_bytes()).hexdigest()[:16] + '.jar')
             dest.write_bytes(z.read('classes.jar'))
             deps.append(dest)
 deps += list(cache.glob('androidx.*/*/*/*/*.jar'))

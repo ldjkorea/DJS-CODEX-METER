@@ -14,12 +14,25 @@ final class BetaQuotaUi {
             boolean dark, List<Runnable> clockUpdates) {
         LinearLayout card = BetaUi.group(parent,
                 BetaExperienceUi.t(activity, "남은 사용 한도", "Remaining limits"), dark);
+        fill(activity,card,snapshot,dark,clockUpdates);
+        Ui.addSpacer(parent,16);
+    }
+
+    static void addContent(MainActivity activity,LinearLayout parent,UsageSnapshot snapshot,
+            boolean dark,List<Runnable> clockUpdates){
+        LinearLayout section=new LinearLayout(activity);section.setOrientation(LinearLayout.VERTICAL);
+        parent.addView(section,new LinearLayout.LayoutParams(-1,-2));
+        fill(activity,section,snapshot,dark,clockUpdates);
+    }
+
+    private static void fill(MainActivity activity,LinearLayout card,UsageSnapshot snapshot,
+            boolean dark,List<Runnable> clockUpdates){
         card.setTag("beta998:quota");
         if (TrialDemo.active(activity)) card.addView(BetaUi.note(activity,
                 BetaExperienceUi.t(activity, "가상 데모 · 실제 계정 한도 아님",
                         "Synthetic demo · not real account limits"), dark));
         boolean stacked = activity.getResources().getConfiguration().fontScale > 1.3f
-                || activity.getResources().getConfiguration().screenWidthDp < 360;
+                || activity.getResources().getConfiguration().screenWidthDp < 320;
         LinearLayout meters = new LinearLayout(activity);
         meters.setOrientation(stacked ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         card.addView(meters, new LinearLayout.LayoutParams(-1, -2));
@@ -32,7 +45,6 @@ final class BetaQuotaUi {
             card.addView(BetaUi.note(activity, activity.getString(R.string.next_observed_at,
                     V3Display.time(snapshot.fetchedAtMillis)), dark));
         }
-        Ui.addSpacer(parent, 16);
     }
 
     private static void addWindow(MainActivity activity, LinearLayout parent,
@@ -89,6 +101,7 @@ final class BetaQuotaUi {
                     : state == UsageEvidence.State.UNAVAILABLE ? R.string.phase_a_unavailable
                     : R.string.phase_a_confirmed;
             status.setText(resource);
+            status.setVisibility(state==UsageEvidence.State.CONFIRMED?android.view.View.GONE:android.view.View.VISIBLE);
             long resetAt = window.effectiveResetAtMillis(snapshot.fetchedAtMillis);
             reset.setText(fiveHour ? FiveHourResetDisplay.text(activity, window,
                     snapshot.fetchedAtMillis, now, WidgetOptions.RESET_RELATIVE, false)
