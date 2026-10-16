@@ -358,9 +358,9 @@ public final class MainActivity extends AppCompatActivity {
             }
             return;
         }
+        LinearLayout crestSlot=new LinearLayout(this);crestSlot.setOrientation(LinearLayout.VERTICAL);content.addView(crestSlot,new LinearLayout.LayoutParams(-1,-2));
         BetaQuotaUi.add(this,content,snapshot,dark,quotaClockUpdates);
         if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}
-        LinearLayout crestSlot=new LinearLayout(this);crestSlot.setOrientation(LinearLayout.VERTICAL);content.addView(crestSlot,new LinearLayout.LayoutParams(-1,-2));
         BetaExperienceUi.focus(this,content,snapshot,dark,this::refreshNow);
         ledgerOverview=BetaPreferences.preset(this).equals("simple")?null:LedgerDashboard.addOverview(this,content,executor,snapshot,dark);
         if(snapshot!=null&&ledgerOverview==null&&!BetaPreferences.preset(this).equals("simple")&&AppPreferences.showUsageOverview(this)){

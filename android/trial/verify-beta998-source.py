@@ -24,7 +24,7 @@ for name in ['BetaV4.java','OAuthClient.java','SecureTokenStore.java','UpdateIns
     assert current==before,name
 assert '2 * 1024 * 1024' in (app/'ReleaseUpdateClient.java').read_text()
 home=(app/'MainActivity.java').read_text(encoding='utf-8')
-assert home.index('BetaQuotaUi.add(')<home.index('LinearLayout crestSlot=')<home.index('BetaExperienceUi.focus(')
+assert home.index('LinearLayout crestSlot=')<home.index('BetaQuotaUi.add(')<home.index('BetaExperienceUi.focus(')
 quota=(app/'BetaQuotaUi.java').read_text(encoding='utf-8')
 assert 'BetaPreferences.preset' not in quota and 'UsagePrecision.remaining(' in quota
 assert 'UsageApi.' not in quota and 'UsageLedgerDatabase' not in quota and 'BetaV4.confirm' not in quota
