@@ -36,6 +36,9 @@ public final class BetaReleaseSelfTest {
         JSONArray beta999=new JSONArray(beta998.toString()).put(release("beta-v9.9.9","GPT-HUD-BETA-9.9.9.apk"));
         List<GitHubRelease> beta999List=GitHubReleaseParser.parse(beta999.toString());check(beta999List.get(0).version.equals(beta?"9.9.9":"3.1.0"),"9.9.9 channel split");
         if(beta){for(int i=0;i<=8;i++)for(String channel:new String[]{"stable","alpha"})check(UpdateChannel.selectUpdate(beta999List,"9.9."+i,channel).version.equals("9.9.9"),"Previous beta to9.9.9");check(UpdateChannel.selectUpdate(beta999List,"9.9.9","stable")==null,"Current9.9.9 not offered");}
+        JSONArray beta9910=new JSONArray(beta999.toString()).put(release("beta-v9.9.10","GPT-HUD-BETA-9.9.10.apk"));
+        List<GitHubRelease> beta9910List=GitHubReleaseParser.parse(beta9910.toString());check(beta9910List.get(0).version.equals(beta?"9.9.10":"3.1.0"),"9.9.10 channel split");
+        if(beta){for(int i=0;i<=9;i++)for(String channel:new String[]{"stable","alpha"})check(UpdateChannel.selectUpdate(beta9910List,"9.9."+i,channel).version.equals("9.9.10"),"Previous beta to9.9.10");check(UpdateChannel.selectUpdate(beta9910List,"9.9.10","stable")==null,"Current9.9.10 not offered");}
         JSONObject bad=release(beta?"beta-v9.9.2":"v3.0.1",beta?"GPT-HUD-BETA-9.9.2.apk":"CodexMeter-3.0.1-ko.apk");bad.getJSONArray("assets").getJSONObject(0).put("browser_download_url","https://github.com/evil/repo/releases/download/bad/app.apk");check(GitHubReleaseParser.parse(new JSONArray().put(bad).toString()).isEmpty(),"Foreign repository refused");
         JSONObject draft=release(beta?"beta-v9.9.2":"v3.0.1",beta?"GPT-HUD-BETA-9.9.2.apk":"CodexMeter-3.0.1-ko.apk").put("draft",true);check(GitHubReleaseParser.parse(new JSONArray().put(draft).toString()).isEmpty(),"Draft refused");
         String pkg=beta?"dev.bennett.codexmeter.trial":"dev.bennett.codexmeter";
