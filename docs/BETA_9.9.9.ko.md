@@ -50,3 +50,37 @@
 ### 공개와 보관
 
 사용자 승인에 따라 beta/9.9.9·beta-v9.9.9만 prerelease/latest=false로 게시한다. 공개 전 draft5파일을 다시 내려받아 크기/SHA256/ZIP CRC와 CI를 확인한다. 공개 후 익명5파일/현재 목록 크기/구버전·신버전·정식 실제 파서/정식 latest·기존 자산 fingerprint를 확인하고, 별도 합성 AVD의9.9.8에서 앱 발견·다운로드·Android 업데이트 확인으로 설치한다. 최종 공개 HEAD/해시·설치 보존·실패·Drive 재읽기 결과는 `SOURCE/delivery/beta-9.9.9/release-20261017/VERIFICATION.ko.md`와 로컬 `android/build/beta999/publish/release-receipt.json`에 기록한다. 이 문서 작성 시점에 미실행인 공개 후 검증을 완료로 주장하지 않는다.
+
+
+## 공개 후 주간 표시 불일치 원인 수정 — 로컬 베타 후속 작업 (2026-10-17)
+
+이 절은 공개9.9.9/HEAD3d3797e 이후의 **로컬 수정본** 기록이다. `beta/fix-weekly-display`에서 작업하며 공개 APK/태그/Release를 교체하거나 새 버전을 배포하지 않는다. 정식3.1.0/main과 기존 실사용 데이터는 유지한다.
+
+### 원인과 수정 전 재현
+
+1. 이전 실패와 동일하게 로그인 복구18검사 직후 계측했다. 홈검사 fixture의 주간원본66.75%(표시67%)가 저장된 약1.75초 뒤 **실제 저장값과 화면이 모두15%**로 바뀌었다. Activity는 destroyed=false/attached=true였다. 날짜/소수점 계산 오류나 파괴된 화면 참조가 아니었다.
+2. 기존 데모가 예약된 Android 사용량 작업을 취소하지 않았다. `UsageRefreshJobService`가 데모 상태에서도 `UsageApi.refreshAndCache → TrialDemo.snapshot`을 실행해 주간기본15%와 새시각을 덮어썼다. 새로고침 설정의false만으로 이미 예약된 작업이 없어지지 않았다. 실제 JobScheduler73100을 강제로 실행해 같은66.75→15 덮어쓰기를 재현했고 수정 전 회귀검사가 실패했다.
+3. 별도 갱신 broadcast 없이 백그라운드에서 snapshot을 저장하면 홈은 저장 변경을 직접 구독하지 않아 기존67% 표시가 남았다. snapshot43.25%(43%)를 저장해도 화면67%로 남는 두 번째 실패를 확보했다. 화면은60초 ticker나 다른 재빌드 계기까지 갱신이 늦어질 수 있었다.
+
+### 변경 범위와 이유
+
+- `MainActivity.java`: 활성 화면에서 `last_snapshot` 변경을 구독해 중복 요청을 합쳐 UI스레드에 다시 그린다. onStop에서 구독/예약 콜백을 해제하고 재진입 시 현재값을 읽는다. 한 번 읽은 snapshot을 티어·한도/주간 카드에 함께 전달한다. 홈에 네트워크 잠금/DB이관/전체이력 계산을 추가하지 않았다.
+- `TrialDemo.java`: 데모 진입 때 이전 사용량 작업73100..73104를 취소한다. 데모 자격증명 전환은 기존 요청 잠금 안에서 수행한다.
+- `RefreshScheduler.java`: 데모의 주기/연쇄/초기화 예약을 차단한다. 실제 계정의 기존 예약 분기는 유지한다. Release업데이트73400/73401은 사용량 작업 취소 대상이 아니다.
+- `UsageRefreshJobService.java`: 데모 작업은 시작 시 거부하며, 실계정 형태로 이미 큐에 들어간 작업도 worker가 기존 요청 잠금 안에서 데모 전환 여부를 재확인한다. 큐 진입 뒤 데모로 전환된 작업도 snapshot을 쓰지 않는다. opt-in 기존 진단에는 거부 event/job_id만 남긴다.
+- `Beta999WeeklyRefreshNativeTest.java`: 실제 JobScheduler 전달, 서비스 거부 로그, 저장값/시각 불변, 수동 데모 새로고침, broadcast 없는 저장/삭제, 같은 시각의 다른값, 화면 중지/복귀, 합성 실계정→데모 전환 대기를 검사한다. 외부 API 호출은 없다.
+- `Beta999HomeNativeTest.java`: 기존 기대값은 유지하고 실패 시 실제 표시/원본을 기록한다. 자동 재빌드와 별개로 Dialog에 붙인 구 그래프에서 지연 결과 차단을 검사하여 기존 attached-view 검증을 보존한다.
+- `verify-beta999-source.py`: observer 생명주기/한 snapshot 사용/메인스레드 네트워크 잠금 부재/worker 전환 fence를 추가 확인한다. 인증/키/경제/원장/코치 보호 비교는 유지한다.
+
+### 검증 기록
+
+- 수정 전 공개APK에서 `baseline-forced-job.log`:66.75→15 덮어쓰기 실패, `baseline-snapshot-push.log`:저장43%/화면67% 갱신 지연 실패, `home-diagnostic-1.log`와`values-1.log`:로그인 직후 기존 실패 동일 재현. 이 실패들은 삭제하지 않았다.
+- 수정 후 새회귀52검사×10회 연속 통과(동일검사를 반복한 것이며520개 고유검사를 뜻하지 않음). 실제서비스가 작업을 거부한 진단 로그와, 요청잠금 대기 뒤 데모로 전환된 worker의 거부 이벤트까지 확인했다. 실계정 형태의 예약 유지·백그라운드 저장/삭제·중지/복귀·수동refresh·같은timestamp다른값·token/성장/업데이트설정 불변 포함.
+- 이전 실패 순서인 로그인복구18→홈283을3회 연속 통과. 홈은 모든프리셋/값/기간/자료없음/큰글씨 등 기존검사와 구그래프 attached2개를 포함한다. 이번3회는 한국어/어두운테마/420×900/100% 조건이다. 이전 전체화면matrix를 이번에 전부 다시 실행한 것으로 표시하지 않는다.
+- 저장/SQLite/캐시실패/동시성24회/복원/화면복귀86,묶음백업16,기존데이터38 재실행 통과. 레벨30/XP261/명예14/칭호8/장착·원본·보관함·합성토큰·설정 유지.
+- `run-beta-checks.py`:21/766/29/1112/94/1533/30466 통과. 새투영20000행70ms는PC수치. `verify-beta999-source.py` 추가경계와 기존인증/키/경제/원장/코치 비교 통과.
+- 최종 Release/lint16초 성공,오류0/경고280,기존baseline53오류/110경고 유지. 중간코드의필드선언순서 컴파일오류를 수정했고 baseline갱신은 없다. 신규강제작업검사의shell표준출력은 서비스가즉시취소하면비어있어서,성공문구대신실제서비스거부로그를증거로확인하도록검사했다. Dialog.show 직후 attachment를단정한준비오류는UI idle후실제attachment를확인하도록수정했다. 기대값/기존실패로그를지워성공처리하지않았다.
+- `run-tests.sh`와`verify-localization.py`는 이번에도 기존정식published-fixture/OAuthClient보호기준 비교에서 각각실패했다. 해당2중단지점 이후 공통검사를전부통과했다고주장하지않는다. 제품OAuthClient는이번에변경하지않았다.
+- 로컬 후보:Phone9.9.9/code990009/dev.bennett.codexmeter.trial,기존인증서SHA256 `6abd39b13e561cd67fa0d76ab79f9f22500cf5378dc60b176bfe18bf0d2f8be3`. APK SHA256 `66bdc9e0cfbb619eaa5d929e3ca83cce6243edb98972a299ba8867fdbdb96904`. `android/build/beta999/weekly-fix/candidate/GPT-HUD-BETA-9.9.9-weekly-fix-LOCAL.apk`에 별도 보관한다. 공개9.9.9APK를교체하지않았고,자동업데이트목록은기존공개9.9.9를가리킨다. 새버전배포/push/tag/Release/실사용폰설치는이번에없다.
+- 정식latest3.1.0/ID413263261/자산·main·태그 및공개베타9.9.9의5자산·소스3d3797e 불변확인. 실물폰/실계정OAuth서버/모든OEM/장기실행/Wear·Windows실연동은미검증이다.
+- 수정 전 실패와 중간 준비 오류·반복 결과·확정증거는 `android/build/beta999/weekly-fix`에 보존한다. 원래 공개 후 ‘원인 미확정’ 기록은 당시 이력이며 이 절에서 원인을 재현해 후속수정했다.

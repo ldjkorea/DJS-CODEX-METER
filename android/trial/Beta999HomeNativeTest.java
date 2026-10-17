@@ -8,7 +8,7 @@ import android.widget.*;
 
 /** Regression for the primary home quota surface; owned synthetic AVD only. */
 public final class Beta999HomeNativeTest extends Instrumentation {
-    int checks; Throwable failure; String locale, theme;
+    int checks; Throwable failure; String locale, theme; Dialog staleDialog;
     void check(boolean value, String message) { checks++; if (!value) throw new AssertionError(message); }
     void main(Runnable work) { runOnMainSync(() -> { try { work.run(); } catch (Throwable e) { failure=e; } });
         if (failure!=null) { Throwable e=failure; failure=null; throw new AssertionError(e); } }
@@ -75,7 +75,7 @@ public final class Beta999HomeNativeTest extends Instrumentation {
                     check(root.findViewWithTag("beta998:focus")==null,"No home focus/now task");
                     check(root.findViewWithTag("beta998:goal-link")==null,"No redundant home goal link");
                     check(root.findViewWithTag("beta999:weekly-used")!=null,"Server weekly used value");
-                    check(((TextView)root.findViewWithTag("beta999:weekly-used")).getText().toString().contains(UsagePrecision.used(week,AppPreferences.usageDecimalPlaces(c))),"Used and remaining are distinct");
+                    check(((TextView)root.findViewWithTag("beta999:weekly-used")).getText().toString().contains(UsagePrecision.used(week,AppPreferences.usageDecimalPlaces(c))),"Used and remaining are distinct; actual="+((TextView)root.findViewWithTag("beta999:weekly-used")).getText()+" expected="+UsagePrecision.used(week,AppPreferences.usageDecimalPlaces(c))+" stored="+AppPreferences.loadSnapshot(c).weekly.preciseUsedPercent);
                     check(crest.findViewWithTag("beta996:tier-badge")!=null&&crest.findViewWithTag("beta996:level")!=null&&crest.findViewWithTag("beta996:title")!=null,"Badge level title preserved");
                     bounds(summary);bounds(weekly);
                     check(label(root,"five-hour:value").getText().toString().equals(UsagePrecision.remaining(five,AppPreferences.usageDecimalPlaces(c))),"5-hour remaining, not used");
@@ -96,11 +96,19 @@ public final class Beta999HomeNativeTest extends Instrumentation {
             BetaWeeklyUi.WORKER.execute(()->{entered.countDown();try{release.await(10,java.util.concurrent.TimeUnit.SECONDS);}catch(InterruptedException e){Thread.currentThread().interrupt();}});check(entered.await(5,java.util.concurrent.TimeUnit.SECONDS),"Controlled slow worker");
             View[] oldGraph={null};
             try{
-                AppPreferences.saveSnapshot(c,new UsageSnapshot("plus",true,false,five,week,now-1000));main(a::rebuild);main(()->oldGraph[0]=a.findViewById(android.R.id.content).findViewWithTag("beta999:weekly-graph"));
+                UsageSnapshot older=new UsageSnapshot("plus",true,false,five,week,now-1000);
+                AppPreferences.saveSnapshot(c,older);main(a::rebuild);
+                main(()->{
+                    LinearLayout host=new LinearLayout(a);host.setOrientation(LinearLayout.VERTICAL);
+                    staleDialog=new Dialog(a);staleDialog.setContentView(host);
+                    BetaWeeklyUi.add(a,host,older,Ui.isDark(a), new java.util.ArrayList<>());
+                    staleDialog.show();oldGraph[0]=host.findViewWithTag("beta999:weekly-graph");
+                });
+                waitForIdleSync();Thread.sleep(100);main(()->check(oldGraph[0].isAttachedToWindow(),"Controlled older graph attached independently of home rebuild"));
                 AppPreferences.saveSnapshot(c,sample);
             }finally{release.countDown();}
             BetaWeeklyUi.WORKER.submit(()->{}).get();waitForIdleSync();
-            main(()->check(oldGraph[0].findViewWithTag("beta999:weekly-missing")==null,"Late result for replaced snapshot is discarded even while old graph attached"));
+            main(()->{try{check(oldGraph[0].isAttachedToWindow(),"Older graph still attached after snapshot observer redraw");check(oldGraph[0].findViewWithTag("beta999:weekly-missing")==null,"Late result for replaced snapshot is discarded even while old graph attached");}finally{staleDialog.dismiss();staleDialog=null;}});
             main(a::rebuild);BetaWeeklyUi.WORKER.submit(()->{}).get();waitForIdleSync();Thread.sleep(150);
             java.util.List<LedgerRecord> graphRows=java.util.List.of(new LedgerRecord("weekly","plus",now-900000,65,"65",week.resetAtMillis(),604800,"api_precise",false),new LedgerRecord("weekly","plus",now,66.75,"66.75",week.resetAtMillis(),604800,"api_precise",false));
             main(()->{LinearLayout graph=a.findViewById(android.R.id.content).findViewWithTag("beta999:weekly-graph");BetaWeeklyUi.render(a,graph,BetaWeeklyUsage.project(sample,graphRows,now),Ui.isDark(a));});waitForIdleSync();Thread.sleep(200);
@@ -122,6 +130,7 @@ public final class Beta999HomeNativeTest extends Instrumentation {
             result.putString("stream","Beta999 combined home: "+checks+" checks passed; "+locale+" / "+theme+" / font "+c.getResources().getConfiguration().fontScale+".\n");code=-1;
         } catch(Throwable e) {result.putString("stream",android.util.Log.getStackTraceString(e));}
         finally {
+            if(staleDialog!=null)main(()->{staleDialog.dismiss();staleDialog=null;});
             if(home!=null){MainActivity a=home;main(a::finish);}
             SharedPreferences.Editor edit=settings.edit();if(oldSnapshot==null)edit.remove("last_snapshot");else edit.putString("last_snapshot",oldSnapshot);edit.commit();
             AppPreferences.setLastError(c,oldError);BetaPreferences.prefs(c).edit().putString("preset",oldPreset).commit();

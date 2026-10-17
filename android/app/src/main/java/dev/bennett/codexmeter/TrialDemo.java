@@ -18,7 +18,8 @@ final class TrialDemo {
         if(!"dev.bennett.codexmeter.trial".equals(c.getPackageName()))throw new IllegalStateException("Trial package required");
         AuthTokens existing=SecureTokenStore.load(c);if(existing!=null&&!ACCOUNT.equals(existing.accountId))throw new IllegalStateException("내 계정으로 사용 중입니다. 먼저 체험판에서 로그아웃한 뒤 데모를 열어 주세요.");
         AccountSession.cancelSignIn();
-        long now=System.currentTimeMillis();SecureTokenStore.save(c,new AuthTokens("SYNTHETIC_TRIAL_NOT_A_REAL_TOKEN","SYNTHETIC_TRIAL_REFRESH","",now+3650L*86400000,ACCOUNT,""));
+        long now=System.currentTimeMillis();synchronized(UsageApi.NETWORK_LOCK){SecureTokenStore.save(c,new AuthTokens("SYNTHETIC_TRIAL_NOT_A_REAL_TOKEN","SYNTHETIC_TRIAL_REFRESH","",now+3650L*86400000,ACCOUNT,""));}
+        RefreshScheduler.cancelAll(c);
         AppPreferences.setAutomaticRefresh(c,false);AppPreferences.setRefreshOnLaunch(c,false);AppPreferences.completeOnboarding(c);
         UsageSnapshot sample=snapshot(c);String account=SubscriptionStore.accountKey(c);
         if(!c.getSharedPreferences("trial_welcome",0).getBoolean("demo_seeded",false)){

@@ -18,3 +18,13 @@ reader=read('BetaWeeklyReader.java');assert 'OPEN_READONLY' in reader and 'LIMIT
 for blocked in ['execSQL','getWritableDatabase','migrate','UsageApi.']:assert blocked not in reader,blocked
 assert 'stamp.equals(stamp(' in read('BetaWeeklyUi.java') and 'isAttachedToWindow()' in read('BetaWeeklyUi.java')
 print('Beta999 source: one combined surface, immediately adjacent weekly section; preserved auth/economy/content; bounded worker-only SELECT')
+
+# Regression boundaries for the weekly display follow-up.
+assert 'registerOnSharedPreferenceChangeListener(snapshotListener)' in home
+assert 'unregisterOnSharedPreferenceChangeListener(snapshotListener)' in home
+assert 'UsageSnapshot snapshot=current;' in home
+service=read('UsageRefreshJobService.java');start=service[service.index('public boolean onStartJob'):service.index('public boolean onStopJob')]
+assert 'TrialDemo.active(this)' in start and 'NETWORK_LOCK' not in start
+run=service[service.index('public void run()'):];assert run.index('synchronized(UsageApi.NETWORK_LOCK)')<run.index('TrialDemo.active(')<run.index('UsageApi.refreshAndCache(')
+assert 'RefreshScheduler.cancelAll(c)' in read('TrialDemo.java')
+print('Weekly follow-up: snapshot observer lifecycle, single snapshot render, demo job guards, worker account-transition fence')

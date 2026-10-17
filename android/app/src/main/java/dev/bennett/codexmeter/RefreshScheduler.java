@@ -21,6 +21,7 @@ public final class RefreshScheduler {
     }
 
     public static boolean schedulePeriodic(Context context) {
+        if(context!=null&&TrialDemo.active(context)){cancelAll(context);return true;}
         boolean zSubmit = false;
         Context contextAppContext = appContext(context);
         if (contextAppContext == null) {
@@ -73,6 +74,7 @@ public final class RefreshScheduler {
     }
 
     static boolean scheduleNextShort(Context context, int i) {
+        if(context!=null&&TrialDemo.active(context)){cancelAll(context);return true;}
         Context contextAppContext = appContext(context);
         if (contextAppContext == null) {
             return false;
@@ -148,6 +150,7 @@ public final class RefreshScheduler {
     }
 
     public static boolean scheduleAtNextReset(Context context, UsageSnapshot usageSnapshot) {
+        if(context!=null&&usageSnapshot!=null&&TrialDemo.active(context)){cancelAll(context);return true;}
         Context contextAppContext = appContext(context);
         if (contextAppContext == null || usageSnapshot == null) {
             return false;

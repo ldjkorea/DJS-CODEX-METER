@@ -59,6 +59,17 @@ public final class MainActivity extends AppCompatActivity {
     static boolean refreshInProgress(){return refreshing.get();}
     private LinearLayout weeklyInsightRows;
     private final android.os.Handler insightHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean snapshotListenerRegistered;
+    // Quota commits can arrive without a UI broadcast (including synthetic demo refresh).
+    private final Runnable snapshotRedraw=()->{
+        if(snapshotListenerRegistered&&!isDestroyed()&&!isFinishing()&&content!=null)rebuild();
+    };
+    private final android.content.SharedPreferences.OnSharedPreferenceChangeListener snapshotListener=(prefs,key)->{
+        if("last_snapshot".equals(key)||key==null){
+            insightHandler.removeCallbacks(snapshotRedraw);
+            insightHandler.post(snapshotRedraw);
+        }
+    };
     private final Runnable insightTicker = new Runnable() {
         @Override public void run() {
             UsageSnapshot snapshot = AppPreferences.loadSnapshot(MainActivity.this);
@@ -227,6 +238,10 @@ public final class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         RefreshEngagement.onForeground(this);
+        if(!snapshotListenerRegistered){
+            getSharedPreferences("codex_meter_settings_v1",0).registerOnSharedPreferenceChangeListener(snapshotListener);
+            snapshotListenerRegistered=true;
+        }
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(AppConstants.ACTION_OAUTH_READY);
         intentFilter.addAction(AppConstants.ACTION_OAUTH_RESULT);
@@ -261,6 +276,11 @@ public final class MainActivity extends AppCompatActivity {
 
     @Override // android.app.Activity
     protected void onStop() {
+        if(snapshotListenerRegistered){
+            getSharedPreferences("codex_meter_settings_v1",0).unregisterOnSharedPreferenceChangeListener(snapshotListener);
+            snapshotListenerRegistered=false;
+        }
+        insightHandler.removeCallbacks(snapshotRedraw);
         RefreshEngagement.onBackground(this);
         if (AppPreferences.getAutomaticRefresh(this)) {
             RefreshScheduler.schedulePeriodic(this);
@@ -344,7 +364,7 @@ public final class MainActivity extends AppCompatActivity {
         if(signature.equals(renderedSignature)&&content.getChildCount()>0){if(taskStatusRow!=null){String taskText=TaskStatusStore.homeText(this);if(!taskText.contentEquals(taskStatusRow.getText()))taskStatusRow.setText(taskText);}if(ledgerOverview!=null)ledgerOverview.updateClock();for(Runnable update:quotaClockUpdates)update.run();return;}
         android.view.View scroll=findViewById(R.id.dashboard_scroll);if(scroll!=null&&content.getChildCount()>0)homeScroll=scroll.getScrollY();restoreHomePending=homeScroll>0;renderedSignature=signature;
         freshnessView=null;ledgerOverview=null;taskStatusRow=null;weeklyInsightRows=null;quotaClockUpdates.clear();content.removeAllViews();
-        UsageSnapshot snapshot=AppPreferences.loadSnapshot(this);
+        UsageSnapshot snapshot=current;
         GitHubRelease available=UpdatePreferences.availableUpdate(this);
         if(!SecureTokenStore.isSignedIn(this)){
             if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}

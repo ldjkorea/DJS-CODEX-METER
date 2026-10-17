@@ -15,6 +15,11 @@ public final class UsageRefreshJobService extends JobService {
 
     @Override // android.app.job.JobService
     public boolean onStartJob(final JobParameters jobParameters) {
+        if(TrialDemo.active(this)){
+            RefreshScheduler.cancelAll(this);
+            DiagnosticLog.info(this,"scheduler","refresh_job_skipped_demo","job_id",jobParameters.getJobId());
+            return false;
+        }
         if (!SecureTokenStore.isSignedIn(this)) {
             DiagnosticLog.info(this, "scheduler", "refresh_job_skipped_signed_out",
                     "job_id", jobParameters.getJobId());
@@ -87,7 +92,17 @@ public final class UsageRefreshJobService extends JobService {
                     "reason", this.reason);
             try {
                 try {
-                    RefreshScheduler.scheduleAtNextReset(UsageRefreshJobService.this.getApplicationContext(), UsageApi.refreshAndCache(UsageRefreshJobService.this.getApplicationContext()));
+                    UsageSnapshot refreshed;
+                    synchronized(UsageApi.NETWORK_LOCK){
+                        // Fence account-to-demo transitions before any synthetic snapshot write.
+                        if(stopped||TrialDemo.active(UsageRefreshJobService.this)){
+                            UsageRefreshJobService.this.active.remove(Integer.valueOf(params.getJobId()),this);
+                            if(!stopped){DiagnosticLog.info(UsageRefreshJobService.this,"scheduler","refresh_job_skipped_demo_worker","job_id",params.getJobId());RefreshScheduler.cancelAll(UsageRefreshJobService.this);UsageRefreshJobService.this.jobFinished(params,false);}
+                            return;
+                        }
+                        refreshed=UsageApi.refreshAndCache(UsageRefreshJobService.this.getApplicationContext());
+                    }
+                    RefreshScheduler.scheduleAtNextReset(UsageRefreshJobService.this.getApplicationContext(),refreshed);
                     AppPreferences.recordRefreshSuccess(
                             UsageRefreshJobService.this.getApplicationContext());
                     WidgetRenderer.updateAll(UsageRefreshJobService.this.getApplicationContext());
