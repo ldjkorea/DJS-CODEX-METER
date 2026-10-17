@@ -250,9 +250,9 @@ public final class MainActivity extends AppCompatActivity {
         intentFilter.addAction(AppConstants.ACTION_RELEASES_UPDATED);
         try {
             if (Build.VERSION.SDK_INT >= 33) {
-                registerReceiver(this.authReceiver, intentFilter, "dev.bennett.codexmeter.trial.permission.INTERNAL", null, 4);
+                registerReceiver(this.authReceiver, intentFilter, "dev.bennett.codexmeter.permission.INTERNAL", null, 4);
             } else {
-                registerReceiver(this.authReceiver, intentFilter, "dev.bennett.codexmeter.trial.permission.INTERNAL", null);
+                registerReceiver(this.authReceiver, intentFilter, "dev.bennett.codexmeter.permission.INTERNAL", null);
             }
             this.receiverRegistered = true;
         } catch (RuntimeException e) {
@@ -309,7 +309,7 @@ public final class MainActivity extends AppCompatActivity {
             intent.removeExtra("start_sign_in");
         }
         Uri data = intent == null ? null : intent.getData();
-        if (data != null && "codexmetertrial".equals(data.getScheme()) && "auth".equals(data.getHost())) {
+        if (data != null && "codexmeter".equals(data.getScheme()) && "auth".equals(data.getHost())) {
             if (SecureTokenStore.isSignedIn(this)) {
                 AppPreferences.setOAuthPending(this, false, "");
                 RefreshScheduler.scheduleImmediate(this);
@@ -349,7 +349,7 @@ public final class MainActivity extends AppCompatActivity {
     private static boolean isOAuthReturnIntent(Intent intent) {
         Uri data = intent == null ? null : intent.getData();
         return data != null
-                && "codexmetertrial".equals(data.getScheme())
+                && "codexmeter".equals(data.getScheme())
                 && "auth".equals(data.getHost())
                 && data.getPath() != null
                 && data.getPath().startsWith("/complete");

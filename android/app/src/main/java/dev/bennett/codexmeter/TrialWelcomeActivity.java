@@ -5,9 +5,10 @@ import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 public final class TrialWelcomeActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle saved){Ui.applySelectedTheme(this);super.onCreate(saved);
+        if(!"dev.bennett.codexmeter.trial".equals(getPackageName())){startActivity(new Intent(this,MainActivity.class));finish();return;}
         if(!BetaIdentity.done(this)&&!BetaIdentity.prefs(this).getString("name","").isEmpty())BetaIdentity.prefs(this).edit().putBoolean("setup_done",true).apply();
         if(!BetaIdentity.done(this)){startActivity(new Intent(this,BetaSetupActivity.class));finish();return;}
-        BetaUpdatePolicy.initialize(this);boolean dark=Ui.isDark(this);LinearLayout body=Ui.installPage(this,"GPT HUD BETA · "+AppConstants.VERSION_NAME,false).content;
+        BetaUpdatePolicy.initialize(this);boolean dark=Ui.isDark(this);LinearLayout body=Ui.installPage(this,"GPT HUD · "+AppConstants.VERSION_NAME,false).content;
         androidx.swiperefreshlayout.widget.SwipeRefreshLayout refresh=findViewById(R.id.dashboard_refresh);refresh.setEnabled(false);refresh.setRefreshing(false);
         body.addView(BetaUi.title(this,BetaIdentity.name(this),dark));Ui.addSpacer(body,8);body.addView(BetaUi.body(this,BetaCopy.t(this,"welcome_note"),dark));
         LinearLayout demo=BetaUi.group(body,BetaCopy.t(this,"demo_open"),dark);demo.addView(BetaUi.note(this,BetaCopy.t(this,"demo_note"),dark));demo.addView(BetaUi.action(this,BetaCopy.t(this,"demo_open"),true,dark,()->BetaGrowthStore.WORKER.execute(()->{

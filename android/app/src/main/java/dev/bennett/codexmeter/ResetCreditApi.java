@@ -190,7 +190,7 @@ public final class ResetCreditApi {
 
     private static void notifyUpdated(Context context) {
         try {
-            context.sendBroadcast(new Intent(AppConstants.ACTION_RESET_CREDITS_UPDATED).setPackage(context.getPackageName()), "dev.bennett.codexmeter.trial.permission.INTERNAL");
+            context.sendBroadcast(new Intent(AppConstants.ACTION_RESET_CREDITS_UPDATED).setPackage(context.getPackageName()), "dev.bennett.codexmeter.permission.INTERNAL");
         } catch (RuntimeException e) {
         }
     }

@@ -2,7 +2,7 @@ name: Verify Korean Android source
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'release/**']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -44,7 +44,7 @@ jobs:
       - name: Core and Korean regression tests
         shell: bash
         run: |
-          python3 android/tests/run-release-validation.py
+          python3 android/tests/run-stable311-validation.py
       - name: Compile unsigned APKs and lint
         working-directory: android
         shell: bash
@@ -70,5 +70,5 @@ jobs:
         run: ./windows-widget/build.ps1 -Test
       - name: Verify RPG token metadata and widget regression
         shell: pwsh
-        run: python android/tests/verify-rpg-windows.py
+        run: python android/tests/verify-stable311-source.py
       # No live login, signing secrets, registry changes or public artifacts.

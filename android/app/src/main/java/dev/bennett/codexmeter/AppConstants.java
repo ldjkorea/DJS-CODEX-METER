@@ -4,17 +4,17 @@ import android.os.Build;
 
 /* JADX INFO: loaded from: classes.dex */
 public final class AppConstants {
-    public static final String ACTION_OAUTH_READY = "dev.bennett.codexmeter.trial.action.OAUTH_READY";
-    public static final String ACTION_OAUTH_RESULT = "dev.bennett.codexmeter.trial.action.OAUTH_RESULT";
-    public static final String ACTION_INSTALL_STATUS = "dev.bennett.codexmeter.trial.action.INSTALL_STATUS";
-    public static final String ACTION_RELEASES_UPDATED = "dev.bennett.codexmeter.trial.action.RELEASES_UPDATED";
-    public static final String ACTION_REFRESH_WIDGET = "dev.bennett.codexmeter.trial.action.REFRESH_WIDGET";
-    public static final String ACTION_RESET_ALERT = "dev.bennett.codexmeter.trial.action.RESET_ALERT";
+    public static final String ACTION_OAUTH_READY = "dev.bennett.codexmeter.action.OAUTH_READY";
+    public static final String ACTION_OAUTH_RESULT = "dev.bennett.codexmeter.action.OAUTH_RESULT";
+    public static final String ACTION_INSTALL_STATUS = "dev.bennett.codexmeter.action.INSTALL_STATUS";
+    public static final String ACTION_RELEASES_UPDATED = "dev.bennett.codexmeter.action.RELEASES_UPDATED";
+    public static final String ACTION_REFRESH_WIDGET = "dev.bennett.codexmeter.action.REFRESH_WIDGET";
+    public static final String ACTION_RESET_ALERT = "dev.bennett.codexmeter.action.RESET_ALERT";
     public static final String ACTION_RESET_CREDIT_EXPIRY_ALERT =
-            "dev.bennett.codexmeter.trial.action.RESET_CREDIT_EXPIRY_ALERT";
-    public static final String ACTION_RESET_CREDITS_UPDATED = "dev.bennett.codexmeter.trial.action.RESET_CREDITS_UPDATED";
-    public static final String ACTION_USAGE_UPDATED = "dev.bennett.codexmeter.trial.action.USAGE_UPDATED";
-    public static final String APP_LINK = "codexmetertrial://auth/complete";
+            "dev.bennett.codexmeter.action.RESET_CREDIT_EXPIRY_ALERT";
+    public static final String ACTION_RESET_CREDITS_UPDATED = "dev.bennett.codexmeter.action.RESET_CREDITS_UPDATED";
+    public static final String ACTION_USAGE_UPDATED = "dev.bennett.codexmeter.action.USAGE_UPDATED";
+    public static final String APP_LINK = "codexmeter://auth/complete";
     public static final String AUTHORIZE_URL = "https://auth.openai.com/oauth/authorize";
     public static final String AUTH_BASE = "https://auth.openai.com";
     public static final String CHATGPT_BACKEND = "https://chatgpt.com/backend-api";
@@ -24,7 +24,7 @@ public final class AppConstants {
     public static final String EXTRA_NOTIFICATION_ID = "notification_id";
     public static final String EXTRA_PROMPT_USE_RESET = "prompt_use_reset";
     public static final String EXTRA_SUCCESS = "success";
-    public static final String INTERNAL_PERMISSION = "dev.bennett.codexmeter.trial.permission.INTERNAL";
+    public static final String INTERNAL_PERMISSION = "dev.bennett.codexmeter.permission.INTERNAL";
     public static final String OAUTH_CLIENT_ID = "app_EMoamEEZ73f0CkXaXp7hrann";
     public static final int[] OAUTH_PORTS = {1455, 1457};
     public static final String OAUTH_SCOPE = "openid profile email offline_access";
@@ -34,14 +34,14 @@ public final class AppConstants {
     public static final String REVOKE_URL = "https://auth.openai.com/oauth/revoke";
     public static final String TOKEN_URL = "https://auth.openai.com/oauth/token";
     public static final String USAGE_URL = "https://chatgpt.com/backend-api/wham/usage";
-    public static final int VERSION_CODE = 990011;
-    public static final String VERSION_NAME = "9.9.11";
+    public static final int VERSION_CODE = 88;
+    public static final String VERSION_NAME = "3.1.1";
 
     private AppConstants() {
     }
 
     public static String userAgent() {
-        return "codex-meter-android/9.9.11 (Android " + (Build.VERSION.RELEASE == null ? "unknown" : Build.VERSION.RELEASE) + "; " + (Build.MODEL == null ? "Android" : Build.MODEL) + ")";
+        return "codex-meter-android/3.1.1 (Android " + (Build.VERSION.RELEASE == null ? "unknown" : Build.VERSION.RELEASE) + "; " + (Build.MODEL == null ? "Android" : Build.MODEL) + ")";
     }
 
     public static String updaterUserAgent() {

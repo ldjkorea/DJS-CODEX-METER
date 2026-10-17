@@ -15,7 +15,7 @@ public final class UpdateChannel {
     }
 
     public static String normalize(String value) {
-        return ALPHA; // Beta parser already excludes every normal release.
+        return ALPHA.equalsIgnoreCase(value == null ? "" : value.trim()) ? ALPHA : STABLE;
     }
 
     public static boolean isAlpha(String channel) {

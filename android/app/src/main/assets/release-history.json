@@ -1,5 +1,31 @@
 [
   {
+    "version": "3.1.1",
+    "date": "2026-10-17",
+    "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v3.1.1",
+    "origin": "korean",
+    "ko": {
+      "title": "개인 페이스 메달 · 간결한 세 탭",
+      "changes": [
+        "검토한 베타9.9.11을 정식 패키지와 기존 서명으로 전환합니다.",
+        "홈은 티어·남은 한도와 이번 주간 사용량, 기록은 메달 달력, 성장은 자동 추천을 먼저 보여줍니다.",
+        "개인 관측 기준 일간·활동일 기준 주간/월간 메달, 명예3개·칭호2개를 추가합니다.",
+        "기존 XP·레벨·획득·보관함·설정을 보존하며 한국어 한마디624개·실전 팁40개를 제공합니다.",
+        "Wear·Windows는 정식3.1.0을 유지하고 베타 앱도 별도로 유지합니다."
+      ]
+    },
+    "en": {
+      "title": "Personal pace medals and simpler tabs",
+      "changes": [
+        "Promotes reviewed BETA9.9.11 to the existing stable package and signing key.",
+        "Home prioritizes tier and remaining quotas; Records shows medals; Growth recommends one next goal.",
+        "Adds personal observed daily medals, weekly/monthly active-date medals,3 honors and2 titles.",
+        "Retains XP,levels,earned records,archives and settings; includes624 Korean quotes and40 practical tips.",
+        "Wear and Windows remain3.1.0; the separate beta app is retained."
+      ]
+    }
+  },
+  {
     "version": "3.1.0",
     "date": "2026-10-14",
     "source": "",
