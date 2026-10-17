@@ -22,4 +22,3 @@ subprocess.run([str(java / ('javac' + suffix)), '@' + str(args)], check=True)
 cp = os.pathsep.join(map(str, [out, jar]))
 for name, extra in [('Beta9911SelfTest', [str(root/'app/src/main/assets/coach-ko-v2.json'),str(root/'app/src/main/assets/coach-ko-medals-v1.json')]), ('Beta999SelfTest', []), ('Beta998SelfTest', [str(root/'app/src/main/assets/coach-ko-v2.json')]), ('Beta997LifecycleSelfTest', []), ('Beta996SelfTest', [str(root/'trial/legacy995-30.json'),str(root/'trial/legacy995-400.json')]), ('BetaReleaseSelfTest', ['normal']), ('Stable311ReleaseSelfTest', []), ('MxpEconomySelfTest', []), ('CoachV2SelfTest', [str(root / 'app/src/main/assets/coach-ko-v2.json')])]:
     subprocess.run([str(java / ('java' + suffix)), '-Xmx768m', '-ea', '-cp', cp, 'dev.bennett.codexmeter.' + name, *extra], check=True)
-
