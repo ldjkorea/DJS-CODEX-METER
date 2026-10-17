@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 final class BetaEmblem extends Drawable {
     final Paint p=new Paint(3);final String id;final boolean owned,dark;
     BetaEmblem(String id,boolean owned,boolean dark){this.id=id;this.owned=owned;this.dark=dark;}
-    public void draw(Canvas c){Rect b=getBounds();c.save();c.translate(b.left,b.top);c.scale(b.width()/64f,b.height()/64f);String[] item=BetaCatalog.find(id);String rarity=item==null?"common":item[6];int color=!owned?(dark?0xffb0bbc8:0xff5a687a):rarity.equals("common")?0xff78adfa:rarity.equals("rare")?0xff73bda5:rarity.equals("epic")?0xffbba4fa:rarity.equals("legendary")?0xffe9bd6a:0xffec98bf;
+    public void draw(Canvas c){Rect b=getBounds();c.save();c.translate(b.left,b.top);c.scale(b.width()/64f,b.height()/64f);String[] item=BetaCatalog.find(id);String rarity=item==null?"common":item[6];int color=!owned?(dark?0xffb0bbc8:0xff5a687a):BetaMedalUi.rarity(rarity);
         p.setStyle(Paint.Style.FILL);p.setColor(dark?0xff283240:0xffe4eaf3);c.drawCircle(30,30,27,p);p.setColor(color);p.setStyle(Paint.Style.STROKE);p.setStrokeWidth(2);p.setStrokeCap(Paint.Cap.ROUND);p.setStrokeJoin(Paint.Join.ROUND);c.drawCircle(30,30,25,p);
         if(item!=null&&item.length>7){String metric=item[7];int target=Integer.parseInt(item[8]);
             if(metric.equals("level")){Path gem=new Path();gem.moveTo(30,12);gem.lineTo(47,29);gem.lineTo(30,47);gem.lineTo(13,29);gem.close();c.drawPath(gem,p);}

@@ -33,7 +33,7 @@ final class BetaExperienceUi {
     }
     static void shortcuts(GrowthActivity a,LinearLayout parent,boolean dark){
         LinearLayout card=BetaUi.group(parent,t(a,"나의 성장 경로","My growth journey"),dark);
-        card.addView(BetaUi.row(a,t(a,"목표 고정·명예 경로","Pin a goal and explore honors"),t(a,"기존 획득 조건 그대로","Existing award conditions preserved"),dark,()->open(a,"journey")));
+        card.addView(BetaUi.row(a,t(a,"자동 추천·명예 경로","Automatic goals and honors"),t(a,"기존 획득 조건 그대로","Existing award conditions preserved"),dark,()->open(a,"journey")));
         card.addView(BetaUi.row(a,t(a,"획득 타임라인·회고","Award timeline and recap"),"",dark,()->open(a,"recap")));
     }
     static void preset(AppCompatActivity a){

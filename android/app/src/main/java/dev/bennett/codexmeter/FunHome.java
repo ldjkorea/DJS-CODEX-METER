@@ -23,7 +23,7 @@ final class FunHome {
     private FunHome(AppCompatActivity activity,LinearLayout target,boolean dark,Runnable finished,LinearLayout crestTarget){this.activity=activity;this.target=target;this.dark=dark;this.finished=finished;this.crestTarget=crestTarget;}
     static void add(AppCompatActivity activity,LinearLayout parent,boolean dark,Runnable finished){add(activity,parent,dark,finished,null);}
     static void add(AppCompatActivity activity,LinearLayout parent,boolean dark,Runnable finished,LinearLayout crestTarget){
-        LiveUsageStore.schedule(activity);
+        LiveUsageStore.schedule(activity);BetaMedalStore.refresh(activity);
         LinearLayout target=new LinearLayout(activity);target.setOrientation(LinearLayout.VERTICAL);parent.addView(target);
         FunHome home=new FunHome(activity,target,dark,finished,crestTarget);target.addView(LedgerUi.caption(activity,activity.getString(R.string.next_loading),dark));
         UsageSnapshot snapshot=AppPreferences.loadSnapshot(activity);String key=SubscriptionStore.key(activity,snapshot);
@@ -61,8 +61,7 @@ final class FunHome {
         LinearLayout tier=merged()?BetaHomeUi.card(activity,dark,false):LiveCards.crest(activity,dark,live,fresh);
         if(crestTarget!=null){crestTarget.addView(tier);if(merged())TierTheme.frame((android.view.View)crestTarget.getParent(),TierTheme.tier(activity),dark);else Ui.addSpacer(crestTarget,10);}else target.addView(tier);
         LinearLayout quotation=LiveCards.ai(activity,dark,live,snapshot,fresh,daily,now,quote);
-        LinearLayout value=SubscriptionValueUi.card(activity,dark,snapshot,live,fresh);
-        target.addView(quotation);if(BetaPreferences.preset(activity).equals("detail")){target.addView(value);TiboQuote.add(activity,target,dark);}Ui.addSpacer(target,16);finished.run();
+        target.addView(quotation);Ui.addSpacer(target,16);finished.run();
     }
     private boolean stacked(){return LedgerUi.stacked(activity)||activity.getResources().getConfiguration().screenWidthDp<420;}
     private static String num(double value){return LedgerUi.number(value);}

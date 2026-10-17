@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "quotes": [
+    {"id":"ko.medal.record.1","situation":"medal_record","tone":"spicy","text":"오늘 기록은 잡혔네. 비교할 과거가 좀 더 필요해서, 심사위원인 척은 잠깐 접어둘게.","tipId":"tip.problem"},
+    {"id":"ko.medal.record.2","situation":"medal_record","tone":"spicy","text":"기록 메달 하나 남겼다. 아직 데이터도 없는데 너부터 평가하면 그건 억까지.","tipId":"tip.acceptance"},
+    {"id":"ko.medal.record.3","situation":"medal_record","tone":"spicy","text":"일단 오늘 칸은 채웠네. 등급표는 자료 좀 모이면 펴고, 지금은 쓸 일 하나만 골라보자.","tipId":"tip.scope"},
+    {"id":"ko.medal.record.4","situation":"medal_record","tone":"spicy","text":"달력에 발자국은 남았다. 첫날부터 전설 취급은 못 해도, 없는 기록 취급도 안 하지.","tipId":"tip.actions"},
+    {"id":"ko.medal.bronze.1","situation":"medal_bronze","tone":"spicy","text":"동메달 챙겼네. 시동은 걸었고, 답변 하나는 실제로 써먹어보자.","tipId":"tip.actions"},
+    {"id":"ko.medal.bronze.2","situation":"medal_bronze","tone":"spicy","text":"오늘은 가볍게 굴린 쪽이네. 양이 적어도 질문의 목적까지 가벼울 필요는 없지.","tipId":"tip.problem"},
+    {"id":"ko.medal.bronze.3","situation":"medal_bronze","tone":"spicy","text":"동메달도 오늘 날짜는 똑같이 남는다. 괜히 금칠하려고 질문을 늘리진 말자.","tipId":"tip.scope"},
+    {"id":"ko.medal.bronze.4","situation":"medal_bronze","tone":"spicy","text":"작게 써도 기록은 남네. 일 벌리기 전에 끝났다는 기준부터 하나 정해보자.","tipId":"tip.acceptance"},
+    {"id":"ko.medal.silver.1","situation":"medal_silver","tone":"spicy","text":"은메달이면 평소 페이스에 가까워졌네. 답변 더 쌓기 전에 그래서 뭘 할지부터 뽑아보자.","tipId":"tip.actions"},
+    {"id":"ko.medal.silver.2","situation":"medal_silver","tone":"spicy","text":"은메달 하나 걸렸다. 질문 가지치기도 좀 해주자. AI도 주제가 세 갈래면 산으로 간다.","tipId":"tip.scope"},
+    {"id":"ko.medal.silver.3","situation":"medal_silver","tone":"spicy","text":"슬슬 네 평소 사용 리듬이네. 이번에는 요약만 믿지 말고 근거 위치도 같이 받아보자.","tipId":"tip.summary"},
+    {"id":"ko.medal.silver.4","situation":"medal_silver","tone":"spicy","text":"오늘 달력은 은빛이네. 답변이 그럴듯하면, 틀릴 만한 구석도 한 번 찔러보자.","tipId":"tip.risk"},
+    {"id":"ko.medal.gold.1","situation":"medal_gold","tone":"spicy","text":"금메달 챙겼네. AI한테 일을 시켰으면 결과물 회수도 잊지 말자.","tipId":"tip.actions"},
+    {"id":"ko.medal.gold.2","situation":"medal_gold","tone":"spicy","text":"오늘은 네 평소만큼 썼네. 이제 질문을 더 얹기 전에 한 장으로 접어보자.","tipId":"tip.summary"},
+    {"id":"ko.medal.gold.3","situation":"medal_gold","tone":"spicy","text":"금메달이라고 키보드까지 금도금되진 않더라. 오늘 쓸 답 하나부터 골라보자.","tipId":"tip.acceptance"},
+    {"id":"ko.medal.gold.4","situation":"medal_gold","tone":"spicy","text":"개인 페이스 금메달이다. 이제 한도까지 바닥낼 필요는 없고, 필요한 부분만 마무리하자.","tipId":"tip.scope"},
+    {"id":"ko.medal.week.1","situation":"medal_week","tone":"spicy","text":"이번 주 메달도 남겼네. 달력만 채우지 말고, 다음에 재사용할 결과 하나 챙겨보자.","tipId":"tip.summary"},
+    {"id":"ko.medal.week.2","situation":"medal_week","tone":"spicy","text":"주간 메달 획득. 다음 주의 너한테 설명서 한 줄쯤 남겨주면 기억력 탓은 덜 하겠지.","tipId":"tip.actions"},
+    {"id":"ko.medal.week.3","situation":"medal_week","tone":"spicy","text":"이번 주 기록은 붙잡았다. 다음 질문은 지난 답 복붙보다 바뀐 조건 한 줄이 먼저야.","tipId":"tip.requirements"},
+    {"id":"ko.medal.week.4","situation":"medal_week","tone":"spicy","text":"주간 메달이 걸렸네. 이제 남은 일까지 메달처럼 반짝이는지, 완료 기준부터 확인해보자.","tipId":"tip.acceptance"},
+    {"id":"ko.medal.month.1","situation":"medal_month","tone":"spicy","text":"이번 달 메달도 챙겼네. 달력은 남았고, 재사용할 결과물 하나만 더 건져보자.","tipId":"tip.summary"},
+    {"id":"ko.medal.month.2","situation":"medal_month","tone":"spicy","text":"월간 메달 하나 추가. 지난달 질문을 다시 발명하지 않게 조건부터 정리해두자.","tipId":"tip.requirements"},
+    {"id":"ko.medal.month.3","situation":"medal_month","tone":"spicy","text":"이 달의 기록도 진열장 입주 완료. 이제 다음 달 할 일까지 한꺼번에 들이진 말자.","tipId":"tip.scope"},
+    {"id":"ko.medal.month.4","situation":"medal_month","tone":"spicy","text":"월간 메달 받았다. 박수는 짧게 치고, 다음에 써먹을 행동 세 개만 뽑아보자.","tipId":"tip.actions"}
+  ]
+}

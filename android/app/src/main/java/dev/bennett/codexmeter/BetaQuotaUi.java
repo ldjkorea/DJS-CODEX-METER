@@ -14,7 +14,7 @@ final class BetaQuotaUi {
             boolean dark, List<Runnable> clockUpdates) {
         LinearLayout card = BetaUi.group(parent,
                 BetaExperienceUi.t(activity, "남은 사용 한도", "Remaining limits"), dark);
-        fill(activity,card,snapshot,dark,clockUpdates);
+        fill(activity,card,snapshot,dark,clockUpdates,true);
         Ui.addSpacer(parent,16);
     }
 
@@ -22,13 +22,17 @@ final class BetaQuotaUi {
             boolean dark,List<Runnable> clockUpdates){
         LinearLayout section=new LinearLayout(activity);section.setOrientation(LinearLayout.VERTICAL);
         parent.addView(section,new LinearLayout.LayoutParams(-1,-2));
-        fill(activity,section,snapshot,dark,clockUpdates);
+        fill(activity,section,snapshot,dark,clockUpdates,true);
+        String expected=SubscriptionStore.accountKey(activity);
+        section.addView(BetaUi.action(activity,BetaMedalUi.t(activity,"내 상태 상세","My status details"),false,dark,()->BetaHomeDetailsUi.show(activity,snapshot,dark,expected)));
     }
 
+    static void details(MainActivity activity,LinearLayout parent,UsageSnapshot snapshot,boolean dark){fill(activity,parent,snapshot,dark,new java.util.ArrayList<>(),false);}
+
     private static void fill(MainActivity activity,LinearLayout card,UsageSnapshot snapshot,
-            boolean dark,List<Runnable> clockUpdates){
+            boolean dark,List<Runnable> clockUpdates,boolean compact){
         card.setTag("beta998:quota");
-        if (TrialDemo.active(activity)) card.addView(BetaUi.note(activity,
+        if (!compact && TrialDemo.active(activity)) card.addView(BetaUi.note(activity,
                 BetaExperienceUi.t(activity, "가상 데모 · 실제 계정 한도 아님",
                         "Synthetic demo · not real account limits"), dark));
         boolean stacked = activity.getResources().getConfiguration().fontScale > 1.3f
@@ -37,10 +41,10 @@ final class BetaQuotaUi {
         meters.setOrientation(stacked ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         card.addView(meters, new LinearLayout.LayoutParams(-1, -2));
         addWindow(activity, meters, snapshot, snapshot == null ? null : snapshot.fiveHour,
-                true, dark, stacked, clockUpdates);
+                true, dark, stacked, clockUpdates,compact);
         addWindow(activity, meters, snapshot, snapshot == null ? null : snapshot.weekly,
-                false, dark, stacked, clockUpdates);
-        if (snapshot != null) {
+                false, dark, stacked, clockUpdates,compact);
+        if (snapshot != null && !compact) {
             Ui.addSpacer(card, 8);
             card.addView(BetaUi.note(activity, activity.getString(R.string.next_observed_at,
                     V3Display.time(snapshot.fetchedAtMillis)), dark));
@@ -49,7 +53,7 @@ final class BetaQuotaUi {
 
     private static void addWindow(MainActivity activity, LinearLayout parent,
             UsageSnapshot snapshot, UsageWindow window, boolean fiveHour, boolean dark,
-            boolean stacked, List<Runnable> clockUpdates) {
+            boolean stacked, List<Runnable> clockUpdates,boolean compact) {
         String key = fiveHour ? "five-hour" : "weekly";
         LinearLayout column = new LinearLayout(activity);
         column.setOrientation(LinearLayout.VERTICAL);
@@ -82,6 +86,7 @@ final class BetaQuotaUi {
         column.addView(status);
         TextView reset = BetaUi.note(activity, "", dark);
         reset.setTag("beta998:quota:" + key + ":reset");
+        if(compact)reset.setVisibility(android.view.View.GONE);
         column.addView(reset);
         Runnable update = () -> {
             if (window == null) {

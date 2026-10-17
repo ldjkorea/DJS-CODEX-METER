@@ -30,7 +30,7 @@ public final class GrowthActivity extends AppCompatActivity {
     @Override protected void onDestroy(){generation++;if(detailDialog!=null)detailDialog.dismiss();super.onDestroy();}
     @Override protected void onSaveInstanceState(Bundle state){super.onSaveInstanceState(state);android.view.View view=findViewById(R.id.dashboard_scroll);state.putInt("growth_scroll",view==null?scroll:view.getScrollY());state.putString("growth_mode",mode());state.putInt("beta_period",getIntent().getIntExtra("beta_period",0));}
     void load(boolean force){
-        if(content==null)return;String account=SubscriptionStore.accountKey(this);
+        if(content==null)return;BetaMedalStore.refresh(this);String account=SubscriptionStore.accountKey(this);
         // Clear the old profile immediately, even while its worker is still running.
         if(!java.util.Objects.equals(account,requestedAccount)){
             generation++;busy=false;signature="";loadedAccount="";requestedAccount=account;scroll=0;
@@ -38,7 +38,7 @@ public final class GrowthActivity extends AppCompatActivity {
         }
         if(busy)return;
         String baseSignature=account+":"+mode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+LiveUsageStore.signature(this,AppPreferences.loadSnapshot(this))+":"+AppPreferences.getLastError(this)+":"+AppPreferences.getAutomaticRefresh(this)+":"+MxpEconomy.date(System.currentTimeMillis());
-        String next=baseSignature+":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode();
+        String next=baseSignature+":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode()+":"+getSharedPreferences(BetaMedalStore.CACHE,0).getAll().hashCode();
         if(!force&&next.equals(signature)&&content.getChildCount()>0)return;
         if(account==null){if(detailDialog!=null)detailDialog.dismiss();loadedAccount="";generation++;signature=next;content.removeAllViews();content.addView(LedgerUi.caption(this,BetaCopy.t(this,"no_account"),dark));content.addView(BetaGrowthUi.link(this,BetaCopy.t(this,"account"),dark,()->MatteNav.open(this,1)));return;}
         busy=true;long ticket=++generation;

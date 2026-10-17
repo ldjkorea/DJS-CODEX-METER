@@ -4,11 +4,12 @@ import android.view.*;
 import android.widget.*;
 import org.json.*;
 final class BetaGrowthUi {
-    static boolean render(GrowthActivity a,LinearLayout parent,JSONObject journal,boolean dark){
+    static boolean render(GrowthActivity a,LinearLayout parent,JSONObject journal,boolean dark){return a.getIntent().getBooleanExtra("beta_details",false)?renderDetails(a,parent,journal,dark):BetaCompactGrowthUi.render(a,parent,journal,dark);}
+    static boolean renderDetails(GrowthActivity a,LinearLayout parent,JSONObject journal,boolean dark){
         String account=SubscriptionStore.accountKey(a);BetaGrowthModel model=a.betaGrowthModel;
         if(account==null||model==null)return false;
         JSONObject state=journal==null?null:journal.optJSONObject("beta_v4"),s=model.summary;
-        if(state!=null&&s!=null){try{s.put("next_goal",BetaExperience.goal(state,System.currentTimeMillis(),BetaPreferences.pinned(a,account)));}catch(Exception ignored){}BetaNextGoalUi.render(a,parent,state,model,dark,account);BetaExperienceUi.shortcuts(a,parent,dark);}
+        if(state!=null&&s!=null){try{s.put("next_goal",BetaNextGoal.choose(state,System.currentTimeMillis()));}catch(Exception ignored){}BetaNextGoalUi.render(a,parent,state,model,dark,account);BetaExperienceUi.shortcuts(a,parent,dark);}
         LinearLayout hero=BetaUi.group(parent,"",dark);hero.setTag("beta:hero");
         String equipped=s==null?"":s.optString("equipped");hero.addView(BetaUi.title(a,BetaIdentity.title(a,equipped),dark));Ui.addSpacer(hero,8);
         if(state==null){

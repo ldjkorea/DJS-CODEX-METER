@@ -63,6 +63,7 @@ public final class UsageApi {
                     throw new Exception("Usage was received, but it could not be saved on this device.");
                 }
                 BetaGrowthStore.response(context, SubscriptionStore.accountKey(context), usageSnapshot);
+                BetaMedalStore.response(context, SubscriptionStore.accountKey(context), usageSnapshot);
                 UsageHistoryRecorder.record(context, usageSnapshot);
                 UsageLedgerDatabase.record(context, usageSnapshot, responseRequestUsage.body, manualRecord);
                 PhoneWearSync.pushUsage(context, usageSnapshot);

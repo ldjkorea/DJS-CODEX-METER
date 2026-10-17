@@ -14,7 +14,7 @@ final class CoachUi {
     private static final Map<AppCompatActivity,String> OWNER=new WeakHashMap<>();
     private CoachUi(){}
     static LinearLayout card(AppCompatActivity a,boolean dark,UsageSnapshot snapshot,boolean fresh,boolean bonus,double daily){
-        LinearLayout card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);card.setTag("beta9911:coach");
         String account=SubscriptionStore.accountKey(a),tone=CoachPolicy.tone(a),identity=SpicyQuotes.identity(a,account);
         SpicyQuotes.Selection selection=SpicyQuotes.peek(a,account);String group=CoachCatalog.group(snapshot,fresh,!AppPreferences.getLastError(a).isEmpty(),bonus,daily,System.currentTimeMillis());
         if(OPEN.containsKey(a)&&(!identity.equals(OWNER.get(a))||tone.equals("off")||CoachCatalog.constrained(group))){OPEN.get(a).dismiss();OPEN.remove(a);}
@@ -25,7 +25,7 @@ final class CoachUi {
         if(ko&&tone.equals("spicy")){if(selection==null){card.setVisibility(View.GONE);return card;}text=selection.text;}
         else if(CoachCatalog.constrained(group))text=a.getString(R.string.coach_prepare_only);
         else text=FunCoach.current(a,tone,RpgProgressStore.tier(a),FunInsights.Situation.TIER,CoachMoment.Kind.NORMAL,"local",System.currentTimeMillis());
-        TextView quote=LedgerUi.heading(a,"“"+text+"”",dark);quote.setTextSize(18);card.addView(quote);
+        TextView quote=LedgerUi.heading(a,"“"+text+"”",dark);quote.setTextSize(18);quote.setMinimumHeight(Ui.dp(a,48));quote.setMaxLines(2);quote.setEllipsize(android.text.TextUtils.TruncateAt.END);quote.setContentDescription(text);quote.setOnClickListener(v->{if(!java.util.Objects.equals(account,SubscriptionStore.accountKey(a))||!identity.equals(SpicyQuotes.identity(a,account)))return;LinearLayout full=BetaMedalUi.content(a);full.addView(BetaUi.body(a,text,dark));BetaMedalUi.show(a,a.getString(R.string.live_ai_title),full,account);});card.addView(quote);
         if(selection!=null&&selection.tip!=null&&!CoachCatalog.constrained(group)&&tone.equals("spicy"))card.addView(LedgerUi.action(a,a.getString(R.string.coach_try),false,dark,()->tip(a,dark,account,selection)));
         return card;
     }
@@ -33,6 +33,7 @@ final class CoachUi {
         if(!selection.identity.equals(SpicyQuotes.identity(a,account))||!account.equals(SubscriptionStore.accountKey(a)))return;
         CoachCatalog.Tip t=selection.tip;if(t==null)return;
         LinearLayout content=new LinearLayout(a);content.setOrientation(LinearLayout.VERTICAL);content.setPadding(Ui.dp(a,20),Ui.dp(a,12),Ui.dp(a,20),Ui.dp(a,12));
+        content.addView(BetaUi.body(a,selection.text,dark));Ui.addSpacer(content,12);
         content.addView(LedgerUi.caption(a,t.inputs+"\n\n"+t.fallback,dark));Ui.addSpacer(content,16);
         TextView prompt=LedgerUi.heading(a,t.prompt,dark);prompt.setTextIsSelectable(true);content.addView(prompt);Ui.addSpacer(content,16);content.addView(LedgerUi.caption(a,t.check,dark));
         ScrollView scroll=new ScrollView(a);scroll.addView(content);

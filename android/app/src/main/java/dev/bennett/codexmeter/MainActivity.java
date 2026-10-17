@@ -360,7 +360,7 @@ public final class MainActivity extends AppCompatActivity {
     public void rebuild() {
         if(content==null)return;
         invalidateOptionsMenu();UsageSnapshot current=AppPreferences.loadSnapshot(this);String signature=SubscriptionStore.key(this,current)+":"+(current==null?0:current.fetchedAtMillis)+":"+AppPreferences.getLastError(this).hashCode()+":"+getSharedPreferences("codex_subscription_cost",0).getAll().hashCode()+":"+(current==null?"":UsageInsights.freshness(current.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(this)))+":"+LedgerAggregation.day(System.currentTimeMillis())+":"+getSharedPreferences("codex_meter_settings_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_settings",0).getAll().hashCode()+":"+getSharedPreferences("codex_tier_evolution_v2",0).getString("revision","")+":"+getSharedPreferences("codex_meter_updates_v1",0).getAll().hashCode()+":"+LiveUsageStore.revision()+":"+TaskStatusStore.enabled(this)+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode();
-        signature+=":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode()+":"+AppPreferences.isOAuthPending(this)+":"+BetaPreferences.prefs(this).getAll().hashCode();
+        signature+=":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode()+":"+getSharedPreferences(BetaMedalStore.CACHE,0).getAll().hashCode()+":"+AppPreferences.isOAuthPending(this)+":"+BetaPreferences.prefs(this).getAll().hashCode();
         if(signature.equals(renderedSignature)&&content.getChildCount()>0){if(taskStatusRow!=null){String taskText=TaskStatusStore.homeText(this);if(!taskText.contentEquals(taskStatusRow.getText()))taskStatusRow.setText(taskText);}if(ledgerOverview!=null)ledgerOverview.updateClock();for(Runnable update:quotaClockUpdates)update.run();return;}
         android.view.View scroll=findViewById(R.id.dashboard_scroll);if(scroll!=null&&content.getChildCount()>0)homeScroll=scroll.getScrollY();restoreHomePending=homeScroll>0;renderedSignature=signature;
         freshnessView=null;ledgerOverview=null;taskStatusRow=null;weeklyInsightRows=null;quotaClockUpdates.clear();content.removeAllViews();
@@ -386,12 +386,7 @@ public final class MainActivity extends AppCompatActivity {
             String error=AppPreferences.getLastError(this);empty.addView(LedgerUi.caption(this,error.isEmpty()?getString(R.string.v3_first_refresh):error,dark));
             Button refresh=LedgerUi.action(this,getString(R.string.ui_refresh_56e3ba),true,dark,()->{});refresh.setOnClickListener(v->refreshNow(refresh));refresh.setEnabled(!refreshing.get());empty.addView(refresh);content.addView(empty);Ui.addSpacer(content,16);
         }
-        if(TaskStatusStore.enabled(this)){
-            taskStatusRow=LedgerUi.caption(this,TaskStatusStore.homeText(this),dark);
-            taskStatusRow.setMinHeight(Ui.dp(this,48));taskStatusRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
-            taskStatusRow.setOnClickListener(v->startActivity(new Intent(this,TaskStatusActivity.class)));
-            content.addView(taskStatusRow);Ui.addSpacer(content,8);
-        }
+        taskStatusRow=null;
         TaskStatusJobService.schedule(this);
         FunHome.add(this,content,dark,this::restoreHomeScroll,crestSlot);
         restoreHomeScroll();

@@ -28,9 +28,8 @@ public final class BetaHubActivity extends AppCompatActivity {
         });});
     }
     void journey(JSONObject state)throws Exception {
-        body.setTag("beta998:journey");String pinned=BetaPreferences.pinned(this,account);
-        body.addView(BetaUi.body(this,t("목표를 골라 고정할 수 있어요. 조건과 경험치는 바뀌지 않습니다.","Pin an existing goal. Conditions and XP stay unchanged."),dark));
-        body.addView(BetaUi.action(this,t("자동 추천 사용","Use automatic recommendation"),false,dark,()->{String key=account;BetaGrowthStore.WORKER.execute(()->{BetaPreferences.pin(this,key,"");runOnUiThread(()->{if(BetaUi.current(this,key))load();});});}));
+        body.setTag("beta998:journey");String pinned="";
+        body.addView(BetaUi.body(this,t("현재 기록에 맞춰 다음 목표를 자동 추천합니다.","The next goal is recommended from your records."),dark));
         String category="";LinearLayout group=null;
         for(String[] entry:BetaCatalog.ALL){if(BetaCatalog.title(entry[0]))continue;
             if(!category.equals(entry[5])){category=entry[5];group=BetaUi.group(body,pathName(category),dark);}
@@ -44,7 +43,7 @@ public final class BetaHubActivity extends AppCompatActivity {
     void goal(JSONObject state,String id){
         String[] entry=BetaCatalog.find(id);boolean earned=state.optJSONObject("honors").has(id);
         androidx.appcompat.app.AlertDialog.Builder dialog=new androidx.appcompat.app.AlertDialog.Builder(this).setTitle(BetaCatalog.name(id,BetaIdentity.name(this),BetaCopy.ko(this))).setMessage(entry[BetaCopy.ko(this)?3:4]).setNegativeButton(BetaCopy.t(this,"close"),null);
-        if(!earned)dialog.setPositiveButton(t("이 목표 고정","Pin this goal"),(d,w)->{String key=account;BetaGrowthStore.WORKER.execute(()->{boolean ok=BetaPreferences.pin(this,key,id);runOnUiThread(()->{if(BetaUi.current(this,key)){if(ok)load();else Toast.makeText(this,BetaCopy.t(this,"failed"),Toast.LENGTH_LONG).show();}});});});dialog.show();
+        dialog.show();
     }
     void recap(JSONObject state)throws Exception {
         body.setTag("beta998:recap");JSONObject summary=BetaExperience.recap(state,System.currentTimeMillis(),month);

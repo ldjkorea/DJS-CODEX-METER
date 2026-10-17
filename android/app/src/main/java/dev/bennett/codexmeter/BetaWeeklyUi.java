@@ -13,7 +13,6 @@ final class BetaWeeklyUi {
     private static String t(android.content.Context c,String ko,String en,Object... args){return BetaExperienceUi.t(c,ko,en,args);}
     static void add(MainActivity a,LinearLayout parent,UsageSnapshot snapshot,boolean dark,java.util.List<Runnable> clocks){
         LinearLayout card=BetaUi.group(parent,t(a,"이번 주간 사용량","This week's usage"),dark);card.setTag("beta999:weekly");
-        if(TrialDemo.active(a))card.addView(BetaUi.note(a,t(a,"가상 데모 · 실제 계정 사용량 아님","Synthetic demo · not real account usage"),dark));
         UsageWindow window=snapshot==null?null:snapshot.weekly;
         if(window==null){
             card.addView(BetaUi.body(a,snapshot==null?t(a,"사용량 확인이 필요해요","Check usage first"):t(a,"주간 한도가 제공되지 않았어요","A weekly limit was not provided"),dark));
@@ -23,18 +22,18 @@ final class BetaWeeklyUi {
         LedgerPeriods.Span span=LedgerPeriods.span(window.effectiveResetAtMillis(snapshot.fetchedAtMillis),window.windowSeconds,snapshot.fetchedAtMillis);
         String range=span==null?t(a,"한도 주기 · 기간 정보 없음","Quota cycle · timeline unavailable")
                 :t(a,"한도 초기화 기준 · %s–%s","Quota reset cycle · %s–%s",date(span.start),date(span.end));
-        TextView period=BetaUi.note(a,range,dark);period.setTag("beta999:weekly-period");card.addView(period);
+        TextView period=BetaUi.note(a,range,dark);period.setTag("beta999:weekly-period");period.setVisibility(android.view.View.GONE);card.addView(period);
         TextView value=BetaUi.text(a,t(a,"%s 사용","%s used",UsagePrecision.used(window,AppPreferences.usageDecimalPlaces(a))),28,Ui.mainText(dark),true);
         value.setTag("beta999:weekly-used");card.addView(value);
         TextView evidence=BetaUi.note(a,"",dark);evidence.setTag("beta999:weekly-evidence");card.addView(evidence);
         Runnable update=()->{
             UsageEvidence.State state=UsageEvidence.state(snapshot,window,!AppPreferences.getLastError(a).isEmpty(),System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(a));
             int id=state==UsageEvidence.State.CACHED_AFTER_FAILURE?R.string.phase_a_cached_failed:state==UsageEvidence.State.RESET_PASSED?R.string.phase_a_reset_passed:state==UsageEvidence.State.STALE?R.string.phase_a_stale:state==UsageEvidence.State.UNAVAILABLE?R.string.phase_a_unavailable:R.string.phase_a_confirmed;
-            evidence.setText(id);
+            evidence.setText(id);evidence.setVisibility(state==UsageEvidence.State.CONFIRMED?android.view.View.GONE:android.view.View.VISIBLE);
         };clocks.add(update);update.run();
         LinearLayout graph=new LinearLayout(a);graph.setOrientation(LinearLayout.VERTICAL);graph.setTag("beta999:weekly-graph");card.addView(graph);
         graph.addView(BetaUi.note(a,t(a,"관측 기록 확인 중","Loading observed records"),dark));
-        card.addView(BetaUi.action(a,t(a,"상세 사용 기록","Detailed usage records"),false,dark,()->a.startActivity(new Intent(a,LedgerAnalyticsActivity.class))));
+        card.addView(BetaUi.action(a,t(a,"상세 사용 기록","Detailed usage records"),false,dark,()->a.startActivity(new Intent(a,LedgerAnalyticsActivity.class).putExtra("medal_usage_details",true))));
         final String stamp=stamp(a,snapshot);
         WORKER.execute(()->{
             BetaWeeklyUsage.Model result=null;try{if(stamp.equals(stamp(a,AppPreferences.loadSnapshot(a))))result=BetaWeeklyReader.read(a.getApplicationContext(),snapshot,System.currentTimeMillis());}catch(Exception ignored){}
@@ -47,21 +46,21 @@ final class BetaWeeklyUi {
     static void render(MainActivity a,LinearLayout graph,BetaWeeklyUsage.Model model,boolean dark){
         graph.removeAllViews();
         if(model==null||model.days.isEmpty()||model.measuredDays==0){
-            TextView empty=BetaUi.note(a,t(a,"일별 관측 자료 부족 · 없는 기록을 0으로 계산하지 않아요","Insufficient daily observations · missing records are not zero"),dark);empty.setTag("beta999:weekly-missing");graph.addView(empty);return;
+            TextView empty=BetaUi.note(a,t(a,"일별 기록 수집 중","Collecting daily observations"),dark);empty.setTag("beta999:weekly-missing");graph.addView(empty);return;
         }
-        graph.addView(BetaUi.note(a,t(a,"일별 관측 증가량 · %%p","Observed daily increases · percentage points"),dark));
+
         int columns=a.getResources().getConfiguration().fontScale>1.3f||a.getResources().getConfiguration().screenWidthDp<360?Math.min(4,model.days.size()):model.days.size();
         GridLayout grid=new GridLayout(a);grid.setColumnCount(columns);grid.setLayoutParams(new LinearLayout.LayoutParams(-1,-2));graph.addView(grid);
         double max=0;for(BetaWeeklyUsage.Day day:model.days)if(day.measured)max=Math.max(max,day.points);
         for(int i=0;i<model.days.size();i++){
             BetaWeeklyUsage.Day day=model.days.get(i);LinearLayout col=new LinearLayout(a);col.setOrientation(LinearLayout.VERTICAL);col.setGravity(Gravity.CENTER_HORIZONTAL);
             GridLayout.LayoutParams params=new GridLayout.LayoutParams(GridLayout.spec(i/columns),GridLayout.spec(i%columns,1f));params.width=0;params.height=-2;params.topMargin=Ui.dp(a,8);grid.addView(col,params);
-            TextView amount=BetaUi.note(a,day.measured?UsagePrecision.number(day.points):day.future?t(a,"예정","Next"):"—",dark);amount.setGravity(Gravity.CENTER);col.addView(amount,new LinearLayout.LayoutParams(-1,-2));
+            TextView amount=BetaUi.note(a,day.measured?UsagePrecision.number(day.points):day.future?t(a,"예정","Next"):"—",dark);amount.setVisibility(android.view.View.GONE);amount.setGravity(Gravity.CENTER);col.addView(amount,new LinearLayout.LayoutParams(-1,-2));
             FrameLayout track=new FrameLayout(a);col.addView(track,new LinearLayout.LayoutParams(-1,Ui.dp(a,42)));
             if(day.measured&&day.points>0){View bar=new View(a);bar.setBackgroundColor(Ui.accent(a,dark));FrameLayout.LayoutParams fill=new FrameLayout.LayoutParams(Ui.dp(a,12),Math.max(1,Ui.dp(a,(int)Math.round(40*day.points/max))),Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL);track.addView(bar,fill);}
             TextView label=BetaUi.note(a,day.date.format(DateTimeFormatter.ofPattern("M/d")),dark);label.setGravity(Gravity.CENTER);col.addView(label,new LinearLayout.LayoutParams(-1,-2));
             col.setContentDescription(day.date+" · "+(day.measured?t(a,"관측 증가 %s%%p","Observed increase %s percentage points",UsagePrecision.number(day.points)):day.future?t(a,"예정","Upcoming"):t(a,"자료 없음","No data")));
         }
-        graph.addView(BetaUi.note(a,t(a,"관측 %d일 · 측정 구간 %d일. 전체 사용량·질문 수가 아닙니다.","%d days recorded · %d days measured. Not total usage or conversation counts.",model.recordedDays,model.measuredDays),dark));
+
     }
 }
