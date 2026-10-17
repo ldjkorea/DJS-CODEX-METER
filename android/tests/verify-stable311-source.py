@@ -12,6 +12,7 @@ for path in ['android/shared/src/main/java/dev/bennett/codexmeter/'+n+'.java' fo
 for name in ['GitHubReleaseParser','UpdateChannel']:
  assert actual(app+name+'.java')==old(stable,app+name+'.java'),name
 path='android/shared/src/main/java/dev/bennett/codexmeter/KoreanUpdateTrust.java';assert actual(path)==old(stable,path)
+assert actual('android/settings.gradle.kts')==old(stable,'android/settings.gradle.kts'),'Stable Wear module remains included'
 stable_paths=subprocess.check_output(['git','ls-tree','-r','--name-only',stable],cwd=root,text=True).splitlines()
 beta_paths=set(subprocess.check_output(['git','ls-tree','-r','--name-only',beta],cwd=root,text=True).splitlines())
 for path in stable_paths:

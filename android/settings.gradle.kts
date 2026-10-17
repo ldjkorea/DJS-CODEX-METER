@@ -25,3 +25,4 @@ dependencyResolutionManagement {
 rootProject.name = "Codex-Meter"
 include(":app")
 include(":shared")
+include(":wear")
