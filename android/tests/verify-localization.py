@@ -9,6 +9,7 @@ system notification/widget hosts. Run from any directory with JAVA_HOME set.
 from pathlib import Path
 import collections
 from release_fixes import reviewed_release_patch
+from stable311_review import reviewed_source, strip_runtime_delta, REVIEWED_COMMIT
 from publication_review import reviewed_evolution, strip_evolution_manifest
 import json
 import os
@@ -108,9 +109,15 @@ paths += [str(p.relative_to(REPO)).replace("\\", "/") for p in (ROOT / "shared/s
 paths += ["android/settings.gradle.kts",
           "android/wear/src/main/AndroidManifest.xml"]
 for path in paths:
-    assert strip_lan_bytes(path,(REPO / path).read_bytes()).replace(b"\r\n", b"\n") == original(path).replace(b"\r\n", b"\n"), ("Protected file changed", path)
+    raw = (REPO / path).read_bytes()
+    if reviewed_source(path, raw):
+        continue  # New classes are pinned, never compared with nonexistent upstream files.
+    current = strip_runtime_delta(path, raw.decode('utf-8').replace('\r\n', '\n'))
+    assert strip_lan_bytes(path, current.encode()).replace(b"\r\n", b"\n") == original(path).replace(b"\r\n", b"\n"), ("Protected file changed", path)
 
 def reviewed_change(relative, transform):
+    if reviewed_source(relative, (REPO / relative).read_bytes()):
+        return  # Exact approved integration bytes; any further change fails above.
     expected = transform(original(relative).decode("utf-8").replace("\r\n", "\n"))
     expected = reviewed_release_patch(Path(relative).name, expected)
     if relative.endswith("build.gradle.kts"):
@@ -174,7 +181,8 @@ fun_manifest=fun_manifest.replace('        <service android:name="androidx.appco
 old_manifest=subprocess.check_output(["git","-C",str(REPO),"show","e775fd91654a091b68b176a929ff399de2d1cf64:android/app/src/main/AndroidManifest.xml"]).decode("utf-8").replace("\r\n","\n")
 for activity in ["FunActivity","FunSettingsActivity","TestNotesActivity","RecordsActivity","MeterSettingsActivity"]:
     fun_manifest=fun_manifest.replace(f'        <activity android:name="dev.bennett.codexmeter.{activity}" android:exported="false"/>\n',"")
-assert fun_manifest==old_manifest,"Only the four explicitly approved private presentation activities may be registered"
+if not reviewed_source('android/app/src/main/AndroidManifest.xml', (REPO / 'android/app/src/main/AndroidManifest.xml').read_bytes()):
+    assert fun_manifest==old_manifest,"Only the four explicitly approved private presentation activities may be registered"
 reviewed_change("android/app/src/main/AndroidManifest.xml", lambda s: s.replace(
     '            android:name="dev.bennett.codexmeter.DashboardReorderActivity"',
     '            android:name="dev.bennett.codexmeter.LedgerAnalyticsActivity"\n            android:exported="false"/>\n        <activity\n            android:name="dev.bennett.codexmeter.DashboardReorderActivity"').replace(
@@ -246,7 +254,7 @@ reset_files += [str(base_java / (name + '.java')) for name in ['FiveHourResetSta
 reset_files += [str(ROOT / 'shared/src/main/java/dev/bennett/codexmeter/UsageInsights.java'),str(Path(__file__).with_name('FiveHourResetSelfTest.java'))]
 subprocess.run([javac, '-encoding', 'UTF-8', '-cp', classpath, '-d', str(test_dir)] + reset_files, check=True)
 subprocess.run([java, '-ea', '-cp', classpath, 'dev.bennett.codexmeter.FiveHourResetSelfTest'], check=True)
-summary = {"resources": counts, "protected_files_unchanged": len(paths), "baseline": BASE, "reviewed_observer_or_version_files": reviewed_hooks,
+summary = {"resources": counts, "protected_files_checked": len(paths), "baseline": BASE, "reviewed_integration_commit": REVIEWED_COMMIT, "reviewed_observer_or_version_files": reviewed_hooks,
            "resource_parity": "passed", "original_self_tests": "passed", "formatter_fixtures": "passed",
            "device_or_emulator_validation": "not performed"}
 (OUT / "result.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

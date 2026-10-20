@@ -26,3 +26,46 @@ Windows는latest릴리스의자산파일명에서버전을읽는다. 새릴리�
 - GitHub CI는위구분을동일하게출력하고폰/Wearunsigned컴파일·lint·기존Windows단위빌드를실행한다. 키/Release쓰기권한을추가하지않는다.
 - 실제SQLite/에뮬레이터·실물폰·실계정OAuth·Wear/Windows실통신을구분한다. 후자는이번에미검증이며사용자기기에설치하지않는다.
 - 새키/앱삭제/초기화/사용자원본이동·삭제/실계정도구변경/Drive자동백업·업로드없음. 최종소스HEAD/APK해시/배포와설치실행결과는 SOURCE/delivery/stable-3.1.1/release-20261017의VERIFICATION.ko.md/release-receipt.json에실제완료후기록한다.
+
+## 2026-10-21 검사 보완 — 앱 바이너리 변경 없음
+
+기준 HEAD는 `6638a50b3771d717bad9c6704f6c9924bda418fa`. 위 2026-10-17의 두 검사 불일치 기록은 당시 결과이며 지우지 않는다. 이번에는 테스트/검증 절차/설명만 수정한다. 앱 Java·리소스·Gradle·서명·사용자 데이터·버전은 변경하지 않으므로 새 APK/태그/공개 릴리스가 필요하지 않다. 배포에 대한 새 승인은 이번 검증 코드의 GitHub 반영에만 사용하며 과거 승인을 재사용하지 않는다.
+
+### 응답 크기 제한 재현과 다음 릴리스 사전 검사
+
+`verify-release-response-bounds.py`는 구 정식3.1.0(고정 커밋 `afc7d0b9749a42c034e7b7c7305cf8a6cd7fd23a`)의 실제 ReleaseUpdateClient/UpdatePreferences와 현재 실제 클래스를 각각 별도 JVM으로 컴파일한다. Android 설정은 메모리 대역이고 모든 HTTPS 연결은 JVM 내부 가짜 연결로 가로챈다. 네트워크·기기·로그인·운영 DB를 사용하지 않는다. 기존 JSON 테스트 라이브러리만 사용하며 새 의존성을 다운로드하지 않는다.
+
+- 구 버전524,288바이트/현재2,097,152바이트 각각 한도−1/정확히한도/한도+1, UTF-8 다바이트, 스트림 정리 검사.
+- 실제 요청/설정 저장 경로에서 초과 응답 거부, 이전 JSON/ETag/사용자 설정 보존, 안전한 오류, 재시도 회복과304 캐시 사용을 검사한다. 각각34개 통과.
+- `--release-json <file> --budget-only`로 **익명 `/releases?per_page=30`의 새 응답 전체**를 검사한다. `/latest`나 오류 객체는 거부한다. 특정 공개 응답 크기를 기대값으로 고정하지 않는다.
+- 종료0: 구 한도와 사전 여유 충족. 종료1: 구 한도 초과. 종료2: 여유32KiB 미만으로 **다음 릴리스 전 점검 필요**. 32KiB는 이번에 정한 사전 점검 여유이며 GitHub/앱의 실제 한도가 아니다. 합성 검사를 통과해도 공개 예산 검증을 완료했다고 표시하지 않는다.
+- 2026-10-21 08:50 KST 익명 읽기 관측은493,841바이트/구 한도까지30,447바이트. 현재는 읽을 수 있지만 기본 사전 여유보다 작아 종료2를 재현했다. 다음 앱 릴리스는 신규 본문/자산을 포함한 게시 후 목록 크기를 별도로 확인해야 한다. 이 수치는 일시점 관측이며 영구 기준이 아니다. 기존 릴리스 삭제·본문 축약·API 경로 변경은 하지 않았다.
+
+### 기준 불일치 교정 근거
+
+1. `verify-insights.py`: 실제 계산/저장 검사는2181+67+533개를 통과한 뒤 옛3.0.0/code85 고정값에서 실패했다. 정식3.1.1/code88과 AppConstants 동등성으로 교정했다. 계산·저장·키 생성 방지 검사는 그대로 유지한다.
+2. `verify-localization.py`: 첫 OAuthClient 실패는 데모 토큰의 refresh/revoke 네트워크 차단 두 줄이다. 이어서 가려져 있던 RefreshScheduler의 예약 차단, UsageRefreshJobService의 시작/대기 작업 차단도 확인했다. `stable311_review.py`는 이 정확한 추가 코드만 역변환하고 나머지 전체 바이트를 기존 독립 원본과 계속 비교한다. 차단 코드 수정/누락/중복 또는 그 밖의 변경은 실패한다.
+3. 옛 원본에 존재하지 않는 CoachCatalog/MxpEconomy/MxpHonors는 공개3.1.1의 각 파일 SHA256에 고정했다. 기존 기준 파일을 추가/덮어써 존재했던 것처럼 만들지 않았다.
+4. AppConstants·app/Wear Gradle·Manifest·UsageApi의 승인된 버전/QA 옵션/비공개 화면/성장·메달 저장 연결 차이는 공개3.1.1의 **정확한 전체 파일 SHA256**으로 검사한다. 이5파일과 신규3파일 이외에는 이 예외가 적용되지 않는다. 자동 해시 갱신 기능은 없다. 공개 승인된 값의 추가 검토 없이 파일을 바꾸면 실패한다.
+5. `test_release_validation.py`의6개 테스트/하위 사례는 byte 경계, UTF-8, 잘못된 JSON/여유값, 8파일 변조, 세 런타임 코드 변조/차단 누락 및 실행 중 결과를 완료로 표시하지 않는지 검사한다. 과거 baselines 폴더는 전혀 수정하지 않았다. 한국어 리소스 대응·영어 원문·원래 파서·포맷 테스트도 그대로 실행한다.
+6. `run-stable311-validation.py`에서 과거 실패 문구를 찾으면 통과시키던 두 우회를 제거했다. 이제 두 검사 모두 종료0이 필수다. `--release-json`을 주면 응답 크기 사전 점검도 필수 통과한다. CI의 기본 합성 성공은 실시간 공개 크기/실사용 성공과 구분한다.
+
+좁은 실행 명령(JDK21/기존 JSON jar):
+
+```text
+python android/tests/test_release_validation.py
+python android/tests/verify-release-response-bounds.py
+python android/tests/verify-insights.py
+python android/tests/verify-localization.py
+python android/tests/run-stable311-validation.py --bash <Git Bash executable>
+python android/tests/run-stable311-validation.py --focused --bash <Git Bash executable>
+python android/tests/verify-release-response-bounds.py --budget-only --release-json <fresh-public-releases.json>
+```
+
+원본 재현/최종 로그는 `android/build/local-qa-20261021` 및 기존 `android/build/stable311-validation`에 보관한다. 실사용·실기기·실계정·Wear/Windows 실통신 검증과 로컬 Gradle/APK 빌드는 이번에 수행하지 않는다. 기존3.1.1 공개 자산/태그와 베타9.9.11·SOURCE 미커밋 변경·키/데이터는 보존한다. Drive 변경과 새 자격증명·계정·리뷰어·병렬 개발자 생성은 없다.
+
+### 범위 밖 과거 검사에서 새로 드러난 실패
+
+옛 insights 버전 검사가 통과한 뒤 전체 `android/run-tests.sh`는 그다음 `verify-ui-polish.py`의 `PolishSelfTest: All 64 versions offline`에서 실패했다. 64개라는 과거 고정 기록 수를 전제한 별도 검사이며 이번 두 기준 교정 범위 밖이다. 실패를 허용하는 문자열 우회를 추가하지 않고 전체 실행은 실패로 유지한다. 과거 검사 전체가 녹색이라고 보고하거나 정식main을 덮어쓰지 않는다.
+
+이번 검사/문서 개선은 `qa/release-validation-20261021` 브랜치에서 공개 검토할 수 있게 반영하고, `.github/workflows/release-validation.yml`은 **Gradle/SDK/기기 없이** 해당 범위의 `--focused` 검사만 실행한다. 결과에는 `focused:true`, `all_legacy_checks_passed:null`을 남겨 전체 회귀 성공과 구분한다. 기존 전체 CI/검사/과거 fixture는 삭제하거나 무력화하지 않는다. 정식main 병합 및 새 앱 릴리스 전에는 이 별도 과거 검사 문제도 검토해야 한다.
