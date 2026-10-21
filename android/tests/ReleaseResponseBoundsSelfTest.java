@@ -45,7 +45,15 @@ public final class ReleaseResponseBoundsSelfTest {
         catch (InvocationTargetException e) { throw (Exception) e.getCause(); }
     }
     public static void main(String[] args) throws Exception {
+        if (args[0].equals("--probe")) {
+            var rows = GitHubReleaseParser.parse(java.nio.file.Files.readString(java.nio.file.Path.of(args[1])));
+            var tracked = UpdateChannel.trackedRelease(rows, "stable");
+            System.out.println("Installed parser contract: rows=" + rows.size() + "; tracked=" + (tracked == null ? "NONE" : tracked.version));
+            if (tracked == null) System.exit(1);
+            return;
+        }
         int max = Integer.parseInt(args[0]);
+        boolean guarded = args.length > 1 && args[1].equals("guarded");
         Field field = ReleaseUpdateClient.class.getDeclaredField("MAX_RESPONSE_BYTES");
         field.setAccessible(true);
         check(field.getInt(null) == max, "Actual pinned source response bound");
@@ -104,6 +112,33 @@ public final class ReleaseResponseBoundsSelfTest {
         status = 304;
         check(ReleaseUpdateClient.check(context).isEmpty(), "Not-modified uses valid cached JSON");
         check(connection.disconnected, "Not-modified disconnects");
+        // Reproduce the original destructive empty success, and the unreleased cache guard.
+        status = 200;
+        UpdatePreferences.saveSuccess(context, prior, "synthetic-prior-etag");
+        response = prior.replace("ldjkorea/codex-meter-ko", "ldjkorea/DJS-CODEX-METER").getBytes(StandardCharsets.UTF_8);
+        try {
+            var rows = ReleaseUpdateClient.check(context);
+            check(!guarded && rows.isEmpty(), "Legacy request falsely succeeds with zero accepted releases");
+            check(UpdatePreferences.releases(context).isEmpty(), "Legacy request replaces its prior list");
+        } catch (IllegalStateException expected) {
+            check(guarded, "Guard rejects populated incompatible feed");
+            check(UpdatePreferences.releases(context).size() == 1, "Rejected feed preserves prior releases");
+            check(UpdatePreferences.etag(context).equals("synthetic-prior-etag"), "Rejected feed preserves ETag");
+            check(!UpdatePreferences.lastError(context).isBlank(), "Existing update error UI receives failure");
+        }
+        check(connection.disconnected && connection.input.closed, "Incompatible feed cleans resources");
+        response = "[]".getBytes(StandardCharsets.UTF_8);
+        check(ReleaseUpdateClient.check(context).isEmpty() && UpdatePreferences.lastError(context).isEmpty(),
+                "A genuinely empty feed remains valid");
+        if (guarded) {
+            for (String bad : new String[]{"{", "{}"}) {
+                UpdatePreferences.saveSuccess(context, prior, "synthetic-prior-etag");
+                response = bad.getBytes(StandardCharsets.UTF_8);
+                boolean failed = false;
+                try { ReleaseUpdateClient.check(context); } catch (Exception expected) { failed = true; }
+                check(failed && UpdatePreferences.releases(context).size() == 1, "Malformed feed preserves prior cache");
+            }
+        }
         System.out.println("Release response bound " + max + ": " + checks + " checks passed; actual reader/preferences; synthetic/no sockets.");
     }
 }

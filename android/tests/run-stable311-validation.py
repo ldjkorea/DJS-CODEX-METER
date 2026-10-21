@@ -18,6 +18,8 @@ run('current-contracts',[sys.executable,'android/tests/run-stable311-checks.py']
 run('promotion-scope',[sys.executable,'android/tests/verify-stable311-source.py'])
 run('release-validation-negative',[sys.executable,'android/tests/test_release_validation.py'])
 run('response-bounds',[sys.executable,'android/tests/verify-release-response-bounds.py',*(['--release-json',str(a.release_json)] if a.release_json else [])])
+run('download-policy',[sys.executable,'android/tests/verify-update-download-policy.py'])
+run('release-catalog',[sys.executable,'android/tests/verify-ui-polish.py','--catalog-only'])
 if a.focused:
  run('insights',[sys.executable,'android/tests/verify-insights.py'])
 else:

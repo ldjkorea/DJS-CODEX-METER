@@ -17,20 +17,23 @@ LEGACY_COMMIT = 'afc7d0b9749a42c034e7b7c7305cf8a6cd7fd23a'
 DEFAULT_RESERVE = 32768
 
 
-def budget(raw, reserve=DEFAULT_RESERVE):
+def budget(raw, reserve=DEFAULT_RESERVE, additional=0):
     if reserve < 0 or reserve > LEGACY_LIMIT:
         raise ValueError('Reserve must be within legacy byte limit')
-    if len(raw) > LEGACY_LIMIT:
-        return 1, f'INCOMPATIBLE: {len(raw)} bytes > legacy {LEGACY_LIMIT}; old clients cannot discover updates.'
+    if additional < 0:
+        raise ValueError('Projected additional bytes must not be negative')
+    projected = len(raw) + additional
+    if projected > LEGACY_LIMIT:
+        return 1, f'INCOMPATIBLE: observed={len(raw)}, projected={projected} bytes > legacy {LEGACY_LIMIT}; old clients cannot discover updates.'
     if not isinstance(json.loads(raw), list):
         raise ValueError('Expected the releases list, not /latest or an error object')
-    remaining = LEGACY_LIMIT - len(raw)
+    remaining = LEGACY_LIMIT - projected
     if remaining < reserve:
-        return 2, f'AT RISK: {len(raw)} bytes; only {remaining} bytes remain, reserve={reserve}. Recheck projected post-release response before publishing.'
-    return 0, f'Budget OK: {len(raw)} bytes; {remaining} bytes remain, reserve={reserve}; point-in-time only.'
+        return 2, f'AT RISK: observed={len(raw)}, projected={projected} bytes; only {remaining} bytes remain, reserve={reserve}. Recheck post-release response before publishing.'
+    return 0, f'Budget OK: observed={len(raw)}, projected={projected} bytes; {remaining} bytes remain, reserve={reserve}; point-in-time estimate only.'
 
 
-def run_jvm():
+def run_jvm(public_json=None):
     root = Path(__file__).resolve().parents[2]
     android = root / 'android'
     out = android / 'build/release-response-bounds'
@@ -74,7 +77,7 @@ public PackageInfo getPackageInfo(String name,int flags){return new PackageInfo(
         'android/os/SystemClock.java': 'package android.os; public class SystemClock {public static long elapsedRealtime(){return 100;}}',
         'android/os/Build.java': 'package android.os; public class Build {public static String MODEL="fixture";public static class VERSION{public static String RELEASE="fixture";}}',
         'dev/bennett/codexmeter/BuildConfig.java': 'package dev.bennett.codexmeter; public class BuildConfig {public static final boolean DEBUG=false,KOREAN_UPDATES_ENABLED=true; public static final String UPDATE_API_URL="";}',
-        'dev/bennett/codexmeter/R.java': 'package dev.bennett.codexmeter; public class R {public static class string {public static final int ko_updates_unavailable=1;}}',
+        'dev/bennett/codexmeter/R.java': 'package dev.bennett.codexmeter; public class R {public static class string {public static final int ko_updates_unavailable=1,update_metadata_incompatible=2;}}',
         'dev/bennett/codexmeter/DiagnosticLog.java': '''package dev.bennett.codexmeter;public class DiagnosticLog {
 public static void info(Object...args){}public static void error(Object...args){}}
 ''',
@@ -91,7 +94,8 @@ public static void dismiss(Object c){}public static void onReleasesUpdated(Objec
     app = android / 'app/src/main/java/dev/bennett/codexmeter'
     files += [app / (name + '.java') for name in ['AppConstants', 'DiagnosticSanitizer', 'GitHubRelease', 'GitHubReleaseSource', 'GitHubReleaseParser', 'ReleaseVersion', 'UpdateChannel', 'UpdateCheckFrequency']]
     files += [android / 'shared/src/main/java/dev/bennett/codexmeter/KoreanUpdateTrust.java', android / 'tests/ReleaseResponseBoundsSelfTest.java']
-    for label, ref, limit in [('legacy-3.1.0', LEGACY_COMMIT, LEGACY_LIMIT), ('current', None, CURRENT_LIMIT)]:
+    incompatible = False
+    for label, ref, limit in [('legacy-3.1.0', LEGACY_COMMIT, LEGACY_LIMIT), ('published-3.1.1', '6638a50b3771d717bad9c6704f6c9924bda418fa', CURRENT_LIMIT), ('current', None, CURRENT_LIMIT)]:
         target = out / label
         target.mkdir(exist_ok=True)
         actual = []
@@ -107,24 +111,37 @@ public static void dismiss(Object c){}public static void onReleasesUpdated(Objec
         args = target / 'javac.args'
         args.write_text('-encoding UTF-8\n-cp ' + quote(jar) + '\n-d ' + quote(target) + '\n' + '\n'.join(map(quote, files + actual)), encoding='utf-8')
         subprocess.run([str(java / ('javac' + suffix)), '@' + str(args)], check=True)
-        subprocess.run([str(java / ('java' + suffix)), '-Xmx128m', '-ea', '-cp', str(target) + os.pathsep + str(jar), 'dev.bennett.codexmeter.ReleaseResponseBoundsSelfTest', str(limit)], check=True)
+        command = [str(java / ('java' + suffix)), '-Xmx128m', '-ea', '-cp', str(target) + os.pathsep + str(jar), 'dev.bennett.codexmeter.ReleaseResponseBoundsSelfTest']
+        subprocess.run(command + [str(limit), 'legacy' if ref else 'guarded'], check=True)
+        if public_json:
+            print('Public metadata compatibility:', label, flush=True)
+            result = subprocess.run(command + ['--probe', str(public_json)])
+            if result.returncode not in (0, 1):
+                raise RuntimeError('Metadata probe crashed')
+            incompatible |= result.returncode == 1
+    return incompatible
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--release-json', type=Path)
     parser.add_argument('--reserve-bytes', type=int, default=DEFAULT_RESERVE)
+    parser.add_argument('--additional-bytes', type=int, default=0, help='Estimated net response growth; never substitutes for a fresh post-release response')
     parser.add_argument('--budget-only', action='store_true')
     args = parser.parse_args()
     if args.budget_only and not args.release_json:
         parser.error('--budget-only requires --release-json')
-    if not args.budget_only:
-        run_jvm()
+    incompatible = run_jvm(args.release_json) if not args.budget_only else False
     if args.release_json:
         with args.release_json.open('rb') as stream:
             raw = stream.read(CURRENT_LIMIT + 1)
-        code, message = budget(raw, args.reserve_bytes)
+        code, message = budget(raw, args.reserve_bytes, args.additional_bytes)
         print(message, flush=True)
+        if args.budget_only:
+            print('Byte budget only: installed parser/download compatibility NOT CHECKED.', flush=True)
+        if incompatible:
+            print('INCOMPATIBLE: installed parser selects no stable release. Do not publish an app update as compatible.', flush=True)
+            code = 1
         raise SystemExit(code)
     print('Synthetic bounds passed. Public release budget NOT CHECKED: pass a fresh --release-json before publishing.', flush=True)
 

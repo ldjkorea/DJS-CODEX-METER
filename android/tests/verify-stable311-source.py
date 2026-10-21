@@ -1,12 +1,15 @@
 """Reviewed promotion scope. No runtime I/O, secrets or fixture rewriting."""
 from pathlib import Path
 import subprocess,json,xml.etree.ElementTree as ET
+from stable311_review import reviewed_update_cache_guard
 root=Path(__file__).resolve().parents[2];beta='5a2d7b77c23683435f45c1d4f13eb0b35e4f4fe9';stable='afc7d0b9749a42c034e7b7c7305cf8a6cd7fd23a'
 def old(ref,path):return subprocess.check_output(['git','show',ref+':'+path],cwd=root).replace(b'\r\n',b'\n')
 def actual(path):return (root/path).read_bytes().replace(b'\r\n',b'\n')
 app='android/app/src/main/java/dev/bennett/codexmeter/'
 for name in ['BetaMedalModel','BetaMedalStore','BetaMedalCoach','BetaMedalUi','BetaV4','BetaGrowthStore','BetaBundle','BetaCompactGrowthUi','BetaGrowthUi','BetaHomeUi','BetaHomeDetailsUi','BetaHomeSummaryUi','BetaQuotaUi','BetaWeeklyUi','BetaWeeklyReader','BetaNextGoal','CoachUi','SpicyQuotes','FunHome','UsageApi','UsageRefreshJobService','RefreshScheduler','OAuthClient','OAuthService','AccountSession','SecureTokenStore','UpdateInstaller','UpdatePreferences','ReleaseUpdateClient','TierTheme','TrialDemo']:
- assert actual(app+name+'.java')==old(beta,app+name+'.java'),name
+ expected=old(beta,app+name+'.java')
+ if name=='UpdatePreferences':expected=reviewed_update_cache_guard(expected.decode()).encode()
+ assert actual(app+name+'.java')==expected,name
 for path in ['android/shared/src/main/java/dev/bennett/codexmeter/'+n+'.java' for n in ['MxpEconomy','RpgEngine','RpgArchive','TierEvolution','CoachCatalog']]+['android/app/src/main/assets/coach-ko-v2.json','android/app/src/main/assets/coach-ko-medals-v1.json']:
  assert actual(path)==old(beta,path),path
 for name in ['GitHubReleaseParser','UpdateChannel']:

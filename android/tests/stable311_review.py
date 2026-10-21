@@ -29,6 +29,20 @@ def reviewed_source(relative, raw):
     return True
 
 
+def reviewed_update_cache_guard(prior):
+    """Exact unreleased fail-closed delta; no URL, size or signing trust changes."""
+    parsed = '        List<GitHubRelease> parsed = GitHubReleaseParser.parse(json, BuildConfig.DEBUG);\n'
+    editor = '        SharedPreferences.Editor editor = prefs(context).edit()\n'
+    anchor = parsed + editor
+    assert prior.count(anchor) == 1, 'Original update save contract changed'
+    return prior.replace(anchor, parsed + '''        // A populated but incompatible feed is not a successful empty update list.
+        // Keep the prior cache/ETag; the caller records the failure for the existing UI.
+        if (parsed.isEmpty() && new org.json.JSONArray(json).length() > 0) {
+            throw new IllegalStateException(context.getString(R.string.update_metadata_incompatible));
+        }
+''' + editor)
+
+
 def strip_runtime_delta(relative, text):
     """Undo only the documented demo network fences, then compare ALL old bytes."""
     pairs = []

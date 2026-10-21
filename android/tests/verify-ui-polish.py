@@ -4,9 +4,13 @@ from rpg_review import strip_rpg
 These fixtures verify decisions, not Android connectivity dispatch or Samsung UI.
 """
 from pathlib import Path
-import os,json,re,subprocess,xml.etree.ElementTree as ET
+import os,json,re,subprocess,xml.etree.ElementTree as ET,argparse
+from release_catalog_contract import verify_catalog, formal_changelog_versions
+parser=argparse.ArgumentParser();parser.add_argument('--catalog-only',action='store_true',help='Run catalog/Wi-Fi JVM fixtures only; does not certify later historical UI guards');args=parser.parse_args()
 repo=Path(__file__).resolve().parents[2];root=repo/'android';app=root/'app/src/main/java/dev/bennett/codexmeter'
 out=root/'build/polish-verification';out.mkdir(parents=True,exist_ok=True)
+catalog,versions=verify_catalog(repo)
+expected_versions=out/'expected-versions.txt';expected_versions.write_text('\n'.join(versions)+'\n',encoding='utf-8')
 fixtures={
 'android/content/Context.java':'''package android.content;public class Context {public static final String CONNECTIVITY_SERVICE="net",JOB_SCHEDULER_SERVICE="jobs";public final android.app.job.JobScheduler jobs=new android.app.job.JobScheduler();public final android.net.ConnectivityManager net=new android.net.ConnectivityManager();public final SharedPreferences prefs=new SharedPreferences();public Context getApplicationContext(){return this;}public Object getSystemService(String name){return name.equals("net")?net:jobs;}public SharedPreferences getSharedPreferences(String n,int m){return prefs;}public android.content.res.Resources getResources(){return new android.content.res.Resources();}public android.content.res.AssetManager getAssets(){return new android.content.res.AssetManager();}}''',
 'android/content/SharedPreferences.java':'package android.content;public class SharedPreferences {public java.util.Map<String,Object> values=new java.util.HashMap<>();public java.util.Map<String,Object> getAll(){return values;}}',
@@ -34,7 +38,7 @@ fixtures={
 public class PolishSelfTest {static int n;static void check(boolean b,String s){n++;if(!b)throw new AssertionError(s);}static void wifi(android.content.Context c,long at,int transport){android.os.SystemClock.now=at;c.net.callback.onCapabilitiesChanged(new android.net.Network(),new android.net.NetworkCapabilities(transport));}
  public static void main(String[] args){android.content.Context c=new android.content.Context();LanWifiScheduler.install(c);check(c.net.count==1,"One callback");check(c.jobs.pending==null,"Unpaired no job");wifi(c,1000,1);check(LanSync.count==0,"Unpaired no transfer");check(RefreshScheduler.count==1,"Missing quota schedules existing refresh");wifi(c,1001,1);check(RefreshScheduler.count==1,"Repeated caps throttled");AppPreferences.value=new UsageSnapshot(System.currentTimeMillis());wifi(c,32001,1);check(WidgetRenderer.count==1&&RefreshScheduler.count==1,"Fresh quota repaint only");c.prefs.values.put("a".repeat(64),"synthetic-sealed-pair");LanWifiScheduler.install(c);check(c.net.count==1,"No callback leak on pairing");check(c.jobs.pending.persisted&&c.jobs.pending.interval==900000&&c.jobs.pending.flex==300000,"Bounded persisted periodic job");check(c.jobs.pending.request.type==1,"Metered Wi-Fi supported; cellular excluded");wifi(c,64001,1);check(LanSync.count==1,"Paired reconnect sync");wifi(c,96001,0);check(LanSync.count==1,"Cellular ignored");AppPreferences.automatic=false;AppPreferences.value=null;wifi(c,96001,1);check(LanSync.count==2&&RefreshScheduler.count==1,"Automatic usage OFF respected");c.prefs.values.clear();LanWifiScheduler.ensureScheduled(c);check(c.jobs.pending==null,"Disconnect cancels job");android.os.Build.VERSION.SDK_INT=26;c.prefs.values.put("b".repeat(64),"synthetic");LanWifiScheduler.ensureScheduled(c);check(c.jobs.pending.request==null&&c.jobs.pending.network==1,"API26 fallback network gate");LanWifiScheduler.ensureScheduled(c);check(c.jobs.count==2,"No duplicate job on repeated ensure");
  String[][] plans={{"free","Free"},{"go","Go"},{"plus","Plus"},{"prolite","Pro Lite"},{"pro_lite","Pro Lite"},{"pro-lite","Pro Lite"},{"pro lite","Pro Lite"},{"pro5x","Pro Lite"},{"PRO_5X","Pro Lite"},{"pro","Pro"},{"pro20x","Pro"}};for(String[] p:plans){check(PlanArtwork.image(p[0])>0,"Art "+p[0]);check(PlanArtwork.label(p[0]).equals(p[1]),"Label "+p[0]);}check(PlanArtwork.image(null)==0&&PlanArtwork.image("business")==0&&PlanArtwork.image("enterprise")==0,"No fabricated Free fallback");
- java.util.List<ReleaseCatalog.Entry> all=ReleaseCatalog.all(c);check(all.size()==64,"All 64 versions offline");check(all.get(0).version.equals("3.0.0")&&all.get(all.size()-1).version.equals("1.0.0"),"Newest to oldest");check(ReleaseCatalog.notes(c,"v2.8.17-beta","fallback").contains("600"),"Beta installed notes mapping");check(ReleaseCatalog.notes(c,"9.0.0","fallback").equals("fallback"),"Unknown release preserved");for(ReleaseCatalog.Entry e:all)check(!e.notes.isBlank()&&!e.title.isBlank(),"Complete editorial entry "+e.version);System.out.println("Production Wi-Fi decisions, subscription aliases, offline release catalog: "+n+" assertions passed (JVM fixtures, not Android dispatch proof).");}}
+ java.util.List<ReleaseCatalog.Entry> all=ReleaseCatalog.all(c);java.util.List<String> expected;try{expected=java.nio.file.Files.readAllLines(java.nio.file.Path.of(args[0]));}catch(Exception error){throw new AssertionError(error);}check(all.size()==expected.size(),"All independently validated archive versions loaded");for(int i=0;i<expected.size();i++)check(all.get(i).version.equals(expected.get(i)),"Exact archive order "+i);check(ReleaseCatalog.notes(c,"v2.8.17-beta","fallback").contains("600"),"Beta installed notes mapping");check(ReleaseCatalog.notes(c,"9.0.0","fallback").equals("fallback"),"Unknown release preserved");for(ReleaseCatalog.Entry e:all)check(!e.notes.isBlank()&&!e.title.isBlank(),"Complete editorial entry "+e.version);System.out.println("Production Wi-Fi decisions, subscription aliases, offline release catalog: "+n+" assertions passed (JVM fixtures, not Android dispatch proof).");}}
 '''}
 files=[]
 for name,body in fixtures.items():
@@ -42,13 +46,16 @@ for name,body in fixtures.items():
 files += [app/(n+'.java') for n in ['LanWifiScheduler','PlanArtwork','ReleaseCatalog']]
 jar=root/'build/test-libs/json-20250517.jar';classes=out/'classes';classes.mkdir(exist_ok=True);jdk=Path(os.environ['JAVA_HOME'])/'bin'
 subprocess.run([str(jdk/'javac'),'-encoding','UTF-8','-cp',str(jar),'-d',str(classes),*map(str,files)],check=True)
-subprocess.run([str(jdk/'java'),'-ea','-Dassets='+str(root/'app/src/main/assets'),'-cp',str(classes)+os.pathsep+str(jar),'dev.bennett.codexmeter.PolishSelfTest'],check=True)
+subprocess.run([str(jdk/'java'),'-ea','-Dassets='+str(root/'app/src/main/assets'),'-cp',str(classes)+os.pathsep+str(jar),'dev.bennett.codexmeter.PolishSelfTest',str(expected_versions)],check=True)
 catalog=json.loads((root/'app/src/main/assets/release-history.json').read_text(encoding='utf-8'))
-assert len({e['version'] for e in catalog})==64
-historic=set(re.findall(r'^#{1,2} (\d+\.\d+\.\d+)',(repo/'CHANGELOG.md').read_text(encoding='utf-8'),re.M));assert historic.issubset({e['version'] for e in catalog})
+assert len({e['version'] for e in catalog})==len(catalog),'Each archive version is unique'
+historic=formal_changelog_versions((repo/'CHANGELOG.md').read_text(encoding='utf-8'));assert historic.issubset({e['version'] for e in catalog})
 for entry in catalog:
  assert entry['ko']['changes'] and entry['en']['changes']
  for value in entry['ko']['changes']:assert not re.search(r'승급.*\d+%',value),'Tier thresholds stay out of product copy'
+if args.catalog_only:
+ print('Archive contract passed: published entries preserved, unique/sorted/current/bilingual; later historical UI guards NOT RUN.')
+ raise SystemExit(0)
 settings=(app/'RecordSettings.java').read_text(encoding='utf-8');assert 'WhatsNewActivity.class' in settings and 'ReleaseHistoryActivity.class' in settings
 assert 'LanWifiScheduler.install(this)' in (app/'CodexMeterApplication.java').read_text()
 assert 'LanWifiScheduler.ensureScheduled(context)' in (app/'BootReceiver.java').read_text()
