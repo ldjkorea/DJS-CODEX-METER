@@ -14,7 +14,12 @@ trust = root / 'android/shared/src/main/java/dev/bennett/codexmeter/KoreanUpdate
 # Exact published transport/trust code: this follow-up must not enlarge any allowlist.
 for file in [app / 'UpdateInstaller.java', app / 'ReleaseUpdateClient.java', trust]:
     old = subprocess.check_output(['git', 'show', '6638a50:' + file.relative_to(root).as_posix()], cwd=root).replace(b'\r\n', b'\n')
-    assert file.read_bytes().replace(b'\r\n', b'\n') == old, ('Transport/trust changed', file.name)
+    current=file.read_bytes().replace(b'\r\n',b'\n')
+    if file==trust:
+        from canonical312_review import reviewed_pin
+        reviewed_pin(file.relative_to(root).as_posix(),current)
+        assert current[current.index(b'    public static boolean compatible'):]==old[old.index(b'    public static boolean compatible'):], 'Package/certificate/version trust unchanged'
+    else:assert current == old, ('Transport/trust changed', file.name)
 download = installer[installer.index('    private static int requireOk('):installer.index('    private static void copy(')]
 api = client[client.index('    private static boolean trustedApiUrl('):client.index('    private static String read(')]
 source = '''package dev.bennett.codexmeter;
@@ -30,7 +35,9 @@ public static void main(String[] args)throws Exception {
 String old="https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.1.1/CodexMeter-3.1.1-ko.apk";
 String renamed=old.replace("codex-meter-ko","DJS-CODEX-METER");
 check(KoreanUpdateTrust.official(old),"Original metadata path trusted");
-check(!KoreanUpdateTrust.official(renamed),"Renamed metadata path remains untrusted");
+check(KoreanUpdateTrust.official(renamed),"User-approved exact previous path");
+check(KoreanUpdateTrust.official(old.replace("codex-meter-ko","DJS-GPT-HUD")),"User-approved exact canonical path");
+check(!KoreanUpdateTrust.official(old.replace("codex-meter-ko","UNAPPROVED-GPT-HUD")),"Unapproved same-owner path refused");
 for(String url:new String[]{old,renamed,"https://release-assets.githubusercontent.com/synthetic/asset?synthetic=1"})
  check(trustedDownloadUrl(new URL(url)),"Existing downloader host policy "+new URL(url).getHost());
 for(String url:new String[]{"https://github.com.evil.example/asset","http://github.com/asset","https://evil.example/github.com/asset"})

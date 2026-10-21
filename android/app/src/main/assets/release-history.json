@@ -1,5 +1,27 @@
 [
   {
+    "version": "3.1.2",
+    "date": "2026-10-21",
+    "source": "https://github.com/ldjkorea/DJS-GPT-HUD/releases/tag/v3.1.2",
+    "origin": "korean",
+    "ko": {
+      "title": "DJS-GPT-HUD 업데이트 경로 전환",
+      "changes": [
+        "동일 저장소의 새 이름 DJS-GPT-HUD로 업데이트 경로를 통일합니다.",
+        "해석할 수 없는 목록은 오류로 안내하고 기존 업데이트 정보를 보관합니다.",
+        "기존 앱의 패키지·서명·레벨·기록을 유지합니다. 구버전은 최초 한 번 수동 업데이트가 필요합니다."
+      ]
+    },
+    "en": {
+      "title": "DJS-GPT-HUD update path migration",
+      "changes": [
+        "Use the renamed repository with exact legacy path compatibility.",
+        "Keep existing update data when a populated feed is incompatible.",
+        "Preserve package, signing identity and user data. Older installations require a one-time manual update."
+      ]
+    }
+  },
+  {
     "version": "3.1.1",
     "date": "2026-10-17",
     "source": "https://github.com/ldjkorea/codex-meter-ko/releases/tag/v3.1.1",

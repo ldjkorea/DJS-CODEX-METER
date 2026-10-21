@@ -92,15 +92,15 @@ public static void dismiss(Object c){}public static void onReleasesUpdated(Objec
         target.write_text(source, encoding='utf-8')
         files.append(target)
     app = android / 'app/src/main/java/dev/bennett/codexmeter'
-    files += [app / (name + '.java') for name in ['AppConstants', 'DiagnosticSanitizer', 'GitHubRelease', 'GitHubReleaseSource', 'GitHubReleaseParser', 'ReleaseVersion', 'UpdateChannel', 'UpdateCheckFrequency']]
-    files += [android / 'shared/src/main/java/dev/bennett/codexmeter/KoreanUpdateTrust.java', android / 'tests/ReleaseResponseBoundsSelfTest.java']
+    files += [app / 'DiagnosticSanitizer.java', android / 'tests/ReleaseResponseBoundsSelfTest.java']
+    contracts = ['AppConstants','GitHubRelease','GitHubReleaseSource','GitHubReleaseParser','ReleaseVersion','UpdateChannel','UpdateCheckFrequency','ReleaseUpdateClient','UpdatePreferences']
     incompatible = False
     for label, ref, limit in [('legacy-3.1.0', LEGACY_COMMIT, LEGACY_LIMIT), ('published-3.1.1', '6638a50b3771d717bad9c6704f6c9924bda418fa', CURRENT_LIMIT), ('current', None, CURRENT_LIMIT)]:
         target = out / label
         target.mkdir(exist_ok=True)
         actual = []
-        for name in ['ReleaseUpdateClient', 'UpdatePreferences']:
-            path = 'android/app/src/main/java/dev/bennett/codexmeter/' + name + '.java'
+        for name in contracts + ['KoreanUpdateTrust']:
+            path = ('android/shared' if name=='KoreanUpdateTrust' else 'android/app')+'/src/main/java/dev/bennett/codexmeter/' + name + '.java'
             if ref:
                 dest = target / (name + '.java')
                 dest.write_bytes(subprocess.check_output(['git', 'show', ref + ':' + path], cwd=root))

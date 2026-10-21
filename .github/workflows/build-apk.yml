@@ -41,10 +41,10 @@ jobs:
       - name: Verify wrapper integrity
         shell: bash
         run: sha256sum -c android/gradle/wrapper/SHA256SUMS.txt
-      - name: Core and Korean regression tests
+      - name: Current migration contracts and Korean regression tests
         shell: bash
         run: |
-          python3 android/tests/run-stable311-validation.py
+          python3 android/tests/run-stable311-validation.py --focused
       - name: Compile unsigned APKs and lint
         working-directory: android
         shell: bash

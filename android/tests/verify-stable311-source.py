@@ -2,6 +2,7 @@
 from pathlib import Path
 import subprocess,json,xml.etree.ElementTree as ET
 from stable311_review import reviewed_update_cache_guard
+from canonical312_review import reviewed_pin,windows_delta
 root=Path(__file__).resolve().parents[2];beta='5a2d7b77c23683435f45c1d4f13eb0b35e4f4fe9';stable='afc7d0b9749a42c034e7b7c7305cf8a6cd7fd23a'
 def old(ref,path):return subprocess.check_output(['git','show',ref+':'+path],cwd=root).replace(b'\r\n',b'\n')
 def actual(path):return (root/path).read_bytes().replace(b'\r\n',b'\n')
@@ -13,17 +14,22 @@ for name in ['BetaMedalModel','BetaMedalStore','BetaMedalCoach','BetaMedalUi','B
 for path in ['android/shared/src/main/java/dev/bennett/codexmeter/'+n+'.java' for n in ['MxpEconomy','RpgEngine','RpgArchive','TierEvolution','CoachCatalog']]+['android/app/src/main/assets/coach-ko-v2.json','android/app/src/main/assets/coach-ko-medals-v1.json']:
  assert actual(path)==old(beta,path),path
 for name in ['GitHubReleaseParser','UpdateChannel']:
- assert actual(app+name+'.java')==old(stable,app+name+'.java'),name
-path='android/shared/src/main/java/dev/bennett/codexmeter/KoreanUpdateTrust.java';assert actual(path)==old(stable,path)
+ if name=='GitHubReleaseParser':reviewed_pin(app+name+'.java',actual(app+name+'.java'))
+ else:assert actual(app+name+'.java')==old(stable,app+name+'.java'),name
+path='android/shared/src/main/java/dev/bennett/codexmeter/KoreanUpdateTrust.java';reviewed_pin(path,actual(path))
+reviewed_pin(app+'GitHubReleaseSource.java',actual(app+'GitHubReleaseSource.java'))
 assert actual('android/settings.gradle.kts')==old(stable,'android/settings.gradle.kts'),'Stable Wear module remains included'
 stable_paths=subprocess.check_output(['git','ls-tree','-r','--name-only',stable],cwd=root,text=True).splitlines()
 beta_paths=set(subprocess.check_output(['git','ls-tree','-r','--name-only',beta],cwd=root,text=True).splitlines())
 for path in stable_paths:
- if path.startswith('windows-widget/') or path=='android/wear/build.gradle.kts':assert actual(path)==old(stable,path),path
+ if path.startswith('windows-widget/') or path=='android/wear/build.gradle.kts':
+  prior=old(stable,path)
+  if path in ['windows-widget/src/WidgetUpdate.cs','windows-widget/src/Widget.cs','windows-widget/src/AssemblyInfo.cs','windows-widget/README.ko.md']:prior=windows_delta(path,prior.decode()).encode()
+  assert actual(path)==prior,path
  # All stable-only regression sources survive promotion.
  if path.startswith('android/tests/') and path not in beta_paths:assert actual(path)==old(stable,path),path
-for path in ['android/app/build.gradle.kts',app+'AppConstants.java','android/build.sh','android/run-tests.sh']:assert '3.1.1' in actual(path).decode(),path
-assert 'versionCode = 88' in actual('android/app/build.gradle.kts').decode();constants=actual(app+'AppConstants.java').decode();assert 'VERSION_CODE = 88' in constants and 'codexmeter://auth/complete' in constants
+for path in ['android/app/build.gradle.kts',app+'AppConstants.java','android/build.sh','android/run-tests.sh']:assert '3.1.2' in actual(path).decode(),path
+assert 'versionCode = 89' in actual('android/app/build.gradle.kts').decode();constants=actual(app+'AppConstants.java').decode();assert 'VERSION_CODE = 89' in constants and 'codexmeter://auth/complete' in constants
 assert 'dev.bennett.codexmeter.trial.' not in constants and 'codexmetertrial' not in constants
 ns='{http://schemas.android.com/apk/res/android}';manifest=ET.fromstring(actual('android/app/src/main/AndroidManifest.xml'));prior=ET.fromstring(old(stable,'android/app/src/main/AndroidManifest.xml'))
 now_app=manifest.find('application');old_app=prior.find('application');assert now_app.attrib==old_app.attrib,'Stable app label/icon/backup/locale contract'

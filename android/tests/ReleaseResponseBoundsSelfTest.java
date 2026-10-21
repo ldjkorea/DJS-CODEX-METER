@@ -83,8 +83,8 @@ public final class ReleaseResponseBoundsSelfTest {
         });
         Context context = new Context();
         String prior = "[ {\"tag_name\":\"v3.1.1\",\"html_url\":\"https://github.com/ldjkorea/codex-meter-ko/releases/tag/v3.1.1\",\"assets\":[{\"name\":\"CodexMeter-3.1.1-ko.apk\",\"size\":100,\"browser_download_url\":\"https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.1.1/CodexMeter-3.1.1-ko.apk\"},{\"name\":\"SHA256SUMS.txt\",\"browser_download_url\":\"https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.1.1/SHA256SUMS.txt\"}]} ]";
-        check(GitHubReleaseParser.parse(prior.replace("ldjkorea/codex-meter-ko", "ldjkorea/DJS-CODEX-METER")).isEmpty(),
-                "A renamed repository is NOT silently added to the installed client's trust contract");
+        check(GitHubReleaseParser.parse(prior.replace("ldjkorea/codex-meter-ko", "ldjkorea/DJS-GPT-HUD")).isEmpty() != guarded,
+                "Published clients reject renamed feed; approved migration candidate accepts it");
         for (int size : new int[]{max - 1, max, max + 1}) {
             UpdatePreferences.saveSuccess(context, prior, "synthetic-prior-etag");
             UpdatePreferences.setAutomaticChecks(context, false);
@@ -115,7 +115,7 @@ public final class ReleaseResponseBoundsSelfTest {
         // Reproduce the original destructive empty success, and the unreleased cache guard.
         status = 200;
         UpdatePreferences.saveSuccess(context, prior, "synthetic-prior-etag");
-        response = prior.replace("ldjkorea/codex-meter-ko", "ldjkorea/DJS-CODEX-METER").getBytes(StandardCharsets.UTF_8);
+        response = prior.replace("ldjkorea/codex-meter-ko", "ldjkorea/UNAPPROVED-GPT-HUD").getBytes(StandardCharsets.UTF_8);
         try {
             var rows = ReleaseUpdateClient.check(context);
             check(!guarded && rows.isEmpty(), "Legacy request falsely succeeds with zero accepted releases");

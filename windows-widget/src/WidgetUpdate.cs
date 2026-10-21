@@ -16,7 +16,7 @@ namespace CodexMeterWidget {
         public string Version, Name, Url, ChecksumsUrl;
         public long Size;
         public static bool AllowedUrl(string value) {
-            return value!=null && Regex.IsMatch(value,@"^https://github\.com/ldjkorea/codex-meter-ko/releases/download/[^/]+/[^/?#]+$");
+            return value!=null && Regex.IsMatch(value,@"^https://github\.com/ldjkorea/(?:DJS-GPT-HUD|DJS-CODEX-METER|codex-meter-ko)/releases/download/[^/]+/[^/?#]+$");
         }
         public static WidgetUpdate Parse(string json) {
             var root=Json.Read(json);
@@ -35,7 +35,7 @@ namespace CodexMeterWidget {
             found.ChecksumsUrl=sums;return found;
         }
         private static HttpClient Client(){var c=new HttpClient{Timeout=TimeSpan.FromMinutes(2)};c.DefaultRequestHeaders.UserAgent.ParseAdd("GPT-HUD-Windows/"+WidgetForm.Version);return c;}
-        public static async Task<WidgetUpdate> Check(){using(var c=Client())return Parse(await c.GetStringAsync("https://api.github.com/repos/ldjkorea/codex-meter-ko/releases/latest"));}
+        public static async Task<WidgetUpdate> Check(){using(var c=Client())return Parse(await c.GetStringAsync("https://api.github.com/repos/ldjkorea/DJS-GPT-HUD/releases/latest"));}
         public static bool HashMatches(byte[] bytes,string sums,string name){
             var matches=Regex.Matches(sums,@"(?m)^([a-fA-F0-9]{64})[ \t]+\*?"+Regex.Escape(name)+@"\r?$");
             if(matches.Count!=1)return false;

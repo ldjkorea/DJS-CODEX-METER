@@ -40,8 +40,10 @@ class ReleaseValidationTest(unittest.TestCase):
         with self.assertRaises(AssertionError):
             validate_catalog(edited, current, versions[0])
         future = json.loads(json.dumps(current[0]))
-        future['version'] = '3.1.2'
-        self.assertEqual(len(current) + 1, len(validate_catalog([future] + current, current, '3.1.2')))
+        major, minor, patch = map(int, versions[0].split('.'))
+        next_version = f'{major}.{minor}.{patch + 1}'
+        future['version'] = next_version
+        self.assertEqual(len(current) + 1, len(validate_catalog([future] + current, current, next_version)))
 
     def test_pending_summary_cannot_report_success(self):
         script = Path(__file__).with_name('run-stable311-validation.py').read_text(encoding='utf-8')

@@ -1656,10 +1656,10 @@ public final class ParserSelfTest {
     }
 
     private static void testGitHubReleases() throws Exception {
-        check("https://github.com/ldjkorea/codex-meter-ko".equals( // pragma: allowlist secret
+        check("https://github.com/ldjkorea/DJS-GPT-HUD".equals( // pragma: allowlist secret
                         GitHubReleaseSource.REPOSITORY_URL),
                 "canonical release repository");
-        check("https://api.github.com/repos/ldjkorea/codex-meter-ko/releases?per_page=30" // pragma: allowlist secret
+        check("https://api.github.com/repos/ldjkorea/DJS-GPT-HUD/releases?per_page=30" // pragma: allowlist secret
                         .equals(GitHubReleaseSource.RELEASES_API_URL),
                 "canonical release API endpoint");
         String json = "["

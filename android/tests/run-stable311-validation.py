@@ -15,6 +15,7 @@ def run(name,cmd):
  if r.returncode:print(text[-7000:],flush=True);raise SystemExit(r.returncode)
 assert a.bash
 run('current-contracts',[sys.executable,'android/tests/run-stable311-checks.py'])
+run('canonical-production',[sys.executable,'android/tests/verify-canonical312-production.py'])
 run('promotion-scope',[sys.executable,'android/tests/verify-stable311-source.py'])
 run('release-validation-negative',[sys.executable,'android/tests/test_release_validation.py'])
 run('response-bounds',[sys.executable,'android/tests/verify-release-response-bounds.py',*(['--release-json',str(a.release_json)] if a.release_json else [])])

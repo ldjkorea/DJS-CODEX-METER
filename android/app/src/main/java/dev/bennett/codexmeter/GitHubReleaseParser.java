@@ -65,9 +65,11 @@ public final class GitHubReleaseParser {
                     || !isTrustedReleaseUrl(pageUrl, allowLocalDebugServer)) {
                 continue;
             }
-            if (!allowLocalDebugServer && (!apkUrl.equals(GitHubReleaseSource.REPOSITORY_URL+"/releases/download/"+tag+"/"+expectedApk)
-                    || !checksumUrl.equals(GitHubReleaseSource.REPOSITORY_URL+"/releases/download/"+tag+"/SHA256SUMS.txt")
-                    || !pageUrl.equals(GitHubReleaseSource.REPOSITORY_URL+"/releases/tag/"+tag)))continue;
+            String releaseRoot = KoreanUpdateTrust.releaseRoot(pageUrl);
+            if (!allowLocalDebugServer && (releaseRoot.isEmpty()
+                    || !apkUrl.equals(releaseRoot+"/releases/download/"+tag+"/"+expectedApk)
+                    || !checksumUrl.equals(releaseRoot+"/releases/download/"+tag+"/SHA256SUMS.txt")
+                    || !pageUrl.equals(releaseRoot+"/releases/tag/"+tag)))continue;
             long apkSize = apk.optLong("size", -1L);
             if (apkSize <= 0L) {
                 continue;

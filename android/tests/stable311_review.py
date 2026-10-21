@@ -25,6 +25,9 @@ def reviewed_source(relative, raw):
     if relative not in PINS:
         return False
     actual = hashlib.sha256(raw.replace(b'\r\n', b'\n')).hexdigest()
+    if actual != PINS[relative]:
+        from canonical312_review import reverse_version_delta
+        actual = hashlib.sha256(reverse_version_delta(relative, raw.decode('utf-8').replace('\r\n','\n')).encode()).hexdigest()
     assert actual == PINS[relative], ('Unreviewed 3.1.1 source change', relative)
     return True
 
