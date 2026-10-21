@@ -23,8 +23,8 @@ jobs:
       - name: Verify beta contracts and reviewed content
         run: |
           python3 android/trial/run-beta-checks.py
-          python3 android/trial/verify-beta9911-source.py
-          python3 android/trial/verify-beta9912-source.py
+          python3 android/trial/verify-beta9913-source.py
+          python3 android/tests/verify-coach-friend.py
           python3 android/tests/verify-publication.py
           python3 android/tests/verify-public-source.py
       - name: Compile unsigned phone and lint

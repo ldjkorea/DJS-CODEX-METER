@@ -16,8 +16,8 @@ android {
         }
         minSdk = 26
         targetSdk = 36
-        versionCode = 990012
-        versionName = "9.9.12"
+        versionCode = 990013
+        versionName = "9.9.13"
         providers.gradleProperty("demoVersionCode").orNull?.toIntOrNull()?.let {
             versionCode = it
         }

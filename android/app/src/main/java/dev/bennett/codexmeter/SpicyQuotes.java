@@ -19,12 +19,20 @@ final class SpicyQuotes {
     private static volatile long generation=System.nanoTime();private static long away;
     static final class Selection {
         final String id,text,identity,group; final CoachCatalog.Tip tip;
-        Selection(CoachCatalog.Quote q,CoachCatalog.Tip tip,String identity,String group){this.id=q.id;this.text=q.text;this.tip=tip;this.identity=identity;this.group=group;}
+        Selection(CoachCatalog.Quote q,CoachCatalog.Tip tip,String identity,String group){this(q,tip,identity,group,q.text);}
+        Selection(CoachCatalog.Quote q,CoachCatalog.Tip tip,String identity,String group,String text){this.id=q.id;this.text=text;this.tip=tip;this.identity=identity;this.group=group;}
     }
     static synchronized void foreground(){if(away>0&&SystemClock.elapsedRealtime()-away>=30000)generation++;away=0;}
     static synchronized void background(boolean rotation){if(!rotation)away=SystemClock.elapsedRealtime();}
     static synchronized void manual(){generation++;}
-    static String identity(Context c,String account){return account+":"+CoachPolicy.tone(c)+":"+interest(c)+":"+c.getResources().getConfiguration().getLocales().toLanguageTags()+":20261017-medals";}
+    private static String selectionIdentity(Context c,String account){return account+":"+CoachPolicy.tone(c)+":"+interest(c)+":"+c.getResources().getConfiguration().getLocales().toLanguageTags()+":20261021-friend";}
+    static String identity(Context c,String account){return selectionIdentity(c,account)+":"+evidence(c);}
+    private static String evidence(Context c){
+        UsageSnapshot s=AppPreferences.loadSnapshot(c);boolean error=!AppPreferences.getLastError(c).isEmpty();long now=System.currentTimeMillis();
+        boolean fresh=s!=null&&UsageEvidence.state(s,s.longWindow(),error,now,RefreshScheduler.effectiveRefreshMinutes(c))==UsageEvidence.State.CONFIRMED;
+        try{return (s==null?"missing":s.toJson().toString())+":"+CoachCatalog.group(s,fresh,error,false,Double.NaN,now);}
+        catch(Exception ignored){return "missing:"+error;}
+    }
     static String cacheKey(Context c,String account){return identity(c,account)+":"+generation+":"+medalStamp(c);}
     static String medalStamp(Context c){org.json.JSONObject summary=BetaMedalStore.peek(c);return summary==null?"":summary.toString();}
     static String interest(Context c){return c.getSharedPreferences("codex_fun_settings",0).getString("interest","");}
@@ -37,13 +45,16 @@ final class SpicyQuotes {
         if(account==null)return null;
         if(!"spicy".equals(CoachPolicy.tone(c))||!c.getResources().getConfiguration().getLocales().get(0).getLanguage().equals("ko")){CURRENT.remove(account);return null;}
         long epoch=generation;CoachCatalog content=load(c);String identity=identity(c,account);
+        UsageSnapshot currentSnapshot=AppPreferences.loadSnapshot(c);
+        // An old worker must not publish old-plan text under the current snapshot's identity.
+        if(snapshot==null?currentSnapshot!=null:currentSnapshot==null||!snapshot.toJson().toString().equals(currentSnapshot.toJson().toString()))return null;
         android.content.SharedPreferences prefs=c.getSharedPreferences("coach_v2",0);JSONObject state;
         try{state=new JSONObject(prefs.getString(account,""));}catch(Exception missing){String legacyKey=SubscriptionStore.key(c,snapshot);JSONObject old;try{old=new JSONObject(c.getSharedPreferences("spicy_quote_ids",0).getString(legacyKey,""));}catch(Exception ignored){old=new JSONObject();}state=content.migrate(old);}
         String group=BetaMedalCoach.group(BetaMedalStore.peek(c),CoachCatalog.group(snapshot,fresh,!AppPreferences.getLastError(c).isEmpty(),bonus,daily,now),now);
-        CoachCatalog.Quote q=content.select(state,group,CoachPolicy.tone(c),interest(c),identity+":"+epoch+":"+group,false,RANDOM);
+        CoachCatalog.Quote q=content.select(state,group,CoachPolicy.tone(c),interest(c),selectionIdentity(c,account)+":"+epoch+":"+group,false,RANDOM);
         if(epoch!=generation||!identity.equals(identity(c,account))||!account.equals(SubscriptionStore.accountKey(c)))return null;
         prefs.edit().putString(account,state.toString()).apply();
-        if(q==null){CURRENT.remove(account);return null;}CURRENT.put(account,new Selection(q,content.tips.get(q.tipId),identity,group));return q.text;
+        if(q==null){CURRENT.remove(account);return null;}String text=CoachCatalog.displayText(q,snapshot,fresh,!AppPreferences.getLastError(c).isEmpty(),bonus,daily,now);CURRENT.put(account,new Selection(q,content.tips.get(q.tipId),identity,group,text));return text;
     }catch(Exception ignored){if(account!=null)CURRENT.remove(account);return null;}}}
     static void rotate(Context c,String account,UsageSnapshot snapshot,boolean fresh,boolean bonus,double daily,boolean hide,Runnable done){
         String expected=identity(c,account);Selection shown=peek(c,account);

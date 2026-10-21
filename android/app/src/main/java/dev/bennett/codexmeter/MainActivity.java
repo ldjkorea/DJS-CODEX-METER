@@ -379,6 +379,7 @@ public final class MainActivity extends AppCompatActivity {
             return;
         }
         LinearLayout crestSlot=BetaHomeSummaryUi.add(this,content,snapshot,dark,quotaClockUpdates);
+        FunHome.add(this,content,dark,this::restoreHomeScroll,crestSlot);
         BetaWeeklyUi.add(this,content,snapshot,dark,quotaClockUpdates);
         if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}
         if(snapshot==null){
@@ -388,7 +389,6 @@ public final class MainActivity extends AppCompatActivity {
         }
         taskStatusRow=null;
         TaskStatusJobService.schedule(this);
-        FunHome.add(this,content,dark,this::restoreHomeScroll,crestSlot);
         restoreHomeScroll();
     }
 

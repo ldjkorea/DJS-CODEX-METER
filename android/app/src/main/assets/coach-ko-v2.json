@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
-  "contentVersion": 3,
+  "contentVersion": 4,
   "quotes": [
     {
       "id": "ko.practice.problem",
       "situation": "zero",
       "tone": "spicy",
-      "text": "기획서 제목부터 거창하면 본문이 기죽어. 문제 한 줄부터 세워 보자.",
+      "text": "사장님 안건이 없으니 코덱스도 대기 중이지ㅋㅋ 해결할 문제 한 줄부터 줘.",
       "tipId": "tip.problem",
       "review": "replaced",
       "review998": "retained"
@@ -15,7 +15,7 @@
       "id": "ko.quote.3323ab4c6e324eda",
       "situation": "zero",
       "tone": "spicy",
-      "text": "사용량은 깨끗하네. 이제 할 일까지 깨끗해질 차례.",
+      "text": "야 코덱스랑 낯가리냐? 말 좀 걸어ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -24,7 +24,7 @@
       "id": "ko.quote.9789e5b5834a4b2b",
       "situation": "zero",
       "tone": "spicy",
-      "text": "숫자만 보면 새 제품이야. 보호필름은 언제 뗄 건데?",
+      "text": "코덱스는 출근했는데 사장님이 일을 안 줌.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -33,7 +33,7 @@
       "id": "ko.quote.f277fe1a151445f2",
       "situation": "zero",
       "tone": "spicy",
-      "text": "아직 첫 장도 안 넘겼네. 책갈피부터 사지는 말자.",
+      "text": "사용량 0. 코덱스 지금 대기실에서 벽지 무늬 세겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -42,34 +42,37 @@
       "id": "ko.quote.8e18f89194504f47",
       "situation": "zero",
       "tone": "spicy",
-      "text": "한도 대기실에 의자만 닳겠다.",
+      "text": "야 이 정도면 AI 비서가 아니라 화면 장식이잖아.",
       "tipId": "",
       "review": "retained",
-      "review998": "retained"
+      "review998": "retained",
+      "paidText": "구독은 {plan}, 사용량은 체험판. 이럴 거면 구독 왜 함?ㅋㅋ"
     },
     {
       "id": "ko.quote.c282ef026a2b406b",
       "situation": "zero",
       "tone": "spicy",
-      "text": "시작 버튼 앞에서 전략 회의가 너무 길어.",
+      "text": "한도는 멀쩡한데 시작 버튼만 면접 보고 있네.",
       "tipId": "",
       "review": "retained",
-      "review998": "retained"
+      "review998": "retained",
+      "paidText": "한도 아끼다 구독료 기부했네ㅋㅋ 크리스마스 자선냄비인 줄."
     },
     {
       "id": "ko.quote.86f8b26944d040db",
       "situation": "zero",
       "tone": "spicy",
-      "text": "사용률은 영점 조준 완료. 첫 질문만 남았네.",
+      "text": "코덱스 켜 놓고 서로 눈치만 보면 누가 먼저 말하냐ㅋㅋ",
       "tipId": "",
       "review": "retained",
-      "review998": "retained"
+      "review998": "retained",
+      "paidText": "사용량 0ㅋㅋ 코덱스 월급 주고 휴가 보냈네."
     },
     {
       "id": "ko.practice.scope",
       "situation": "zero",
       "tone": "spicy",
-      "text": "기능은 뷔페처럼 담고 일정은 컵라면 3분? 이번 접시부터 줄여 보자.",
+      "text": "시킬 일은 뷔페인데 시작도 안 했네ㅋㅋ 이번 접시부터 작게 담아.",
       "tipId": "tip.scope",
       "review": "replaced",
       "review998": "retained"
@@ -78,7 +81,7 @@
       "id": "ko.quote.c13eca54365e4d28",
       "situation": "zero",
       "tone": "spicy",
-      "text": "비워 둔 한도에 먼지 앉기 전에 한 번 써 보자.",
+      "text": "사용량이 너무 깨끗해서 새 제품인 줄. 보호필름 언제 떼?",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -87,7 +90,7 @@
       "id": "ko.quote.15503cf92c42421e",
       "situation": "zero",
       "tone": "spicy",
-      "text": "사용량은 아직 새것이네. 첫 질문까지 포장해 둘 필요는 없지.",
+      "text": "질문창이 전시장이냐. 구경 다 했으면 한 줄 남겨.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -96,7 +99,7 @@
       "id": "ko.quote.4e4993a72aca4b0a",
       "situation": "zero",
       "tone": "spicy",
-      "text": "빈칸을 오래 보면 빈칸도 너를 봐. 궁금한 것 하나만 꺼내 봐.",
+      "text": "코덱스 아직도 대기 중. 사장님 결재가 제일 느리네.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -105,7 +108,7 @@
       "id": "ko.quote.0b7b72aed46d4f10",
       "situation": "zero",
       "tone": "spicy",
-      "text": "시작부터 대작 찍지 말고, 막힌 부분 한 군데만 물어보자.",
+      "text": "한도한테 너무 예의 바른 거 아냐? 말을 못 붙이네ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -114,7 +117,7 @@
       "id": "ko.quote.0738ea1ece104749",
       "situation": "zero",
       "tone": "spicy",
-      "text": "첫 질문에 인생을 걸 필요는 없어. 초안 정도면 입장 가능이야.",
+      "text": "0이면 코덱스가 월루해도 할 말 없겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -123,7 +126,7 @@
       "id": "ko.quote.ce3c08bebf884533",
       "situation": "zero",
       "tone": "spicy",
-      "text": "아직 여유는 있네. 질문도 준비되면 그때 한 장 꺼내자.",
+      "text": "AI 비서 뽑아 놓고 이름표만 구경 중이냐.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -132,7 +135,7 @@
       "id": "ko.practice.requirements",
       "situation": "zero",
       "tone": "spicy",
-      "text": "적당히 빠르게, 알아서 예쁘게. 요구사항이 아니라 눈치 시험인데?",
+      "text": "알아서 잘해 줘? 코덱스도 점집은 아니잖아ㅋㅋ 원하는 조건부터 줘.",
       "tipId": "tip.requirements",
       "review": "replaced",
       "review998": "retained"
@@ -141,7 +144,7 @@
       "id": "ko.quote.93dfe805da184897",
       "situation": "zero",
       "tone": "spicy",
-      "text": "질문 첫 줄이 제일 비싸 보이지만, 사실 네가 쓰면 공짜야.",
+      "text": "이 정도면 한도 보존 협회에서 상 줘야 돼.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -150,7 +153,7 @@
       "id": "ko.quote.67f1a01c61f54dc9",
       "situation": "zero",
       "tone": "spicy",
-      "text": "완벽한 질문 기다리다 초안이 정년퇴직하겠다. 대충 적고 다듬자.",
+      "text": "시작 버튼이 너 기다리다 소개팅 취소하겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -159,7 +162,7 @@
       "id": "ko.quote.31c7d59d16024743",
       "situation": "zero",
       "tone": "spicy",
-      "text": "질문창은 면접장이 아니야. 모르는 것부터 편하게 적어.",
+      "text": "사용량 0. 일단 인사만 해도 지금보단 진도 나가겠네.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -168,7 +171,7 @@
       "id": "ko.quote.5b184775db144c11",
       "situation": "zero",
       "tone": "spicy",
-      "text": "백지랑 눈싸움은 여기까지. 원하는 결과부터 한 줄 써 보자.",
+      "text": "한도는 출발선인데 사장님은 주차장에서 회의 중.",
       "tipId": "",
       "review": "retained",
       "review998": "rewritten"
@@ -177,7 +180,7 @@
       "id": "ko.quote.6c19bf68d807402f",
       "situation": "zero",
       "tone": "spicy",
-      "text": "첫 요청은 작게 가자. 한 번에 백 가지 시키면 검수도 백 가지야.",
+      "text": "코덱스가 너 눈치 보잖아. 시킬 일 한 줄만 줘ㅋㅋ",
       "tipId": "",
       "review": "modified",
       "review998": "rewritten"
@@ -186,7 +189,7 @@
       "id": "ko.quote.6b0300d25aad476d",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "한도에 발끝만 담갔네. 수영장은 꽤 넓어.",
+      "text": "한도에 발만 담갔네. 물 온도 감상문 쓰는 중?",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -204,7 +207,7 @@
       "id": "ko.quote.813ce7ea92544212",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "한도 입장권 끊고 로비 사진만 찍었네.",
+      "text": "코덱스한테 안부만 묻고 온 사용량인데ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -213,16 +216,17 @@
       "id": "ko.quote.91ef8193a5b94ec0",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "워밍업은 인정. 준비 운동이 본 운동보다 길지만 않게.",
+      "text": "이 정도면 사용이 아니라 시식 코너야.",
       "tipId": "",
       "review": "retained",
-      "review998": "retained"
+      "review998": "retained",
+      "paidText": "구독은 {plan}인데 사용량은 시식 코너네ㅋㅋ"
     },
     {
       "id": "ko.quote.c0f2d9a631614fbd",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "사용량이 아니라 출석 체크에 가깝네.",
+      "text": "시동은 걸었는데 주차장 탈출은 언제 하냐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -231,7 +235,7 @@
       "id": "ko.quote.31d3957c058c414a",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "한도는 대형인데 질문은 소형 포장했어?",
+      "text": "한도 앞에서 소식좌 콘셉트 너무 확실하네.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -240,7 +244,7 @@
       "id": "ko.quote.2ae8a448320047c2",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "시동은 걸렸네. 이제 주차장에서 나와 보자.",
+      "text": "한 입 먹고 배부른 척하기 있냐ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -249,7 +253,7 @@
       "id": "ko.quote.b54ee463fda84619",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "이 정도면 한도에게 인사만 하고 온 거야.",
+      "text": "사용량이 까치발 들고 들어왔네. 눈치 그만 봐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -267,7 +271,7 @@
       "id": "ko.quote.f5b2a3eb6c9a42fd",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "분명 움직였는데 만보기도 눈치 못 챌 거리네.",
+      "text": "코덱스 면접은 봤고, 이제 작은 일 하나 맡겨 봐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -276,7 +280,7 @@
       "id": "ko.quote.d3f682b3f54d4a0b",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "한도 코너에 발자국 하나 찍고 탐험 끝?",
+      "text": "이 정도면 한도랑 악수만 하고 헤어진 거지.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -285,7 +289,7 @@
       "id": "ko.quote.2621832d347349e3",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "작은 시작은 좋아. 작은 끝으로 확정하지는 말자.",
+      "text": "AI한테 말을 너무 아껴. 대화가 아니라 모스부호냐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -294,7 +298,7 @@
       "id": "ko.quote.ea1d26e0cebf4d19",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "아직 한도는 스트레칭도 안 끝났어.",
+      "text": "한도는 뷔페인데 접시에 방울토마토 하나네.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -303,7 +307,7 @@
       "id": "ko.quote.cfe5f2aa6ce14c75",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "냉장고 문만 열었다 닫은 느낌이네.",
+      "text": "질문창에서 간만 보다가 국 다 식겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -312,7 +316,7 @@
       "id": "ko.quote.1e5ee55f40b84478",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "오늘의 시범 운전은 끝. 목적지도 찍어 보자.",
+      "text": "출석은 했네. 종 치자마자 집에 가는 건 아니지?",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -330,7 +334,7 @@
       "id": "ko.quote.fbd81cc436fd448a",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "한도에 찻숟가락을 꽂았네. 국자는 어디 갔어?",
+      "text": "코덱스한테 업무보다 인사가 더 길겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -339,7 +343,7 @@
       "id": "ko.quote.6b7d528ad88045a3",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "장비는 준비됐는데 첫 몬스터가 아직 멀쩡해.",
+      "text": "사용량이 이렇게 얌전한데 계획만 블록버스터면 곤란해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -348,7 +352,7 @@
       "id": "ko.quote.4efbf09cc00e4b59",
       "situation": "tiny",
       "tone": "spicy",
-      "text": "머릿속 회의가 바쁠 땐 안건 한 줄부터 꺼내 봐.",
+      "text": "한도에 점 찍어 놓고 대작이라고 우기진 말자ㅋㅋ",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -546,7 +550,7 @@
       "id": "ko.quote.9ed7ed617ff447b6",
       "situation": "low",
       "tone": "spicy",
-      "text": "맛보기는 끝났네. 이제 본편도 틀어 보자.",
+      "text": "한도 아끼기 대회 있으면 너 본선이야.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -555,7 +559,7 @@
       "id": "ko.quote.3a1fd97b93874da6",
       "situation": "low",
       "tone": "spicy",
-      "text": "한도 아끼는 솜씨 보니 리모컨에도 비닐 씌웠겠다.",
+      "text": "코덱스랑 어색한 사이냐. 필요한 건 편하게 시켜ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -564,7 +568,7 @@
       "id": "ko.quote.4500602d8849436b",
       "situation": "low",
       "tone": "spicy",
-      "text": "튜토리얼은 익숙해졌어. 첫 퀘스트는 어디 있어?",
+      "text": "사용량은 단편인데 기대하는 건 대하드라마네.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -582,7 +586,7 @@
       "id": "ko.quote.598a48d3722943f5",
       "situation": "low",
       "tone": "spicy",
-      "text": "할 일 목록이 묵직하다면 제일 작은 항목부터 골라 봐.",
+      "text": "한도가 아니라 도자기 다루듯 쓰네. 깨지는 거 아냐.",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -591,7 +595,7 @@
       "id": "ko.quote.14611e002a3d4680",
       "situation": "low",
       "tone": "spicy",
-      "text": "한도가 쉬엄쉬엄 출근 중이네. 일감은 전달했어?",
+      "text": "이 정도면 AI 비서가 네 눈치 보는 중이겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -600,7 +604,7 @@
       "id": "ko.quote.ab0b56e3081d4791",
       "situation": "low",
       "tone": "spicy",
-      "text": "아직 여유가 크네. 미뤄 둔 질문 하나 꺼내 보자.",
+      "text": "한도는 널널한데 질문이 왜 외출 금지야.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -609,7 +613,7 @@
       "id": "ko.quote.0dd387e06a494816",
       "situation": "low",
       "tone": "spicy",
-      "text": "한도는 널 기다리는데 넌 한도만 보고 있네.",
+      "text": "코덱스 대기 시간만 길어지겠네. 작은 거 하나 맡겨.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -618,7 +622,7 @@
       "id": "ko.quote.8f91e23452c34bc8",
       "situation": "low",
       "tone": "spicy",
-      "text": "숫자 구경으로 작업이 진행되면 얼마나 편할까.",
+      "text": "사용량 그래프가 너무 수줍어. 낯가림은 내가 할게.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -627,7 +631,7 @@
       "id": "ko.quote.fd13c25c085e448a",
       "situation": "low",
       "tone": "spicy",
-      "text": "질문도 도시락처럼 아껴 먹는 스타일이네.",
+      "text": "한도 보관 잘했네. 근데 유품으로 남길 건 아니잖아ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -645,7 +649,7 @@
       "id": "ko.quote.6368eaef64ac47c3",
       "situation": "low",
       "tone": "spicy",
-      "text": "대시보드는 계기판이지 운전대는 아니지. 방향은 네가 골라.",
+      "text": "시킬 일은 작게, 조건은 분명하게. 비서는 독심술사가 아냐.",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -654,7 +658,7 @@
       "id": "ko.quote.632119de33134599",
       "situation": "low",
       "tone": "spicy",
-      "text": "한도는 꽤 남았어. 고민을 질문으로 바꿀 자리도 있고.",
+      "text": "지금 속도면 한도가 너보다 여유롭게 산다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -663,7 +667,7 @@
       "id": "ko.quote.00c40ab6ac2d4974",
       "situation": "low",
       "tone": "spicy",
-      "text": "아이디어는 많고 첫 실행은 귀하네.",
+      "text": "아껴 쓰는 건 좋은데 질문까지 금고에 넣진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -672,7 +676,7 @@
       "id": "ko.quote.f4301f09fb714eb1",
       "situation": "low",
       "tone": "spicy",
-      "text": "오늘의 질문이 너무 소중해서 포장부터 했어?",
+      "text": "한도가 진열품은 아니잖아. 필요한 데만 꺼내 써.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -681,7 +685,7 @@
       "id": "ko.quote.a81efec01465481f",
       "situation": "low",
       "tone": "spicy",
-      "text": "한도 창고가 한산하네. 재고 조사만 할 필요는 없어.",
+      "text": "코덱스한테 일 맡기는 데 추천서까진 필요 없어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -690,7 +694,7 @@
       "id": "ko.quote.23f10a357b52442b",
       "situation": "low",
       "tone": "spicy",
-      "text": "계획표엔 큰 그림, 사용량엔 작은 점.",
+      "text": "질문 한 줄에 결재 도장 여덟 개 받는 중이냐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -708,7 +712,7 @@
       "id": "ko.quote.972a4d74762d408b",
       "situation": "low",
       "tone": "spicy",
-      "text": "장비 점검은 됐어. 이제 한 판 들어가자.",
+      "text": "사용량이 간식인데 목표가 잔칫상이면 좀 나눠서 줘.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -717,7 +721,7 @@
       "id": "ko.quote.a50699cfa9474cde",
       "situation": "low",
       "tone": "spicy",
-      "text": "쓰다 만 문제 하나가 완벽한 빈 질문보다 낫지.",
+      "text": "일단 초안 하나 받아. 빈 화면이랑 눈싸움해서 뭐해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -726,7 +730,7 @@
       "id": "ko.quote.4a605e5b179d47c5",
       "situation": "low",
       "tone": "spicy",
-      "text": "미루던 일이 있다면 시작 조건 하나만 정해 보자.",
+      "text": "한도랑 밀당하냐. 얘는 먼저 연락 안 와ㅋㅋ",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -735,7 +739,7 @@
       "id": "ko.quote.84fc9995f60c4488",
       "situation": "low",
       "tone": "spicy",
-      "text": "대형 화면에 예고편만 반복 재생 중이네.",
+      "text": "사용량이 조용하네. 생각 중인 건 못 읽으니까 말로 줘.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -744,7 +748,7 @@
       "id": "ko.quote.0fa3affa45044f9f",
       "situation": "low",
       "tone": "spicy",
-      "text": "한도는 넉넉한데 질문은 절약 모드야.",
+      "text": "이럴 거면 질문창에 좌석표라도 붙여. 아직 자리가 널널하네.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1275,7 +1279,7 @@
       "id": "ko.quote.e90712775b474ff9",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "준비 운동 끝. 질문이 제법 몸을 풀었어.",
+      "text": "이제 코덱스랑 말은 트였네. 업무도 한 문장씩 줘.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1284,7 +1288,7 @@
       "id": "ko.quote.cbc261f4a0cd4676",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "한도에게 업무 배정이 시작됐네.",
+      "text": "사용량에 사람 사는 흔적이 생겼네ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1293,7 +1297,7 @@
       "id": "ko.quote.5bac8d45ded4424a",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "속도는 붙었어. 방향도 같이 확인하자.",
+      "text": "한도는 움직이는데 결과는 네가 골라야 돼. 자동 승인은 금지.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1302,7 +1306,7 @@
       "id": "ko.quote.a22b8cad6e134bcf",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "숫자는 움직였네. 화면 밖 성과는 직접 확인해 줘.",
+      "text": "슬슬 손에 익네. 그렇다고 AI 말투까지 따라 하진 마.",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -1311,7 +1315,7 @@
       "id": "ko.quote.626062d7bf2c4cde",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "질문들이 입구에서 안쪽으로 이사했네.",
+      "text": "질문은 잘 굴러간다. 목적지 없이 택시 타는 건 아니지?",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1320,7 +1324,7 @@
       "id": "ko.quote.db4676b1d8d44d5d",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "슬슬 본편 분위기가 나. 예고편은 잘 봤고.",
+      "text": "코덱스가 말 많아지기 전에 원하는 분량부터 박아 둬.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1338,7 +1342,7 @@
       "id": "ko.quote.99d5f5fe04674d4f",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "달리기 시작했네. 신발 끈도 가끔 보자.",
+      "text": "이 정도면 체험 부스는 나왔네. 필요한 것만 챙겨.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1347,7 +1351,7 @@
       "id": "ko.quote.4bbc90886e734424",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "소비는 생겼어. 결과 확인도 같은 속도로 해 줘.",
+      "text": "사용량 올라간 건 봤어. 성과까지 안다고 우기진 않을게.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1356,7 +1360,7 @@
       "id": "ko.quote.e50582bacbe94184",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "사용량만 보면 조용한 엔진이 돌아가는 중이야.",
+      "text": "이제 대화 같네. 다음엔 출력 형식도 같이 던져.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1365,7 +1369,7 @@
       "id": "ko.quote.a74251a93c5c44c6",
       "situation": "moderate",
       "tone": "spicy",
-      "text": "한도에 맡긴 일감이 이제 책상 위에 보이네.",
+      "text": "질문은 시동 걸렸고, 브레이크는 네 담당이야.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1626,7 +1630,7 @@
       "id": "ko.quote.f1678e283f794809",
       "situation": "mid",
       "tone": "spicy",
-      "text": "한도 중간쯤에서 간판이 커 보이네.",
+      "text": "한도 반쯤 왔네. 여기서부터 아무 말 대잔치는 손해야.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1635,7 +1639,7 @@
       "id": "ko.quote.18cdbbc5a5e74ab1",
       "situation": "mid",
       "tone": "spicy",
-      "text": "이젠 사용량이 존재감을 숨길 수 없지.",
+      "text": "코덱스랑 꽤 붙어 있네. 중요한 문장은 한 번 의심해ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1653,7 +1657,7 @@
       "id": "ko.quote.94411ed55b764c23",
       "situation": "mid",
       "tone": "spicy",
-      "text": "속도가 붙었네. 답을 읽는 속도도 따라와?",
+      "text": "중간까지 왔다. 분량 늘었다고 완성도도 따라오는 건 아냐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1662,7 +1666,7 @@
       "id": "ko.quote.a6426184df034de4",
       "situation": "mid",
       "tone": "spicy",
-      "text": "한도 절약 모드는 잠깐 휴가 갔나 봐.",
+      "text": "사용량은 탄력 받았네. 결과 검수는 아직 네 직장이야.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1671,7 +1675,7 @@
       "id": "ko.quote.c1660ac6eea84ee3",
       "situation": "mid",
       "tone": "spicy",
-      "text": "쌓인 요청만큼 검토할 거리도 쌓였겠네.",
+      "text": "이쯤이면 추가 주문 전에 필요한 것부터 추려.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1680,7 +1684,7 @@
       "id": "ko.quote.7b69bbcca19c4042",
       "situation": "mid",
       "tone": "spicy",
-      "text": "한도에게 반나절 체험 말고 근무를 시켰어.",
+      "text": "코덱스가 자신 있게 말할수록 근거는 따로 챙겨.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1689,7 +1693,7 @@
       "id": "ko.quote.6066b0015a334ef8",
       "situation": "mid",
       "tone": "spicy",
-      "text": "이 정도면 숫자도 허리 펴고 서 있네.",
+      "text": "한도도 허리쯤 왔네. 불필요한 재주문만 줄여 보자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1698,7 +1702,7 @@
       "id": "ko.quote.e92bb4bd71534d4f",
       "situation": "mid",
       "tone": "spicy",
-      "text": "중간 지점이야. 끝난 척도 시작인 척도 금지.",
+      "text": "질문은 잘 돌아가네. 답변에 박수만 치지 말고 확인도 해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1716,7 +1720,7 @@
       "id": "ko.quote.f5b8b747c62b4c36",
       "situation": "mid",
       "tone": "spicy",
-      "text": "한도도 이제 네 작업 리듬을 알겠네.",
+      "text": "한도는 일하고 있네. 결과물이 일하는지는 네가 봐줘.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1725,7 +1729,7 @@
       "id": "ko.quote.c4c82e937a124c6d",
       "situation": "mid",
       "tone": "spicy",
-      "text": "고민이 요청으로 꽤 번역됐어.",
+      "text": "반환점 근처다. 여기서 결승 세리머니 하면 좀 이르지ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1986,7 +1990,7 @@
       "id": "ko.quote.a5bf3e72d76c4758",
       "situation": "high",
       "tone": "spicy",
-      "text": "한도가 슬슬 숨소리를 들려주네.",
+      "text": "한도 꽤 썼네. 코덱스랑 합숙하냐ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -1995,7 +1999,7 @@
       "id": "ko.quote.a8cc7c1c90a74856",
       "situation": "high",
       "tone": "spicy",
-      "text": "많이 썼어. 남은 양은 이제 배경 정보가 아니야.",
+      "text": "사용량은 제법 달렸다. 답변 검수까지 AI한테 떠넘기진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2004,7 +2008,7 @@
       "id": "ko.quote.e62251533d584869",
       "situation": "high",
       "tone": "spicy",
-      "text": "질문 행렬에 질서 담당이 필요하겠네.",
+      "text": "속도 붙었네. 근데 맞춤법 검사처럼 결론도 한 번 검사해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2013,7 +2017,7 @@
       "id": "ko.quote.ed4c41ed3f284792",
       "situation": "high",
       "tone": "spicy",
-      "text": "속도는 빠른데 검토도 같은 차에 탔어?",
+      "text": "한도 여유가 줄어든다. 질문에 군더더기부터 빼자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2031,7 +2035,7 @@
       "id": "ko.quote.5b2364e008684b02",
       "situation": "high",
       "tone": "spicy",
-      "text": "브레이크가 옵션이라고 생각하면 위험해.",
+      "text": "코덱스는 잘 떠드네. 네가 필요한 답만 추려서 데려와.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2040,7 +2044,7 @@
       "id": "ko.quote.d9da487c6046459e",
       "situation": "high",
       "tone": "spicy",
-      "text": "이제 남은 한도가 제법 말을 걸어오네.",
+      "text": "이쯤이면 추가 질문보다 답변 정리가 더 값질 수도 있어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2049,7 +2053,7 @@
       "id": "ko.quote.6397cc824c53454a",
       "situation": "high",
       "tone": "spicy",
-      "text": "요청 전에 범위를 한 번만 더 좁혀 보자.",
+      "text": "사용량 보고 놀랐지? 결과 안 본 내가 더 놀란 척은 안 할게.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2058,7 +2062,7 @@
       "id": "ko.quote.c0dc5c4c510b4be1",
       "situation": "high",
       "tone": "spicy",
-      "text": "한도에게 야근 분위기를 풍기기 시작했어.",
+      "text": "질문 엔진은 뜨겁네. 핸들은 네가 잡아ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2067,7 +2071,7 @@
       "id": "ko.quote.b48cb3bbce0945cd",
       "situation": "high",
       "tone": "spicy",
-      "text": "많이 받은 답 중 중요한 건 따로 챙겨 둬.",
+      "text": "한도 꽤 움직였다. 같은 조건 재설명하는 일부터 줄여.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2076,7 +2080,7 @@
       "id": "ko.quote.f23b02c09123470d",
       "situation": "high",
       "tone": "spicy",
-      "text": "가속은 잘해. 코너에서 사고 안 나는 게 더 멋있지.",
+      "text": "달린 건 숫자로 보인다. 잘 달렸는지는 결과로 보자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2346,7 +2350,7 @@
       "id": "ko.quote.6b1f66c4219c4ada",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "한도 철거반이 현장에 도착했네.",
+      "text": "야 한도 끝자락이네. 코덱스랑 장기 투숙 중이냐ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2355,7 +2359,7 @@
       "id": "ko.quote.c04dea769495456a",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "끝이 보인다. 마지막 질문을 대충 쓰면 아깝지.",
+      "text": "많이 썼네. 마지막 질문까지 아무 말로 보내면 아깝잖아.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2364,7 +2368,7 @@
       "id": "ko.quote.4ea1843d4792400f",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "이쯤이면 잔여량도 안전벨트 매야 해.",
+      "text": "한도 잔고 얇아진다. 추가 주문은 메뉴 정하고 넣어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2373,7 +2377,7 @@
       "id": "ko.quote.1647b36c66044c81",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "요청창에 불은 켜졌고 한도 창고는 비어 가네.",
+      "text": "거의 다 왔네. 여기서 대답 길게 해 달라는 건 눈치 좀 봐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2382,7 +2386,7 @@
       "id": "ko.quote.fb706adf59fc49e9",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "한도를 굴리는 게 아니라 압축하는 분위기야.",
+      "text": "코덱스 열일 여부는 몰라도 한도는 꽤 일했네.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2391,7 +2395,7 @@
       "id": "ko.quote.82fc06479d4e4895",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "가속 페달 아래서 바닥 소리가 들리기 시작해.",
+      "text": "끝이 보이네. 남은 질문에 안건 여섯 개 끼워 넣진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2400,7 +2404,7 @@
       "id": "ko.quote.ba276d03c90f4a53",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "남은 질문은 우선순위 순으로 줄 세우자.",
+      "text": "이제 한 번 물을 때 조건을 모아서 줘. 재방문 줄이게.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2409,7 +2413,7 @@
       "id": "ko.quote.c7f466ac8d1747ca",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "아직 더 쓸 수 있어도 꼭 더 써야 하는 건 아니야.",
+      "text": "한도 꽤 달렸다. 남은 건 검수용으로 조금 남겨 둬.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2418,7 +2422,7 @@
       "id": "ko.quote.2b0e5ce45b154c90",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "한도가 퇴근 시간을 힐끔 보네.",
+      "text": "사용량은 헤비급이네. 답변 오류까지 헤비급이면 곤란해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2427,7 +2431,7 @@
       "id": "ko.quote.680c1ef66a3c4421",
       "situation": "heavy",
       "tone": "spicy",
-      "text": "이제 실험보다 필요한 요청부터 고르자.",
+      "text": "거의 끝인데 같은 설명 또 쓰기엔 손가락도 아깝다ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2706,7 +2710,7 @@
       "id": "ko.quote.b65a226c309c4d21",
       "situation": "critical",
       "tone": "spicy",
-      "text": "한도 끝이 보여. 추가 주문은 신중하게.",
+      "text": "야 한도 끝이 보인다. 추가 주문 전에 잔량부터 봐ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2715,7 +2719,7 @@
       "id": "ko.quote.80a10e85edb9481d",
       "situation": "critical",
       "tone": "spicy",
-      "text": "이제 잔여량이 아니라 출구 안내판이 눈에 띄네.",
+      "text": "한도가 퇴근 준비 중이야. 남은 건 꼭 필요한 데 쓰자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2724,7 +2728,7 @@
       "id": "ko.quote.52f528ed5d40496c",
       "situation": "critical",
       "tone": "spicy",
-      "text": "한도에게 퇴근 도장을 찍어 줄 시간이 가까워.",
+      "text": "지금은 장문 부탁보다 이미 받은 답 정리가 낫겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2733,7 +2737,7 @@
       "id": "ko.quote.4c18ab34925d4705",
       "situation": "critical",
       "tone": "spicy",
-      "text": "바닥과 눈인사하는 중이네. 친해질 필요는 없어.",
+      "text": "한도 신호등 빨갛다. 액셀 말고 우선순위부터.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2742,7 +2746,7 @@
       "id": "ko.quote.e141381197f8449a",
       "situation": "critical",
       "tone": "spicy",
-      "text": "지금은 다음 작업의 입력 자료를 정리해 둬. 호출은 잠시 쉬고.",
+      "text": "코덱스 붙잡기 전에 남은 한도부터 붙잡아ㅋㅋ",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -2751,7 +2755,7 @@
       "id": "ko.quote.7708de60822049ee",
       "situation": "critical",
       "tone": "spicy",
-      "text": "지금은 메모장이 열일할 차례야. 다음에 필요한 조건만 적어 둬.",
+      "text": "여유가 얇아졌네. 새 일 벌이기 전에 남은 작업 추려.",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -2760,7 +2764,7 @@
       "id": "ko.quote.9aabc1e414184b85",
       "situation": "critical",
       "tone": "spicy",
-      "text": "한도 철거 현장에 마무리 점검이 필요하겠네.",
+      "text": "이쯤이면 질문 하나도 자리 예약하고 들어가야겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2769,7 +2773,7 @@
       "id": "ko.quote.94e121c878c5404c",
       "situation": "critical",
       "tone": "spicy",
-      "text": "지금은 연타보다 정리가 잘 먹힐 구간이야.",
+      "text": "한도 임박. 마지막 칸까지 수다로 채우진 말자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2778,7 +2782,7 @@
       "id": "ko.quote.354fa8f4fdad4fa8",
       "situation": "critical",
       "tone": "spicy",
-      "text": "잔여량이 거의 마지막 대사를 하고 있어.",
+      "text": "잔량이 아슬아슬해. 더 쓰라고 부추길 타이밍은 아니네.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -2787,7 +2791,7 @@
       "id": "ko.quote.9913f4cf5f5648db",
       "situation": "critical",
       "tone": "spicy",
-      "text": "버튼 연타는 급행권이 아니야. 잠깐 쉬어도 기록은 남아.",
+      "text": "한도가 숨 고르는 중. 지금 있는 답부터 써먹어 보자.",
       "tipId": "",
       "review": "modified",
       "review998": "retained"
@@ -3066,7 +3070,7 @@
       "id": "ko.quote.0670929937764074",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "추가 소비가 확인됐네. 기본 코스 밖으로 나왔어.",
+      "text": "추가 사용 가능 상태네. 무한리필 간판은 아니야ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3075,7 +3079,7 @@
       "id": "ko.quote.6802fa2d632e4d74",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "한도 밖 연장전에 들어갔네. 점수는 검토 후에 보자.",
+      "text": "기본 구간 넘어도 가능하다고 나오네. 이유랑 조건부터 보자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3084,7 +3088,7 @@
       "id": "ko.quote.2d1a0b8603824047",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "더 달린 흔적이 보여. 무한 모드로 착각하지는 마.",
+      "text": "계속 쓸 수 있대. 그렇다고 공짜 무제한이라고 읽으면 곤란해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3093,7 +3097,7 @@
       "id": "ko.quote.dd73a01d33c94917",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "추가 사용도 기록됐어. 결과 확인은 별도야.",
+      "text": "사용 가능은 확인. 추가 비용까지 내가 안다고 우기진 않을게.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3102,7 +3106,7 @@
       "id": "ko.quote.c6d3a7050a7342ae",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "기본 일정 뒤에 추가 회차가 붙었네.",
+      "text": "한도 끝난 줄 알았더니 여지가 있네. 새 판인지는 확인부터.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3111,7 +3115,7 @@
       "id": "ko.quote.180a79e78e1c4a45",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "한도에게 연장 근무가 생겼어. 요청은 더 명확하게.",
+      "text": "추가 사용은 되네. 메뉴판 작은 글씨는 꼭 읽는 편이 좋지.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3120,7 +3124,7 @@
       "id": "ko.quote.4d402ee4893641ec",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "추가 소비는 확인. 추가 성과는 네 확인이 필요해.",
+      "text": "가능 표시 떴다. 이걸 무제한 초대장으로 확대 해석하진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3129,7 +3133,7 @@
       "id": "ko.quote.a8b59d52ee3147bc",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "오늘 한도 일지가 본편 뒤로 이어졌네.",
+      "text": "아직 가능하다고 나와. 필요한 작업만 골라 넣자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3138,7 +3142,7 @@
       "id": "ko.quote.28c19d2045a34067",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "연장전에서도 공은 똑같이 신중하게 차야지.",
+      "text": "추가 구간이네. 신나서 조건까지 건너뛰진 마ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3147,7 +3151,7 @@
       "id": "ko.quote.7b16484bf6a64129",
       "situation": "bonus",
       "tone": "spicy",
-      "text": "추가 구간까지 왔어. 버튼 연타가 목적은 아니잖아.",
+      "text": "계속 가능은 맞는데, 비용 0원 도장은 못 찍어 줘.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3246,7 +3250,7 @@
       "id": "ko.quote.c415dc0425da4b74",
       "situation": "reset",
       "tone": "spicy",
-      "text": "한도가 새로 열렸네. 낮은 숫자에 잔소리는 보류.",
+      "text": "한도는 새 출발했네. 질문까지 거창하게 개업식 하지 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3255,7 +3259,7 @@
       "id": "ko.quote.d9543fd3d0fc4b94",
       "situation": "reset",
       "tone": "spicy",
-      "text": "새 구간 첫 장이야. 지난 장과 섞어 읽지는 말자.",
+      "text": "리셋됐다. 첫 질문에 올해 소원 다 담는 건 아니지ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3264,7 +3268,7 @@
       "id": "ko.quote.aed91ba17d034f91",
       "situation": "reset",
       "tone": "spicy",
-      "text": "초기화 직후네. 지금은 예열해도 자연스러워.",
+      "text": "한도 새것 됐다고 백화점 오픈런 할 필요는 없어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3273,7 +3277,7 @@
       "id": "ko.quote.2e9382b7b2c14d2a",
       "situation": "reset",
       "tone": "spicy",
-      "text": "한도는 새 출발. 너까지 기억 초기화할 필요는 없지.",
+      "text": "새 판 열렸다. 필요한 일 하나부터 데려와.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3282,7 +3286,7 @@
       "id": "ko.quote.243f0a02643e40b7",
       "situation": "reset",
       "tone": "spicy",
-      "text": "다시 열린 구간이야. 필요한 요청부터 차분하게.",
+      "text": "리셋 축하. 그렇다고 한 번에 숙제 보따리 투척하진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3291,7 +3295,7 @@
       "id": "ko.quote.3bf6c997cc3a4e82",
       "situation": "reset",
       "tone": "spicy",
-      "text": "숫자가 낮아진 건 새 출발의 흔적이네.",
+      "text": "한도는 충전됐고, 질문은 짧게 정리하면 되겠다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3309,7 +3313,7 @@
       "id": "ko.quote.3282e6d1e3b84d9e",
       "situation": "reset",
       "tone": "spicy",
-      "text": "아직 엔진 예열 중. 첫 코너부터 질주할 필요는 없어.",
+      "text": "새 한도 들어왔다. 포장 뜯자마자 바닥낼 생각은 말고ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3318,7 +3322,7 @@
       "id": "ko.quote.f2a5e7793cf94951",
       "situation": "reset",
       "tone": "spicy",
-      "text": "한도 리필 직후네. 계획까지 리필해 보자.",
+      "text": "리셋은 됐는데 목적까지 자동 생성되진 않아. 하나만 골라.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3327,7 +3331,7 @@
       "id": "ko.quote.bb02b58ed0514c2d",
       "situation": "reset",
       "tone": "spicy",
-      "text": "새 구간이 왔어. 어제의 답도 계속 쓸 수 있고.",
+      "text": "한도 다시 출근. 사장님은 안건 한 줄만 준비해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3336,7 +3340,7 @@
       "id": "ko.quote.346add420c124eae",
       "situation": "reset",
       "tone": "spicy",
-      "text": "초기화 뒤 숫자는 가벼워. 할 일은 직접 확인하자.",
+      "text": "새 판이라고 결말부터 시키지 마. 작은 초안부터 가자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3606,7 +3610,7 @@
       "id": "ko.quote.313e091dbfe44243",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "초기화는 가까운데 한도는 아직 널널하네.",
+      "text": "리셋이 가까워졌네. 남은 한도 불쌍하다고 억지로 쓰진 마ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3615,7 +3619,7 @@
       "id": "ko.quote.308bb6bcdf044452",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "한도 퇴근 전에 필요한 질문은 챙겨 보자.",
+      "text": "초기화 곧 온다. 마감 세일처럼 질문 줍지 말자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3624,7 +3628,7 @@
       "id": "ko.quote.fe933ae2599046f4",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "남은 양이 다음 구간으로 이사 가는 건 아니잖아.",
+      "text": "한도 유통기한 가까워도 숙제 만들어 먹을 필요는 없어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3633,7 +3637,7 @@
       "id": "ko.quote.b3e17828cd8147d9",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "마감이 다가오는데 사용량은 느긋하네.",
+      "text": "리셋 임박. 필요한 거 있으면 묻고, 없으면 쉬어도 돼.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3642,7 +3646,7 @@
       "id": "ko.quote.d6aa120ea52b4192",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "한도 시계는 간다. 숫자 구경만 하지는 말자.",
+      "text": "시계 보고 급하게 질문 만들면 답도 급조된다.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3651,7 +3655,7 @@
       "id": "ko.quote.7f36a6506ed64e78",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "곧 새 구간이야. 남은 양을 꼭 억지로 쓸 필요는 없고.",
+      "text": "한도 남았다고 아무거나 시키면 검수할 일만 늘어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3660,7 +3664,7 @@
       "id": "ko.quote.e2ba5c1803ac446f",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "초기화 직전에도 필요 없는 질문은 필요 없지.",
+      "text": "초기화 전에 챙길 거 있어? 없으면 코덱스도 칼퇴하자ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3669,7 +3673,7 @@
       "id": "ko.quote.be5f2563e5a6433a",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "한도는 곧 퇴근인데 일감이 아직 가볍네.",
+      "text": "곧 새 판이네. 지금 판에 억지 엔딩 넣진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3678,7 +3682,7 @@
       "id": "ko.quote.646198b2c0bf4658",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "남은 시간과 남은 양의 표정이 다르다.",
+      "text": "리셋 알림이지 출석 독촉은 아냐. 필요한 일만 골라.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3687,7 +3691,7 @@
       "id": "ko.quote.3da31a53b7d84aeb",
       "situation": "imminent",
       "tone": "spicy",
-      "text": "미뤄 둔 질문이 있으면 마감 시각부터 보자.",
+      "text": "남은 한도 소진 대회는 없어. 질문도 필요한 만큼만.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3966,7 +3970,7 @@
       "id": "ko.quote.53f78c0d840a4eef",
       "situation": "burst",
       "tone": "spicy",
-      "text": "오늘 한도가 유산소 제대로 했네.",
+      "text": "오늘 사용량이 꽤 뛰었네. 코덱스 옆자리로 이사했냐ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3975,7 +3979,7 @@
       "id": "ko.quote.efc30deb32984591",
       "situation": "burst",
       "tone": "spicy",
-      "text": "오늘 확인된 소비 증가가 제법 크다.",
+      "text": "오늘 숫자 좀 달린다. 급할수록 답변은 한 번 걸러.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3984,7 +3988,7 @@
       "id": "ko.quote.ac867dc0fea3466e",
       "situation": "burst",
       "tone": "spicy",
-      "text": "한도에게 오늘 일정은 인터벌 훈련이었네.",
+      "text": "사용량 상승세네. 결과까지 급상승했다고 착각하진 말고.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -3993,7 +3997,7 @@
       "id": "ko.quote.f883b96b766e4e9c",
       "situation": "burst",
       "tone": "spicy",
-      "text": "오늘은 질문들이 단체로 몰려왔나 봐.",
+      "text": "오늘은 한도가 존재감 확실하네. 똑같은 질문만 줄여 보자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4002,7 +4006,7 @@
       "id": "ko.quote.e4e1fb075ea04b9f",
       "situation": "burst",
       "tone": "spicy",
-      "text": "평소 속도 이야기는 잠깐 접자. 오늘 숫자가 바쁘네.",
+      "text": "속도 붙었다. 근데 근거 확인 버튼은 네 머릿속에 있어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4011,7 +4015,7 @@
       "id": "ko.quote.cec69375e6654444",
       "situation": "burst",
       "tone": "spicy",
-      "text": "오늘 소비에 가속 페달 자국이 보여.",
+      "text": "오늘 숫자가 바쁘네. 검수는 퇴근시키지 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4020,7 +4024,7 @@
       "id": "ko.quote.6363bfa7553f4695",
       "situation": "burst",
       "tone": "spicy",
-      "text": "한도가 오늘만큼은 편하게 앉기 어렵겠어.",
+      "text": "사용량은 달리고 있다. 방향은 네가 계속 봐줘야 돼.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4029,7 +4033,7 @@
       "id": "ko.quote.8a6ef054726c4e65",
       "situation": "burst",
       "tone": "spicy",
-      "text": "오늘의 요청창에는 러시아워가 왔네.",
+      "text": "오늘 한도 꽤 움직였다. 조건 빠진 재주문만 조심해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4038,7 +4042,7 @@
       "id": "ko.quote.50fc02e0f66a49b5",
       "situation": "burst",
       "tone": "spicy",
-      "text": "관측된 오늘 소비가 한도 운동량을 올렸어.",
+      "text": "한도한테 야근 수당은 못 주니까 필요한 데만 써ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4047,7 +4051,7 @@
       "id": "ko.quote.3b5df7ce325943ee",
       "situation": "burst",
       "tone": "spicy",
-      "text": "오늘 달린 양은 확실해. 결과는 따로 검토하자.",
+      "text": "숫자 기세 좋네. 답변 기세에까지 휩쓸리진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4326,7 +4330,7 @@
       "id": "ko.quote.6ae1e69338aa4045",
       "situation": "missing",
       "tone": "spicy",
-      "text": "아직 전적도 없는데 평가부터 보러 왔네.",
+      "text": "야 숫자부터 안 왔어. 눈치로 0 찍는 재주는 없어ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4335,7 +4339,7 @@
       "id": "ko.quote.59137b2eaca64e35",
       "situation": "missing",
       "tone": "spicy",
-      "text": "숫자는 준비 중이야. 판정은 잠깐 보류.",
+      "text": "사용량을 다 못 봤네. 이걸 월루 증거로 쓰면 내가 사기꾼이지.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4344,7 +4348,7 @@
       "id": "ko.quote.2e99bec04db744f6",
       "situation": "missing",
       "tone": "spicy",
-      "text": "기록 빈칸을 사용량 영점으로 읽으면 곤란해.",
+      "text": "일부 숫자가 비었어. 코덱스 놀리기 전에 자료부터 받자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4353,7 +4357,7 @@
       "id": "ko.quote.3e3da6d891a34310",
       "situation": "missing",
       "tone": "spicy",
-      "text": "증거가 입장 안 했어. 잔소리도 대기할게.",
+      "text": "한도 정보가 덜 왔다. 빈칸을 0으로 읽으면 반칙이야.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4362,7 +4366,7 @@
       "id": "ko.quote.464fe54056e44989",
       "situation": "missing",
       "tone": "spicy",
-      "text": "아직 측정 자료가 없어. 상상으로 점수는 안 매겨.",
+      "text": "나도 모르는데 아는 척하면 그게 더 웃기지. 사용량 확인부터.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4371,7 +4375,7 @@
       "id": "ko.quote.a4753fa8d49342aa",
       "situation": "missing",
       "tone": "spicy",
-      "text": "성적표 종이가 아직 안 왔네.",
+      "text": "숫자 없다고 안 쓴 거 아냐. 억울한 누명은 안 씌울게ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4380,7 +4384,7 @@
       "id": "ko.quote.aa7dc01a034246e2",
       "situation": "missing",
       "tone": "spicy",
-      "text": "기록부터 모으자. 평가는 도망 안 가.",
+      "text": "확인된 한도가 부족해. 오늘 잔소리는 증거 불충분.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4389,7 +4393,7 @@
       "id": "ko.quote.de4fd76d10644a39",
       "situation": "missing",
       "tone": "spicy",
-      "text": "숫자 없는 대시보드에서 독심술을 기대한 거야?",
+      "text": "사용량이 가려졌네. 투시 능력은 업데이트에 없었어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4398,7 +4402,7 @@
       "id": "ko.quote.e924a0de38ab472a",
       "situation": "missing",
       "tone": "spicy",
-      "text": "현재 사용량을 먼저 확인해야 말도 맞게 하지.",
+      "text": "빈칸 보고 훈수 두면 나부터 혼나야지. 확인하고 오자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4407,7 +4411,7 @@
       "id": "ko.quote.1f46ecad82824a1f",
       "situation": "missing",
       "tone": "spicy",
-      "text": "데이터가 없으니 칭찬도 놀림도 잠깐 휴무.",
+      "text": "아직 판단 재료가 모자라. 깐족댈 근거도 필요하거든.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4686,7 +4690,7 @@
       "id": "ko.quote.2a98e1dcdee04dd9",
       "situation": "stale",
       "tone": "spicy",
-      "text": "이 숫자는 지난 장면이야. 현재 상황은 다시 확인하자.",
+      "text": "이 숫자 좀 묵었네. 숙성된 사용량으로 오늘을 까긴 어렵지ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4695,7 +4699,7 @@
       "id": "ko.quote.5d648bbf0a894280",
       "situation": "stale",
       "tone": "spicy",
-      "text": "오래된 계기판으로 지금 속도를 재면 곤란해.",
+      "text": "옛날 숫자 들고 현재인 척하면 내가 더 수상하잖아.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4704,7 +4708,7 @@
       "id": "ko.quote.70646edfd8544759",
       "situation": "stale",
       "tone": "spicy",
-      "text": "사용량 사진이 좀 묵었네. 새 사진이 필요해.",
+      "text": "사용량 사진이 오래됐어. 지금 상태는 다시 봐야 돼.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4713,7 +4717,7 @@
       "id": "ko.quote.c77cd84b5a9042c4",
       "situation": "stale",
       "tone": "spicy",
-      "text": "기록은 있어. 다만 지금 이야기인지는 확인해야지.",
+      "text": "숫자에 최신 딱지가 떨어졌네. 새로 확인부터 하자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4722,7 +4726,7 @@
       "id": "ko.quote.472cdc024b26415b",
       "situation": "stale",
       "tone": "spicy",
-      "text": "지난 숫자가 현재인 척하면 안 되잖아.",
+      "text": "이건 지난 소식이야. 오늘 잔소리에 재활용하면 반칙이지.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4731,7 +4735,7 @@
       "id": "ko.quote.da9bce86a7364932",
       "situation": "stale",
       "tone": "spicy",
-      "text": "오늘의 판정 전에 데이터 시계부터 맞추자.",
+      "text": "숫자가 지각 중. 네가 게으른지는 이걸로 몰라ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4740,7 +4744,7 @@
       "id": "ko.quote.78b572ae5bb6459d",
       "situation": "stale",
       "tone": "spicy",
-      "text": "계기판이 과거를 보고 있어. 새 조회가 필요하네.",
+      "text": "갱신 전까진 입 좀 닫을게. 묵은 정보로 훈수 두긴 싫거든.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4749,7 +4753,7 @@
       "id": "ko.quote.fd0fe870e0834e90",
       "situation": "stale",
       "tone": "spicy",
-      "text": "낡은 숫자에 최신 잔소리를 붙이기는 어렵지.",
+      "text": "오래된 숫자야. 지금 한도랑 같은 얼굴이라고 믿진 마.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4758,7 +4762,7 @@
       "id": "ko.quote.40e27de972544b72",
       "situation": "stale",
       "tone": "spicy",
-      "text": "확인한 지 시간이 지났어. 결론은 잠깐 대기.",
+      "text": "이 기록은 추억 보정 중. 현재 사용량은 따로 확인하자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -4767,7 +4771,7 @@
       "id": "ko.quote.e2080a2c7ea844c4",
       "situation": "stale",
       "tone": "spicy",
-      "text": "현재 한도는 다시 봐야 해. 예전 숫자는 참고만.",
+      "text": "숫자가 좀 늦었네. 나도 최신인 척 연기하진 않을게.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5046,7 +5050,7 @@
       "id": "ko.quote.5b05aaf0bbe9426f",
       "situation": "network",
       "tone": "spicy",
-      "text": "이번 조회가 안 됐네. 사용량까지 실패한 건 아니야.",
+      "text": "조회가 삐끗했네. 네 작업까지 망했다는 뜻은 아냐ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5055,7 +5059,7 @@
       "id": "ko.quote.247746c731c64cdd",
       "situation": "network",
       "tone": "spicy",
-      "text": "숫자 소식이 잠깐 막혔어. 원인은 아직 단정 못 해.",
+      "text": "사용량 소식이 안 왔어. 코덱스 월루 판정은 보류.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5064,7 +5068,7 @@
       "id": "ko.quote.cbeebb97bbfc41dd",
       "situation": "network",
       "tone": "spicy",
-      "text": "조회부터 다시 확인하자. 한도 평가는 대기.",
+      "text": "숫자를 못 받았네. 원인까지 지어내면 내가 혼나지.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5073,7 +5077,7 @@
       "id": "ko.quote.802dedb6cc244f56",
       "situation": "network",
       "tone": "spicy",
-      "text": "응답을 못 받았어. 빈칸을 영점으로 바꾸지는 않을게.",
+      "text": "이번 조회는 실패. 사용량 0이라고 박수 치진 말자.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5082,7 +5086,7 @@
       "id": "ko.quote.c626d17c1e2f43e0",
       "situation": "network",
       "tone": "spicy",
-      "text": "데이터 배달이 늦네. 내용까지 지어낼 수는 없지.",
+      "text": "한도 말고 조회가 막힌 거야. 둘이 같은 말은 아니거든.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5091,7 +5095,7 @@
       "id": "ko.quote.610c47d9134c459c",
       "situation": "network",
       "tone": "spicy",
-      "text": "조회 실패는 확인. 네 작업 실패라는 뜻은 아니고.",
+      "text": "통신 결과가 안 왔네. 네 탓이라고 몰아갈 자료도 없어.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5100,7 +5104,7 @@
       "id": "ko.quote.fe68f72a22054379",
       "situation": "network",
       "tone": "spicy",
-      "text": "지금은 한도보다 조회 상태를 먼저 보자.",
+      "text": "숫자 택배가 안 왔다. 어디서 막혔는지는 아직 몰라ㅋㅋ",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5109,7 +5113,7 @@
       "id": "ko.quote.d1d431ed3c99483b",
       "situation": "network",
       "tone": "spicy",
-      "text": "숫자가 안 도착했네. 재조회 뒤에 얘기하자.",
+      "text": "조회가 헛발질했네. 저장된 기록까지 사라진 건 아냐.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5118,7 +5122,7 @@
       "id": "ko.quote.46ab9857a183493d",
       "situation": "network",
       "tone": "spicy",
-      "text": "새 값을 못 받았어. 이전 값은 참고만 해.",
+      "text": "이번엔 확인 못 했어. 모르는 숫자로 잔소리는 안 할게.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"
@@ -5127,7 +5131,7 @@
       "id": "ko.quote.a926fb4781924252",
       "situation": "network",
       "tone": "spicy",
-      "text": "잠깐 확인이 끊겼어. 잔여량은 다시 봐야 해.",
+      "text": "숫자 수신 실패. 새로고침 연타한다고 내가 예언하진 못해.",
       "tipId": "",
       "review": "retained",
       "review998": "retained"

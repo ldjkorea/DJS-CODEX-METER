@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-VERSION_NAME="9.9.11"
+VERSION_NAME="9.9.13"
 DIST="$ROOT/dist"
 SIGNING_DIR="$ROOT/.local-signing"
 KEYSTORE="$SIGNING_DIR/codex-meter-local.p12"
@@ -23,20 +23,13 @@ mkdir -p "$DIST"
 
 "$ROOT/gradlew" --project-dir "$ROOT" \
   :app:assembleRelease \
-  :wear:assembleRelease \
   --console=plain
 
 SOURCE_APK="$ROOT/app/build/outputs/apk/release/app-release.apk"
 OUT="$DIST/GPT-HUD-BETA-$VERSION_NAME.apk"
 cp "$SOURCE_APK" "$OUT"
 
-WEAR_SOURCE_APK="$ROOT/wear/build/outputs/apk/release/wear-release.apk"
-WEAR_OUT="$DIST/CodexMeter-Wear-3.0.0-ko.apk"
-cp "$WEAR_SOURCE_APK" "$WEAR_OUT"
-
 APKSIGNER="$(find "$ANDROID_SDK_ROOT/build-tools" -type f \( -name apksigner -o -name apksigner.bat \) | sort | tail -1)"
 "$APKSIGNER" verify --verbose --print-certs "$OUT"
-"$APKSIGNER" verify --verbose --print-certs "$WEAR_OUT"
-(cd "$DIST" && sha256sum "$(basename "$OUT")" "$(basename "$WEAR_OUT")") | tee "$DIST/SHA256SUMS.txt"
+(cd "$DIST" && sha256sum "$(basename "$OUT")") | tee "$DIST/SHA256SUMS.txt"
 echo "Built $OUT"
-echo "Built $WEAR_OUT"
