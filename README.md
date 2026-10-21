@@ -81,7 +81,7 @@
 
 현재 정식 통합판은 **Android/Wear 3.0.0 / versionCode 85 · Windows Widget 3.0.0**입니다. 사용량·원장·성장·프로필 공유·시작 멈춤 수정과 한국어·영어 선택을 포함합니다.
 
-[휴대폰 APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-3.0.0-ko.apk) · [Wear APK](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-Wear-3.0.0-ko.apk) · [Windows 위젯](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-WindowsWidget-3.0.0.zip) · [통합 및 검증 기록](docs/GPT_HUD_3.0.0.ko.md)
+[휴대폰 APK](https://github.com/ldjkorea/DJS-GPT-HUD/releases/download/v3.0.0/CodexMeter-3.0.0-ko.apk) · [Wear APK](https://github.com/ldjkorea/DJS-GPT-HUD/releases/download/v3.0.0/CodexMeter-Wear-3.0.0-ko.apk) · [Windows 위젯](https://github.com/ldjkorea/DJS-GPT-HUD/releases/download/v3.0.0/CodexMeter-WindowsWidget-3.0.0.zip) · [통합 및 검증 기록](docs/GPT_HUD_3.0.0.ko.md)
 
 GitHub v3.0.0 정식 릴리스로 제공합니다. 기존 앱을 삭제하지 않고 같은 서명으로 업데이트합니다.
 
@@ -129,7 +129,7 @@ Codex 사용량을 표시하는 비공식 앱입니다. 원작 [BenItBuhner/Code
 
 ## Windows 바탕화면 위젯
 
-[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/codex-meter-ko/releases/download/v3.0.0/CodexMeter-WindowsWidget-3.0.0.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
+[최신 Windows 위젯 ZIP](https://github.com/ldjkorea/DJS-GPT-HUD/releases/download/v3.0.0/CodexMeter-WindowsWidget-3.0.0.zip)을 받아 압축을 풀고 `CodexMeterWidget.exe`를 실행합니다. 위젯을 이동·크기 조절하고 메뉴에서 항상 위 표시와 투명도를 설정할 수 있습니다. Windows 0.1.9부터는 **⋯ → 업데이트 확인**으로 후속 버전을 확인하고 설치할 수 있습니다. 자세한 절차와 데이터 보존 안내는 [Windows 위젯 README](windows-widget/README.ko.md)를 참고하세요.
 
 ## Android 설치
 

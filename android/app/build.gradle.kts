@@ -16,8 +16,8 @@ android {
         }
         minSdk = 26
         targetSdk = 36
-        versionCode = 990011
-        versionName = "9.9.11"
+        versionCode = 990012
+        versionName = "9.9.12"
         providers.gradleProperty("demoVersionCode").orNull?.toIntOrNull()?.let {
             versionCode = it
         }
@@ -25,7 +25,7 @@ android {
             versionName = it
         }
         val updateApiUrl = providers.gradleProperty("demoUpdateUrl").orNull
-            ?: "https://api.github.com/repos/ldjkorea/codex-meter-ko/releases?per_page=30" // pragma: allowlist secret
+            ?: "https://api.github.com/repos/ldjkorea/DJS-GPT-HUD/releases?per_page=30" // pragma: allowlist secret
         buildConfigField("String", "UPDATE_API_URL",
             "\"${updateApiUrl.replace("\\", "\\\\").replace("\"", "\\\"")}\"")
     }

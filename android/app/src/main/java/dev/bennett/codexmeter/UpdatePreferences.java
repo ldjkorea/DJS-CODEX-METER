@@ -118,6 +118,11 @@ public final class UpdatePreferences {
             throw new IllegalArgumentException("GitHub returned too much release metadata.");
         }
         List<GitHubRelease> parsed = GitHubReleaseParser.parse(json, BuildConfig.DEBUG);
+        // A populated but incompatible feed is not a successful empty update list.
+        // Keep the prior cache/ETag; the caller records the failure for the existing UI.
+        if (parsed.isEmpty() && new org.json.JSONArray(json).length() > 0) {
+            throw new IllegalStateException(context.getString(R.string.update_metadata_incompatible));
+        }
         SharedPreferences.Editor editor = prefs(context).edit()
                 .putString(KEY_RELEASES, json)
                 .putLong(KEY_LAST_CHECK, System.currentTimeMillis())
