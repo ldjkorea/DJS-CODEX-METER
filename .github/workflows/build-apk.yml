@@ -78,5 +78,10 @@ jobs:
         run: ./windows-widget/build.ps1 -Test
       - name: Verify RPG token metadata and widget regression
         shell: pwsh
-        run: python android/tests/verify-stable311-source.py
+        run: |
+          if (Test-Path android/tests/verify-stable313-source.py) {
+            python android/tests/verify-stable313-source.py
+          } else {
+            python android/tests/verify-stable311-source.py
+          }
       # No live login, signing secrets, registry changes or public artifacts.

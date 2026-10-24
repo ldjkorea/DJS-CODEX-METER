@@ -32,6 +32,13 @@ jobs:
           distribution: temurin
           java-version: '21'
       - name: Offline guards after obtaining the existing JSON test dependency
-        run: python3 android/tests/run-stable311-validation.py --focused
+        run: |
+          if test -f android/tests/verify-stable313-source.py; then
+            python3 android/tests/verify-stable313-source.py
+            python3 android/tests/verify-stable313-release.py
+            python3 android/tests/verify-public-source.py
+          else
+            python3 android/tests/run-stable311-validation.py --focused
+          fi
       # No Android SDK, Gradle/APK build, signing, device/login or release publishing.
       # Focused success does not certify the separate full historical workflow.
