@@ -47,6 +47,7 @@ jobs:
           if test -f android/tests/verify-stable313-source.py; then
             python3 android/tests/verify-stable313-source.py
             python3 android/tests/verify-stable313-release.py
+            python3 android/tests/verify-coach-friend.py
             python3 android/tests/verify-publication.py
             python3 android/tests/verify-public-source.py
           else

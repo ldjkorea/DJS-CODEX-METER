@@ -61,7 +61,7 @@ final class FunHome {
         LinearLayout tier=merged()?BetaHomeUi.card(activity,dark,false):LiveCards.crest(activity,dark,live,fresh);
         if(crestTarget!=null){crestTarget.addView(tier);if(merged())TierTheme.frame((android.view.View)crestTarget.getParent(),TierTheme.tier(activity),dark);else Ui.addSpacer(crestTarget,10);}else target.addView(tier);
         LinearLayout quotation=LiveCards.ai(activity,dark,live,snapshot,fresh,daily,now,quote);
-        target.addView(quotation);Ui.addSpacer(target,16);finished.run();
+        target.addView(quotation);finished.run();
     }
     private boolean stacked(){return LedgerUi.stacked(activity)||activity.getResources().getConfiguration().screenWidthDp<420;}
     private static String num(double value){return LedgerUi.number(value);}

@@ -10,8 +10,8 @@ public final class CoachCatalog {
     public final Map<String,Tip> tips;
     public final Map<Integer,String> legacyIds;
     public static final class Quote {
-        public final String id,group,tone,text,tipId;
-        Quote(JSONObject q)throws JSONException{id=q.getString("id");group=q.getString("situation");tone=q.getString("tone");text=q.getString("text");tipId=q.optString("tipId");}
+        public final String id,group,tone,text,tipId,paidText;
+        Quote(JSONObject q)throws JSONException{id=q.getString("id");group=q.getString("situation");tone=q.getString("tone");text=q.getString("text");tipId=q.optString("tipId");paidText=q.optString("paidText");}
     }
     public static final class Tip {
         public final String id,field,interest,tool,title,inputs,prompt,check,fallback;
@@ -27,11 +27,35 @@ public final class CoachCatalog {
     public static String group(UsageSnapshot snapshot,boolean fresh,boolean error,boolean bonus,double daily,long now){
         if(error)return "network";if(snapshot==null||snapshot.longWindow()==null)return "missing";if(!fresh||snapshot.fetchedAtMillis>now||now-snapshot.fetchedAtMillis>900000L||snapshot.longWindow().effectiveResetAtMillis(snapshot.fetchedAtMillis)<=now)return "stale";
         if(snapshot.weekly!=null&&snapshot.fiveHour==null&&snapshot.allowed&&!snapshot.limitReached)return "missing"; // Partial relevant limit coverage.
+        if(expired(snapshot.fiveHour,snapshot.fetchedAtMillis,now)||expired(snapshot.monthly,snapshot.fetchedAtMillis,now))return "stale";
         // Authoritative blocked flags and relevant short-window constraint precede bonus/burst.
-        if(snapshot.limitReached||!snapshot.allowed||snapshot.fiveHour!=null&&snapshot.fiveHour.usedPercent>=90&&snapshot.fiveHour.usedPercent<100)return "critical";
-        UsageWindow w=snapshot.longWindow();if(w.usedPercent>=90&&w.usedPercent<100)return "critical";
-        if((w.usedPercent>=100||snapshot.fiveHour!=null&&snapshot.fiveHour.usedPercent>=100)&&snapshot.allowed&&!snapshot.limitReached)return bonus?"bonus":"heavy";
-        return SpicyRotation.group(w.usedPercent,daily,true,bonus,w.effectiveResetAtMillis(snapshot.fetchedAtMillis)-now,w.windowSeconds,false);
+        if(snapshot.limitReached||!snapshot.allowed||snapshot.fiveHour!=null&&snapshot.fiveHour.preciseUsedPercent>=90&&snapshot.fiveHour.preciseUsedPercent<100)return "critical";
+        UsageWindow w=snapshot.longWindow();if(w.preciseUsedPercent>=90&&w.preciseUsedPercent<100)return "critical";
+        if((w.preciseUsedPercent>=100||snapshot.fiveHour!=null&&snapshot.fiveHour.preciseUsedPercent>=100)&&snapshot.allowed&&!snapshot.limitReached)return bonus?"bonus":"heavy";
+        // Rounded zero and a zero long window never erase positive activity in another window.
+        double used=w.preciseUsedPercent;
+        if(snapshot.fiveHour!=null)used=Math.max(used,snapshot.fiveHour.preciseUsedPercent);
+        if(snapshot.monthly!=null)used=Math.max(used,snapshot.monthly.preciseUsedPercent);
+        String result=SpicyRotation.group(used,daily,true,bonus,w.effectiveResetAtMillis(snapshot.fetchedAtMillis)-now,w.windowSeconds,false);
+        if(!result.equals("zero"))return result;
+        if(snapshot.fiveHour==null&&!snapshot.planType.trim().equalsIgnoreCase("free"))return "missing";
+        for(UsageLimit limit:snapshot.additionalLimits){
+            if(limit==null||limit.primary==null&&limit.secondary==null||!limit.allowed||limit.limitReached)return "missing";
+            for(UsageWindow extra:new UsageWindow[]{limit.primary,limit.secondary})if(extra!=null){
+                if(expired(extra,snapshot.fetchedAtMillis,now))return "stale";
+                if(extra.preciseUsedPercent>0)return "missing"; // Independently metered: do not invent a combined percentage.
+            }
+        }
+        return Double.isFinite(daily)&&daily>0?"tiny":result;
+    }
+    private static boolean expired(UsageWindow w,long at,long now){return w!=null&&w.effectiveResetAtMillis(at)>0&&w.effectiveResetAtMillis(at)<=now;}
+    /** Optional paid-plan joke has a neutral catalog fallback; price/payment is never inferred. */
+    public static String displayText(Quote q,UsageSnapshot snapshot,boolean fresh,boolean error,boolean bonus,double daily,long now){
+        if(q.paidText.isEmpty()||snapshot==null||!Arrays.asList("zero","tiny","low").contains(q.group)
+                ||!q.group.equals(group(snapshot,fresh,error,bonus,daily,now)))return q.text;
+        String plan=snapshot.planType.trim().toLowerCase(Locale.ROOT).replaceAll("[ _-]","");String label;
+        switch(plan){case "plus":label="플러스";break;case "pro":case "pro20x":label="프로";break;case "pro5x":case "prolite":label="프로 라이트";break;default:return q.text;}
+        return q.paidText.replace("{plan}",label);
     }
     public static boolean constrained(String group){return Arrays.asList("critical","missing","stale","network").contains(group);}
     public JSONObject migrate(JSONObject old)throws JSONException {

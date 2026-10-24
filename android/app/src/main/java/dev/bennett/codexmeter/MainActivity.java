@@ -372,6 +372,7 @@ public final class MainActivity extends AppCompatActivity {
         scheduleInsightTick();
         invalidateOptionsMenu();UsageSnapshot current=AppPreferences.loadSnapshot(this);String signature=SubscriptionStore.key(this,current)+":"+(current==null?0:current.fetchedAtMillis)+":"+AppPreferences.getLastError(this).hashCode()+":"+getSharedPreferences("codex_subscription_cost",0).getAll().hashCode()+":"+(current==null?"":UsageInsights.freshness(current.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(this)))+":"+LedgerAggregation.day(System.currentTimeMillis())+":"+getSharedPreferences("codex_meter_settings_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_settings",0).getAll().hashCode()+":"+getSharedPreferences("codex_tier_evolution_v2",0).getString("revision","")+":"+getSharedPreferences("codex_meter_updates_v1",0).getAll().hashCode()+":"+LiveUsageStore.revision()+":"+TaskStatusStore.enabled(this)+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode();
         signature+=":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode()+":"+getSharedPreferences(BetaMedalStore.CACHE,0).getAll().hashCode()+":"+AppPreferences.isOAuthPending(this)+":"+BetaPreferences.prefs(this).getAll().hashCode();
+        signature+=":"+SpicyQuotes.cacheKey(this,SubscriptionStore.accountKey(this));
         if(signature.equals(renderedSignature)&&content.getChildCount()>0){if(taskStatusRow!=null){String taskText=TaskStatusStore.homeText(this);if(!taskText.contentEquals(taskStatusRow.getText()))taskStatusRow.setText(taskText);}if(ledgerOverview!=null)ledgerOverview.updateClock();for(Runnable update:quotaClockUpdates)update.run();return;}
         android.view.View scroll=findViewById(R.id.dashboard_scroll);if(scroll!=null&&content.getChildCount()>0)homeScroll=scroll.getScrollY();restoreHomePending=homeScroll>0;renderedSignature=signature;
         freshnessView=null;ledgerOverview=null;taskStatusRow=null;weeklyInsightRows=null;quotaClockUpdates.clear();content.removeAllViews();
@@ -390,6 +391,7 @@ public final class MainActivity extends AppCompatActivity {
             return;
         }
         LinearLayout crestSlot=BetaHomeSummaryUi.add(this,content,snapshot,dark,quotaClockUpdates);
+        FunHome.add(this,content,dark,this::restoreHomeScroll,crestSlot);
         BetaWeeklyUi.add(this,content,snapshot,dark,quotaClockUpdates);
         if(available!=null){content.addView(buildUpdateCard(available));Ui.addSpacer(content,16);}
         if(snapshot==null){
@@ -399,7 +401,6 @@ public final class MainActivity extends AppCompatActivity {
         }
         taskStatusRow=null;
         TaskStatusJobService.schedule(this);
-        FunHome.add(this,content,dark,this::restoreHomeScroll,crestSlot);
         restoreHomeScroll();
     }
 

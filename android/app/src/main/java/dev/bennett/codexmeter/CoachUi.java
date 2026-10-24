@@ -3,6 +3,7 @@ package dev.bennett.codexmeter;
 import android.app.AlertDialog;
 import android.content.*;
 import android.view.View;
+import android.view.Gravity;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.*;
@@ -14,19 +15,25 @@ final class CoachUi {
     private static final Map<AppCompatActivity,String> OWNER=new WeakHashMap<>();
     private CoachUi(){}
     static LinearLayout card(AppCompatActivity a,boolean dark,UsageSnapshot snapshot,boolean fresh,boolean bonus,double daily){
-        LinearLayout card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);card.setTag("beta9911:coach");
+        LinearLayout card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);card.setGravity(Gravity.CENTER_HORIZONTAL);card.setTag("beta9911:coach");
         String account=SubscriptionStore.accountKey(a),tone=CoachPolicy.tone(a),identity=SpicyQuotes.identity(a,account);
         SpicyQuotes.Selection selection=SpicyQuotes.peek(a,account);String group=CoachCatalog.group(snapshot,fresh,!AppPreferences.getLastError(a).isEmpty(),bonus,daily,System.currentTimeMillis());
         if(OPEN.containsKey(a)&&(!identity.equals(OWNER.get(a))||tone.equals("off")||CoachCatalog.constrained(group))){OPEN.get(a).dismiss();OPEN.remove(a);}
         if(tone.equals("off")){card.setVisibility(View.GONE);return card;}
         card.setPadding(Ui.dp(a,10),Ui.dp(a,14),Ui.dp(a,10),Ui.dp(a,14));
-        card.addView(LedgerUi.caption(a,a.getString(R.string.live_ai_title),dark));
+        TextView label=LedgerUi.caption(a,a.getString(R.string.live_ai_title),dark);
+        label.setGravity(Gravity.CENTER);label.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        card.addView(label,new LinearLayout.LayoutParams(-1,-2));Ui.addSpacer(card,8);
         boolean ko=RpgGrowthUi.korean(a);String text;
         if(ko&&tone.equals("spicy")){if(selection==null){card.setVisibility(View.GONE);return card;}text=selection.text;}
         else if(CoachCatalog.constrained(group))text=a.getString(R.string.coach_prepare_only);
         else text=FunCoach.current(a,tone,RpgProgressStore.tier(a),FunInsights.Situation.TIER,CoachMoment.Kind.NORMAL,"local",System.currentTimeMillis());
-        TextView quote=LedgerUi.heading(a,"“"+text+"”",dark);quote.setTextSize(18);quote.setMinimumHeight(Ui.dp(a,48));quote.setMaxLines(2);quote.setEllipsize(android.text.TextUtils.TruncateAt.END);quote.setContentDescription(text);quote.setOnClickListener(v->{if(!java.util.Objects.equals(account,SubscriptionStore.accountKey(a))||!identity.equals(SpicyQuotes.identity(a,account)))return;LinearLayout full=BetaMedalUi.content(a);full.addView(BetaUi.body(a,text,dark));BetaMedalUi.show(a,a.getString(R.string.live_ai_title),full,account);});card.addView(quote);
-        if(selection!=null&&selection.tip!=null&&!CoachCatalog.constrained(group)&&tone.equals("spicy"))card.addView(LedgerUi.action(a,a.getString(R.string.coach_try),false,dark,()->tip(a,dark,account,selection)));
+        TextView quote=LedgerUi.heading(a,"“"+text+"”",dark);quote.setTextSize(18);quote.setMinimumHeight(Ui.dp(a,48));quote.setSingleLine(false);quote.setIncludeFontPadding(true);quote.setLineSpacing(0,1.3f);quote.setGravity(Gravity.CENTER);quote.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);quote.setTag("home:coach-text");quote.setContentDescription(text);quote.setOnClickListener(v->{if(!java.util.Objects.equals(account,SubscriptionStore.accountKey(a))||!identity.equals(SpicyQuotes.identity(a,account)))return;LinearLayout full=BetaMedalUi.content(a);full.addView(BetaUi.body(a,text,dark));BetaMedalUi.show(a,a.getString(R.string.live_ai_title),full,account);});card.addView(quote,new LinearLayout.LayoutParams(-1,-2));
+        if(selection!=null&&selection.tip!=null&&!CoachCatalog.constrained(group)&&tone.equals("spicy")){
+            Button action=LedgerUi.action(a,a.getString(R.string.coach_try),false,dark,()->tip(a,dark,account,selection));
+            LinearLayout.LayoutParams actionParams=new LinearLayout.LayoutParams(-2,-2);actionParams.gravity=Gravity.CENTER_HORIZONTAL;actionParams.topMargin=Ui.dp(a,12);
+            card.addView(action,actionParams);
+        }
         return card;
     }
     private static void tip(AppCompatActivity a,boolean dark,String account,SpicyQuotes.Selection selection){
