@@ -129,6 +129,7 @@ public final class MainActivity extends AppCompatActivity {
             }
             if (AppConstants.ACTION_RELEASES_UPDATED.equals(action)) {
                 MainActivity.this.rebuild();
+                ForegroundUpdateNotice.metadataChanged(MainActivity.this);
             }
         }
     };
@@ -211,6 +212,7 @@ public final class MainActivity extends AppCompatActivity {
     @Override // android.app.Activity
     protected void onResume() {
         super.onResume();
+        if(content!=null)ForegroundUpdateNotice.resume(this);
         if(AppPreferences.isOAuthPending(this)&&!AccountSession.signInActive()){
             AppPreferences.setOAuthPending(this,false,"");
             Toast.makeText(this,BetaCopy.t(this,"auth_interrupted"),Toast.LENGTH_LONG).show();
@@ -234,6 +236,7 @@ public final class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        ForegroundUpdateNotice.pause(this);
         android.view.View scroll=findViewById(R.id.dashboard_scroll);if(scroll!=null)homeScroll=scroll.getScrollY();
         NotesUi.flush(this);
         insightActive=false;

@@ -177,7 +177,7 @@
     <string name="ui_check_automatically_7cd229">"자동으로 확인"</string>
     <string name="ui_check_frequency_7e6ebc">"확인 주기"</string>
     <string name="ui_show_a_notification_with_open_and_update_actions_2cccd4">"열기 및 업데이트 버튼이 있는 알림을 표시합니다"</string>
-    <string name="ui_notify_when_an_update_is_available_d59712">"업데이트가 있으면 알림"</string>
+    <string name="ui_notify_when_an_update_is_available_d59712">"백그라운드 업데이트 알림"</string>
     <string name="ui_more_options_86c0a3">"추가 옵션"</string>
     <string name="ui_check_github_now_5218af">"지금 GitHub에서 확인합니다"</string>
     <string name="ui_check_for_updates_736b90">"업데이트 확인"</string>
@@ -788,7 +788,7 @@
     <string name="ui_remaining_336c4c">" 남음"</string>
     <string name="ui_1_d_reset_credit_1ecd22">"초기화 크레딧 %1$d개"</string>
     <string name="ui_1_d_reset_credits_ac0b1a">"초기화 크레딧 %1$d개"</string>
-    <string name="ui_check_signed_github_releases_1_s_584964">"서명된 GitHub 릴리스 확인: %1$s"</string>
+    <string name="ui_check_signed_github_releases_1_s_584964">"앱 시작·복귀 및 설정 주기에 확인: %1$s"</string>
     <string name="ui_step_1_d_of_2_d_61a89d">"%1$d / %2$d단계"</string>
     <string name="ui_credits_729928">" 크레딧"</string>
     <string name="ui_unavailable_dfe392">" (확인 불가)"</string>

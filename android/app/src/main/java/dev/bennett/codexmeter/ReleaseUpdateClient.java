@@ -17,6 +17,16 @@ public final class ReleaseUpdateClient {
     private ReleaseUpdateClient() {
     }
 
+    /** Automatic foreground/job checks share the lock and a short success/failure cooldown. */
+    public static List<GitHubRelease> checkIfStale(Context context) throws Exception {
+        synchronized (LOCK) {
+            if (ForegroundUpdatePolicy.recent(UpdatePreferences.lastCheckMillis(context), System.currentTimeMillis())) {
+                return UpdatePreferences.releases(context);
+            }
+            return check(context);
+        }
+    }
+
     public static List<GitHubRelease> check(Context context) throws Exception {
         if (!BuildConfig.KOREAN_UPDATES_ENABLED) {
             throw new IllegalStateException(context.getString(R.string.ko_updates_unavailable));

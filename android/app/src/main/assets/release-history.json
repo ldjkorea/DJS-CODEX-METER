@@ -1,5 +1,29 @@
 [
   {
+    "version": "3.1.4",
+    "date": "2026-10-24",
+    "source": "https://github.com/ldjkorea/DJS-GPT-HUD/releases/tag/v3.1.4",
+    "origin": "korean",
+    "ko": {
+      "title": "새 버전 안내와 더 자연스러운 한마디",
+      "changes": [
+        "자동 업데이트 확인이 켜져 있으면 앱 시작·복귀 때 새 버전을 확인하고 버전당 한 번 안내합니다.",
+        "5분 캐시·중복 요청 방지로 잦은 복귀의 요청을 줄이고 조회 실패는 팝업 없이 처리합니다.",
+        "한마디131개를 다듬고 자료 부족·시각 재확인·조회 실패를 정확하게 표현합니다.624개ID·40팁·끄기/숨김을 유지합니다.",
+        "중앙 줄바꿈과 큰 글씨 전문 보존을 개선합니다. 기존 패키지·서명·계정·기록·설정은 유지하며 설치에는 사용자 승인이 필요합니다."
+      ]
+    },
+    "en": {
+      "title": "Foreground update notice and more natural Korean banter",
+      "changes": [
+        "When automatic checks are enabled, check on app open/resume and show each available version once.",
+        "Share a five-minute cache and concurrent request gate; failed checks do not interrupt with a popup.",
+        "Revise131 Korean lines while preserving624 IDs,40 tips, OFF/hidden settings and quota evidence rules.",
+        "Improve centered wrapping without truncating large text. Preserve package, signer, accounts and records; Android installation still requires consent."
+      ]
+    }
+  },
+  {
     "version": "3.1.3",
     "date": "2026-10-24",
     "source": "https://github.com/ldjkorea/DJS-GPT-HUD/releases/tag/v3.1.3",

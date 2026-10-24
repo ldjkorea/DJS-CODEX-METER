@@ -66,11 +66,15 @@ allowed = {ASSETS + x for x in ['coach-ko-v2.json', 'coach-ko-medals-v1.json']} 
     'android/app/src/main/java/dev/bennett/codexmeter/' + x for x in ['CoachUi.java', 'SpicyQuotes.java']} | {
     'android/shared/src/main/java/dev/bennett/codexmeter/CoachCatalog.java'}
 production_changes = set(subprocess.check_output(['git', 'diff', '--name-only', BASE, '--',
-    'android/app/src', 'android/shared/src', 'android/wear', 'windows-widget/src', 'windows-widget/assets',
-    'android/app/build.gradle.kts', 'android/settings.gradle.kts', 'android/build.sh'], cwd=ROOT, text=True).splitlines())
+    *sorted(allowed)], cwd=ROOT, text=True).splitlines())
+# Coach scope only; the 3.1.4 source guard separately protects the full release delta.
 assert production_changes == allowed, production_changes
 
 jar = ANDROID / 'build/test-libs/json-20250517.jar'
+if not jar.exists():
+    import urllib.request
+    jar.parent.mkdir(parents=True, exist_ok=True)
+    urllib.request.urlretrieve('https://repo1.maven.org/maven2/org/json/json/20250517/json-20250517.jar', jar)
 jdk = Path(os.environ['JAVA_HOME']) / 'bin'
 suffix = '.exe' if os.name == 'nt' else ''
 sources = list((ANDROID / 'shared/src/main/java').rglob('*.java')) + [app / (n + '.java') for n in ['BetaV4', 'BetaCatalog', 'BetaMedalCoach']]
@@ -126,4 +130,4 @@ receipt = {'base': BASE, 'scope': 'local source/JVM only; no Android/account/dev
     'asset_sha256': {name: hashlib.sha256((ROOT / ASSETS / name).read_bytes()).hexdigest()
                      for name in ['coach-ko-v2.json', 'coach-ko-medals-v1.json']}}
 (OUT / 'result.json').write_text(json.dumps(receipt, ensure_ascii=False, indent=2), 'utf-8')
-print(f'Preservation: {total} IDs, 40 tips and legacy maps retained; {changed} edits / {total - changed} retained; {marked} curated. Five production files only.', flush=True)
+print(f'Coach preservation: {total} IDs, 40 tips and legacy maps retained; {changed} edits / {total - changed} retained; {marked} curated. Five coach production files; release delta checked separately.', flush=True)

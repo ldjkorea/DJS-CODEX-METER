@@ -24,7 +24,7 @@ public final class ReleaseUpdateJobService extends JobService {
         active = executor.submit(() -> {
             boolean retry = false;
             try {
-                ReleaseUpdateClient.check(getApplicationContext());
+                ReleaseUpdateClient.checkIfStale(getApplicationContext());
             } catch (Exception exception) {
                 DiagnosticLog.error(getApplicationContext(), "scheduler",
                         "release_job_failed", exception,

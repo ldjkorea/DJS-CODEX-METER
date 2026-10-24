@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import java.util.Collections;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /** Durable updater state, isolated from account and usage preferences. */
 public final class UpdatePreferences {
@@ -13,6 +15,7 @@ public final class UpdatePreferences {
     private static final String KEY_NOTIFY = "notify_updates";
     private static final String KEY_CHECK_INTERVAL_HOURS = "check_interval_hours";
     private static final String KEY_NOTIFIED_VERSION = "notified_version";
+    private static final String KEY_FOREGROUND_SHOWN = "foreground_shown_versions";
     private static final String KEY_ETAG = "etag";
     private static final String KEY_RELEASES = "releases";
     private static final String KEY_LAST_CHECK = "last_check";
@@ -103,6 +106,17 @@ public final class UpdatePreferences {
 
     public static long lastCheckMillis(Context context) {
         return prefs(context).getLong(KEY_LAST_CHECK, 0L);
+    }
+
+    public static boolean foregroundVersionShown(Context context, String version) {
+        return prefs(context).getStringSet(KEY_FOREGROUND_SHOWN, Collections.emptySet()).contains(version);
+    }
+
+    public static synchronized void markForegroundVersionShown(Context context, String version) {
+        if (version == null || ReleaseVersion.parse(version) == null) return;
+        Set<String> shown = new HashSet<>(prefs(context).getStringSet(KEY_FOREGROUND_SHOWN, Collections.emptySet()));
+        shown.add(version);
+        prefs(context).edit().putStringSet(KEY_FOREGROUND_SHOWN, shown).apply();
     }
 
     public static String etag(Context context) {

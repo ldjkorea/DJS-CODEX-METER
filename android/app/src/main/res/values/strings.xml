@@ -177,7 +177,7 @@
     <string name="ui_check_automatically_7cd229">"Check automatically"</string>
     <string name="ui_check_frequency_7e6ebc">"Check frequency"</string>
     <string name="ui_show_a_notification_with_open_and_update_actions_2cccd4">"Show a notification with Open and Update actions"</string>
-    <string name="ui_notify_when_an_update_is_available_d59712">"Notify when an update is available"</string>
+    <string name="ui_notify_when_an_update_is_available_d59712">"Background update notifications"</string>
     <string name="ui_more_options_86c0a3">"More options"</string>
     <string name="ui_check_github_now_5218af">"Check GitHub now"</string>
     <string name="ui_check_for_updates_736b90">"Check for updates"</string>
@@ -788,7 +788,7 @@
     <string name="ui_remaining_336c4c">" remaining"</string>
     <string name="ui_1_d_reset_credit_1ecd22">"%1$d reset credit"</string>
     <string name="ui_1_d_reset_credits_ac0b1a">"%1$d reset credits"</string>
-    <string name="ui_check_signed_github_releases_1_s_584964">"Check signed GitHub releases %1$s"</string>
+    <string name="ui_check_signed_github_releases_1_s_584964">"Check on app open/resume and on schedule: %1$s"</string>
     <string name="ui_step_1_d_of_2_d_61a89d">"STEP %1$d OF %2$d"</string>
     <string name="ui_credits_729928">" credits"</string>
     <string name="ui_unavailable_dfe392">" (unavailable)"</string>
