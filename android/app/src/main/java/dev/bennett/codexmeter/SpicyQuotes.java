@@ -25,7 +25,7 @@ final class SpicyQuotes {
     static synchronized void foreground(){if(away>0&&SystemClock.elapsedRealtime()-away>=30000)generation++;away=0;}
     static synchronized void background(boolean rotation){if(!rotation)away=SystemClock.elapsedRealtime();}
     static synchronized void manual(){generation++;}
-    private static String selectionIdentity(Context c,String account){return account+":"+CoachPolicy.tone(c)+":"+interest(c)+":"+c.getResources().getConfiguration().getLocales().toLanguageTags()+":20261021-friend";}
+    private static String selectionIdentity(Context c,String account){return account+":"+CoachPolicy.tone(c)+":"+interest(c)+":"+c.getResources().getConfiguration().getLocales().toLanguageTags()+":20261024-banter";}
     static String identity(Context c,String account){return selectionIdentity(c,account)+":"+evidence(c);}
     private static String evidence(Context c){
         UsageSnapshot s=AppPreferences.loadSnapshot(c);boolean error=!AppPreferences.getLastError(c).isEmpty();long now=System.currentTimeMillis();

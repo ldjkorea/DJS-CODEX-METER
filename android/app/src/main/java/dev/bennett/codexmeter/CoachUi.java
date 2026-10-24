@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.*;
 import android.view.View;
 import android.view.Gravity;
+import android.text.Layout;
+import android.graphics.text.LineBreaker;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.*;
@@ -28,7 +30,10 @@ final class CoachUi {
         if(ko&&tone.equals("spicy")){if(selection==null){card.setVisibility(View.GONE);return card;}text=selection.text;}
         else if(CoachCatalog.constrained(group))text=a.getString(R.string.coach_prepare_only);
         else text=FunCoach.current(a,tone,RpgProgressStore.tier(a),FunInsights.Situation.TIER,CoachMoment.Kind.NORMAL,"local",System.currentTimeMillis());
-        TextView quote=LedgerUi.heading(a,"“"+text+"”",dark);quote.setTextSize(18);quote.setMinimumHeight(Ui.dp(a,48));quote.setSingleLine(false);quote.setIncludeFontPadding(true);quote.setLineSpacing(0,1.3f);quote.setGravity(Gravity.CENTER);quote.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);quote.setTag("home:coach-text");quote.setContentDescription(text);quote.setOnClickListener(v->{if(!java.util.Objects.equals(account,SubscriptionStore.accountKey(a))||!identity.equals(SpicyQuotes.identity(a,account)))return;LinearLayout full=BetaMedalUi.content(a);full.addView(BetaUi.body(a,text,dark));BetaMedalUi.show(a,a.getString(R.string.live_ai_title),full,account);});card.addView(quote,new LinearLayout.LayoutParams(-1,-2));
+        TextView quote=LedgerUi.heading(a,"“"+text+"”",dark);quote.setTextSize(18);quote.setMinimumHeight(Ui.dp(a,48));quote.setSingleLine(false);quote.setIncludeFontPadding(true);quote.setLineSpacing(0,1.3f);
+        // Android 8/9 retain their existing line-breaking behavior.
+        if(android.os.Build.VERSION.SDK_INT>=29)quote.setBreakStrategy(LineBreaker.BREAK_STRATEGY_BALANCED);
+        quote.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_NONE);quote.setGravity(Gravity.CENTER);quote.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);quote.setTag("home:coach-text");quote.setContentDescription(text);quote.setOnClickListener(v->{if(!java.util.Objects.equals(account,SubscriptionStore.accountKey(a))||!identity.equals(SpicyQuotes.identity(a,account)))return;LinearLayout full=BetaMedalUi.content(a);full.addView(BetaUi.body(a,text,dark));BetaMedalUi.show(a,a.getString(R.string.live_ai_title),full,account);});card.addView(quote,new LinearLayout.LayoutParams(-1,-2));
         if(selection!=null&&selection.tip!=null&&!CoachCatalog.constrained(group)&&tone.equals("spicy")){
             Button action=LedgerUi.action(a,a.getString(R.string.coach_try),false,dark,()->tip(a,dark,account,selection));
             LinearLayout.LayoutParams actionParams=new LinearLayout.LayoutParams(-2,-2);actionParams.gravity=Gravity.CENTER_HORIZONTAL;actionParams.topMargin=Ui.dp(a,12);

@@ -11,7 +11,8 @@ public final class CoachCatalog {
     public final Map<Integer,String> legacyIds;
     public static final class Quote {
         public final String id,group,tone,text,tipId,paidText;
-        Quote(JSONObject q)throws JSONException{id=q.getString("id");group=q.getString("situation");tone=q.getString("tone");text=q.getString("text");tipId=q.optString("tipId");paidText=q.optString("paidText");}
+        public final int selectionPriority;
+        Quote(JSONObject q)throws JSONException{id=q.getString("id");group=q.getString("situation");tone=q.getString("tone");text=q.getString("text");tipId=q.optString("tipId");paidText=q.optString("paidText");selectionPriority=q.optInt("selectionPriority",0);if(selectionPriority<0||selectionPriority>1)throw new IllegalArgumentException("Quote priority");}
     }
     public static final class Tip {
         public final String id,field,interest,tool,title,inputs,prompt,check,fallback;
@@ -73,12 +74,16 @@ public final class CoachCatalog {
         JSONArray hidden=state.optJSONArray("hidden");if(hidden==null)hidden=new JSONArray();JSONArray recent=state.optJSONArray("recent"),recentTips=state.optJSONArray("tips");if(recent==null)recent=new JSONArray();if(recentTips==null)recentTips=new JSONArray();
         List<Quote> candidates=new ArrayList<>();for(Quote q:quotes)if(q.group.equals(group)&&q.tone.equals(tone)&&!contains(hidden,q.id))candidates.add(q);
         Quote current=find(state.optString("current"));if(!rotate&&stamp.equals(state.optString("stamp"))&&candidates.contains(current))return current;
-        Quote chosen=null;int best=Integer.MIN_VALUE,ties=0;for(Quote q:candidates){Tip t=tips.get(q.tipId);int score=0;
+        Quote chosen=null;int best=Integer.MIN_VALUE,totalWeight=0;for(Quote q:candidates){Tip t=tips.get(q.tipId);int score=0;
             // No tip calls during constrained/unknown states. Display only offline preparation copy.
             if(constrained(group)&&t!=null)continue;
             int rec=recentIndex(recent,q.id),tr=t==null?-1:recentIndex(recentTips,t.id);score-=rec<0?0:1000+rec;score-=tr<0?0:100+tr;
             if(t!=null&&interest.equals(t.interest))score+=10;
-            if(score>best){best=score;chosen=q;ties=1;}else if(score==best&&random.nextInt(++ties)==0)chosen=q;
+            // Curated banter is more likely only among equally eligible rows. Keep every row
+            // reachable and preserve interest, cooldowns and urgent guidance ahead of delivery.
+            int weight=group.equals("critical")?1:1+2*q.selectionPriority;
+            if(score>best){best=score;chosen=q;totalWeight=weight;}
+            else if(score==best){totalWeight+=weight;if(random.nextInt(totalWeight)<weight)chosen=q;}
         }
         if(chosen==null){state.remove("current");return null;}
         state.put("current",chosen.id).put("stamp",stamp);remember(state,"recent",chosen.id,20);if(!chosen.tipId.isEmpty())remember(state,"tips",chosen.tipId,5);return chosen;
