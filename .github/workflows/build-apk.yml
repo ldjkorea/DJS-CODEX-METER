@@ -44,7 +44,14 @@ jobs:
       - name: Current migration contracts and Korean regression tests
         shell: bash
         run: |
-          python3 android/tests/run-stable311-validation.py --focused
+          if test -f android/tests/verify-stable313-source.py; then
+            python3 android/tests/verify-stable313-source.py
+            python3 android/tests/verify-stable313-release.py
+            python3 android/tests/verify-publication.py
+            python3 android/tests/verify-public-source.py
+          else
+            python3 android/tests/run-stable311-validation.py --focused
+          fi
       - name: Compile unsigned APKs and lint
         working-directory: android
         shell: bash

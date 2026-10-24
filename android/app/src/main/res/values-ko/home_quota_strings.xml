@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_quota_reset_schedule">%1$s\n초기화까지 %2$s</string>
+</resources>

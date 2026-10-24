@@ -59,6 +59,7 @@ public final class MainActivity extends AppCompatActivity {
     static boolean refreshInProgress(){return refreshing.get();}
     private LinearLayout weeklyInsightRows;
     private final android.os.Handler insightHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private boolean insightActive;
     private boolean snapshotListenerRegistered;
     // Quota commits can arrive without a UI broadcast (including synthetic demo refresh).
     private final Runnable snapshotRedraw=()->{
@@ -72,6 +73,7 @@ public final class MainActivity extends AppCompatActivity {
     };
     private final Runnable insightTicker = new Runnable() {
         @Override public void run() {
+            if(!insightActive||isDestroyed()||isFinishing())return;
             UsageSnapshot snapshot = AppPreferences.loadSnapshot(MainActivity.this);
             if (snapshot != null) {
                 if (ledgerOverview != null) ledgerOverview.updateClock();
@@ -85,9 +87,14 @@ public final class MainActivity extends AppCompatActivity {
                     UsageInsightDisplay.updateWeeklyRows(MainActivity.this, weeklyInsightRows, snapshot, dark);
                 }
             }
-            insightHandler.postDelayed(this, 60_000L);
+            scheduleInsightTick();
         }
     };
+    private void scheduleInsightTick(){
+        insightHandler.removeCallbacks(insightTicker);
+        if(insightActive&&!isDestroyed()&&!isFinishing())
+            insightHandler.postDelayed(insightTicker,HomeInsightClock.nextDelay(AppPreferences.loadSnapshot(this),System.currentTimeMillis()));
+    }
     private final BroadcastReceiver authReceiver = new BroadcastReceiver() { // from class: dev.bennett.codexmeter.MainActivity.1
         @Override // android.content.BroadcastReceiver
         public void onReceive(Context context, Intent intent) {
@@ -208,11 +215,11 @@ public final class MainActivity extends AppCompatActivity {
             AppPreferences.setOAuthPending(this,false,"");
             Toast.makeText(this,BetaCopy.t(this,"auth_interrupted"),Toast.LENGTH_LONG).show();
         }
+        insightActive=true;
         SpicyQuotes.foreground();
         BetaGrowthStore.refreshDisplay(getApplicationContext());
         LanSync.schedule(this);
-        insightHandler.removeCallbacks(insightTicker);
-        insightHandler.postDelayed(insightTicker, 60_000L);
+        scheduleInsightTick();
         String appTheme = AppPreferences.getAppTheme(this);
         boolean zIsDark = Ui.isDark(this);
         boolean materialYou = AppPreferences.isMaterialYouEnabled(this);
@@ -229,6 +236,7 @@ public final class MainActivity extends AppCompatActivity {
     protected void onPause() {
         android.view.View scroll=findViewById(R.id.dashboard_scroll);if(scroll!=null)homeScroll=scroll.getScrollY();
         NotesUi.flush(this);
+        insightActive=false;
         insightHandler.removeCallbacks(insightTicker);
         super.onPause();
     }
@@ -276,6 +284,7 @@ public final class MainActivity extends AppCompatActivity {
 
     @Override // android.app.Activity
     protected void onStop() {
+        insightActive=false;insightHandler.removeCallbacks(insightTicker);
         if(snapshotListenerRegistered){
             getSharedPreferences("codex_meter_settings_v1",0).unregisterOnSharedPreferenceChangeListener(snapshotListener);
             snapshotListenerRegistered=false;
@@ -298,6 +307,7 @@ public final class MainActivity extends AppCompatActivity {
 
     @Override // android.app.Activity
     protected void onDestroy() {
+        insightActive=false;insightHandler.removeCallbacks(insightTicker);
         NotesUi.close(this);
         this.executor.shutdownNow();
         super.onDestroy();
@@ -359,6 +369,7 @@ public final class MainActivity extends AppCompatActivity {
 
     public void rebuild() {
         if(content==null)return;
+        scheduleInsightTick();
         invalidateOptionsMenu();UsageSnapshot current=AppPreferences.loadSnapshot(this);String signature=SubscriptionStore.key(this,current)+":"+(current==null?0:current.fetchedAtMillis)+":"+AppPreferences.getLastError(this).hashCode()+":"+getSharedPreferences("codex_subscription_cost",0).getAll().hashCode()+":"+(current==null?"":UsageInsights.freshness(current.fetchedAtMillis,System.currentTimeMillis(),RefreshScheduler.effectiveRefreshMinutes(this)))+":"+LedgerAggregation.day(System.currentTimeMillis())+":"+getSharedPreferences("codex_meter_settings_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_fun_settings",0).getAll().hashCode()+":"+getSharedPreferences("codex_tier_evolution_v2",0).getString("revision","")+":"+getSharedPreferences("codex_meter_updates_v1",0).getAll().hashCode()+":"+LiveUsageStore.revision()+":"+TaskStatusStore.enabled(this)+":"+getSharedPreferences("codex_rpg_display_v1",0).getAll().hashCode()+":"+getSharedPreferences("codex_rpg_showcase_v1",0).getAll().hashCode();
         signature+=":"+getSharedPreferences("beta_identity_v1",0).getAll().hashCode()+":"+getSharedPreferences("beta_growth_display_v4",0).getAll().hashCode()+":"+getSharedPreferences(BetaMedalStore.CACHE,0).getAll().hashCode()+":"+AppPreferences.isOAuthPending(this)+":"+BetaPreferences.prefs(this).getAll().hashCode();
         if(signature.equals(renderedSignature)&&content.getChildCount()>0){if(taskStatusRow!=null){String taskText=TaskStatusStore.homeText(this);if(!taskText.contentEquals(taskStatusRow.getText()))taskStatusRow.setText(taskText);}if(ledgerOverview!=null)ledgerOverview.updateClock();for(Runnable update:quotaClockUpdates)update.run();return;}

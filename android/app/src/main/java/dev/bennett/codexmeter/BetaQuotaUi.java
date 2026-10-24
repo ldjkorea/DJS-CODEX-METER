@@ -36,7 +36,7 @@ final class BetaQuotaUi {
                 BetaExperienceUi.t(activity, "가상 데모 · 실제 계정 한도 아님",
                         "Synthetic demo · not real account limits"), dark));
         boolean stacked = activity.getResources().getConfiguration().fontScale > 1.3f
-                || activity.getResources().getConfiguration().screenWidthDp < 320;
+                || activity.getResources().getConfiguration().screenWidthDp < 360;
         LinearLayout meters = new LinearLayout(activity);
         meters.setOrientation(stacked ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         card.addView(meters, new LinearLayout.LayoutParams(-1, -2));
@@ -86,7 +86,6 @@ final class BetaQuotaUi {
         column.addView(status);
         TextView reset = BetaUi.note(activity, "", dark);
         reset.setTag("beta998:quota:" + key + ":reset");
-        if(compact)reset.setVisibility(android.view.View.GONE);
         column.addView(reset);
         Runnable update = () -> {
             if (window == null) {
@@ -108,11 +107,17 @@ final class BetaQuotaUi {
             status.setText(resource);
             status.setVisibility(state==UsageEvidence.State.CONFIRMED?android.view.View.GONE:android.view.View.VISIBLE);
             long resetAt = window.effectiveResetAtMillis(snapshot.fetchedAtMillis);
+            if (resetAt > now) {
+                reset.setText(activity.getString(R.string.home_quota_reset_schedule,
+                        UsageFormat.absolute(activity, resetAt, now),
+                        UsageFormat.compactDuration(activity, resetAt - now)));
+                return;
+            }
             reset.setText(fiveHour ? FiveHourResetDisplay.text(activity, window,
-                    snapshot.fetchedAtMillis, now, WidgetOptions.RESET_RELATIVE, false)
+                    snapshot.fetchedAtMillis, now, WidgetOptions.RESET_BOTH, false)
                     : resetAt <= 0 ? activity.getString(R.string.ui_reset_time_unavailable_5c3030)
                     : resetAt <= now ? activity.getString(R.string.phase_a_reset_passed)
-                    : UsageFormat.reset(activity, window, WidgetOptions.RESET_RELATIVE,
+                    : UsageFormat.reset(activity, window, WidgetOptions.RESET_BOTH,
                             snapshot.fetchedAtMillis, now));
         };
         clockUpdates.add(update);
